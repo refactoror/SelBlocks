@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
+<title>foreach</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">foreach</td></tr>
+</thead><tbody>
+<tr>
+	<td>emit</td>
+	<td>&quot;START ${fe}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>foreach</td>
+	<td>fe</td>
+	<td>&quot;dilbert&quot;,&quot;dogbert&quot;,&quot;wally&quot;</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;iter=${fe}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endForeach</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;END ${fe}&quot;</td>
+	<td></td>
+</tr>
+<!----- check results-->
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;START $&quot; + &quot;{fe}~iter=dilbert~iter=dogbert~iter=wally~END $&quot; + &quot;{fe}&quot;</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

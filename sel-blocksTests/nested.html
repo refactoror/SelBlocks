@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
+<title>foreach</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">foreach</td></tr>
+</thead><tbody>
+<tr>
+	<td>getEval</td>
+	<td>delete storedVars.i</td>
+	<td></td>
+</tr>
+<tr>
+	<td>timer</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>2</td>
+	<td>i</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;START ${i}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>i &gt; 0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;while=${i}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>foreach</td>
+	<td>uname</td>
+	<td>&quot;dilbert&quot;,&quot;dogbert&quot;</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;foreach=${uname}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>for</td>
+	<td>n = 2; n &lt;=3; n++</td>
+	<td>n</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;FOR=${n}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>for</td>
+	<td>n = 7; n &lt;= 8; n++</td>
+	<td>n</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;for=${n}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;endFor ${n}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endForeach</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>${i}-1</td>
+	<td>i</td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;END ${i}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>timerElapsed</td>
+	<td></td>
+	<td></td>
+</tr>
+<!----- check results-->
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;START 2~while=2~foreach=dilbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~foreach=dogbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~while=1~foreach=dilbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~foreach=dogbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~END 0&quot;</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

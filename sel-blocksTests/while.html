@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
+<title>foreach</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">foreach</td></tr>
+</thead><tbody>
+<tr>
+	<td>getEval</td>
+	<td>delete storedVars.w</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>3</td>
+	<td>w</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;START: ${w}&quot;</td>
+	<td></td>
+</tr>
+<!----- no iterations-->
+<tr>
+	<td>while</td>
+	<td>w == 42</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;SHOULD NEVER HAPPEN&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<!----- several iterations-->
+<tr>
+	<td>while</td>
+	<td>w &gt; 0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;iter=${w}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>${w}-1</td>
+	<td>w</td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;END: ${w}&quot;</td>
+	<td></td>
+</tr>
+<!----- check results-->
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;START: 3~iter=3~iter=2~iter=1~END: 0&quot;</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

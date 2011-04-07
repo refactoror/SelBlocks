@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
+<title>foreach</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">foreach</td></tr>
+</thead><tbody>
+<tr>
+	<td>getEval</td>
+	<td>delete storedVars.xname</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;START ${xname}&quot;</td>
+	<td></td>
+</tr>
+<!----- forXml-->
+<tr>
+	<td>forXml</td>
+	<td>forxml.xml</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>xname</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endForXml</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;INTERMISSION ${xname}&quot;</td>
+	<td></td>
+</tr>
+<!----- load a varset-->
+<tr>
+	<td>loadVars</td>
+	<td>forxml.xml</td>
+	<td>xname=&quot;dogbert&quot;</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;END ${xname}&quot;</td>
+	<td></td>
+</tr>
+<!----- check results-->
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;START $&quot; + &quot;{xname}~dilbert~dogbert~INTERMISSION $&quot; + &quot;{xname}~END dogbert&quot;</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

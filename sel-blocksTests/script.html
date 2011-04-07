@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
+<title>subtest</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">subtest</td></tr>
+</thead><tbody>
+<tr>
+	<td>emit</td>
+	<td>&quot;START ${sname} ${srole}&quot;</td>
+	<td></td>
+</tr>
+<!----- first line-->
+<tr>
+	<td>call</td>
+	<td>doSomething</td>
+	<td>sname=&quot;dilbert&quot;,srole=&quot;goof&quot;</td>
+</tr>
+<!--===-->
+<tr>
+	<td>script</td>
+	<td>doSomething</td>
+	<td>sname</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;sname=${sname},srole=${srole}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endScript</td>
+	<td>doSomething</td>
+	<td></td>
+</tr>
+<!--===-->
+<tr>
+	<td>call</td>
+	<td>doSomething</td>
+	<td>sname=&quot;dogbert&quot;,srole=&quot;woof&quot;</td>
+</tr>
+<tr>
+	<td>call</td>
+	<td>doSomething</td>
+	<td>sname=&quot;ratbert&quot;,srole=&quot;squeak&quot;</td>
+</tr>
+<!------->
+<tr>
+	<td>foreach</td>
+	<td>sname</td>
+	<td>&quot;asok&quot;,&quot;alice&quot;</td>
+</tr>
+<tr>
+	<td>call</td>
+	<td>doSomething</td>
+	<td>sname=sname,srole=&quot;superuser&quot;</td>
+</tr>
+<tr>
+	<td>endForeach</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;DONE ${sname} ${srole}&quot;</td>
+	<td></td>
+</tr>
+<!----- check results-->
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;START $&quot; + &quot;{sname} $&quot; + &quot;{srole}~sname=dilbert,srole=goof~sname=dogbert,srole=woof~sname=ratbert,srole=squeak~sname=asok,srole=superuser~sname=alice,srole=superuser~DONE $&quot; + &quot;{sname} $&quot; + &quot;{srole}&quot;</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
+<title>factorial</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">factorial</td></tr>
+</thead><tbody>
+<tr>
+	<td>getEval</td>
+	<td>delete storedVars.degree</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>delete storedVars._result</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>delete storedVars.ud</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>7</td>
+	<td>degree</td>
+</tr>
+<tr>
+	<td>timer</td>
+	<td></td>
+	<td>factorial ${degree}</td>
+</tr>
+<tr>
+	<td>call</td>
+	<td>fac</td>
+	<td>n=degree</td>
+</tr>
+<tr>
+	<td>timerElapsed</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>degree + &quot;!=&quot; + _result</td>
+	<td></td>
+</tr>
+<!--===-->
+<!----- recursive factorial-->
+<tr>
+	<td>script</td>
+	<td>fac</td>
+	<td>n</td>
+</tr>
+<tr>
+	<td>if</td>
+	<td>n &lt;= 1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>return</td>
+	<td>1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>else</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>call</td>
+	<td>fac</td>
+	<td>n=n-1</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>_result</td>
+	<td></td>
+</tr>
+<tr>
+	<td>return</td>
+	<td>n * _result</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>endScript</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--===-->
+<!----- mutual recursive-->
+<tr>
+	<td>script</td>
+	<td>uno</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;UNO&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>${ud}-1</td>
+	<td>ud</td>
+</tr>
+<tr>
+	<td>if</td>
+	<td>ud &gt; 0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>call</td>
+	<td>due</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>endScript</td>
+	<td>uno</td>
+	<td></td>
+</tr>
+<!------->
+<tr>
+	<td>script</td>
+	<td>due</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;DUE&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>${ud}-1</td>
+	<td>ud</td>
+</tr>
+<tr>
+	<td>if</td>
+	<td>ud &gt; 0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>call</td>
+	<td>uno</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>endScript</td>
+	<td>due</td>
+	<td></td>
+</tr>
+<!------->
+<tr>
+	<td>store</td>
+	<td>5</td>
+	<td>ud</td>
+</tr>
+<tr>
+	<td>call</td>
+	<td>uno</td>
+	<td></td>
+</tr>
+<!--===-->
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;1~2~6~24~120~720~7!=5040~UNO~DUE~UNO~DUE~UNO&quot;</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>
