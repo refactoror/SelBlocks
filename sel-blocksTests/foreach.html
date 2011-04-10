@@ -12,8 +12,13 @@
 <tr><td rowspan="1" colspan="3">foreach</td></tr>
 </thead><tbody>
 <tr>
+	<td>getEval</td>
+	<td>delete storedVars._i, storedVars.fe</td>
+	<td></td>
+</tr>
+<tr>
 	<td>emit</td>
-	<td>&quot;START ${fe}&quot;</td>
+	<td>&quot;START ${_i}-${fe}&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -23,7 +28,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;iter=${fe}&quot;</td>
+	<td>&quot;${_i}) ${fe}&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -33,13 +38,13 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;END ${fe}&quot;</td>
+	<td>&quot;END ${_i}-${fe}&quot;</td>
 	<td></td>
 </tr>
 <!----- check results-->
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START $&quot; + &quot;{fe}~iter=dilbert~iter=dogbert~iter=wally~END $&quot; + &quot;{fe}&quot;</td>
+	<td>&quot;START $&quot; + &quot;{_i}-$&quot; + &quot;{fe}~0) dilbert~1) dogbert~2) wally~END $&quot; + &quot;{_i}-$&quot; + &quot;{fe}&quot;</td>
 	<td></td>
 </tr>
 </tbody></table>
