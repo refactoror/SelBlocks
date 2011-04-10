@@ -1,41 +1,60 @@
 /**
- * SelBlocks 1.0
+ * SelBlocks 1.1
  *
- * Provides branching, looping, conditional execution, and callable functions.
+ * Provides commands for javascript-like looping and callable functions,
+ *   with scoped variables, and XML driven parameterization.
  *
  * Add filepath to Options -> Options... "Selenium Core extensions"
  *   (not "Selenium IDE extensions", because we are accessing the Selenium object)
  *
  * Features:
- *  - if/else, loadVars, forXml, foreach, for, while, call/return
+ *  - Commands: if/else, loadVars, forXml, foreach, for, while, call/script/return
  *  - Script and loop parameters use regular selenium variables that are local to the block,
  *    overriding variables of the same name, and are restored when the block exits.
+ *  - Variables can be set via external XML file(s).
  *  - Command parameters are javascript expressions that are evaluated with the selenium
- *    variables in scope, which can therefore be referenced by their simple names, eg: i+1
+ *    variables in scope, which can therefore be referenced by their simple names, e.g.: i+1
+ *  - A script definition can appear anywhere; they are skipped over in normal execution flow.
  *  - Script functions can be invoked recursively.
  *
  * Concept of operation:
  *  - selenium.reset() is intercepted to initialize the block structures. 
  *  - testCase.nextCommand() is overriden for flow branching.
- *  - The static structure of blocks is stored in cmdAttrs[] by command index.
+ *  - The static structure of blocks is stored in cmdAttrs[], by command index.
  *  - The execution state of blocks is pushed onto cmdStack, with a separate instance
  *    for each callStack frame.
  *
  * Limitations:
- *  - Incompatible with flowControl (and derivatives), which unilaterally modifies
- *    selenium.reset(). It can be made to work by making sure flowControl loads before SelBocks,
- *    although jumping into or out of SelBlocks will of course cause errors.
+ *  - Incompatible with flowControl (and derivatives), which unilaterally override
+ *    selenium.reset(). Known to have this issue: 
+ *        selenium_ide__flow_control-1.0.1-fx.xpi
+ *        goto_while_for_ide.js 
  *
  * Acknowledgements:
- *  SelBlocks reuses parts of flowControl, datadriven, and include extensions.
+ *  SelBlocks reuses bits & parts of extensions: flowControl, datadriven, and include.
+ *
+ * Wishlist:
+ *  - try/catch
+ *  - switch/case
+ *
+ * Changes since 1.0:
+ *  Fixed branch-to bug where label or block starts on the first line of the script.
+ *  Fixed foreach bug: input values not being evaluated with stored variables.
+ *  Added automatic variable ${_i} inside foreach loop: zero-based item index.   
+ *  Added $X(xpath) for retreiving an array of matching elements.
+ *  Eliminiated logging of selenium hook setup, etc, changed to debug level.
  */
 
 // =============== global functions as script helpers ===============
+// getEval script helpers
 
+// find an element via locator independent of any selenium commands
+// (selenium can only provide the first if multiple matches)
 function $e(locator) {
   return selenium.browserbot.findElementOrNull(locator);
 }
 
+// return the singular XPath result as a value of the appropriate type
 function $x(xpath, contextNode, resultType) {
   var doc = selenium.browserbot.getDocument();
   var result = doc.evaluate(xpath, contextNode || doc, null, resultType || XPathResult.ANY_TYPE, null);
@@ -47,8 +66,17 @@ function $x(xpath, contextNode, resultType) {
   return result.singleNodeValue;
 }
 
-try { // trap script load-time errors
-(function(){ // workaround for Firefox use-before-defined bug inside try blocks
+// return the XPath result set as an array of elements
+function $X(xpath, contextNode) {
+  var doc = selenium.browserbot.getDocument();
+  var nodeSet = doc.evaluate(xpath, contextNode || doc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+  var elements = [];
+  for (var i = 0, n = nodeSet.snapshotItem(i); n; n = nodeSet.snapshotItem(++i))
+    elements.push(n);
+  return elements;
+}
+
+(function(){
 
 // =============== javascript extensions as script helpers ===============
 
@@ -64,6 +92,7 @@ String.prototype.isOneOf = function(values)
   }
   return false;
 }
+
 // eg: "red".mapTo("primary", ["red","green","blue"]) => primary
 String.prototype.mapTo = function(/* pairs of: string, array */)
 {
@@ -109,7 +138,6 @@ function CmdAttrs() {
 // an Array object with stack functionality
 function Stack() {
   var stack = [];
-//   stack.size = function()    { return stack.length; }
   stack.isEmpty = function() { return stack.length == 0; }
   stack.top = function()     { return stack[stack.length-1]; }
   stack.find = function(_testfunc) { return stack[stack.indexWhere(_testfunc)]; }
@@ -126,33 +154,34 @@ function Stack() {
 }
 
 
-// branching logic
+// flow control - we don't just alter debugIndex on the fly, because the command
+// preceeding the destination would falsely get marked as successfully executed
+// TBD: should be a tail intercept rather than override
 var branchIdx = null;
-// TBD: if testCase.nextCommand() ever changes, then this needs to change
+// TBD: this needs to be revisited if testCase.nextCommand() ever changes
 // (current as of: selenium-ide-1.0.10)
-// TBD: intercept rather than override
 function nextCommand() {
-	if (!this.started) {
-		this.started = true;
-		this.debugIndex = testCase.startPoint ? testCase.commands.indexOf(testCase.startPoint) : 0
-	}
+  if (!this.started) {
+    this.started = true;
+    this.debugIndex = testCase.startPoint ? testCase.commands.indexOf(testCase.startPoint) : 0
+  }
   else {
-		if (branchIdx) {
+    if (branchIdx != null) {
 LOG.info("branch => " + fmtCmdRef(branchIdx));
-  		this.debugIndex = branchIdx;
-  		branchIdx = null;
-		}
-		else
-  		this.debugIndex++;
-	}
-	// skip over comments
-	for (; this.debugIndex < testCase.commands.length; this.debugIndex++) {
-		var command = testCase.commands[this.debugIndex];
-		if (command.type == "command") {
-			return command;
-		}
-	}
-	return null;
+      this.debugIndex = branchIdx;
+      branchIdx = null;
+    }
+    else
+      this.debugIndex++;
+  }
+  // skip over comments
+  for (; this.debugIndex < testCase.commands.length; this.debugIndex++) {
+    var command = testCase.commands[this.debugIndex];
+    if (command.type == "command") {
+      return command;
+    }
+  }
+  return null;
 }
 function setNextCommand(cmdIdx) {
   assert(cmdIdx >= 0 && cmdIdx < testCase.commands.length,
@@ -160,14 +189,14 @@ function setNextCommand(cmdIdx) {
   branchIdx = cmdIdx;
 }
 
-// intercept Selenium.reset()
-// which is called before: execute a single command, run a testcase, run each testcase in a testsuite
+// intercept of Selenium.reset()
+// this is called before: execute a single command / run a testcase / run each testcase in a testsuite
 (function () { // wrapper makes nativeReset private
   var nativeReset = Selenium.prototype.reset;
   Selenium.prototype.reset = function() {
     nativeReset.call(this);
     // TBD: skip during single command execution
-LOG.warn("SelBlocks post-processing: selenium.reset()");
+    LOG.debug("SelBlocks tail intercept: selenium.reset()");
     try {
       compileSelBlocks();
       callStack = new Stack();
@@ -178,12 +207,13 @@ LOG.warn("SelBlocks post-processing: selenium.reset()");
     }
 
     // custom flow control
-LOG.warn("SelBlocks replacing: testCase.debugContext.nextCommand()");
+    LOG.debug("SelBlocks replacing: testCase.debugContext.nextCommand()");
     testCase.debugContext.nextCommand = nextCommand;
   }
 })();
 
 
+// ================================================================================
 // assemble block relationships and symbol locations
 function compileSelBlocks()
 {
@@ -253,9 +283,6 @@ function compileSelBlocks()
         default:
       }
     }
-//     else { // eg: comment
-//       LOG.warn("command type: " + testCase.commands[i].type);
-//     }
   }
   while (!lexStack.isEmpty()) {
     var pend = lexStack.pop();
@@ -380,11 +407,14 @@ Selenium.prototype.doForeach = function(varName, valueExpr)
     function(loop) { // validate
         assert(varName, " 'foreach' requires a variable name.");
         assert(valueExpr, " 'foreach' requires comma-separated values.");
-        loop.values = eval("[" + valueExpr + "]");
-        return [varName];
+        loop.values = evalWithVars("[" + valueExpr + "]");
+        if (loop.values.length == 1 && loop.values[0] instanceof Array) {
+          loop.values = loop.values[0]; // if sole element is an array, than use it
+        }
+        return [varName, "_i"];
     }
-    ,function(loop) { loop.i = 0; storedVars[varName] = loop.values[loop.i]; } // initialize
-    ,function(loop) { return (loop.i < loop.values.length);} // continue?
+    ,function(loop) { loop.i = 0; storedVars[varName] = loop.values[loop.i]; }       // initialize
+    ,function(loop) { storedVars._i = loop.i; return (loop.i < loop.values.length);} // continue?
     ,function(loop) { // iterate
         if (++(loop.i) < loop.values.length)
           storedVars[varName] = loop.values[loop.i];
@@ -399,7 +429,7 @@ Selenium.prototype.doEndForeach = function() {
 Selenium.prototype.doLoadVars = function(xmlfile, selector)
 {
   assert(xmlfile, " 'loadVars' requires an xml file path or URI.");
-	var xmlReader = new XmlReader(xmlfile);
+  var xmlReader = new XmlReader(xmlfile);
   xmlReader.load(xmlfile);
   xmlReader.next();
   if (!selector && !xmlReader.EOF())
@@ -416,7 +446,7 @@ Selenium.prototype.doForXml = function(xmlpath)
   enterLoop(
     function(loop) {  // validate
         assert(xmlpath, " 'forXml' requires an xml file path or URI.");
-      	loop.xmlReader = new XmlReader();
+        loop.xmlReader = new XmlReader();
         var localVarNames = loop.xmlReader.load(xmlpath);
         return localVarNames;
     }
@@ -434,27 +464,35 @@ Selenium.prototype.doEndForXml = function() {
 }
 
 // --------------------------------------------------------------------------------
+// Note: Selenium variable expansion ${} occurs before command processing, which forces us
+// to re-execute commands that may contain variable substitutions. Bottom line, we can't just
+// keep a copy of parameters and iterate back to the first command within the body of a loop.
+
 function enterLoop(_validateFunc, _initFunc, _condFunc, _iterFunc)
 {
   assertRunning();
   var loopState;
   if (!callStack.top().cmdStack.isHere()) {
+    // loop begins
     loopState = { idx: hereIdx() };
     callStack.top().cmdStack.push(loopState);
     var localVars = _validateFunc(loopState);
     loopState.savedVars = getVarState(localVars);
-    initVarState(localVars); // with-scope can reference storedVars only after they exist
+    initVarState(localVars); // because with-scope can reference storedVars only after they exist
     _initFunc(loopState);
   }
   else {
+    // iteratation
     loopState = callStack.top().cmdStack.top();
     _iterFunc(loopState);
   }
 
   if (!_condFunc(loopState)) {
     loopState.isComplete = true;
+    // jump to bottom of loop for exit
     setNextCommand(cmdAttrs.here().ftrIdx);
   }
+  // else continue into body of loop
 }
 function iterateLoop()
 {
@@ -464,7 +502,7 @@ function iterateLoop()
   if (loopState.isComplete) {
     restoreVarState(loopState.savedVars);
     callStack.top().cmdStack.pop();
-    // fall out of loop
+    // done, fall out of loop
   }
   else {
     // jump back to top of loop
@@ -540,6 +578,7 @@ function returnFromScript(scrName, returnVal)
 // ========= storedVars management =========
 
 function evalWithVars(expr) {
+  // Use of eval is consistent with selenium in general. Expressions are controlled by user's own scripting.
   var result = eval("with (storedVars) {" + expr + "}");
   return result;
 }
@@ -628,26 +667,26 @@ function fmtCmdRef(idx) {
 
 function XmlReader()
 {
-	var xmlDoc = null;
-	var varNodes = null;
-	var curVars = null;
+  var xmlDoc = null;
+  var varNodes = null;
+  var curVars = null;
 
   this.load = function(xmlpath) {
-  	loader = new FileReader();
-  	var xmlHttpReq = loader.getIncludeDocumentBySynchronRequest(uriFor(xmlpath));
-  	xmlDoc = xmlHttpReq.responseXML; // XMLDocument
+    loader = new FileReader();
+    var xmlHttpReq = loader.getIncludeDocumentBySynchronRequest(uriFor(xmlpath));
+    xmlDoc = xmlHttpReq.responseXML; // XMLDocument
 
-  	varNodes = xmlDoc.getElementsByTagName("vars"); // HTMLCollection
+    varNodes = xmlDoc.getElementsByTagName("vars"); // HTMLCollection
 
-  	if (varNodes == null || varNodes.length == 0) {
-  		throw new Error("Test data couldn't be loaded, or test data was empty.");
-  	}
+    if (varNodes == null || varNodes.length == 0) {
+      throw new Error("Test data couldn't be loaded, or test data was empty.");
+    }
 
-  	curVars = 0;
-  	// get variable names from first entity
-  	var varnames = [];
-  	retrieveVarset(0, varnames);
-  	return varnames;
+    curVars = 0;
+    // get variable names from first entity
+    var varnames = [];
+    retrieveVarset(0, varnames);
+    return varnames;
   }
 
   this.EOF = function() {
@@ -655,42 +694,42 @@ function XmlReader()
   }
 
   this.next = function() {
-  	if (this.EOF()) {
-  		LOG.error("No test data.");
-  		return;
-  	}
-  	LOG.info(XML.serialize(varNodes[curVars]));	// log each name & value
+    if (this.EOF()) {
+      LOG.error("No test data.");
+      return;
+    }
+  	LOG.debug(XML.serialize(varNodes[curVars]));	// log each name & value
 
-  	if (varNodes[curVars].attributes.length != varNodes[0].attributes.length) {
-  		throw new Error("Inconsistent variable set in test data.");
-  		return;
-  	}
-  	retrieveVarset(curVars, storedVars);
-  	curVars++;
+    if (varNodes[curVars].attributes.length != varNodes[0].attributes.length) {
+      throw new Error("Inconsistent variable set in test data.");
+      return;
+    }
+    retrieveVarset(curVars, storedVars);
+    curVars++;
   }
 
   //- retrieve a varset row into the given object, if an Array return names only
   function retrieveVarset(vs, resultObj) {
-  	var varAttrs = varNodes[vs].attributes; // NamedNodeMap
-  	for (v = 0; v < varAttrs.length; v++) {
-    	var attr = varAttrs[v];
-  		if (null == varNodes[0].getAttribute(attr.nodeName)) {
-  			throw new Error("Inconsistent variable names in test data.");
-  			return;
-  		}
+    var varAttrs = varNodes[vs].attributes; // NamedNodeMap
+    for (v = 0; v < varAttrs.length; v++) {
+      var attr = varAttrs[v];
+      if (null == varNodes[0].getAttribute(attr.nodeName)) {
+        throw new Error("Inconsistent variable names in test data.");
+        return;
+      }
       if (resultObj instanceof Array)
-    		resultObj.push(varAttrs[v].nodeName);
-  		else
-    		resultObj[attr.nodeName] = attr.nodeValue;
-  	}
+        resultObj.push(varAttrs[v].nodeName);
+      else
+        resultObj[attr.nodeName] = attr.nodeValue;
+    }
   }
 }
 
 XML.serialize = function(node) {
-	if (typeof XMLSerializer != "undefined")
-		return (new XMLSerializer()).serializeToString(node) ;
-	else if (node.xml) return node.xml;
-	else throw "XML.serialize is not supported or can't serialize " + node;
+  if (typeof XMLSerializer != "undefined")
+    return (new XMLSerializer()).serializeToString(node) ;
+  else if (node.xml) return node.xml;
+  else throw "XML.serialize is not supported or can't serialize " + node;
 }
 
 
@@ -766,7 +805,3 @@ FileReader.prototype.newXMLHttpRequest = function() {
 };
 
 }())
-}
-catch (err) {
-  alert("In " + err.fileName + " @" + err.lineNumber + ": " + err);
-}
