@@ -1,5 +1,5 @@
 /**
- * SelBlocks 1.2
+ * SelBlocks 1.3
  *
  * Provides commands for javascript-like looping and callable functions,
  *   with scoped variables, and XML driven parameterization.
@@ -20,7 +20,7 @@
  * Concept of operation:
  *  - selenium.reset() is intercepted to initialize the block structures. 
  *  - testCase.nextCommand() is overriden for flow branching.
- *  - The static structure of blocks is stored in cmdAttrs[], by command index.
+ *  - The static structure of commands & blocks is stored in cmdAttrs[], by command index.
  *  - The execution state of blocks is pushed onto cmdStack, with a separate instance
  *    for each callStack frame.
  *
@@ -37,10 +37,8 @@
  *  - try/catch
  *  - switch/case
  *
- * Changes since 1.1:
- * - Disallow AndWait versions of commands (which would stall scripts)
- * - Improved error messaging, (block-pairing, expressions, xml files)
- * - Added some info logging: XML file reads, etc.
+ * Changes since 1.2:
+ * - Added continue & break for loops
  */
 
 // =============== global functions as script helpers ===============
@@ -121,7 +119,7 @@ function CmdAttrs() {
   cmds.init = function(i, attrs) {
     cmds[i] = attrs || {};
     cmds[i].idx = i;
-    cmds[i].cmdType = testCase.commands[i].command;
+    cmds[i].cmdName = testCase.commands[i].command;
     return cmds[i];
   }
   cmds.here = function() {
@@ -145,10 +143,19 @@ function Stack() {
         return i;
     }
   }
+  stack.unwindTo = function(_testfunc) {
+    while (!_testfunc(stack.top()))
+      stack.pop();
+    return stack.top();
+  }
   stack.isHere = function() {
     return (stack.length > 0 && stack.top().idx == hereIdx())
   }
   return stack;
+}
+
+Stack.isLoopBlock = function(stackFrame) {
+  return (cmdAttrs[stackFrame.idx].blockNature == "loop");
 }
 
 
@@ -187,12 +194,13 @@ function setNextCommand(cmdIdx) {
   branchIdx = cmdIdx;
 }
 
-// intercept of Selenium.reset()
+// tail intercept of Selenium.reset()
 // this is called before: execute a single command / run a testcase / run each testcase in a testsuite
 (function () { // wrapper makes orig_reset private
   var orig_reset = Selenium.prototype.reset;
   Selenium.prototype.reset = function() {// this: selenium
     orig_reset.call(this);
+    LOG.debug("SelBlocks tail intercept: selenium.reset()");
 
     // TBD: skip during single command execution
     try {
@@ -205,6 +213,7 @@ function setNextCommand(cmdIdx) {
     callStack.push({ cmdStack: new Stack() }); // top-level execution state
 
     // custom flow control logic
+    LOG.debug("SelBlocks replacing: testCase.debugContext.nextCommand()");
     testCase.debugContext.nextCommand = nextCommand;
   }
 })();
@@ -225,13 +234,16 @@ function compileSelBlocks()
         // just ignore the suffix for now, this may or may not be a Selblocks commands
         curCmd = curCmd.substring(0, aw);
       }
-      var target = testCase.commands[i].target;
+      var cmdTarget = testCase.commands[i].target;
 
       switch(curCmd)
       {
         case "label":
           assertNotAndWaitSuffix(i);
-          symbols[ testCase.commands[i].target ] = i;
+          symbols[cmdTarget] = i;
+          break;
+        case "goto": case "gotoIf": case "skipNext":
+          assertNotAndWaitSuffix(i);
           break;
 
         case "if":
@@ -242,7 +254,7 @@ function compileSelBlocks()
           assertNotAndWaitSuffix(i);
           assertBlockIsPending("if", i, ", is not valid outside of an if/endIf block");
           var ifAttrs = lexStack.top();
-          assertMatching(ifAttrs.cmdType, "if", i, ifAttrs.idx);
+          assertMatching(ifAttrs.cmdName, "if", i, ifAttrs.idx);
           cmdAttrs.init(i, { ifIdx: ifAttrs.idx }); // else -> if
           cmdAttrs[ifAttrs.idx].elseIdx = i;        // if -> else
           break;
@@ -250,7 +262,7 @@ function compileSelBlocks()
           assertNotAndWaitSuffix(i);
           assertBlockIsPending("if", i);
           var ifAttrs = lexStack.pop();
-          assertMatching(ifAttrs.cmdType, "if", i, ifAttrs.idx);
+          assertMatching(ifAttrs.cmdName, "if", i, ifAttrs.idx);
           cmdAttrs.init(i, { ifIdx: ifAttrs.idx }); // endIf -> if
           cmdAttrs[ifAttrs.idx].endIdx = i;         // if -> endif
           if (ifAttrs.elseIdx)
@@ -259,16 +271,25 @@ function compileSelBlocks()
 
         case "while":    case "for":    case "foreach":    case "forXml":
           assertNotAndWaitSuffix(i);
-          lexStack.push(cmdAttrs.init(i));
+          lexStack.push(cmdAttrs.init(i, { blockNature: "loop" }));
+          break;
+        case "continue": case "break":
+          assertNotAndWaitSuffix(i);
+          assertCmd(i, lexStack.find(Stack.isLoopBlock), ", is not valid outside of a loop");
+          cmdAttrs.init(i, { hdrIdx: lexStack.top().idx }); // -> header
           break;
         case "endWhile": case "endFor": case "endForeach": case "endForXml":
           assertNotAndWaitSuffix(i);
           var expectedCmd = curCmd.substr(3).toLowerCase();
           assertBlockIsPending(expectedCmd, i);
           var hdrAttrs = lexStack.pop();
-          assertMatching(hdrAttrs.cmdType.toLowerCase(), expectedCmd, i, hdrAttrs.idx);
+          assertMatching(hdrAttrs.cmdName.toLowerCase(), expectedCmd, i, hdrAttrs.idx);
           cmdAttrs[hdrAttrs.idx].ftrIdx = i;          // header -> footer
           cmdAttrs.init(i, { hdrIdx: hdrAttrs.idx }); // footer -> header
+          break;
+
+        case "loadVars":
+          assertNotAndWaitSuffix(i);
           break;
 
         case "call":
@@ -277,23 +298,23 @@ function compileSelBlocks()
           break;
         case "script":
           assertNotAndWaitSuffix(i);
-          symbols[target] = i;
-          lexStack.push(cmdAttrs.init(i, { name: target }));
+          symbols[cmdTarget] = i;
+          lexStack.push(cmdAttrs.init(i, { name: cmdTarget }));
           break;
         case "return":
           assertNotAndWaitSuffix(i);
           assertBlockIsPending("script", i, ", is not valid outside of a script/endScript block");
-          var scrpt = lexStack.find(function(attrs) { return (attrs.cmdType == "script"); });
+          var scrpt = lexStack.find(function(attrs) { return (attrs.cmdName == "script"); });
           cmdAttrs.init(i, { scrIdx: scrpt.idx });    // return -> script
           break;
         case "endScript":
           assertNotAndWaitSuffix(i);
           assertBlockIsPending("script", i);
           var scrAttrs = lexStack.pop();
-          assertMatching(scrAttrs.cmdType, "script", i, scrAttrs.idx);
-          if (target)
-            assertMatching(scrAttrs.name, target, i, scrAttrs.idx); // match-up on script name
-          cmdAttrs[scrAttrs.idx].endIdx = i;             // script -> endscript
+          assertMatching(scrAttrs.cmdName, "script", i, scrAttrs.idx);
+          if (cmdTarget)
+            assertMatching(scrAttrs.name, cmdTarget, i, scrAttrs.idx); // match-up on script name
+          cmdAttrs[scrAttrs.idx].endIdx = i;          // script -> endscript
           cmdAttrs.init(i, { scrIdx: scrAttrs.idx }); // endScript -> script
           break;
         default:
@@ -303,20 +324,20 @@ function compileSelBlocks()
   while (!lexStack.isEmpty()) {
     // unterminated block(s)
     var pend = lexStack.pop();
-    var expectedCmd = "end" + pend.cmdType.substr(0, 1).toUpperCase() + pend.cmdType.substr(1);
+    var expectedCmd = "end" + pend.cmdName.substr(0, 1).toUpperCase() + pend.cmdName.substr(1);
     throw new Error(fmtCmdRef(pend.idx) + ", without a terminating [" + expectedCmd + "]");
   }
   //- command validation
-  function assertNotAndWaitSuffix(curIdx) {
-    assertCmd(curIdx, (testCase.commands[curIdx].command.indexOf("AndWait") == -1),
-      ", AndWait suffix is not valid on Selblocks commands");
+  function assertNotAndWaitSuffix(cmdIdx) {
+    assertCmd(cmdIdx, (testCase.commands[cmdIdx].command.indexOf("AndWait") == -1),
+      ", AndWait suffix is not valid for Selblocks commands");
   }
   //- command-pairing validation
-  function assertBlockIsPending(expectedCmd, curIdx, desc) {
-    assertCmd(curIdx, !lexStack.isEmpty(), desc || ", without an beginning [" + expectedCmd + "]");
+  function assertBlockIsPending(expectedCmd, cmdIdx, desc) {
+    assertCmd(cmdIdx, !lexStack.isEmpty(), desc || ", without an beginning [" + expectedCmd + "]");
   }
-  function assertMatching(curCmd, expectedCmd, curIdx, pendIdx) {
-    assertCmd(curIdx, curCmd == expectedCmd, ", does not match command " + fmtCmdRef(pendIdx));
+  function assertMatching(curCmd, expectedCmd, cmdIdx, pendIdx) {
+    assertCmd(cmdIdx, curCmd == expectedCmd, ", does not match command " + fmtCmdRef(pendIdx));
   }
 }
 
@@ -347,20 +368,20 @@ Selenium.prototype.doGoto = function(label)
   setNextCommand(symbols[label]);
 };
 
-Selenium.prototype.doGotoIf = function(condition, label)
+Selenium.prototype.doGotoIf = function(condExpr, label)
 {
   assertRunning();
-  if (evalWithVars(condition))
+  if (evalWithVars(condExpr))
     this.doGoto(label);
 }
 
 // ================================================================================
-Selenium.prototype.doIf = function(condition, locator)
+Selenium.prototype.doIf = function(condExpr, locator)
 {
   assertRunning();
   var ifState = { idx: hereIdx() };
   callStack.top().cmdStack.push(ifState);
-  if (evalWithVars(condition)) {
+  if (evalWithVars(condExpr)) {
     ifState.skipElseBlock = true;
     // fall through into if-block
   }
@@ -460,13 +481,24 @@ Selenium.prototype.doLoadVars = function(xmlfile, selector)
   assert(xmlfile, " 'loadVars' requires an xml file path or URI.");
   var xmlReader = new XmlReader(xmlfile);
   xmlReader.load(xmlfile);
-  xmlReader.next();
+  xmlReader.next(); // read first <vars> and set values on storedVars
   if (!selector && !xmlReader.EOF())
     notifyFatal("Multiple var sets not valid for 'loadVars'. (A specific var set can be selected: name=value.)");
+
+  var result = evalWithVars(selector);
+  if (typeof result != "boolean")
+    aLOG.warn(fmtCmdRef(hereIdx()) + ", " + selector + " is not a boolean expression");
+
   // read until specified set found
-  while (!evalWithVars(selector)) {
-    xmlReader.next();
+  var isEof = xmlReader.EOF();
+  while (!isEof && evalWithVars(selector) != true) {
+    xmlReader.next(); // read next <vars> and set values on storedVars
+    isEof = xmlReader.EOF();
   }
+
+  if (!evalWithVars(selector))
+    notifyFatal("<vars> element not found for selector expression: " + selector
+      + "; in xmlfile " + xmlReader.xmlFilepath);
 }
 
 // ================================================================================
@@ -511,7 +543,7 @@ function enterLoop(_validateFunc, _initFunc, _condFunc, _iterFunc)
     _initFunc(loopState);
   }
   else {
-    // iteratation
+    // iteration
     loopState = callStack.top().cmdStack.top();
     _iterFunc(loopState);
   }
@@ -537,6 +569,36 @@ function iterateLoop()
     // jump back to top of loop
     setNextCommand(cmdAttrs.here().hdrIdx);
   }
+}
+
+// ================================================================================
+Selenium.prototype.doContinue = function(condExpr) {
+  var loopState = dropToLoop(condExpr);
+  if (loopState) {
+    // jump back to top of loop for next iteration, if any
+    var ftrCmd = cmdAttrs[loopState.idx];
+    setNextCommand(cmdAttrs[ftrCmd.ftrIdx].hdrIdx);
+  }
+}
+Selenium.prototype.doBreak = function(condExpr) {
+  var loopState = dropToLoop(condExpr);
+  if (loopState) {
+    loopState.isComplete = true;
+    // jump to bottom of loop for exit
+    setNextCommand(cmdAttrs[loopState.idx].ftrIdx);
+  }
+}
+
+// unwind the command stack to the inner-most active loop block
+// (unless the optional condition evaluates to false)
+function dropToLoop(condExpr)
+{
+  assertRunning();
+  if (condExpr && !evalWithVars(condExpr))
+    return;
+  var activeCmdStack = callStack.top().cmdStack;
+  var loopState = activeCmdStack.unwindTo(Stack.isLoopBlock);
+  return loopState;
 }
 
 
@@ -690,17 +752,14 @@ function assertActiveCmd(expectedIdx) {
   assert(activeIdx == expectedIdx, " unexpected command, active command was " + fmtCmdRef(activeIdx))
 }
 
+function fmtCmdRef(idx) {
+  return ("@" + (idx+1) + ": " + fmtCommand(testCase.commands[idx]));
+}
 function fmtCommand(cmd) {
   var c = cmd.command;
   if (cmd.target) c += "|" + cmd.target
   if (cmd.value)  c += "|" + cmd.value
   return '[' + c + ']';
-}
-function fmtCmd(idx) {
-  return fmtCommand(testCase.commands[idx]);
-}
-function fmtCmdRef(idx) {
-  return ("@" + (idx+1) + ": " + fmtCmd(idx));
 }
 
 // ==================== Data Files ====================
@@ -710,12 +769,14 @@ function XmlReader()
   var xmlDoc = null;
   var varNodes = null;
   var curVars = null;
+  this.xmlFilepath = null;
   var varsElementIdx = 0;
 
   this.load = function(xmlpath) {
     loader = new FileReader();
-    var xmlHttpReq = loader.getIncludeDocumentBySynchronRequest(uriFor(xmlpath));
-    LOG.info("Reading from: " + uriFor(xmlpath));
+    this.xmlFilepath = uriFor(xmlpath);
+    var xmlHttpReq = loader.getIncludeDocumentBySynchronRequest(this.xmlFilepath);
+    LOG.info("Reading from: " + this.xmlFilepath);
     xmlDoc = xmlHttpReq.responseXML; // XMLDocument
 
     varNodes = xmlDoc.getElementsByTagName("vars"); // HTMLCollection
@@ -737,7 +798,7 @@ function XmlReader()
 
   this.next = function() {
     if (this.EOF()) {
-      LOG.error("No test data.");
+      LOG.error("No more <vars> elements to read after element #" + varsElementIdx);
       return;
     }
     varsElementIdx++;
