@@ -1,5 +1,5 @@
 /**
- * SelBlocks 1.3
+ * SelBlocks 1.3.?
  *
  * Provides commands for javascript-like looping and callable functions,
  *   with scoped variables, and XML driven parameterization.
@@ -34,11 +34,19 @@
  *  SelBlocks reuses bits & parts of extensions: flowControl, datadriven, and include.
  *
  * Wishlist:
+ *  - better param parsing (commas)
  *  - try/catch
  *  - switch/case
+ *  - exitTest
+ *  - enforce block boundaries (jumping in/out of middle of blocks) 
  *
- * Changes since 1.2:
- * - Added continue & break for loops
+ * Changes since 1.3.1:
+ *  - FF4+ compatibility: unwrapObject()
+ *  - FF20+ compatability: serializeXml()
+ *  - refactor xpath processing
+ *  - clearer stack trace logging
+ *                            
+ * - The Stored Variables Viewer plugin will display the values of Selblocks parameters, because they are implemented as regular Selenium variables. The only thing special about Selbocks parameters is that they are activated and deactivated as script execution flows into and out of blocks, eg, for/endFor, script/endScript, etc. So this can provide a convenient way to monitor the progress of an executing script.
  */
 
 // =============== global functions as script helpers ===============
@@ -47,13 +55,63 @@
 // find an element via locator independent of any selenium commands
 // (selenium can only provide the first if multiple matches)
 function $e(locator) {
-  return selenium.browserbot.findElementOrNull(locator);
+  return unwrapObject(selenium.browserbot.findElementOrNull(locator));
+}
+
+//======== XPath processing ========
+
+function evaluateXpath(docObj, xpathExpression, contextNode, resultType, resultObj)
+{
+  LOG.debug("XPATH: " + xpathExpression);
+  if (contextNode && contextNode != docObj) {
+    LOG.debug("XPATH Context: " + contextNode.tagName);
+  }
+  var t = new IntervalTimer();
+
+  try {
+    var provided = (resultObj != null);
+    var result = docObj.evaluate(
+      xpathExpression
+      , contextNode || docObj
+      , null
+      , resultType || XPathResult.ANY_TYPE
+      , resultObj);
+    if (provided)
+      result = resultObj;
+  }
+  catch (err) {
+    logStackTrace(err);
+    throw err;
+  }
+
+  LOG.debug(t.getElapsed() + "ms XPATH Result: " + fmtXpathResultType(result));
+
+  return result;
+}
+
+function fmtXpathResultType(result)
+{
+  switch (result.resultType) {
+    case result.STRING_TYPE:                  return "'" + result.stringValue + "'";
+    case result.NUMBER_TYPE:                  return result.numberValue;
+    case result.BOOLEAN_TYPE:                 return result.booleanValue;
+    case result.ANY_UNORDERED_NODE_TYPE:      return "uNODE " + result;
+    case result.FIRST_ORDERED_NODE_TYPE:      return "oNODE " + result;
+    case result.UNORDERED_NODE_SNAPSHOT_TYPE: return "uSS:" + result.snapshotLength;
+    case result.ORDERED_NODE_SNAPSHOT_TYPE:   return "oSS:" + result.snapshotLength;
+    case result.UNORDERED_NODE_ITERATOR_TYPE: return "uITR";
+    case result.ORDERED_NODE_ITERATOR_TYPE:   return "oITR";
+  }
+  return result;
 }
 
 // return the singular XPath result as a value of the appropriate type
 function $x(xpath, contextNode, resultType) {
   var doc = selenium.browserbot.getDocument();
-  var result = doc.evaluate(xpath, contextNode || doc, null, resultType || XPathResult.ANY_TYPE, null);
+  // mozilla-specific, but can return any result type
+  var result = evaluateXpath(doc, xpath, contextNode, resultType);
+  // generic, but can only return node results
+//  var result = selenium.browserbot.xpathEvaluator.selectNodes(doc, xpath, contextNode || doc, selenium.browserbot._namespaceResolver);
   switch (result.resultType) {
     case result.NUMBER_TYPE:  return result.numberValue;
     case result.STRING_TYPE:  return result.stringValue;
@@ -65,10 +123,10 @@ function $x(xpath, contextNode, resultType) {
 // return the XPath result set as an array of elements
 function $X(xpath, contextNode) {
   var doc = selenium.browserbot.getDocument();
-  var nodeSet = doc.evaluate(xpath, contextNode || doc, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+  var nodeSet = evaluateXpath(doc, xpath, contextNode, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE);
   var elements = [];
   for (var i = 0, n = nodeSet.snapshotItem(i); n; n = nodeSet.snapshotItem(++i))
-    elements.push(n);
+    elements.push(unwrapObject(n));
   return elements;
 }
 
@@ -87,7 +145,7 @@ String.prototype.isOneOf = function(values)
     }
   }
   return false;
-}
+};
 
 // eg: "red".mapTo("primary", ["red","green","blue"]) => primary
 String.prototype.mapTo = function(/* pairs of: string, array */)
@@ -102,7 +160,7 @@ String.prototype.mapTo = function(/* pairs of: string, array */)
     }
   }
   return this;
-}
+};
 
 
 var symbols = {}; // command indexes stored by name: function names
@@ -121,54 +179,54 @@ function CmdAttrs() {
     cmds[i].idx = i;
     cmds[i].cmdName = testCase.commands[i].command;
     return cmds[i];
-  }
+  };
   cmds.here = function() {
     var curIdx = hereIdx();
     if (!cmds[curIdx])
       LOG.warn("No cmdAttrs defined curIdx=" + curIdx);
     return cmds[curIdx];
-  }
+  };
   return cmds;
 }
 
 // an Array object with stack functionality
 function Stack() {
   var stack = [];
-  stack.isEmpty = function() { return stack.length == 0; }
-  stack.top = function()     { return stack[stack.length-1]; }
-  stack.find = function(_testfunc) { return stack[stack.indexWhere(_testfunc)]; }
+  stack.isEmpty = function() { return stack.length == 0; };
+  stack.top = function()     { return stack[stack.length-1]; };
+  stack.find = function(_testfunc) { return stack[stack.indexWhere(_testfunc)]; };
   stack.indexWhere = function(_testfunc) { // undefined if not found
     for (var i = stack.length-1; i >= 0; i--) {
       if (_testfunc(stack[i]))
         return i;
     }
-  }
+  };
   stack.unwindTo = function(_testfunc) {
     while (!_testfunc(stack.top()))
       stack.pop();
     return stack.top();
-  }
+  };
   stack.isHere = function() {
-    return (stack.length > 0 && stack.top().idx == hereIdx())
-  }
+    return (stack.length > 0 && stack.top().idx == hereIdx());
+  };
   return stack;
 }
 
+// determine if the given stack frame is one of the loop blocks
 Stack.isLoopBlock = function(stackFrame) {
   return (cmdAttrs[stackFrame.idx].blockNature == "loop");
-}
+};
 
 
 // flow control - we don't just alter debugIndex on the fly, because the command
-// preceeding the destination would falsely get marked as successfully executed
-// TBD: should be a tail intercept rather than override
+// preceding the destination would falsely get marked as successfully executed
 var branchIdx = null;
 // TBD: this needs to be revisited if testCase.nextCommand() ever changes
-// (current as of: selenium-ide-1.0.10)
+// (current as of: selenium-ide-1.1.0)
 function nextCommand() {
   if (!this.started) {
     this.started = true;
-    this.debugIndex = testCase.startPoint ? testCase.commands.indexOf(testCase.startPoint) : 0
+    this.debugIndex = testCase.startPoint ? testCase.commands.indexOf(testCase.startPoint) : 0;
   }
   else {
     if (branchIdx != null) {
@@ -194,13 +252,14 @@ function setNextCommand(cmdIdx) {
   branchIdx = cmdIdx;
 }
 
-// tail intercept of Selenium.reset()
-// this is called before: execute a single command / run a testcase / run each testcase in a testsuite
-(function () { // wrapper makes orig_reset private
+// tail intercept of Selenium.prototype.reset()
+(function () { // private scope for orig_reset
+  // called when Selenium IDE opens / on Dev Tools [Reload] button / upon first command execution
   var orig_reset = Selenium.prototype.reset;
   Selenium.prototype.reset = function() {// this: selenium
+    // called before each: execute a single command / run a testcase / run each testcase in a testsuite
     orig_reset.call(this);
-    LOG.debug("SelBlocks tail intercept: selenium.reset()");
+    LOG.debug("In SelBlocks tail intercept :: selenium.reset()");
 
     // TBD: skip during single command execution
     try {
@@ -213,9 +272,11 @@ function setNextCommand(cmdIdx) {
     callStack.push({ cmdStack: new Stack() }); // top-level execution state
 
     // custom flow control logic
+    // this is called before: execute a single command / run a testcase / run each testcase in a testsuite
+    // TBD: this should be a tail intercept rather than brute force replace
     LOG.debug("SelBlocks replacing: testCase.debugContext.nextCommand()");
     testCase.debugContext.nextCommand = nextCommand;
-  }
+  };
 })();
 
 
@@ -332,10 +393,11 @@ function compileSelBlocks()
     assertCmd(cmdIdx, (testCase.commands[cmdIdx].command.indexOf("AndWait") == -1),
       ", AndWait suffix is not valid for Selblocks commands");
   }
-  //- command-pairing validation
+  //- active block validation
   function assertBlockIsPending(expectedCmd, cmdIdx, desc) {
     assertCmd(cmdIdx, !lexStack.isEmpty(), desc || ", without an beginning [" + expectedCmd + "]");
   }
+  //- command-pairing validation
   function assertMatching(curCmd, expectedCmd, cmdIdx, pendIdx) {
     assertCmd(cmdIdx, curCmd == expectedCmd, ", does not match command " + fmtCmdRef(pendIdx));
   }
@@ -346,7 +408,7 @@ function compileSelBlocks()
 var commandNames = [];
 
 Selenium.prototype.doLabel = function() {
-  // NOOP
+  // noop
 };
 commandNames.push("label");
 
@@ -359,7 +421,7 @@ Selenium.prototype.doSkipNext = function(spec)
     n = 1;
   if (n != 0) // if n=0, execute the next command as usual
     setNextCommand(testCase.debugContext.debugIndex + n + 1);
-}
+};
 
 Selenium.prototype.doGoto = function(label)
 {
@@ -373,7 +435,7 @@ Selenium.prototype.doGotoIf = function(condExpr, label)
   assertRunning();
   if (evalWithVars(condExpr))
     this.doGoto(label);
-}
+};
 
 // ================================================================================
 Selenium.prototype.doIf = function(condExpr, locator)
@@ -383,7 +445,7 @@ Selenium.prototype.doIf = function(condExpr, locator)
   callStack.top().cmdStack.push(ifState);
   if (evalWithVars(condExpr)) {
     ifState.skipElseBlock = true;
-    // fall through into if-block
+    // continue into if-block
   }
   else {
     // jump to else or endif
@@ -393,7 +455,7 @@ Selenium.prototype.doIf = function(condExpr, locator)
     else
       setNextCommand(ifAttrs.endIdx);
   }
-}
+};
 Selenium.prototype.doElse = function()
 {
   assertRunning();
@@ -401,13 +463,13 @@ Selenium.prototype.doElse = function()
   var ifState = callStack.top().cmdStack.top();
   if (ifState.skipElseBlock)
     setNextCommand(cmdAttrs.here().endIdx);
-}
+};
 Selenium.prototype.doEndIf = function() {
   assertRunning();
   assertActiveCmd(cmdAttrs.here().ifIdx);
   callStack.top().cmdStack.pop();
-  // fall out of loop
-}
+  // fall out of if-endIf
+};
 
 // ================================================================================
 Selenium.prototype.doWhile = function(condExpr)
@@ -421,10 +483,10 @@ Selenium.prototype.doWhile = function(condExpr)
     ,function() { return (evalWithVars(condExpr)); } // continue?
     ,function() { } // iterate
   );
-}
+};
 Selenium.prototype.doEndWhile = function() {
   iterateLoop();
-}
+};
 
 // ================================================================================
 Selenium.prototype.doFor = function(forSpec, localVarsSpec)
@@ -445,15 +507,15 @@ Selenium.prototype.doFor = function(forSpec, localVarsSpec)
     ,function(loop) { return (evalWithVars(loop.condExpr)); } // continue?
     ,function(loop) { evalWithVars(loop.iterStmt); }          // iterate
   );
-}
+};
 Selenium.prototype.doEndFor = function() {
   iterateLoop();
-}
+};
 
 // ================================================================================
 Selenium.prototype.doForeach = function(varName, valueExpr)
 {
-  enterLoop(
+enterLoop(
     function(loop) { // validate
         assert(varName, " 'foreach' requires a variable name.");
         assert(valueExpr, " 'foreach' requires comma-separated values.");
@@ -470,10 +532,10 @@ Selenium.prototype.doForeach = function(varName, valueExpr)
           storedVars[varName] = loop.values[loop.i];
     }
   );
-}
+};
 Selenium.prototype.doEndForeach = function() {
   iterateLoop();
-}
+};
 
 // ================================================================================
 Selenium.prototype.doLoadVars = function(xmlfile, selector)
@@ -487,7 +549,7 @@ Selenium.prototype.doLoadVars = function(xmlfile, selector)
 
   var result = evalWithVars(selector);
   if (typeof result != "boolean")
-    aLOG.warn(fmtCmdRef(hereIdx()) + ", " + selector + " is not a boolean expression");
+    LOG.warn(fmtCmdRef(hereIdx()) + ", " + selector + " is not a boolean expression");
 
   // read until specified set found
   var isEof = xmlReader.EOF();
@@ -499,7 +561,7 @@ Selenium.prototype.doLoadVars = function(xmlfile, selector)
   if (!evalWithVars(selector))
     notifyFatal("<vars> element not found for selector expression: " + selector
       + "; in xmlfile " + xmlReader.xmlFilepath);
-}
+};
 
 // ================================================================================
 Selenium.prototype.doForXml = function(xmlpath)
@@ -519,10 +581,10 @@ Selenium.prototype.doForXml = function(xmlpath)
     }
     ,function() { }
   );
-}
+};
 Selenium.prototype.doEndForXml = function() {
   iterateLoop();
-}
+};
 
 // --------------------------------------------------------------------------------
 // Note: Selenium variable expansion occurs before command processing, therefore we re-execute
@@ -579,7 +641,7 @@ Selenium.prototype.doContinue = function(condExpr) {
     var ftrCmd = cmdAttrs[loopState.idx];
     setNextCommand(cmdAttrs[ftrCmd.ftrIdx].hdrIdx);
   }
-}
+};
 Selenium.prototype.doBreak = function(condExpr) {
   var loopState = dropToLoop(condExpr);
   if (loopState) {
@@ -587,7 +649,7 @@ Selenium.prototype.doBreak = function(condExpr) {
     // jump to bottom of loop for exit
     setNextCommand(cmdAttrs[loopState.idx].ftrIdx);
   }
-}
+};
 
 // unwind the command stack to the inner-most active loop block
 // (unless the optional condition evaluates to false)
@@ -626,7 +688,7 @@ Selenium.prototype.doCall = function(scrName, argSpec)
     // jump to script body
     setNextCommand(scrIdx);
   }
-}
+};
 Selenium.prototype.doScript = function(scrName)
 {
   assertRunning();
@@ -641,13 +703,13 @@ Selenium.prototype.doScript = function(scrName)
     // no active call, skip around script body
     setNextCommand(scrAttrs.endIdx);
   }
-}
+};
 Selenium.prototype.doReturn = function(value) {
   returnFromScript(null, value);
-}
+};
 Selenium.prototype.doEndScript = function(scrName) {
   returnFromScript(scrName);
-}
+};
 
 function returnFromScript(scrName, returnVal)
 {
@@ -661,7 +723,7 @@ function returnFromScript(scrName, returnVal)
     setNextCommand(callFrame.returnIdx);
   }
   else {
-    // no active call, we're skipping around a script block
+    // no active call, we're just skipping around a script block
   }
 }
 
@@ -672,6 +734,7 @@ function evalWithVars(expr) {
   try {
     // EXTENSION REVIEWERS: Use of eval is consistent with the Selenium extension itself.
     // Scripted expressions run in the Selenium window, separate from browser windows.
+    // Global functions are intentional features provided for use by end user's in their Selenium scripts.
     var result = eval("with (storedVars) {" + expr + "}");
   }
   catch (err) {
@@ -732,11 +795,14 @@ function restoreVarState(savedVars) { // prop-set --> storedVars
 // TBD: make into throwable Errors
 function notifyFatalErr(msg, err) {
   LOG.error("SelBlocks error " + msg);
-  throw new Error(err);
+  logStackTrace(err);
+  throw err;
 }
 function notifyFatal(msg) {
+  var err = new Error(msg);
   LOG.error("SelBlocks error " + msg);
-  throw new Error(msg);
+  logStackTrace(err);
+  throw err;
 }
 function notifyFatalCmdRef(idx, msg) { notifyFatal(fmtCmdRef(idx) + msg); }
 function notifyFatalHere(msg) { notifyFatal(fmtCmdRef(hereIdx()) + msg); }
@@ -749,7 +815,7 @@ function assertRunning() {
 }
 function assertActiveCmd(expectedIdx) {
   var activeIdx = callStack.top().cmdStack.top().idx;
-  assert(activeIdx == expectedIdx, " unexpected command, active command was " + fmtCmdRef(activeIdx))
+  assert(activeIdx == expectedIdx, " unexpected command, active command was " + fmtCmdRef(activeIdx));
 }
 
 function fmtCmdRef(idx) {
@@ -757,10 +823,62 @@ function fmtCmdRef(idx) {
 }
 function fmtCommand(cmd) {
   var c = cmd.command;
-  if (cmd.target) c += "|" + cmd.target
-  if (cmd.value)  c += "|" + cmd.value
+  if (cmd.target) c += "|" + cmd.target;
+  if (cmd.value)  c += "|" + cmd.value;
   return '[' + c + ']';
 }
+
+//================= Javascript helpers ===============
+
+// Starting with FF4 lots of objects are in an XPCNativeWrapper,
+// but we need the underlying object for == and for..in operations.
+function unwrapObject(obj) {
+  if (typeof(obj) === "undefined" || obj == null)
+   return obj;
+  if (obj.wrappedJSObject)
+   return obj.wrappedJSObject;
+  return obj;
+}
+
+// elapsed time, optional duration provides expiration
+function IntervalTimer(msDuration) {
+  this.msStart = +new Date();
+  this.getElapsed = function() { return (+new Date() - this.msStart); };
+  this.hasExpired = function() { return (msDuration && this.getElapsed() > msDuration); };
+  this.reset = function() { this.msStart = +new Date(); };
+}
+
+// return a translated version of a string
+// given string args, translate each occurrence of characters in t1 with the corresponding character from t2
+// given array args, if the string occurs in t1, return the corresponding string from t2, else null
+String.prototype.translate = function(t1, t2)
+{
+  assert(t1.constructor === t2.constructor, "translate() function requires arrays of the same type");
+  assert(t1.length == t2.length, "translate() function requires arrays of equal size");
+  if (t1.constructor === String) {
+    var buf = "";
+    for (var i = 0; i < this.length; i++) {
+      var c = this.substr(i,1);
+      for (var t = 0; t < t1.length; t++) {
+        if (c == t1.substr(t,1)) {
+          c = t2.substr(t,1);
+          break;
+        }
+      }
+      buf += c;
+    }
+    return buf;
+  }
+  else if (t1.constructor === Array) {
+    for (var i = 0; i < t1.length; i++) {
+      if (t1[i] == this)
+        return t2[i];
+    }
+  }
+  else
+    assert(false, "translate() function requires arguments of type String or Array");
+  return null;
+};
 
 // ==================== Data Files ====================
 
@@ -790,11 +908,11 @@ function XmlReader()
     var varnames = [];
     retrieveVarset(0, varnames);
     return varnames;
-  }
+  };
 
   this.EOF = function() {
     return (curVars == null || curVars >= varNodes.length);
-  }
+  };
 
   this.next = function() {
     if (this.EOF()) {
@@ -802,7 +920,7 @@ function XmlReader()
       return;
     }
     varsElementIdx++;
-  	LOG.debug(XML.serialize(varNodes[curVars]));	// log each name & value
+  	LOG.debug(serializeXml(varNodes[curVars]));	// log each name & value
 
     var expected = varNodes[0].attributes.length;
     var found = varNodes[curVars].attributes.length;
@@ -814,12 +932,12 @@ function XmlReader()
     }
     retrieveVarset(curVars, storedVars);
     curVars++;
-  }
+  };
 
   //- retrieve a varset row into the given object, if an Array return names only
   function retrieveVarset(vs, resultObj) {
     var varAttrs = varNodes[vs].attributes; // NamedNodeMap
-    for (v = 0; v < varAttrs.length; v++) {
+    for (var v = 0; v < varAttrs.length; v++) {
       var attr = varAttrs[v];
       if (null == varNodes[0].getAttribute(attr.nodeName)) {
         throw new Error("Inconsistent <testdata> at <vars> element #" + varsElementIdx
@@ -835,12 +953,12 @@ function XmlReader()
   }
 }
 
-XML.serialize = function(node) {
+function serializeXml(node) {
   if (typeof XMLSerializer != "undefined")
     return (new XMLSerializer()).serializeToString(node) ;
   else if (node.xml) return node.xml;
-  else throw "XML.serialize is not supported or can't serialize " + node;
-}
+  else throw "XMLSerializer is not supported or can't serialize " + node;
+};
 
 
 // ==================== File Reader ====================
@@ -859,59 +977,104 @@ function uriFor(filepath) {
 function FileReader() {}
 
 FileReader.prototype.getIncludeDocumentBySynchronRequest = function(includeUrl) {
-    var url = this.prepareUrl(includeUrl);
-    // the xml http requester to fetch the page to include
-    var requester = this.newXMLHttpRequest();
-    if (!requester) {
-        throw new Error("XMLHttp requester object not initialized");
-    }
-    requester.open("GET", url, false); // synchron mode ! (we don't want selenium to go ahead)
-    try {
-        requester.send(null);
-    } catch(e) {
-      throw new Error("Error while fetching url '" + url + "' details: " + e);
-    }
-    if ( requester.status != 200 && requester.status !== 0 ) {
-        throw new Error("Error while fetching " + url + " server response has status = " + requester.status + ", " + requester.statusText );
-    }
-    return requester;
+  var url = this.prepareUrl(includeUrl);
+  // the xml http requester to fetch the page to include
+  var requester = this.newXMLHttpRequest();
+  if (!requester) {
+    throw new Error("XMLHttp requester object not initialized");
+  }
+  requester.open("GET", url, false); // synchron mode ! (we don't want selenium to go ahead)
+  try {
+    requester.send(null);
+  } catch(e) {
+    throw new Error("Error while fetching url '" + url + "' details: " + e);
+  }
+  if ( requester.status != 200 && requester.status !== 0 ) {
+    throw new Error("Error while fetching " + url + " server response has status = " + requester.status + ", " + requester.statusText );
+  }
+  return requester;
 };
 
 FileReader.prototype.prepareUrl = function(includeUrl) {
-    var prepareUrl;
-    // htmlSuite mode of SRC? TODO is there a better way to decide whether in SRC mode?
-    if (window.location.href.indexOf("selenium-server") >= 0) {
-        LOG.debug(FileReader.LOG_PREFIX + "we seem to run in SRC, do we?");
-        preparedUrl = absolutify(includeUrl, htmlTestRunner.controlPanel.getTestSuiteName());
-    } else {
-        preparedUrl = absolutify(includeUrl, selenium.browserbot.baseUrl);
-    }
-    LOG.debug(FileReader.LOG_PREFIX + "using url to get include '" + preparedUrl + "'");
-    return preparedUrl;
+  var prepareUrl;
+  // htmlSuite mode of SRC? TODO is there a better way to decide whether in SRC mode?
+  if (window.location.href.indexOf("selenium-server") >= 0) {
+    LOG.debug(FileReader.LOG_PREFIX + "we seem to run in SRC, do we?");
+    preparedUrl = absolutify(includeUrl, htmlTestRunner.controlPanel.getTestSuiteName());
+  } else {
+    preparedUrl = absolutify(includeUrl, selenium.browserbot.baseUrl);
+  }
+  LOG.debug(FileReader.LOG_PREFIX + "using url to get include '" + preparedUrl + "'");
+  return preparedUrl;
 };
 
 FileReader.prototype.newXMLHttpRequest = function() {
-    var requester = 0;
-    var exception = '';
-    try {
-        // for IE/ActiveX
-        if(window.ActiveXObject) {
-            try {
-                requester = new ActiveXObject("Msxml2.XMLHTTP");
-            }
-            catch(e) {
-                requester = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-        }
-        // Native XMLHttp
-        else if(window.XMLHttpRequest) {
-            requester = new XMLHttpRequest();
-        }
+  var requester = 0;
+  var exception = '';
+  try {
+    // for IE/ActiveX
+    if(window.ActiveXObject) {
+      try {
+        requester = new ActiveXObject("Msxml2.XMLHTTP");
+      }
+      catch(e) {
+        requester = new ActiveXObject("Microsoft.XMLHTTP");
+      }
     }
-    catch(e) {
-        throw new Error("Your browser has to support XMLHttpRequest in order to use include \n" + e);
+    // Native XMLHttp
+    else if(window.XMLHttpRequest) {
+      requester = new XMLHttpRequest();
     }
-    return requester;
+  }
+  catch(e) {
+    throw new Error("Your browser has to support XMLHttpRequest in order to use include \n" + e);
+  }
+  return requester;
 };
 
-}())
+// ==================== Stack Tracer ====================
+
+function genStackTrace(err) {
+  LOG.warn(descCaller());
+  var e = err;
+  if (!err)
+    e = new Error();
+  var stackTrace = [];
+  if (!e.stack)
+    stackTrace.push("No stack trace, (Firefox only)");
+  else {
+    var funcCallPattern = /^\s*[A-Za-z0-9\-_\$]+\(/;
+    var lines = e.stack.split("\n");
+    for (var i=0; i < lines.length; i++) {
+      if (lines[i].match(funcCallPattern))
+        stackTrace.push(lines[i]);
+    }
+    if (!err)
+      stackTrace.shift(); // remove the call to genStackTrace() itself
+  }
+  return stackTrace;
+}
+
+function logStackTrace(err) {
+  var t = genStackTrace(err);
+  if (!err)
+    t.shift(); // remove the call to logStackTrace() itself
+  LOG.warn("__Stack Trace__");
+  for (var i = 0; i < t.length; i++) {
+    LOG.warn("@@ " + t[i]);
+  }
+};
+
+// describe the calling function
+function descCaller()
+{
+  var t = genStackTrace(new Error());
+  if (t.length == 0) return "no client function";
+  t.shift(); // remove the call to descCaller() itself
+  if (t.length == 0) return "no caller function";
+  t.shift(); // remove the call to client function
+  if (t.length == 0) return "undefined caller function";
+  return "caller: " + t[0];
+}
+
+}());

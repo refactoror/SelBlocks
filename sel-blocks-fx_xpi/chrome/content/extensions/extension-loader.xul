@@ -8,6 +8,6 @@
     <html:script type="application/javascript">
         var ide_api = new API();
         ide_api.addPlugin("sel-blocks@chris.noe");
-        ide_api.addPluginProvidedUserExtension("chrome://selblocks/content/extensions/sel-blocks.js");
+        ide_api.addPluginProvidedUserExtension("chrome://selblocksSeleExten/content/extensions/sel-blocks.js");
     </html:script>
 </overlay>
