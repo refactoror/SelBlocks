@@ -1,5 +1,5 @@
 /**
- * SelBlocks 1.3
+ * SelBlocks 1.3.?
  *
  * Provides commands for javascript-like looping and callable functions,
  *   with scoped variables, and XML driven parameterization.
@@ -34,11 +34,17 @@
  *  SelBlocks reuses bits & parts of extensions: flowControl, datadriven, and include.
  *
  * Wishlist:
+ *  - better param parsing (commas)
  *  - try/catch
  *  - switch/case
+ *  - exitTest
+ *  - enforce block boundaries (jumping in/out of middle of blocks) 
  *
  * Changes since 1.2:
  * - Added continue & break for loops
+ *
+ * Notes:
+ * - The Stored Variables Viewer plugin will display the values of Selblocks parameters, because they are implemented as regular Selenium variables. The only thing special about Selbocks parameters is that they are activated and deactivated as script execution flows into and out of blocks, eg, for/endFor, script/endScript, etc. So this can provide a convenient way to monitor the progress of an executing script.
  */
 
 // =============== global functions as script helpers ===============
@@ -87,7 +93,7 @@ String.prototype.isOneOf = function(values)
     }
   }
   return false;
-}
+};
 
 // eg: "red".mapTo("primary", ["red","green","blue"]) => primary
 String.prototype.mapTo = function(/* pairs of: string, array */)
@@ -102,7 +108,7 @@ String.prototype.mapTo = function(/* pairs of: string, array */)
     }
   }
   return this;
-}
+};
 
 
 var symbols = {}; // command indexes stored by name: function names
@@ -121,42 +127,43 @@ function CmdAttrs() {
     cmds[i].idx = i;
     cmds[i].cmdName = testCase.commands[i].command;
     return cmds[i];
-  }
+  };
   cmds.here = function() {
     var curIdx = hereIdx();
     if (!cmds[curIdx])
       LOG.warn("No cmdAttrs defined curIdx=" + curIdx);
     return cmds[curIdx];
-  }
+  };
   return cmds;
 }
 
 // an Array object with stack functionality
 function Stack() {
   var stack = [];
-  stack.isEmpty = function() { return stack.length == 0; }
-  stack.top = function()     { return stack[stack.length-1]; }
-  stack.find = function(_testfunc) { return stack[stack.indexWhere(_testfunc)]; }
+  stack.isEmpty = function() { return stack.length == 0; };
+  stack.top = function()     { return stack[stack.length-1]; };
+  stack.find = function(_testfunc) { return stack[stack.indexWhere(_testfunc)]; };
   stack.indexWhere = function(_testfunc) { // undefined if not found
     for (var i = stack.length-1; i >= 0; i--) {
       if (_testfunc(stack[i]))
         return i;
     }
-  }
+  };
   stack.unwindTo = function(_testfunc) {
     while (!_testfunc(stack.top()))
       stack.pop();
     return stack.top();
-  }
+  };
   stack.isHere = function() {
-    return (stack.length > 0 && stack.top().idx == hereIdx())
-  }
+    return (stack.length > 0 && stack.top().idx == hereIdx());
+  };
   return stack;
 }
 
+// determine if the given stack frame is one of the loop block
 Stack.isLoopBlock = function(stackFrame) {
   return (cmdAttrs[stackFrame.idx].blockNature == "loop");
-}
+};
 
 
 // flow control - we don't just alter debugIndex on the fly, because the command
@@ -164,11 +171,11 @@ Stack.isLoopBlock = function(stackFrame) {
 // TBD: should be a tail intercept rather than override
 var branchIdx = null;
 // TBD: this needs to be revisited if testCase.nextCommand() ever changes
-// (current as of: selenium-ide-1.0.10)
+// (current as of: selenium-ide-1.1.0)
 function nextCommand() {
   if (!this.started) {
     this.started = true;
-    this.debugIndex = testCase.startPoint ? testCase.commands.indexOf(testCase.startPoint) : 0
+    this.debugIndex = testCase.startPoint ? testCase.commands.indexOf(testCase.startPoint) : 0;
   }
   else {
     if (branchIdx != null) {
@@ -213,9 +220,10 @@ function setNextCommand(cmdIdx) {
     callStack.push({ cmdStack: new Stack() }); // top-level execution state
 
     // custom flow control logic
+    // this is called before: execute a single command / run a testcase / run each testcase in a testsuite
     LOG.debug("SelBlocks replacing: testCase.debugContext.nextCommand()");
     testCase.debugContext.nextCommand = nextCommand;
-  }
+  };
 })();
 
 
@@ -332,10 +340,11 @@ function compileSelBlocks()
     assertCmd(cmdIdx, (testCase.commands[cmdIdx].command.indexOf("AndWait") == -1),
       ", AndWait suffix is not valid for Selblocks commands");
   }
-  //- command-pairing validation
+  //- active block validation
   function assertBlockIsPending(expectedCmd, cmdIdx, desc) {
     assertCmd(cmdIdx, !lexStack.isEmpty(), desc || ", without an beginning [" + expectedCmd + "]");
   }
+  //- command-pairing validation
   function assertMatching(curCmd, expectedCmd, cmdIdx, pendIdx) {
     assertCmd(cmdIdx, curCmd == expectedCmd, ", does not match command " + fmtCmdRef(pendIdx));
   }
@@ -359,7 +368,7 @@ Selenium.prototype.doSkipNext = function(spec)
     n = 1;
   if (n != 0) // if n=0, execute the next command as usual
     setNextCommand(testCase.debugContext.debugIndex + n + 1);
-}
+};
 
 Selenium.prototype.doGoto = function(label)
 {
@@ -373,7 +382,7 @@ Selenium.prototype.doGotoIf = function(condExpr, label)
   assertRunning();
   if (evalWithVars(condExpr))
     this.doGoto(label);
-}
+};
 
 // ================================================================================
 Selenium.prototype.doIf = function(condExpr, locator)
@@ -383,7 +392,7 @@ Selenium.prototype.doIf = function(condExpr, locator)
   callStack.top().cmdStack.push(ifState);
   if (evalWithVars(condExpr)) {
     ifState.skipElseBlock = true;
-    // fall through into if-block
+    // continue into if-block
   }
   else {
     // jump to else or endif
@@ -393,7 +402,7 @@ Selenium.prototype.doIf = function(condExpr, locator)
     else
       setNextCommand(ifAttrs.endIdx);
   }
-}
+};
 Selenium.prototype.doElse = function()
 {
   assertRunning();
@@ -401,13 +410,13 @@ Selenium.prototype.doElse = function()
   var ifState = callStack.top().cmdStack.top();
   if (ifState.skipElseBlock)
     setNextCommand(cmdAttrs.here().endIdx);
-}
+};
 Selenium.prototype.doEndIf = function() {
   assertRunning();
   assertActiveCmd(cmdAttrs.here().ifIdx);
   callStack.top().cmdStack.pop();
-  // fall out of loop
-}
+  // fall out of if-endIf
+};
 
 // ================================================================================
 Selenium.prototype.doWhile = function(condExpr)
@@ -421,10 +430,10 @@ Selenium.prototype.doWhile = function(condExpr)
     ,function() { return (evalWithVars(condExpr)); } // continue?
     ,function() { } // iterate
   );
-}
+};
 Selenium.prototype.doEndWhile = function() {
   iterateLoop();
-}
+};
 
 // ================================================================================
 Selenium.prototype.doFor = function(forSpec, localVarsSpec)
@@ -445,10 +454,10 @@ Selenium.prototype.doFor = function(forSpec, localVarsSpec)
     ,function(loop) { return (evalWithVars(loop.condExpr)); } // continue?
     ,function(loop) { evalWithVars(loop.iterStmt); }          // iterate
   );
-}
+};
 Selenium.prototype.doEndFor = function() {
   iterateLoop();
-}
+};
 
 // ================================================================================
 Selenium.prototype.doForeach = function(varName, valueExpr)
@@ -470,10 +479,10 @@ Selenium.prototype.doForeach = function(varName, valueExpr)
           storedVars[varName] = loop.values[loop.i];
     }
   );
-}
+};
 Selenium.prototype.doEndForeach = function() {
   iterateLoop();
-}
+};
 
 // ================================================================================
 Selenium.prototype.doLoadVars = function(xmlfile, selector)
@@ -499,7 +508,7 @@ Selenium.prototype.doLoadVars = function(xmlfile, selector)
   if (!evalWithVars(selector))
     notifyFatal("<vars> element not found for selector expression: " + selector
       + "; in xmlfile " + xmlReader.xmlFilepath);
-}
+};
 
 // ================================================================================
 Selenium.prototype.doForXml = function(xmlpath)
@@ -519,10 +528,10 @@ Selenium.prototype.doForXml = function(xmlpath)
     }
     ,function() { }
   );
-}
+};
 Selenium.prototype.doEndForXml = function() {
   iterateLoop();
-}
+};
 
 // --------------------------------------------------------------------------------
 // Note: Selenium variable expansion occurs before command processing, therefore we re-execute
@@ -579,7 +588,7 @@ Selenium.prototype.doContinue = function(condExpr) {
     var ftrCmd = cmdAttrs[loopState.idx];
     setNextCommand(cmdAttrs[ftrCmd.ftrIdx].hdrIdx);
   }
-}
+};
 Selenium.prototype.doBreak = function(condExpr) {
   var loopState = dropToLoop(condExpr);
   if (loopState) {
@@ -587,7 +596,7 @@ Selenium.prototype.doBreak = function(condExpr) {
     // jump to bottom of loop for exit
     setNextCommand(cmdAttrs[loopState.idx].ftrIdx);
   }
-}
+};
 
 // unwind the command stack to the inner-most active loop block
 // (unless the optional condition evaluates to false)
@@ -626,7 +635,7 @@ Selenium.prototype.doCall = function(scrName, argSpec)
     // jump to script body
     setNextCommand(scrIdx);
   }
-}
+};
 Selenium.prototype.doScript = function(scrName)
 {
   assertRunning();
@@ -641,13 +650,13 @@ Selenium.prototype.doScript = function(scrName)
     // no active call, skip around script body
     setNextCommand(scrAttrs.endIdx);
   }
-}
+};
 Selenium.prototype.doReturn = function(value) {
   returnFromScript(null, value);
-}
+};
 Selenium.prototype.doEndScript = function(scrName) {
   returnFromScript(scrName);
-}
+};
 
 function returnFromScript(scrName, returnVal)
 {
@@ -661,7 +670,7 @@ function returnFromScript(scrName, returnVal)
     setNextCommand(callFrame.returnIdx);
   }
   else {
-    // no active call, we're skipping around a script block
+    // no active call, we're just skipping around a script block
   }
 }
 
@@ -672,6 +681,7 @@ function evalWithVars(expr) {
   try {
     // EXTENSION REVIEWERS: Use of eval is consistent with the Selenium extension itself.
     // Scripted expressions run in the Selenium window, separate from browser windows.
+    // Global functions are intentional features provided for use by end user's in their Selenium scripts.
     var result = eval("with (storedVars) {" + expr + "}");
   }
   catch (err) {
@@ -749,7 +759,7 @@ function assertRunning() {
 }
 function assertActiveCmd(expectedIdx) {
   var activeIdx = callStack.top().cmdStack.top().idx;
-  assert(activeIdx == expectedIdx, " unexpected command, active command was " + fmtCmdRef(activeIdx))
+  assert(activeIdx == expectedIdx, " unexpected command, active command was " + fmtCmdRef(activeIdx));
 }
 
 function fmtCmdRef(idx) {
@@ -757,8 +767,8 @@ function fmtCmdRef(idx) {
 }
 function fmtCommand(cmd) {
   var c = cmd.command;
-  if (cmd.target) c += "|" + cmd.target
-  if (cmd.value)  c += "|" + cmd.value
+  if (cmd.target) c += "|" + cmd.target;
+  if (cmd.value)  c += "|" + cmd.value;
   return '[' + c + ']';
 }
 
@@ -790,11 +800,11 @@ function XmlReader()
     var varnames = [];
     retrieveVarset(0, varnames);
     return varnames;
-  }
+  };
 
   this.EOF = function() {
     return (curVars == null || curVars >= varNodes.length);
-  }
+  };
 
   this.next = function() {
     if (this.EOF()) {
@@ -814,7 +824,7 @@ function XmlReader()
     }
     retrieveVarset(curVars, storedVars);
     curVars++;
-  }
+  };
 
   //- retrieve a varset row into the given object, if an Array return names only
   function retrieveVarset(vs, resultObj) {
@@ -840,7 +850,7 @@ XML.serialize = function(node) {
     return (new XMLSerializer()).serializeToString(node) ;
   else if (node.xml) return node.xml;
   else throw "XML.serialize is not supported or can't serialize " + node;
-}
+};
 
 
 // ==================== File Reader ====================
@@ -914,4 +924,4 @@ FileReader.prototype.newXMLHttpRequest = function() {
     return requester;
 };
 
-}())
+}());
