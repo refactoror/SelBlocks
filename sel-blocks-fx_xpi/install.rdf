@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+ xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>sel-blocks@chris.noe</em:id>
+    <em:name>Selenium IDE - Sel Blocks</em:name>
+    <em:version>1.3</em:version>
+    <em:creator>Chris Noe</em:creator>
+    <em:description>A structured commands extension plugin for Selenium-IDE</em:description>
+    <em:type>2</em:type> <!--Type extension-->
+    <em:homepageURL>http://refactoror.net/</em:homepageURL>
+    <em:updateLink>https://addons.mozilla.org/firefox/downloads/file/117480/sel_blocks_selenium_ide-1.1-fx.xpi</em:updateLink>
+
+    <em:targetApplication>
+      <Description>
+        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id> <!-- Firefox -->
+        <em:minVersion>1.5</em:minVersion>
+        <em:maxVersion>7.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+    
+    <em:requires>   
+     <Description>
+         <em:id>{a6fd85ed-e919-4a43-a5af-8da18bda539f}</em:id> <!-- Selenium -->
+         <em:minVersion>1.0.5</em:minVersion>
+         <em:maxVersion>1.*.*</em:maxVersion>
+     </Description>  
+    </em:requires>
+  </Description>
+</RDF>
