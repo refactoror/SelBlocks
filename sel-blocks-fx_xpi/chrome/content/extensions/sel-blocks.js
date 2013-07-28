@@ -41,11 +41,11 @@
  *  - enforce block boundaries (jumping in/out of middle of blocks) 
  *
  * Changes since 1.3.1:
- *  - FF4+ compatibility
- *  - FF20+
+ *  - FF4+ compatibility: unwrapObject()
+ *  - FF20+ compatability: serializeXml()
+ *  - refactor xpath processing
  *  - clearer stack trace logging
  *                            
- * Notes:
  * - The Stored Variables Viewer plugin will display the values of Selblocks parameters, because they are implemented as regular Selenium variables. The only thing special about Selbocks parameters is that they are activated and deactivated as script execution flows into and out of blocks, eg, for/endFor, script/endScript, etc. So this can provide a convenient way to monitor the progress of an executing script.
  */
 
@@ -123,7 +123,7 @@ function $x(xpath, contextNode, resultType) {
 // return the XPath result set as an array of elements
 function $X(xpath, contextNode) {
   var doc = selenium.browserbot.getDocument();
-  var nodeSet = evaluateXpath(doc, xpath, contextNode, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null, null);
+  var nodeSet = evaluateXpath(doc, xpath, contextNode, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE);
   var elements = [];
   for (var i = 0, n = nodeSet.snapshotItem(i); n; n = nodeSet.snapshotItem(++i))
     elements.push(unwrapObject(n));
@@ -212,7 +212,7 @@ function Stack() {
   return stack;
 }
 
-// determine if the given stack frame is one of the loop block
+// determine if the given stack frame is one of the loop blocks
 Stack.isLoopBlock = function(stackFrame) {
   return (cmdAttrs[stackFrame.idx].blockNature == "loop");
 };
@@ -515,7 +515,7 @@ Selenium.prototype.doEndFor = function() {
 // ================================================================================
 Selenium.prototype.doForeach = function(varName, valueExpr)
 {
-  enterLoop(
+enterLoop(
     function(loop) { // validate
         assert(varName, " 'foreach' requires a variable name.");
         assert(valueExpr, " 'foreach' requires comma-separated values.");
