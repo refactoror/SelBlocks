@@ -1,36 +1,34 @@
 /**
- * SelBlocks 1.3.?
+ * SelBlocks 1.3.2
  *
- * Provides commands for javascript-like looping and callable functions,
+ * Provides commands for Javascript-like looping and callable functions,
  *   with scoped variables, and XML driven parameterization.
  *
- * Add filepath to Options -> Options... "Selenium Core extensions"
- *   (not "Selenium IDE extensions", because we are accessing the Selenium object)
+ * (Selbock installs as a Core Extension, not an IDE Extension, because it manipulates the Selenium object)
  *
  * Features:
  *  - Commands: if/else, loadVars, forXml, foreach, for, while, call/script/return
- *  - Script and loop parameters use regular selenium variables that are local to the block,
- *    overriding variables of the same name, and are restored when the block exits.
+ *  - Script and loop parameters use regular Selenium variables that are local to the block,
+ *    overriding variables of the same name, and that are restored when the block exits.
  *  - Variables can be set via external XML file(s).
- *  - Command parameters are javascript expressions that are evaluated with the selenium
+ *  - Command parameters are Javascript expressions that are evaluated with the Selenium
  *    variables in scope, which can therefore be referenced by their simple names, e.g.: i+1
  *  - A script definition can appear anywhere; they are skipped over in normal execution flow.
  *  - Script functions can be invoked recursively.
  *
  * Concept of operation:
- *  - selenium.reset() is intercepted to initialize the block structures. 
- *  - testCase.nextCommand() is overriden for flow branching.
- *  - The static structure of commands & blocks is stored in cmdAttrs[], by command index.
- *  - The execution state of blocks is pushed onto cmdStack, with a separate instance
- *    for each callStack frame.
+ *  - selenium.reset() is intercepted to initialize the block structures.
+ *  - testCase.nextCommand() is overridden for flow branching.
+ *  - The static structure of commands & blocks is stored in cmdAttrs[] by command index, (ie, script line number).
+ *  - The execution state of blocks is pushed onto cmdStack, with a separate instance for each callStack frame.
  *
  * Limitations:
- *  - Incompatible with flowControl (and derivatives), which unilaterally override
- *    selenium.reset(). Known to have this issue: 
- *        selenium_ide__flow_control-1.0.1-fx.xpi
- *        goto_while_for_ide.js 
+ *  - Incompatible with flowControl (and derivatives), because that unilaterally overrides selenium.reset().
+ *    Known to have this issue:
+ *      selenium_ide__flow_control-1.0.1-fx.xpi
+ *      goto_while_for_ide.js
  *
- * Acknowledgements:
+ * Acknowledgments:
  *  SelBlocks reuses bits & parts of extensions: flowControl, datadriven, and include.
  *
  * Wishlist:
@@ -38,101 +36,53 @@
  *  - try/catch
  *  - switch/case
  *  - exitTest
- *  - enforce block boundaries (jumping in/out of middle of blocks) 
+ *  - enforce block boundaries (jumping in/out of middle of blocks)
  *
  * Changes since 1.3.1:
- *  - FF4+ compatibility: unwrapObject()
- *  - FF20+ compatability: serializeXml()
- *  - refactor xpath processing
- *  - clearer stack trace logging
- *                            
- * - The Stored Variables Viewer plugin will display the values of Selblocks parameters, because they are implemented as regular Selenium variables. The only thing special about Selbocks parameters is that they are activated and deactivated as script execution flows into and out of blocks, eg, for/endFor, script/endScript, etc. So this can provide a convenient way to monitor the progress of an executing script.
+ *  - Selblocks logging now identifies itself as [Selblocks]
+ *
+ * NOTE - The Stored Variables Viewer addon will display the values of Selblocks parameters,
+ *   because they are implemented as regular Selenium variables.
+ *   The only thing special about Selbocks parameters is that they are activated and deactivated
+ *   as script execution flows into and out of blocks, eg, for/endFor, script/endScript, etc.
+ *   So this can provide a convenient way to monitor the progress of an executing script.
  */
 
 // =============== global functions as script helpers ===============
 // getEval script helpers
 
-// find an element via locator independent of any selenium commands
-// (selenium can only provide the first if multiple matches)
+// Find an element via locator independent of any selenium commands
+// (findElementOrNull returns the first if there are multiple matches)
 function $e(locator) {
-  return unwrapObject(selenium.browserbot.findElementOrNull(locator));
+  return sb.unwrapObject(selenium.browserbot.findElementOrNull(locator));
 }
 
-//======== XPath processing ========
-
-function evaluateXpath(docObj, xpathExpression, contextNode, resultType, resultObj)
-{
-  LOG.debug("XPATH: " + xpathExpression);
-  if (contextNode && contextNode != docObj) {
-    LOG.debug("XPATH Context: " + contextNode.tagName);
-  }
-  var t = new IntervalTimer();
-
-  try {
-    var provided = (resultObj != null);
-    var result = docObj.evaluate(
-      xpathExpression
-      , contextNode || docObj
-      , null
-      , resultType || XPathResult.ANY_TYPE
-      , resultObj);
-    if (provided)
-      result = resultObj;
-  }
-  catch (err) {
-    logStackTrace(err);
-    throw err;
-  }
-
-  LOG.debug(t.getElapsed() + "ms XPATH Result: " + fmtXpathResultType(result));
-
-  return result;
-}
-
-function fmtXpathResultType(result)
-{
-  switch (result.resultType) {
-    case result.STRING_TYPE:                  return "'" + result.stringValue + "'";
-    case result.NUMBER_TYPE:                  return result.numberValue;
-    case result.BOOLEAN_TYPE:                 return result.booleanValue;
-    case result.ANY_UNORDERED_NODE_TYPE:      return "uNODE " + result;
-    case result.FIRST_ORDERED_NODE_TYPE:      return "oNODE " + result;
-    case result.UNORDERED_NODE_SNAPSHOT_TYPE: return "uSS:" + result.snapshotLength;
-    case result.ORDERED_NODE_SNAPSHOT_TYPE:   return "oSS:" + result.snapshotLength;
-    case result.UNORDERED_NODE_ITERATOR_TYPE: return "uITR";
-    case result.ORDERED_NODE_ITERATOR_TYPE:   return "oITR";
-  }
-  return result;
-}
-
-// return the singular XPath result as a value of the appropriate type
+// Return the singular XPath result as a value of the appropriate type
 function $x(xpath, contextNode, resultType) {
   var doc = selenium.browserbot.getDocument();
-  // mozilla-specific, but can return any result type
-  var result = evaluateXpath(doc, xpath, contextNode, resultType);
-  // generic, but can only return node results
-//  var result = selenium.browserbot.xpathEvaluator.selectNodes(doc, xpath, contextNode || doc, selenium.browserbot._namespaceResolver);
-  switch (result.resultType) {
-    case result.NUMBER_TYPE:  return result.numberValue;
-    case result.STRING_TYPE:  return result.stringValue;
-    case result.BOOLEAN_TYPE: return result.booleanValue;
-  }
-  return result.singleNodeValue;
+  var node;
+  if (resultType)
+    node = sbx.selectNode(doc, xpath, contextNode, resultType); // mozilla engine only
+  else
+    node = sbx.selectElement(selenium.browserbot, doc, xpath, contextNode);
+  return node;
 }
 
-// return the XPath result set as an array of elements
-function $X(xpath, contextNode) {
+// Return the XPath result set as an array of elements
+function $X(xpath, contextNode, resultType) {
   var doc = selenium.browserbot.getDocument();
-  var nodeSet = evaluateXpath(doc, xpath, contextNode, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE);
-  var elements = [];
-  for (var i = 0, n = nodeSet.snapshotItem(i); n; n = nodeSet.snapshotItem(++i))
-    elements.push(unwrapObject(n));
-  return elements;
+  var nodes;
+  if (resultType)
+    nodes = sbx.selectNodes(doc, xpath, contextNode, resultType); // mozilla engine only
+  else
+    nodes = sbx.selectElements(selenium.browserbot, doc, xpath, contextNode);
+  return nodes;
 }
+
 
 (function(){
 
-// =============== javascript extensions as script helpers ===============
+// =============== Javascript extensions as script helpers ===============
 
 // eg: "dilbert".isOneOf("dilbert","dogbert","mordac") => true
 String.prototype.isOneOf = function(values)
@@ -163,6 +113,8 @@ String.prototype.mapTo = function(/* pairs of: string, array */)
 };
 
 
+//=============== Command Stack handling ===============
+
 var symbols = {}; // command indexes stored by name: function names
 var cmdAttrs = new CmdAttrs();  // static command attributes stored by command index
 var callStack;    // command execution stack
@@ -171,7 +123,7 @@ function hereIdx() {
   return testCase.debugContext.debugIndex;
 }
 
-// command attributes, stored by command index
+// Command attributes, stored by command index
 function CmdAttrs() {
   var cmds = [];
   cmds.init = function(i, attrs) {
@@ -183,13 +135,13 @@ function CmdAttrs() {
   cmds.here = function() {
     var curIdx = hereIdx();
     if (!cmds[curIdx])
-      LOG.warn("No cmdAttrs defined curIdx=" + curIdx);
+      sb.LOG.warn("No cmdAttrs defined curIdx=" + curIdx);
     return cmds[curIdx];
   };
   return cmds;
 }
 
-// an Array object with stack functionality
+// An Array object with stack functionality
 function Stack() {
   var stack = [];
   stack.isEmpty = function() { return stack.length == 0; };
@@ -212,13 +164,13 @@ function Stack() {
   return stack;
 }
 
-// determine if the given stack frame is one of the loop blocks
+// Determine if the given stack frame is one of the loop blocks
 Stack.isLoopBlock = function(stackFrame) {
   return (cmdAttrs[stackFrame.idx].blockNature == "loop");
 };
 
 
-// flow control - we don't just alter debugIndex on the fly, because the command
+// Flow control - we don't just alter debugIndex on the fly, because the command
 // preceding the destination would falsely get marked as successfully executed
 var branchIdx = null;
 // TBD: this needs to be revisited if testCase.nextCommand() ever changes
@@ -230,7 +182,7 @@ function nextCommand() {
   }
   else {
     if (branchIdx != null) {
-      LOG.info("Selblocks branch => " + fmtCmdRef(branchIdx));
+      sb.LOG.info("branch => " + fmtCmdRef(branchIdx));
       this.debugIndex = branchIdx;
       branchIdx = null;
     }
@@ -252,14 +204,14 @@ function setNextCommand(cmdIdx) {
   branchIdx = cmdIdx;
 }
 
-// tail intercept of Selenium.prototype.reset()
+// Tail intercept of Selenium.prototype.reset()
 (function () { // private scope for orig_reset
   // called when Selenium IDE opens / on Dev Tools [Reload] button / upon first command execution
   var orig_reset = Selenium.prototype.reset;
   Selenium.prototype.reset = function() {// this: selenium
     // called before each: execute a single command / run a testcase / run each testcase in a testsuite
     orig_reset.call(this);
-    LOG.debug("In SelBlocks tail intercept :: selenium.reset()");
+    sb.LOG.trace("In tail intercept :: selenium.reset()");
 
     // TBD: skip during single command execution
     try {
@@ -274,14 +226,14 @@ function setNextCommand(cmdIdx) {
     // custom flow control logic
     // this is called before: execute a single command / run a testcase / run each testcase in a testsuite
     // TBD: this should be a tail intercept rather than brute force replace
-    LOG.debug("SelBlocks replacing: testCase.debugContext.nextCommand()");
+    sb.LOG.debug("Configuring tail intercept: testCase.debugContext.nextCommand()");
     testCase.debugContext.nextCommand = nextCommand;
   };
 })();
 
 
 // ================================================================================
-// assemble block relationships and symbol locations
+// Assemble block relationships and symbol locations
 function compileSelBlocks()
 {
   var lexStack = new Stack();
@@ -403,7 +355,7 @@ function compileSelBlocks()
   }
 }
 
-// ==================== commands ====================
+// ==================== Selblocks Commands (Custom Selenium Actions) ====================
 
 var commandNames = [];
 
@@ -412,7 +364,7 @@ Selenium.prototype.doLabel = function() {
 };
 commandNames.push("label");
 
-// skip the next N commands (default is 1)
+// Skip the next N commands (default is 1)
 Selenium.prototype.doSkipNext = function(spec)
 {
   assertRunning();
@@ -549,7 +501,7 @@ Selenium.prototype.doLoadVars = function(xmlfile, selector)
 
   var result = evalWithVars(selector);
   if (typeof result != "boolean")
-    LOG.warn(fmtCmdRef(hereIdx()) + ", " + selector + " is not a boolean expression");
+    sb.LOG.warn(fmtCmdRef(hereIdx()) + ", " + selector + " is not a boolean expression");
 
   // read until specified set found
   var isEof = xmlReader.EOF();
@@ -651,7 +603,7 @@ Selenium.prototype.doBreak = function(condExpr) {
   }
 };
 
-// unwind the command stack to the inner-most active loop block
+// Unwind the command stack to the inner-most active loop block
 // (unless the optional condition evaluates to false)
 function dropToLoop(condExpr)
 {
@@ -794,14 +746,14 @@ function restoreVarState(savedVars) { // prop-set --> storedVars
 
 // TBD: make into throwable Errors
 function notifyFatalErr(msg, err) {
-  LOG.error("SelBlocks error " + msg);
-  logStackTrace(err);
+  sb.LOG.error("Error " + msg);
+  sb.LOG.logStackTrace(err);
   throw err;
 }
 function notifyFatal(msg) {
   var err = new Error(msg);
-  LOG.error("SelBlocks error " + msg);
-  logStackTrace(err);
+  sb.LOG.error("Error " + msg);
+  sb.LOG.logStackTrace(err);
   throw err;
 }
 function notifyFatalCmdRef(idx, msg) { notifyFatal(fmtCmdRef(idx) + msg); }
@@ -830,17 +782,7 @@ function fmtCommand(cmd) {
 
 //================= Javascript helpers ===============
 
-// Starting with FF4 lots of objects are in an XPCNativeWrapper,
-// but we need the underlying object for == and for..in operations.
-function unwrapObject(obj) {
-  if (typeof(obj) === "undefined" || obj == null)
-   return obj;
-  if (obj.wrappedJSObject)
-   return obj.wrappedJSObject;
-  return obj;
-}
-
-// elapsed time, optional duration provides expiration
+// Elapsed time, optional duration provides expiration
 function IntervalTimer(msDuration) {
   this.msStart = +new Date();
   this.getElapsed = function() { return (+new Date() - this.msStart); };
@@ -848,7 +790,7 @@ function IntervalTimer(msDuration) {
   this.reset = function() { this.msStart = +new Date(); };
 }
 
-// return a translated version of a string
+// Return a translated version of a string
 // given string args, translate each occurrence of characters in t1 with the corresponding character from t2
 // given array args, if the string occurs in t1, return the corresponding string from t2, else null
 String.prototype.translate = function(t1, t2)
@@ -894,7 +836,7 @@ function XmlReader()
     loader = new FileReader();
     this.xmlFilepath = uriFor(xmlpath);
     var xmlHttpReq = loader.getIncludeDocumentBySynchronRequest(this.xmlFilepath);
-    LOG.info("Reading from: " + this.xmlFilepath);
+    sb.LOG.info("Reading from: " + this.xmlFilepath);
     xmlDoc = xmlHttpReq.responseXML; // XMLDocument
 
     varNodes = xmlDoc.getElementsByTagName("vars"); // HTMLCollection
@@ -916,11 +858,11 @@ function XmlReader()
 
   this.next = function() {
     if (this.EOF()) {
-      LOG.error("No more <vars> elements to read after element #" + varsElementIdx);
+      sb.LOG.error("No more <vars> elements to read after element #" + varsElementIdx);
       return;
     }
     varsElementIdx++;
-  	LOG.debug(serializeXml(varNodes[curVars]));	// log each name & value
+    sb.LOG.debug(serializeXml(varNodes[curVars]));	// log each name & value
 
     var expected = varNodes[0].attributes.length;
     var found = varNodes[curVars].attributes.length;
@@ -999,12 +941,12 @@ FileReader.prototype.prepareUrl = function(includeUrl) {
   var prepareUrl;
   // htmlSuite mode of SRC? TODO is there a better way to decide whether in SRC mode?
   if (window.location.href.indexOf("selenium-server") >= 0) {
-    LOG.debug(FileReader.LOG_PREFIX + "we seem to run in SRC, do we?");
+    sb.LOG.debug(FileReader.LOG_PREFIX + "we seem to run in SRC, do we?");
     preparedUrl = absolutify(includeUrl, htmlTestRunner.controlPanel.getTestSuiteName());
   } else {
     preparedUrl = absolutify(includeUrl, selenium.browserbot.baseUrl);
   }
-  LOG.debug(FileReader.LOG_PREFIX + "using url to get include '" + preparedUrl + "'");
+  sb.LOG.debug(FileReader.LOG_PREFIX + "using url to get include '" + preparedUrl + "'");
   return preparedUrl;
 };
 
@@ -1031,50 +973,5 @@ FileReader.prototype.newXMLHttpRequest = function() {
   }
   return requester;
 };
-
-// ==================== Stack Tracer ====================
-
-function genStackTrace(err) {
-  LOG.warn(descCaller());
-  var e = err;
-  if (!err)
-    e = new Error();
-  var stackTrace = [];
-  if (!e.stack)
-    stackTrace.push("No stack trace, (Firefox only)");
-  else {
-    var funcCallPattern = /^\s*[A-Za-z0-9\-_\$]+\(/;
-    var lines = e.stack.split("\n");
-    for (var i=0; i < lines.length; i++) {
-      if (lines[i].match(funcCallPattern))
-        stackTrace.push(lines[i]);
-    }
-    if (!err)
-      stackTrace.shift(); // remove the call to genStackTrace() itself
-  }
-  return stackTrace;
-}
-
-function logStackTrace(err) {
-  var t = genStackTrace(err);
-  if (!err)
-    t.shift(); // remove the call to logStackTrace() itself
-  LOG.warn("__Stack Trace__");
-  for (var i = 0; i < t.length; i++) {
-    LOG.warn("@@ " + t[i]);
-  }
-};
-
-// describe the calling function
-function descCaller()
-{
-  var t = genStackTrace(new Error());
-  if (t.length == 0) return "no client function";
-  t.shift(); // remove the call to descCaller() itself
-  if (t.length == 0) return "no caller function";
-  t.shift(); // remove the call to client function
-  if (t.length == 0) return "undefined caller function";
-  return "caller: " + t[0];
-}
 
 }());
