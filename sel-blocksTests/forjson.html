@@ -13,50 +13,50 @@
 </thead><tbody>
 <tr>
 	<td>getEval</td>
-	<td>delete storedVars.xname</td>
+	<td>delete storedVars.jname</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;START ${xname}&quot;</td>
+	<td>&quot;START ${jname}&quot;</td>
 	<td></td>
 </tr>
-<!----- forXml-->
+<!----- forJson-->
 <tr>
-	<td>forXml</td>
-	<td>data/forxml.xml</td>
-	<td></td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>xname</td>
-	<td></td>
-</tr>
-<tr>
-	<td>endForXml</td>
-	<td></td>
+	<td>forJson</td>
+	<td>data/forjson.json</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;INTERMISSION ${xname}&quot;</td>
+	<td>jname</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endForJson</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;INTERMISSION ${jname}&quot;</td>
 	<td></td>
 </tr>
 <!----- load a varset-->
 <tr>
-	<td>loadVars</td>
-	<td>data/forxml.xml</td>
-	<td>xname == &quot;dogbert&quot;</td>
+	<td>loadJsonVars</td>
+	<td>data/forjson.json</td>
+	<td>jname == &quot;dogbert&quot;</td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;END ${xname}&quot;</td>
+	<td>&quot;END ${jname}&quot;</td>
 	<td></td>
 </tr>
 <!----- check results-->
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START $&quot; + &quot;{xname}~dilbert~dogbert~wally~INTERMISSION $&quot; + &quot;{xname}~END dogbert&quot;</td>
+	<td>&quot;START $&quot; + &quot;{jname}~dilbert~dogbert~wally~INTERMISSION $&quot; + &quot;{jname}~END dogbert&quot;</td>
 	<td></td>
 </tr>
 </tbody></table>

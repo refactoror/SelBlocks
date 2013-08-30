@@ -25,7 +25,7 @@
 <tr>
 	<td>call</td>
 	<td>doSomething</td>
-	<td>sname=&quot;dilbert&quot;,srole=&quot;goof&quot;</td>
+	<td>sname = &quot;dilbert,Q&quot;, srole = &quot;goof&quot;</td>
 </tr>
 <!--===-->
 <tr>
@@ -47,23 +47,23 @@
 <tr>
 	<td>call</td>
 	<td>doSomething</td>
-	<td>sname=&quot;dogbert&quot;,srole=&quot;woof&quot;</td>
+	<td>sname = &quot;dogbert&quot;, srole = &quot;woof&quot;</td>
 </tr>
 <tr>
 	<td>call</td>
 	<td>doSomething</td>
-	<td>sname=&quot;ratbert&quot;,srole=&quot;squeak&quot;</td>
+	<td>sname = &quot;ratbert&quot;, srole = &quot;squeak&quot;</td>
 </tr>
 <!------->
 <tr>
 	<td>foreach</td>
 	<td>sname</td>
-	<td>&quot;asok&quot;,&quot;alice&quot;</td>
+	<td>&quot;asok&quot;, &quot;alice&quot;</td>
 </tr>
 <tr>
 	<td>call</td>
 	<td>doSomething</td>
-	<td>sname=sname,srole=&quot;superuser&quot;</td>
+	<td>sname = sname, srole = &quot;super=user&quot;</td>
 </tr>
 <tr>
 	<td>endForeach</td>
@@ -78,7 +78,7 @@
 <!----- check results-->
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START $&quot; + &quot;{sname} $&quot; + &quot;{srole}~sname=dilbert,srole=goof~sname=dogbert,srole=woof~sname=ratbert,srole=squeak~sname=asok,srole=superuser~sname=alice,srole=superuser~DONE $&quot; + &quot;{sname} $&quot; + &quot;{srole}&quot;</td>
+	<td>&quot;START $&quot; + &quot;{sname} $&quot; + &quot;{srole}~sname=dilbert,Q,srole=goof~sname=dogbert,srole=woof~sname=ratbert,srole=squeak~sname=asok,srole=super=user~sname=alice,srole=super=user~DONE $&quot; + &quot;{sname} $&quot; + &quot;{srole}&quot;</td>
 	<td></td>
 </tr>
 </tbody></table>
