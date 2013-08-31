@@ -1,5 +1,5 @@
 /**
- * SelBlocks 1.3.2
+ * SelBlocks 1.5
  *
  * Provides commands for Javascript-like looping and callable functions,
  *   with scoped variables, and XML driven parameterization.
@@ -39,7 +39,8 @@
  *  - enforce block boundaries (jumping in/out of middle of blocks)
  *
  * Changes since 1.3.1:
- *  - Selblocks logging now identifies itself as [Selblocks]
+ *  - expression parsing is now more robust, specifically for & call list values
+ *  - Selblocks logging now identifies itself with the prefix [Selblocks]
  *
  * NOTE - The Stored Variables Viewer addon will display the values of Selblocks parameters,
  *   because they are implemented as regular Selenium variables.
@@ -358,6 +359,7 @@ function $X(xpath, contextNode, resultType) {
   // ==================== Selblocks Commands (Custom Selenium Actions) ====================
 
   var commandNames = [];
+  var iexpr = Object.create(sb.InfixExpressionParser);
 
   Selenium.prototype.doLabel = function() {
     // noop
@@ -446,13 +448,13 @@ function $X(xpath, contextNode, resultType) {
     enterLoop(
       function(loop) { // validate
           assert(forSpec, " 'for' requires: <initial-val>; <condition>; <iter-stmt>.");
-          var specs = forSpec.split(";"); // TBD: parsing can fail on complex expressions containing ;s
+          var specs = iexpr.splitList(forSpec, ";");
           assert(specs.length == 3, " 'for' requires <init-stmt>; <condition>; <iter-stmt>.");
           loop.initStmt = specs[0];
           loop.condExpr = specs[1];
           loop.iterStmt = specs[2];
           var localVarNames = [];
-          if (localVarsSpec) localVarNames = localVarsSpec.split(",");
+          if (localVarsSpec) localVarNames = iexpr.splitList(localVarsSpec, ","); // TBD: validate name chars
           return localVarNames;
       }
       ,function(loop) { evalWithVars(loop.initStmt); }          // initialize
@@ -698,9 +700,9 @@ function $X(xpath, contextNode, resultType) {
 
   function parseArgs(argSpec) { // comma-sep -> new prop-set
     var args = {};
-    var parms = argSpec.split(",");
+    var parms = iexpr.splitList(argSpec, ",");
     for (var i = 0; i < parms.length; i++) {
-      var keyValue = parms[i].split("=");
+      var keyValue = iexpr.splitList(parms[i], "=");
       args[keyValue[0]] = evalWithVars(keyValue[1]);
     }
     return args;
