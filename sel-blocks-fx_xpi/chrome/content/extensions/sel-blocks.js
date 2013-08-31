@@ -28,7 +28,7 @@
  *      selenium_ide__flow_control-1.0.1-fx.xpi
  *      goto_while_for_ide.js
  *
- * Acknowledgments:
+ * Acknowledgements:
  *  SelBlocks reuses bits & parts of extensions: flowControl, datadriven, and include.
  *
  * Wishlist:
@@ -44,7 +44,7 @@
  *
  * NOTE - The Stored Variables Viewer addon will display the values of Selblocks parameters,
  *   because they are implemented as regular Selenium variables.
- *   The only thing special about Selbocks parameters is that they are activated and deactivated
+ *   The only thing special about Selblocks parameters is that they are activated and deactivated
  *   as script execution flows into and out of blocks, eg, for/endFor, script/endScript, etc.
  *   So this can provide a convenient way to monitor the progress of an executing script.
  */
