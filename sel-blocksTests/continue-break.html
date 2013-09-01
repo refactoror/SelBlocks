@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
+<title>continue-break</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">foreach</td></tr>
+</thead><tbody>
+<tr>
+	<td>getEval</td>
+	<td>delete storedVars.f</td>
+	<td></td>
+</tr>
+<tr>
+	<td>for</td>
+	<td>f=3; f &lt;= 9; f++</td>
+	<td>f</td>
+</tr>
+<tr>
+	<td>continue</td>
+	<td>f == 6</td>
+	<td></td>
+</tr>
+<tr>
+	<td>if</td>
+	<td>f &gt; 6</td>
+	<td></td>
+</tr>
+<tr>
+	<td>if</td>
+	<td>f == 7</td>
+	<td></td>
+</tr>
+<tr>
+	<td>continue</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>else</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>break</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;iter=${f}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+</tr>
+<!----- check results-->
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;iter=3~iter=4~iter=5&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--==========-->
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>i</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>i++ &lt; 10</td>
+	<td></td>
+</tr>
+<tr>
+	<td>continue</td>
+	<td>i==3</td>
+	<td></td>
+</tr>
+<tr>
+	<td>break</td>
+	<td>i==5</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;iter=${i}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<!----- check results-->
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;iter=1~iter=2~iter=4&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--==========-->
+<tr>
+	<td>foreach</td>
+	<td>fe</td>
+	<td>&quot;dilbert&quot;,&quot;dogbert&quot;,&quot;wally&quot;</td>
+</tr>
+<tr>
+	<td>continue</td>
+	<td>fe==&quot;dogbert&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>break</td>
+	<td>fe==&quot;wally&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;iter=${fe}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endForeach</td>
+	<td></td>
+	<td></td>
+</tr>
+<!----- check results-->
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;iter=dilbert&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--==========-->
+<tr>
+	<td>forXml</td>
+	<td>forxml.xml</td>
+	<td></td>
+</tr>
+<tr>
+	<td>continue</td>
+	<td>xname==&quot;dogbert&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>break</td>
+	<td>xname==&quot;wally&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;iter=${xname}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endForXml</td>
+	<td></td>
+	<td></td>
+</tr>
+<!----- check results-->
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;iter=dilbert&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>
