@@ -884,30 +884,28 @@ function $X(xpath, contextNode, resultType) {
 
   function XmlReader()
   {
-    this.filepath = null;
-    var fileObj = null;
     var varsets = null;
+    var varNames = null;
     var curVars = null;
     var varsetIdx = 0;
 
+    // load XML file and return the list of var names found in the first <VARS> element
     this.load = function(filepath)
     {
-      fileReader = new FileReader();
-      this.filepath = uriFor(filepath);
-      var xmlHttpReq = fileReader.getIncludeDocumentBySynchronRequest(this.filepath);
-      sb.LOG.info("Reading from: " + this.filepath);
+      var fileReader = new FileReader();
+      var fileUri = uriFor(filepath);
+      var xmlHttpReq = fileReader.getIncludeDocumentBySynchronRequest(fileUri);
+      sb.LOG.info("Reading from: " + fileUri);
 
-      fileObj = xmlHttpReq.responseXML; // XMLDocument
+      var fileObj = xmlHttpReq.responseXML; // XML DOM
       varsets = fileObj.getElementsByTagName("vars"); // HTMLCollection
       if (varsets == null || varsets.length == 0) {
         throw new Error("A <vars> element could not be loaded, or <testdata> was empty.");
       }
 
       curVars = 0;
-      // get variable names from first varset
-      var varnames = [];
-      retrieveVarset(0, varnames);
-      return varnames;
+      varNames = attrNamesFor(varsets[0]);
+      return varNames;
     };
 
     this.EOF = function() {
@@ -923,21 +921,34 @@ function $X(xpath, contextNode, resultType) {
       varsetIdx++;
       sb.LOG.debug(varsetIdx + ") " + serializeXml(varsets[curVars]));  // log each name & value
 
-      var expected = varsets[0].attributes.length;
-      var found = varsets[curVars].attributes.length;
+      var expected = countAttrs(varsets[0]);
+      var found = countAttrs(varsets[curVars]);
       if (found != expected) {
         throw new Error("Inconsistent <testdata> at <vars> element #" + varsetIdx
           + "; expected " + expected + " attributes, but found " + found + "."
           + " Each <vars> element must have the same set of attributes."
         );
       }
-      retrieveVarset(curVars, storedVars);
+      setupStoredVars(varsets[curVars]);
       curVars++;
     };
 
-    //- retrieve a varset row into the given object, if an Array return names only
-    function retrieveVarset(n, resultObj) {
-      var varAttrs = varsets[n].attributes; // NamedNodeMap
+    function attrNamesFor(obj) {
+      var attrNames = [];
+      var varAttrs = obj.attributes; // NamedNodeMap
+      for (var v = 0; v < varAttrs.length; v++) {
+        attrNames.push(varAttrs[v].nodeName);
+      }
+      return attrNames;
+    }
+
+    //- determine how many attributes are present on the given node
+    function countAttrs(obj) {
+      return obj.attributes.length;
+    }
+
+    function setupStoredVars(obj) {
+      var varAttrs = obj.attributes; // NamedNodeMap
       for (var v = 0; v < varAttrs.length; v++) {
         var attr = varAttrs[v];
         if (null == varsets[0].getAttribute(attr.nodeName)) {
@@ -946,10 +957,7 @@ function $X(xpath, contextNode, resultType) {
             + " Each <vars> element must have the same set of attributes."
           );
         }
-        if (resultObj instanceof Array)
-          resultObj.push(varAttrs[v].nodeName);
-        else
-          resultObj[attr.nodeName] = attr.nodeValue;
+        storedVars[attr.nodeName] = attr.nodeValue;
       }
     }
   }
@@ -963,30 +971,28 @@ function $X(xpath, contextNode, resultType) {
 
   function JSONReader()
   {
-    this.filepath = null;
-    var fileObj = null;
     var varsets = null;
+    var varNames = null;
     var curVars = null;
     var varsetIdx = 0;
 
+    // load JSON file and return the list of var names found in the first object
     this.load = function(filepath)
     {
-      fileReader = new FileReader();
-      this.filepath = uriFor(filepath);
-      var xmlHttpReq = fileReader.getIncludeDocumentBySynchronRequest(this.filepath);
-      sb.LOG.info("Reading from: " + this.filepath);
+      var fileReader = new FileReader();
+      var fileUri = uriFor(filepath);
+      var xmlHttpReq = fileReader.getIncludeDocumentBySynchronRequest(fileUri);
+      sb.LOG.info("Reading from: " + fileUri);
 
-      fileObj = xmlHttpReq.responseText;
+      var fileObj = xmlHttpReq.responseText;
       varsets = eval(fileObj);
       if (varsets == null || varsets.length == 0) {
-        throw new Error("A JSON element could not be loaded, or the file was empty.");
+        throw new Error("A JSON object could not be loaded, or the file was empty.");
       }
 
       curVars = 0;
-      // get variable names from first varset
-      var varnames = [];
-      retrieveVarset(0, varnames);
-      return varnames;
+      varNames = attrNamesFor(varsets[0]);
+      return varNames;
     };
 
     this.EOF = function() {
@@ -996,7 +1002,7 @@ function $X(xpath, contextNode, resultType) {
     this.next = function()
     {
       if (this.EOF()) {
-        sb.LOG.error("No more JSON elements to read after element #" + varsetIdx);
+        sb.LOG.error("No more JSON objects to read after object #" + varsetIdx);
         return;
       }
       varsetIdx++;
@@ -1005,35 +1011,38 @@ function $X(xpath, contextNode, resultType) {
       var expected = countAttrs(varsets[0]);
       var found = countAttrs(varsets[curVars]);
       if (found != expected) {
-        throw new Error("Inconsistent JSON at object #" + varsetIdx
+        throw new Error("Inconsistent JSON object #" + varsetIdx
           + "; expected " + expected + " attributes, but found " + found + "."
           + " Each JSON object must have the same set of attributes."
         );
       }
-      retrieveVarset(curVars, storedVars);
+      setupStoredVars(varsets[curVars]);
       curVars++;
+    };
+
+    function attrNamesFor(obj) {
+      var attrNames = [];
+      for (var attrName in obj)
+        attrNames.push(attrName);
+      return attrNames;
     }
 
-    //- determine how many attributes are set on the given obj
+    //- determine how many attributes are present on the given obj
     function countAttrs(obj) {
       var n = 0;
       for (var attrName in obj) n++;
       return n;
     }
 
-    //- retrieve a varset row into the given object, if an Array return names only
-    function retrieveVarset(n, resultObj) {
-      for (var attrName in varsets[n]) {
+    function setupStoredVars(obj) {
+      for (var attrName in obj) {
         if (null == varsets[0][attrName]) {
-          throw new Error("Inconsistent <testdata> at <vars> element #" + varsetIdx
+          throw new Error("Inconsistent JSON at object #" + varsetIdx
             + "; found attribute " + attrName + ", which does not appear in the first JSON object."
             + " Each JSON object must have the same set of attributes."
           );
         }
-        if (resultObj instanceof Array)
-          resultObj.push(attrName);
-        else
-          resultObj[attrName] = varsets[n][attrName];
+        storedVars[attrName] = obj[attrName];
       }
     }
   };
