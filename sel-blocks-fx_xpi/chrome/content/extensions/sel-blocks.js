@@ -7,7 +7,7 @@
  * (Selbock installs as a Core Extension, not an IDE Extension, because it manipulates the Selenium object)
  *
  * Features:
- *  - Commands: if/else, loadVars, forXml, foreach, for, while, call/script/return
+ *  - Commands: if/else, loadVars/loadJsonVars, forXml/forJson, foreach, for, while, call/script/return
  *  - Script and loop parameters use regular Selenium variables that are local to the block,
  *    overriding variables of the same name, and that are restored when the block exits.
  *  - Variables can be set via external XML file(s).
@@ -283,7 +283,7 @@ function $X(xpath, contextNode, resultType) {
               cmdAttrs[ifAttrs.elseIdx].endIdx = i;   // else -> endif
             break;
 
-          case "while":    case "for":    case "foreach":    case "forXml":
+        case "while":    case "for":    case "foreach":    case "forXml":    case "forJson":
             assertNotAndWaitSuffix(i);
             lexStack.push(cmdAttrs.init(i, { blockNature: "loop" }));
             break;
@@ -292,7 +292,7 @@ function $X(xpath, contextNode, resultType) {
             assertCmd(i, lexStack.find(Stack.isLoopBlock), ", is not valid outside of a loop");
             cmdAttrs.init(i, { hdrIdx: lexStack.top().idx }); // -> header
             break;
-          case "endWhile": case "endFor": case "endForeach": case "endForXml":
+        case "endWhile": case "endFor": case "endForeach": case "endForXml": case "endForJson":
             assertNotAndWaitSuffix(i);
             var expectedCmd = curCmd.substr(3).toLowerCase();
             assertBlockIsPending(expectedCmd, i);
@@ -302,7 +302,7 @@ function $X(xpath, contextNode, resultType) {
             cmdAttrs.init(i, { hdrIdx: hdrAttrs.idx }); // footer -> header
             break;
 
-          case "loadVars":
+        case "loadVars": case "loadJsonVars":
             assertNotAndWaitSuffix(i);
             break;
 
@@ -469,7 +469,7 @@ function $X(xpath, contextNode, resultType) {
   // ================================================================================
   Selenium.prototype.doForeach = function(varName, valueExpr)
   {
-  enterLoop(
+    enterLoop(
       function(loop) { // validate
           assert(varName, " 'foreach' requires a variable name.");
           assert(valueExpr, " 'foreach' requires comma-separated values.");
@@ -494,12 +494,13 @@ function $X(xpath, contextNode, resultType) {
   // ================================================================================
   Selenium.prototype.doLoadVars = function(xmlfile, selector)
   {
-    assert(xmlfile, " 'loadVars' requires an xml file path or URI.");
+    assert(xmlfile, " 'loadVars' requires an XML file path or URI.");
     var xmlReader = new XmlReader(xmlfile);
     xmlReader.load(xmlfile);
     xmlReader.next(); // read first <vars> and set values on storedVars
     if (!selector && !xmlReader.EOF())
-      notifyFatal("Multiple var sets not valid for 'loadVars'. (A specific var set can be selected: name=value.)");
+      notifyFatal("Multiple var sets not valid for 'loadVars'."
+        + ' (A specific var set can be selected: name="value".)');
 
     var result = evalWithVars(selector);
     if (typeof result != "boolean")
@@ -514,7 +515,35 @@ function $X(xpath, contextNode, resultType) {
 
     if (!evalWithVars(selector))
       notifyFatal("<vars> element not found for selector expression: " + selector
-        + "; in xmlfile " + xmlReader.xmlFilepath);
+        + "; in XML input file " + xmlReader.xmlFilepath);
+  };
+
+
+  // ================================================================================
+  Selenium.prototype.doLoadJsonVars = function(jsonFile, selector)
+  {
+    assert(jsonFile, " 'loadJsonVars' requires a JSON file path or URI.");
+    var jsonReader = new JSONReader(jsonFile);
+    jsonReader.load(jsonFile);
+    jsonReader.next(); // read first json object and set values on storedVars
+    if (!selector && !jsonReader.EOF())
+      notifyFatal("Multiple json objects not valid for 'loadJsonVars'."
+        + ' (A specific object can be selected: name="value".)');
+
+    var result = evalWithVars(selector);
+    if (typeof result != "boolean")
+      sb.LOG.warn(fmtCmdRef(hereIdx()) + ", " + selector + " is not a boolean expression");
+
+    // read until specified set found
+    var isEof = jsonReader.EOF();
+    while (!isEof && evalWithVars(selector) != true) {
+      jsonReader.next(); // read next json object and set values on storedVars
+      isEof = jsonReader.EOF();
+    } 
+
+    if (!evalWithVars(selector))
+      notifyFatal("JSON element not found for selector expression: " + selector
+        + "; in JSON input file " + jsonReader.jsonFilepath);
   };
 
 
@@ -540,6 +569,32 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doEndForXml = function() {
     iterateLoop();
   };
+
+
+
+  // ================================================================================
+  Selenium.prototype.doForJson = function(jsonpath)
+  {
+    enterLoop(
+      function(loop) {  // validate
+          assert(jsonpath, " 'forJson' requires a JSON file path or URI.");
+          loop.jsonReader = new JSONReader();
+          var localVarNames = loop.jsonReader.load(jsonpath);
+          return localVarNames;
+      }
+      ,function() { }   // initialize
+      ,function(loop) { // continue?
+          var isEof = loop.jsonReader.EOF();
+          if (!isEof) loop.jsonReader.next();
+          return !isEof;
+      }
+      ,function() { }
+    );
+  };
+  Selenium.prototype.doEndForJson = function() {
+    iterateLoop();
+  };
+
 
   // --------------------------------------------------------------------------------
   // Note: Selenium variable expansion occurs before command processing, therefore we re-execute
@@ -829,48 +884,49 @@ function $X(xpath, contextNode, resultType) {
 
   function XmlReader()
   {
-    var xmlDoc = null;
-    var varNodes = null;
+    this.filepath = null;
+    var fileObj = null;
+    var varsets = null;
     var curVars = null;
-    this.xmlFilepath = null;
-    var varsElementIdx = 0;
+    var varsetIdx = 0;
 
-    this.load = function(xmlpath) {
-      loader = new FileReader();
-      this.xmlFilepath = uriFor(xmlpath);
-      var xmlHttpReq = loader.getIncludeDocumentBySynchronRequest(this.xmlFilepath);
-      sb.LOG.info("Reading from: " + this.xmlFilepath);
-      xmlDoc = xmlHttpReq.responseXML; // XMLDocument
+    this.load = function(filepath)
+    {
+      fileReader = new FileReader();
+      this.filepath = uriFor(filepath);
+      var xmlHttpReq = fileReader.getIncludeDocumentBySynchronRequest(this.filepath);
+      sb.LOG.info("Reading from: " + this.filepath);
 
-      varNodes = xmlDoc.getElementsByTagName("vars"); // HTMLCollection
-
-      if (varNodes == null || varNodes.length == 0) {
+      fileObj = xmlHttpReq.responseXML; // XMLDocument
+      varsets = fileObj.getElementsByTagName("vars"); // HTMLCollection
+      if (varsets == null || varsets.length == 0) {
         throw new Error("A <vars> element could not be loaded, or <testdata> was empty.");
       }
 
       curVars = 0;
-      // get variable names from first entity
+      // get variable names from first varset
       var varnames = [];
       retrieveVarset(0, varnames);
       return varnames;
     };
 
     this.EOF = function() {
-      return (curVars == null || curVars >= varNodes.length);
+      return (curVars == null || curVars >= varsets.length);
     };
 
-    this.next = function() {
+    this.next = function()
+    {
       if (this.EOF()) {
-        sb.LOG.error("No more <vars> elements to read after element #" + varsElementIdx);
+        sb.LOG.error("No more <vars> elements to read after element #" + varsetIdx);
         return;
       }
-      varsElementIdx++;
-      sb.LOG.debug(serializeXml(varNodes[curVars]));  // log each name & value
+      varsetIdx++;
+      sb.LOG.debug(varsetIdx + ") " + serializeXml(varsets[curVars]));  // log each name & value
 
-      var expected = varNodes[0].attributes.length;
-      var found = varNodes[curVars].attributes.length;
+      var expected = varsets[0].attributes.length;
+      var found = varsets[curVars].attributes.length;
       if (found != expected) {
-        throw new Error("Inconsistent <testdata> at <vars> element #" + varsElementIdx
+        throw new Error("Inconsistent <testdata> at <vars> element #" + varsetIdx
           + "; expected " + expected + " attributes, but found " + found + "."
           + " Each <vars> element must have the same set of attributes."
         );
@@ -880,12 +936,12 @@ function $X(xpath, contextNode, resultType) {
     };
 
     //- retrieve a varset row into the given object, if an Array return names only
-    function retrieveVarset(vs, resultObj) {
-      var varAttrs = varNodes[vs].attributes; // NamedNodeMap
+    function retrieveVarset(n, resultObj) {
+      var varAttrs = varsets[n].attributes; // NamedNodeMap
       for (var v = 0; v < varAttrs.length; v++) {
         var attr = varAttrs[v];
-        if (null == varNodes[0].getAttribute(attr.nodeName)) {
-          throw new Error("Inconsistent <testdata> at <vars> element #" + varsElementIdx
+        if (null == varsets[0].getAttribute(attr.nodeName)) {
+          throw new Error("Inconsistent <testdata> at <vars> element #" + varsetIdx
             + "; found attribute " + attr.nodeName + ", which does not appear in the first <vars> element."
             + " Each <vars> element must have the same set of attributes."
           );
@@ -897,12 +953,93 @@ function $X(xpath, contextNode, resultType) {
       }
     }
   }
-
   function serializeXml(node) {
     if (typeof XMLSerializer != "undefined")
       return (new XMLSerializer()).serializeToString(node) ;
     else if (node.xml) return node.xml;
     else throw "XMLSerializer is not supported or can't serialize " + node;
+  }
+
+
+  function JSONReader()
+  {
+    this.filepath = null;
+    var fileObj = null;
+    var varsets = null;
+    var curVars = null;
+    var varsetIdx = 0;
+
+    this.load = function(filepath)
+    {
+      fileReader = new FileReader();
+      this.filepath = uriFor(filepath);
+      var xmlHttpReq = fileReader.getIncludeDocumentBySynchronRequest(this.filepath);
+      sb.LOG.info("Reading from: " + this.filepath);
+
+      fileObj = xmlHttpReq.responseText;
+      varsets = eval(fileObj);
+      if (varsets == null || varsets.length == 0) {
+        throw new Error("A JSON element could not be loaded, or the file was empty.");
+      }
+
+      curVars = 0;
+      // get variable names from first varset
+      var varnames = [];
+      retrieveVarset(0, varnames);
+      return varnames;
+    };
+
+    this.EOF = function() {
+      return (curVars == null || curVars >= varsets.length);
+    };
+
+    this.next = function()
+    {
+      if (this.EOF()) {
+        sb.LOG.error("No more JSON elements to read after element #" + varsetIdx);
+        return;
+      }
+      varsetIdx++;
+      sb.LOG.debug(varsetIdx + ") " + serializeJson(varsets[curVars]));  // log each name & value
+
+      var expected = countAttrs(varsets[0]);
+      var found = countAttrs(varsets[curVars]);
+      if (found != expected) {
+        throw new Error("Inconsistent JSON at object #" + varsetIdx
+          + "; expected " + expected + " attributes, but found " + found + "."
+          + " Each JSON object must have the same set of attributes."
+        );
+      }
+      retrieveVarset(curVars, storedVars);
+      curVars++;
+    }
+
+    //- determine how many attributes are set on the given obj
+    function countAttrs(obj) {
+      var n = 0;
+      for (var attrName in obj) n++;
+      return n;
+    }
+
+    //- retrieve a varset row into the given object, if an Array return names only
+    function retrieveVarset(n, resultObj) {
+      for (var attrName in varsets[n]) {
+        if (null == varsets[0][attrName]) {
+          throw new Error("Inconsistent <testdata> at <vars> element #" + varsetIdx
+            + "; found attribute " + attrName + ", which does not appear in the first JSON object."
+            + " Each JSON object must have the same set of attributes."
+          );
+        }
+        if (resultObj instanceof Array)
+          resultObj.push(attrName);
+        else
+          resultObj[attrName] = varsets[n][attrName];
+      }
+    }
+  };
+  function serializeJson(obj) {
+    var json = uneval(obj);
+    return json.substring(1, json.length-1);
   }
 
 
@@ -923,19 +1060,19 @@ function $X(xpath, contextNode, resultType) {
 
   FileReader.prototype.getIncludeDocumentBySynchronRequest = function(includeUrl) {
     var url = this.prepareUrl(includeUrl);
-    // the xml http requester to fetch the page to include
     var requester = this.newXMLHttpRequest();
     if (!requester) {
       throw new Error("XMLHttp requester object not initialized");
     }
-    requester.open("GET", url, false); // synchron mode ! (we don't want selenium to go ahead)
+    requester.open("GET", url, false); // synchronous (we don't want selenium to go ahead)
     try {
       requester.send(null);
     } catch(e) {
       throw new Error("Error while fetching url '" + url + "' details: " + e);
     }
-    if ( requester.status != 200 && requester.status !== 0 ) {
-      throw new Error("Error while fetching " + url + " server response has status = " + requester.status + ", " + requester.statusText );
+    if (requester.status != 200 && requester.status !== 0) {
+      throw new Error("Error while fetching " + url
+        + " server response has status = " + requester.status + ", " + requester.statusText );
     }
     return requester;
   };
