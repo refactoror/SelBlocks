@@ -1,0 +1,6 @@
+*/*.svn/*
+*.project
+*.settings
+application.ini
+*/devtime/*
+*/sel-blocks-*.js
