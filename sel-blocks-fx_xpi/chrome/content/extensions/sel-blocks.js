@@ -494,7 +494,7 @@ function $X(xpath, contextNode, resultType) {
   // ================================================================================
   Selenium.prototype.doLoadVars = function(xmlfile, selector)
   {
-    assert(xmlfile, " 'loadVars' requires an XML file path or URI.");
+    assert(xmlfile, " 'loadVars' requires an XML file path or URL.");
     var xmlReader = new XmlReader(xmlfile);
     xmlReader.load(xmlfile);
     xmlReader.next(); // read first <vars> and set values on storedVars
@@ -522,7 +522,7 @@ function $X(xpath, contextNode, resultType) {
   // ================================================================================
   Selenium.prototype.doLoadJsonVars = function(jsonFile, selector)
   {
-    assert(jsonFile, " 'loadJsonVars' requires a JSON file path or URI.");
+    assert(jsonFile, " 'loadJsonVars' requires a JSON file path or URL.");
     var jsonReader = new JSONReader(jsonFile);
     jsonReader.load(jsonFile);
     jsonReader.next(); // read first json object and set values on storedVars
@@ -552,7 +552,7 @@ function $X(xpath, contextNode, resultType) {
   {
     enterLoop(
       function(loop) {  // validate
-          assert(xmlpath, " 'forXml' requires an xml file path or URI.");
+          assert(xmlpath, " 'forXml' requires an xml file path or URL.");
           loop.xmlReader = new XmlReader();
           var localVarNames = loop.xmlReader.load(xmlpath);
           return localVarNames;
@@ -577,7 +577,7 @@ function $X(xpath, contextNode, resultType) {
   {
     enterLoop(
       function(loop) {  // validate
-          assert(jsonpath, " 'forJson' requires a JSON file path or URI.");
+          assert(jsonpath, " 'forJson' requires a JSON file path or URL.");
           loop.jsonReader = new JSONReader();
           var localVarNames = loop.jsonReader.load(jsonpath);
           return localVarNames;
@@ -881,6 +881,8 @@ function $X(xpath, contextNode, resultType) {
   };
 
   // ==================== Data Files ====================
+  // Adapted from the datadriven plugin
+  // http://web.archive.org/web/20120928080130/http://wiki.openqa.org/display/SEL/datadriven
 
   function XmlReader()
   {
@@ -893,9 +895,9 @@ function $X(xpath, contextNode, resultType) {
     this.load = function(filepath)
     {
       var fileReader = new FileReader();
-      var fileUri = uriFor(filepath);
-      var xmlHttpReq = fileReader.getIncludeDocumentBySynchronRequest(fileUri);
-      sb.LOG.info("Reading from: " + fileUri);
+      var fileUrl = urlFor(filepath);
+      var xmlHttpReq = fileReader.getDocumentSynchronous(fileUrl);
+      sb.LOG.info("Reading from: " + fileUrl);
 
       var fileObj = xmlHttpReq.responseXML; // XML DOM
       varsets = fileObj.getElementsByTagName("vars"); // HTMLCollection
@@ -933,9 +935,10 @@ function $X(xpath, contextNode, resultType) {
       curVars++;
     };
 
-    function attrNamesFor(obj) {
+    //- retrieve the names of each attribute on the given XML node
+    function attrNamesFor(node) {
       var attrNames = [];
-      var varAttrs = obj.attributes; // NamedNodeMap
+      var varAttrs = node.attributes; // NamedNodeMap
       for (var v = 0; v < varAttrs.length; v++) {
         attrNames.push(varAttrs[v].nodeName);
       }
@@ -943,12 +946,13 @@ function $X(xpath, contextNode, resultType) {
     }
 
     //- determine how many attributes are present on the given node
-    function countAttrs(obj) {
-      return obj.attributes.length;
+    function countAttrs(node) {
+      return node.attributes.length;
     }
 
-    function setupStoredVars(obj) {
-      var varAttrs = obj.attributes; // NamedNodeMap
+    //- set selenium variables from given XML attributes
+    function setupStoredVars(node) {
+      var varAttrs = node.attributes; // NamedNodeMap
       for (var v = 0; v < varAttrs.length; v++) {
         var attr = varAttrs[v];
         if (null == varsets[0].getAttribute(attr.nodeName)) {
@@ -960,12 +964,14 @@ function $X(xpath, contextNode, resultType) {
         storedVars[attr.nodeName] = attr.nodeValue;
       }
     }
-  }
-  function serializeXml(node) {
-    if (typeof XMLSerializer != "undefined")
-      return (new XMLSerializer()).serializeToString(node) ;
-    else if (node.xml) return node.xml;
-    else throw "XMLSerializer is not supported or can't serialize " + node;
+
+    //- format the given XML node for display
+    function serializeXml(node) {
+      if (typeof XMLSerializer != "undefined")
+        return (new XMLSerializer()).serializeToString(node) ;
+      else if (node.xml) return node.xml;
+      else throw "XMLSerializer is not supported or can't serialize " + node;
+    }
   }
 
 
@@ -980,9 +986,9 @@ function $X(xpath, contextNode, resultType) {
     this.load = function(filepath)
     {
       var fileReader = new FileReader();
-      var fileUri = uriFor(filepath);
-      var xmlHttpReq = fileReader.getIncludeDocumentBySynchronRequest(fileUri);
-      sb.LOG.info("Reading from: " + fileUri);
+      var fileUrl = urlFor(filepath);
+      var xmlHttpReq = fileReader.getDocumentSynchronous(fileUrl);
+      sb.LOG.info("Reading from: " + fileUrl);
 
       var fileObj = xmlHttpReq.responseText;
       varsets = eval(fileObj);
@@ -1020,6 +1026,7 @@ function $X(xpath, contextNode, resultType) {
       curVars++;
     };
 
+    //- retrieve the names of each attribute on the given object
     function attrNamesFor(obj) {
       var attrNames = [];
       for (var attrName in obj)
@@ -1034,6 +1041,7 @@ function $X(xpath, contextNode, resultType) {
       return n;
     }
 
+    //- set selenium variables from given JSON attributes
     function setupStoredVars(obj) {
       for (var attrName in obj) {
         if (null == varsets[0][attrName]) {
@@ -1045,58 +1053,61 @@ function $X(xpath, contextNode, resultType) {
         storedVars[attrName] = obj[attrName];
       }
     }
+
+    //- format the given JSON object for display
+    function serializeJson(obj) {
+      var json = uneval(obj);
+      return json.substring(1, json.length-1);
+    }
   };
-  function serializeJson(obj) {
-    var json = uneval(obj);
-    return json.substring(1, json.length-1);
+
+  function urlFor(filepath) {
+    var URL_PFX = "file://";
+    var url = filepath;
+    if (filepath.substring(0, URL_PFX.length).toLowerCase() != URL_PFX) {
+      testCasePath = testCase.file.path.replace("\\", "/", "g");
+      var i = testCasePath.lastIndexOf("/");
+      url = URL_PFX + testCasePath.substr(0, i) + "/" + filepath;
+    }
+    return url;
   }
 
 
   // ==================== File Reader ====================
-
-  function uriFor(filepath) {
-    var URI_PFX = "file://";
-    var uri = filepath;
-    if (filepath.substring(0, URI_PFX.length).toLowerCase() != URI_PFX) {
-      testCasePath = testCase.file.path.replace("\\", "/", "g");
-      var i = testCasePath.lastIndexOf("/");
-      uri = URI_PFX + testCasePath.substr(0, i) + "/" + filepath;
-    }
-    return uri;
-  }
+  // Adapted from the include4ide plugin
 
   function FileReader() {}
 
-  FileReader.prototype.getIncludeDocumentBySynchronRequest = function(includeUrl) {
-    var url = this.prepareUrl(includeUrl);
+  FileReader.prototype.prepareUrl = function(url) {
+    var absUrl;
+    // htmlSuite mode of SRC? TODO is there a better way to decide whether in SRC mode?
+    if (window.location.href.indexOf("selenium-server") >= 0) {
+      sb.LOG.debug("FileReader() is running in SRC mode");
+      absUrl = absolutify(url, htmlTestRunner.controlPanel.getTestSuiteName());
+    } else {
+      absUrl = absolutify(url, selenium.browserbot.baseUrl);
+    }
+    sb.LOG.debug("FileReader() using URL to get file '" + absUrl + "'");
+    return absUrl;
+  };
+
+  FileReader.prototype.getDocumentSynchronous = function(url) {
+    var absUrl = this.prepareUrl(url);
     var requester = this.newXMLHttpRequest();
     if (!requester) {
       throw new Error("XMLHttp requester object not initialized");
     }
-    requester.open("GET", url, false); // synchronous (we don't want selenium to go ahead)
+    requester.open("GET", absUrl, false); // synchronous (we don't want selenium to go ahead)
     try {
       requester.send(null);
     } catch(e) {
-      throw new Error("Error while fetching url '" + url + "' details: " + e);
+      throw new Error("Error while fetching URL '" + absUrl + "':: " + e);
     }
     if (requester.status != 200 && requester.status !== 0) {
-      throw new Error("Error while fetching " + url
+      throw new Error("Error while fetching " + absUrl
         + " server response has status = " + requester.status + ", " + requester.statusText );
     }
     return requester;
-  };
-
-  FileReader.prototype.prepareUrl = function(includeUrl) {
-    var prepareUrl;
-    // htmlSuite mode of SRC? TODO is there a better way to decide whether in SRC mode?
-    if (window.location.href.indexOf("selenium-server") >= 0) {
-      sb.LOG.debug(FileReader.LOG_PREFIX + "we seem to run in SRC, do we?");
-      preparedUrl = absolutify(includeUrl, htmlTestRunner.controlPanel.getTestSuiteName());
-    } else {
-      preparedUrl = absolutify(includeUrl, selenium.browserbot.baseUrl);
-    }
-    sb.LOG.debug(FileReader.LOG_PREFIX + "using url to get include '" + preparedUrl + "'");
-    return preparedUrl;
   };
 
   FileReader.prototype.newXMLHttpRequest = function() {
@@ -1105,12 +1116,8 @@ function $X(xpath, contextNode, resultType) {
     try {
       // for IE/ActiveX
       if (window.ActiveXObject) {
-        try {
-          requester = new ActiveXObject("Msxml2.XMLHTTP");
-        }
-        catch(e) {
-          requester = new ActiveXObject("Microsoft.XMLHTTP");
-        }
+        try {      requester = new ActiveXObject("Msxml2.XMLHTTP"); }
+        catch(e) { requester = new ActiveXObject("Microsoft.XMLHTTP"); }
       }
       // Native XMLHttp
       else if (window.XMLHttpRequest) {
@@ -1118,7 +1125,7 @@ function $X(xpath, contextNode, resultType) {
       }
     }
     catch(e) {
-      throw new Error("Your browser has to support XMLHttpRequest in order to use include \n" + e);
+      throw new Error("Your browser has to support XMLHttpRequest in order to read data files\n" + e);
     }
     return requester;
   };
