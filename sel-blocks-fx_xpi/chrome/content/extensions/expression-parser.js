@@ -4,6 +4,7 @@ sb.InfixExpressionParser =
 {
   _objname : "InfixExpressionParser"
   ,BRACKET_PAIRS : { "(": ")", "{": "}", "[": "]" }
+  ,trimListValues : true
 
   //- Parse a string into a list on the given delimiter character,
   // respecting embedded quotes and brackets
@@ -18,7 +19,10 @@ sb.InfixExpressionParser =
           throw new Error("Unbalanced expression grouping at: " + str.substr(prev));
       }
       else {
-        values.push(str.substring(prev, cur));
+        var value = str.substring(prev, cur);
+        if (this.trimListValues)
+          value = value.trim()
+        values.push(value);
         prev = cur + 1;
       }
       cur++;
