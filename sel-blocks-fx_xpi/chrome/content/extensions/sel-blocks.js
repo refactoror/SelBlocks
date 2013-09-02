@@ -35,11 +35,12 @@
  *  - try/catch
  *  - switch/case
  *  - exitTest
- *  - enforce block boundaries (jumping in/out of middle of blocks)
+ *  - enforce block boundaries (jumping in-to/out-of the middle of blocks)
  *
  * Changes since 1.3.1:
- *  - Variable and parameter names are validated for alphanumeric conventions
+ *  - New commands: loadJsonVars & forJson
  *  - Expression parsing is more robust, specifically for & call list values
+ *  - Variable and parameter names are validated for alphanumeric conventions
  *  - Selblocks logging now identifies itself with the prefix [Selblocks]
  *  - Internal functions & vars no longer pollute the global Javascript name space
  *
@@ -80,7 +81,6 @@ function $X(xpath, contextNode, resultType) {
     nodes = sbx.selectElements(selenium.browserbot, doc, xpath, contextNode);
   return nodes;
 }
-
 
 (function(){
 
