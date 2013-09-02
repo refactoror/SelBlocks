@@ -4,61 +4,73 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
-<title>foreach-xpath</title>
+<title>exitTest</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">foreachX</td></tr>
+<tr><td rowspan="1" colspan="3">exitTest</td></tr>
 </thead><tbody>
 <tr>
-	<td>echo</td>
-	<td>$x(&quot;//input&quot;)</td>
-	<td></td>
-</tr>
-<tr>
-	<td>echo</td>
-	<td>$X(&quot;//input&quot;)</td>
-	<td></td>
-</tr>
-<tr>
-	<td>echo</td>
-	<td>begin</td>
-	<td></td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;START ${_i}) ${link}&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>foreach</td>
-	<td>link</td>
-	<td>$X(&quot;//input&quot;)</td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;${_i}) ${link}&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>echo</td>
-	<td>${link}</td>
-	<td></td>
-</tr>
-<tr>
-	<td>endForeach</td>
+	<td>exitTest</td>
 	<td></td>
 	<td></td>
 </tr>
 <tr>
-	<td>emit</td>
-	<td>&quot;END ${_i}) ${link}&quot;</td>
+	<td>getEval</td>
+	<td>throw new Error(&quot;shouldn't happen&quot;)</td>
+	<td></td>
+</tr>
+<!---- from loop-->
+<tr>
+	<td>for</td>
+	<td>i=0; i &lt; 5; i++</td>
+	<td>f</td>
+</tr>
+<tr>
+	<td>if</td>
+	<td>i == 3</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertEmitted</td>
-	<td>&quot;START ${&quot; + &quot;_i}) ${&quot; + &quot;link}~0) [object HTMLInputElement]~1) [object HTMLInputElement]~2) [object HTMLInputElement]~END ${&quot; + &quot;_i}) ${&quot; + &quot;link}&quot;</td>
+	<td>exitTest</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+</tr>
+<!---- from script-->
+<tr>
+	<td>call</td>
+	<td>doSubExit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>throw new Error(&quot;shouldn't happen&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>script</td>
+	<td>doSubExit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>exitTest</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>endScript</td>
+	<td>doSubExit</td>
 	<td></td>
 </tr>
 </tbody></table>

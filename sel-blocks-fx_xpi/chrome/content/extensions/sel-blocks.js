@@ -1,16 +1,16 @@
-/**
- * SelBlocks 1.5-b1
+/*
+ * SelBlocks 1.5
  *
  * Provides commands for Javascript-like looping and callable functions,
- *   with scoped variables, and XML driven parameterization.
+ *   with scoped variables, and JSON/XML driven parameterization.
  *
  * (Selbock installs as a Core Extension, not an IDE Extension, because it manipulates the Selenium object)
  *
- * Features:
- *  - Commands: if/else, loadVars/loadJsonVars, forXml/forJson, foreach, for, while, call/script/return
+ * Features
+ *  - Commands: if/else, loadJsonVars/loadXmlVars, forJson/forXml, foreach/for/while, call/script/return
  *  - Script and loop parameters create regular Selenium variables that are local to the block,
  *    overriding variables of the same name, and that are restored when the block exits.
- *  - Variables can be set via external XML/JSON data file(s).
+ *  - Variables can be set via external JSON/XML data file(s).
  *  - Command parameters are Javascript expressions that are evaluated with the Selenium
  *    variables in scope, which can therefore be referenced by their simple names, e.g.: i+1
  *  - A script definition can appear anywhere; they are skipped over in normal execution flow.
@@ -19,6 +19,7 @@
  * Concept of operation:
  *  - selenium.reset() is intercepted to initialize the block structures.
  *  - testCase.nextCommand() is overridden for flow branching.
+ *  - TestLoop.resume() is overridden by exitTest.
  *  - The static structure of commands & blocks is stored in cmdAttrs[] by command index, (ie, script line number).
  *  - The execution state of blocks is pushed onto cmdStack, with a separate instance for each callStack frame.
  *
@@ -34,14 +35,14 @@
  * Wishlist:
  *  - try/catch
  *  - switch/case
- *  - exitTest
+ *  - validation of JSON & XML input files
  *  - enforce block boundaries (jumping in-to/out-of the middle of blocks)
  *
  * Changes since 1.3.1:
- *  - New commands: loadJsonVars & forJson
- *  - Expression parsing is more robust, specifically for & call list values
+ *  - New commands: loadJsonVars, forJson, and exitTest
+ *  - Expression parsing is more robust, for & call list parameters in particular
  *  - Variable and parameter names are validated for alphanumeric conventions
- *  - Selblocks logging now identifies itself with the prefix [Selblocks]
+ *  - Logging identifies itself with the prefix [Selblocks]
  *  - Internal functions & vars no longer pollute the global Javascript name space
  *
  * NOTE - The Stored Variables Viewer addon will display the values of Selblocks parameters,
@@ -57,7 +58,7 @@
 // Find an element via locator independent of any selenium commands
 // (findElementOrNull returns the first if there are multiple matches)
 function $e(locator) {
-  return sb.unwrapObject(selenium.browserbot.findElementOrNull(locator));
+  return selblocks.unwrapObject(selenium.browserbot.findElementOrNull(locator));
 }
 
 // Return the singular XPath result as a value of the appropriate type
@@ -65,9 +66,9 @@ function $x(xpath, contextNode, resultType) {
   var doc = selenium.browserbot.getDocument();
   var node;
   if (resultType)
-    node = sbx.selectNode(doc, xpath, contextNode, resultType); // mozilla engine only
+    node = selblocks.xp.selectNode(doc, xpath, contextNode, resultType); // mozilla engine only
   else
-    node = sbx.selectElement(selenium.browserbot, doc, xpath, contextNode);
+    node = selblocks.xp.selectElement(doc, xpath, contextNode);
   return node;
 }
 
@@ -76,13 +77,14 @@ function $X(xpath, contextNode, resultType) {
   var doc = selenium.browserbot.getDocument();
   var nodes;
   if (resultType)
-    nodes = sbx.selectNodes(doc, xpath, contextNode, resultType); // mozilla engine only
+    nodes = selblocks.xp.selectNodes(doc, xpath, contextNode, resultType); // mozilla engine only
   else
-    nodes = sbx.selectElements(selenium.browserbot, doc, xpath, contextNode);
+    nodes = selblocks.xp.selectElements(doc, xpath, contextNode);
   return nodes;
 }
 
-(function(){
+// selbocks name-space
+(function(_){
 
   // =============== Javascript extensions as script helpers ===============
 
@@ -137,7 +139,7 @@ function $X(xpath, contextNode, resultType) {
     cmds.here = function() {
       var curIdx = hereIdx();
       if (!cmds[curIdx])
-        sb.LOG.warn("No cmdAttrs defined curIdx=" + curIdx);
+        _.LOG.warn("No cmdAttrs defined curIdx=" + curIdx);
       return cmds[curIdx];
     };
     return cmds;
@@ -184,7 +186,7 @@ function $X(xpath, contextNode, resultType) {
     }
     else {
       if (branchIdx != null) {
-        sb.LOG.info("branch => " + fmtCmdRef(branchIdx));
+        _.LOG.info("branch => " + fmtCmdRef(branchIdx));
         this.debugIndex = branchIdx;
         branchIdx = null;
       }
@@ -213,7 +215,7 @@ function $X(xpath, contextNode, resultType) {
     Selenium.prototype.reset = function() {// this: selenium
       // called before each: execute a single command / run a testcase / run each testcase in a testsuite
       orig_reset.call(this);
-      sb.LOG.trace("In tail intercept :: selenium.reset()");
+      _.LOG.trace("In tail intercept :: selenium.reset()");
 
       // TBD: skip during single command execution
       try {
@@ -228,7 +230,7 @@ function $X(xpath, contextNode, resultType) {
       // custom flow control logic
       // this is called before: execute a single command / run a testcase / run each testcase in a testsuite
       // TBD: this should be a tail intercept rather than brute force replace
-      sb.LOG.debug("Configuring tail intercept: testCase.debugContext.nextCommand()");
+      _.LOG.debug("Configuring tail intercept: testCase.debugContext.nextCommand()");
       testCase.debugContext.nextCommand = nextCommand;
     };
   })();
@@ -284,7 +286,7 @@ function $X(xpath, contextNode, resultType) {
               cmdAttrs[ifAttrs.elseIdx].endIdx = i;   // else -> endif
             break;
 
-        case "while":    case "for":    case "foreach":    case "forXml":    case "forJson":
+          case "while":    case "for":    case "foreach":    case "forJson":    case "forXml":
             assertNotAndWaitSuffix(i);
             lexStack.push(cmdAttrs.init(i, { blockNature: "loop" }));
             break;
@@ -293,7 +295,7 @@ function $X(xpath, contextNode, resultType) {
             assertCmd(i, lexStack.find(Stack.isLoopBlock), ", is not valid outside of a loop");
             cmdAttrs.init(i, { hdrIdx: lexStack.top().idx }); // -> header
             break;
-        case "endWhile": case "endFor": case "endForeach": case "endForXml": case "endForJson":
+          case "endWhile": case "endFor": case "endForeach": case "endForJson": case "endForXml":
             assertNotAndWaitSuffix(i);
             var expectedCmd = curCmd.substr(3).toLowerCase();
             assertBlockIsPending(expectedCmd, i);
@@ -303,7 +305,7 @@ function $X(xpath, contextNode, resultType) {
             cmdAttrs.init(i, { hdrIdx: hdrAttrs.idx }); // footer -> header
             break;
 
-        case "loadVars": case "loadJsonVars":
+          case "loadJsonVars": case "loadXmlVars":
             assertNotAndWaitSuffix(i);
             break;
 
@@ -331,6 +333,10 @@ function $X(xpath, contextNode, resultType) {
               assertMatching(scrAttrs.name, cmdTarget, i, scrAttrs.idx); // match-up on script name
             cmdAttrs[scrAttrs.idx].endIdx = i;          // script -> endscript
             cmdAttrs.init(i, { scrIdx: scrAttrs.idx }); // endScript -> script
+            break;
+
+          case "exitTest":
+            assertNotAndWaitSuffix(i);
             break;
           default:
         }
@@ -360,7 +366,7 @@ function $X(xpath, contextNode, resultType) {
   // ==================== Selblocks Commands (Custom Selenium Actions) ====================
 
   var commandNames = [];
-  var iexpr = Object.create(sb.InfixExpressionParser);
+  var iexpr = Object.create(_.InfixExpressionParser);
 
   // validate variable/parameter names
   function validateNames(names, desc) {
@@ -385,8 +391,13 @@ function $X(xpath, contextNode, resultType) {
   {
     assertRunning();
     var n = parseInt(evalWithVars(spec), 10);
-    if (isNaN(n))
-      n = 1;
+    if (isNaN(n)) {
+      if (spec.trim() == "") n = 1
+      else notifyFatalHere(" Requires a numeric value");
+    }
+    else if (n < 0)
+      notifyFatalHere(" Requires a number > 1");
+
     if (n != 0) // if n=0, execute the next command as usual
       setNextCommand(testCase.debugContext.debugIndex + n + 1);
   };
@@ -509,67 +520,79 @@ function $X(xpath, contextNode, resultType) {
   };
 
   // ================================================================================
-  Selenium.prototype.doLoadVars = function(xmlfile, selector)
+  Selenium.prototype.doLoadJsonVars = function(filepath, selector)
   {
-    assert(xmlfile, " 'loadVars' requires an XML file path or URL.");
-    var xmlReader = new XmlReader(xmlfile);
-    xmlReader.load(xmlfile);
-    xmlReader.next(); // read first <vars> and set values on storedVars
-    if (!selector && !xmlReader.EOF())
-      notifyFatal("Multiple var sets not valid for 'loadVars'."
-        + ' (A specific var set can be selected: name="value".)');
-
-    var result = evalWithVars(selector);
-    if (typeof result != "boolean")
-      sb.LOG.warn(fmtCmdRef(hereIdx()) + ", " + selector + " is not a boolean expression");
-
-    // read until specified set found
-    var isEof = xmlReader.EOF();
-    while (!isEof && evalWithVars(selector) != true) {
-      xmlReader.next(); // read next <vars> and set values on storedVars
-      isEof = xmlReader.EOF();
-    }
-
-    if (!evalWithVars(selector))
-      notifyFatal("<vars> element not found for selector expression: " + selector
-        + "; in XML input file " + xmlReader.xmlFilepath);
+    assert(filepath, " Requires a JSON file path or URL.");
+    var jsonReader = new JSONReader(filepath);
+    loadVars(jsonReader, "JSON object", filepath, selector);
+  };
+  Selenium.prototype.doLoadXmlVars = function(filepath, selector)
+  {
+    assert(filepath, " Requires an XML file path or URL.");
+    var xmlReader = new XmlReader(filepath);
+    loadVars(xmlReader, "XML element", filepath, selector);
+  };
+  // deprecated command
+  Selenium.prototype.doLoadVars = function(filepath, selector)
+  {
+    _.LOG.warn("The loadVars command has been deprecated and will be removed in future releases."
+      + " Use doLoadXmlVars instead.");
+    Selenium.prototype.doLoadXmlVars(filepath, selector);
   };
 
-
-  // ================================================================================
-  Selenium.prototype.doLoadJsonVars = function(jsonFile, selector)
+  function loadVars(reader, desc, filepath, selector)
   {
-    assert(jsonFile, " 'loadJsonVars' requires a JSON file path or URL.");
-    var jsonReader = new JSONReader(jsonFile);
-    jsonReader.load(jsonFile);
-    jsonReader.next(); // read first json object and set values on storedVars
-    if (!selector && !jsonReader.EOF())
-      notifyFatal("Multiple json objects not valid for 'loadJsonVars'."
-        + ' (A specific object can be selected: name="value".)');
+    reader.load(filepath);
+    reader.next(); // read first varset and set values on storedVars
+    if (!selector && !reader.EOF())
+      notifyFatalHere(" Multiple " + desc + "s are not valid for this command."
+        + ' (A specific ' + desc + ' can be selected by specifying: name="value".)');
 
     var result = evalWithVars(selector);
     if (typeof result != "boolean")
-      sb.LOG.warn(fmtCmdRef(hereIdx()) + ", " + selector + " is not a boolean expression");
+      notifyFatalHere(", " + selector + " is not a boolean expression");
 
     // read until specified set found
-    var isEof = jsonReader.EOF();
+    var isEof = reader.EOF();
     while (!isEof && evalWithVars(selector) != true) {
-      jsonReader.next(); // read next json object and set values on storedVars
-      isEof = jsonReader.EOF();
+      reader.next(); // read next varset and set values on storedVars
+      isEof = reader.EOF();
     } 
 
     if (!evalWithVars(selector))
-      notifyFatal("JSON element not found for selector expression: " + selector
-        + "; in JSON input file " + jsonReader.jsonFilepath);
+      notifyFatalHere(desc + " not found for selector expression: " + selector
+        + "; in input file " + filepath);
   };
 
 
   // ================================================================================
+  Selenium.prototype.doForJson = function(jsonpath)
+  {
+    enterLoop(
+      function(loop) {  // validate
+          assert(jsonpath, " Requires a JSON file path or URL.");
+          loop.jsonReader = new JSONReader();
+          var localVarNames = loop.jsonReader.load(jsonpath);
+          return localVarNames;
+      }
+      ,function() { }   // initialize
+      ,function(loop) { // continue?
+          var isEof = loop.jsonReader.EOF();
+          if (!isEof) loop.jsonReader.next();
+          return !isEof;
+      }
+      ,function() { }
+    );
+  };
+  Selenium.prototype.doEndForJson = function() {
+    iterateLoop();
+  };
+
   Selenium.prototype.doForXml = function(xmlpath)
   {
     enterLoop(
       function(loop) {  // validate
-          assert(xmlpath, " 'forXml' requires an xml file path or URL.");
+          assert(xmlpath, " 'forXml' requires an XML file path or URL.");
           loop.xmlReader = new XmlReader();
           var localVarNames = loop.xmlReader.load(xmlpath);
           return localVarNames;
@@ -587,30 +610,6 @@ function $X(xpath, contextNode, resultType) {
     iterateLoop();
   };
 
-
-
-  // ================================================================================
-  Selenium.prototype.doForJson = function(jsonpath)
-  {
-    enterLoop(
-      function(loop) {  // validate
-          assert(jsonpath, " 'forJson' requires a JSON file path or URL.");
-          loop.jsonReader = new JSONReader();
-          var localVarNames = loop.jsonReader.load(jsonpath);
-          return localVarNames;
-      }
-      ,function() { }   // initialize
-      ,function(loop) { // continue?
-          var isEof = loop.jsonReader.EOF();
-          if (!isEof) loop.jsonReader.next();
-          return !isEof;
-      }
-      ,function() { }
-    );
-  };
-  Selenium.prototype.doEndForJson = function() {
-    iterateLoop();
-  };
 
 
   // --------------------------------------------------------------------------------
@@ -755,6 +754,13 @@ function $X(xpath, contextNode, resultType) {
   }
 
 
+  // ================================================================================
+  Selenium.prototype.doExitTest = function(target) {
+    // intercept command processing and simply stop test execution instead of executing the next command
+    _.pushFn(editor.selDebugger.runner.IDETestLoop.prototype, "resume", _.handleAsExitTest);
+  };
+
+
   // ========= storedVars management =========
 
   function evalWithVars(expr) {
@@ -822,14 +828,14 @@ function $X(xpath, contextNode, resultType) {
 
   // TBD: make into throwable Errors
   function notifyFatalErr(msg, err) {
-    sb.LOG.error("Error " + msg);
-    sb.LOG.logStackTrace(err);
+    _.LOG.error("Error " + msg);
+    _.LOG.logStackTrace(err);
     throw err;
   }
   function notifyFatal(msg) {
     var err = new Error(msg);
-    sb.LOG.error("Error " + msg);
-    sb.LOG.logStackTrace(err);
+    _.LOG.error("Error " + msg);
+    _.LOG.logStackTrace(err);
     throw err;
   }
   function notifyFatalCmdRef(idx, msg) { notifyFatal(fmtCmdRef(idx) + msg); }
@@ -915,7 +921,7 @@ function $X(xpath, contextNode, resultType) {
       var fileReader = new FileReader();
       var fileUrl = urlFor(filepath);
       var xmlHttpReq = fileReader.getDocumentSynchronous(fileUrl);
-      sb.LOG.info("Reading from: " + fileUrl);
+      _.LOG.info("Reading from: " + fileUrl);
 
       var fileObj = xmlHttpReq.responseXML; // XML DOM
       varsets = fileObj.getElementsByTagName("vars"); // HTMLCollection
@@ -935,11 +941,11 @@ function $X(xpath, contextNode, resultType) {
     this.next = function()
     {
       if (this.EOF()) {
-        sb.LOG.error("No more <vars> elements to read after element #" + varsetIdx);
+        _.LOG.error("No more <vars> elements to read after element #" + varsetIdx);
         return;
       }
       varsetIdx++;
-      sb.LOG.debug(varsetIdx + ") " + serializeXml(varsets[curVars]));  // log each name & value
+      _.LOG.debug(varsetIdx + ") " + serializeXml(varsets[curVars]));  // log each name & value
 
       var expected = countAttrs(varsets[0]);
       var found = countAttrs(varsets[curVars]);
@@ -1006,7 +1012,7 @@ function $X(xpath, contextNode, resultType) {
       var fileReader = new FileReader();
       var fileUrl = urlFor(filepath);
       var xmlHttpReq = fileReader.getDocumentSynchronous(fileUrl);
-      sb.LOG.info("Reading from: " + fileUrl);
+      _.LOG.info("Reading from: " + fileUrl);
 
       var fileObj = xmlHttpReq.responseText;
       varsets = eval(fileObj);
@@ -1026,11 +1032,11 @@ function $X(xpath, contextNode, resultType) {
     this.next = function()
     {
       if (this.EOF()) {
-        sb.LOG.error("No more JSON objects to read after object #" + varsetIdx);
+        _.LOG.error("No more JSON objects to read after object #" + varsetIdx);
         return;
       }
       varsetIdx++;
-      sb.LOG.debug(varsetIdx + ") " + serializeJson(varsets[curVars]));  // log each name & value
+      _.LOG.debug(varsetIdx + ") " + serializeJson(varsets[curVars]));  // log each name & value
 
       var expected = countAttrs(varsets[0]);
       var found = countAttrs(varsets[curVars]);
@@ -1100,12 +1106,12 @@ function $X(xpath, contextNode, resultType) {
     var absUrl;
     // htmlSuite mode of SRC? TODO is there a better way to decide whether in SRC mode?
     if (window.location.href.indexOf("selenium-server") >= 0) {
-      sb.LOG.debug("FileReader() is running in SRC mode");
+      _.LOG.debug("FileReader() is running in SRC mode");
       absUrl = absolutify(url, htmlTestRunner.controlPanel.getTestSuiteName());
     } else {
       absUrl = absolutify(url, selenium.browserbot.baseUrl);
     }
-    sb.LOG.debug("FileReader() using URL to get file '" + absUrl + "'");
+    _.LOG.debug("FileReader() using URL to get file '" + absUrl + "'");
     return absUrl;
   };
 
@@ -1148,4 +1154,4 @@ function $X(xpath, contextNode, resultType) {
     return requester;
   };
 
-}());
+}(selblocks));

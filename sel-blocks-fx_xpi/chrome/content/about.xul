@@ -12,7 +12,7 @@
     <hbox>
       <image src="/skin/leftbracket.png" />
       <vbox>
-        <text value="Selblocks 1.3.?" style="font-weight: bold; font-size: medium;" />
+        <text value="Selblocks 1.5" style="font-weight: bold; font-size: medium;" />
         <text value="for Selenium IDE" style="font-weight: bold; font-size: small;" />
       </vbox>
       <image src="/skin/rightbracket.png" />
