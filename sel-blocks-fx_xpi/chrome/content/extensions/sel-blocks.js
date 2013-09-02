@@ -1,5 +1,5 @@
 /**
- * SelBlocks 1.5
+ * SelBlocks 1.5-b1
  *
  * Provides commands for Javascript-like looping and callable functions,
  *   with scoped variables, and XML driven parameterization.
