@@ -8,9 +8,9 @@
  *
  * Features:
  *  - Commands: if/else, loadVars/loadJsonVars, forXml/forJson, foreach, for, while, call/script/return
- *  - Script and loop parameters use regular Selenium variables that are local to the block,
+ *  - Script and loop parameters create regular Selenium variables that are local to the block,
  *    overriding variables of the same name, and that are restored when the block exits.
- *  - Variables can be set via external XML file(s).
+ *  - Variables can be set via external XML/JSON data file(s).
  *  - Command parameters are Javascript expressions that are evaluated with the Selenium
  *    variables in scope, which can therefore be referenced by their simple names, e.g.: i+1
  *  - A script definition can appear anywhere; they are skipped over in normal execution flow.
@@ -23,7 +23,7 @@
  *  - The execution state of blocks is pushed onto cmdStack, with a separate instance for each callStack frame.
  *
  * Limitations:
- *  - Incompatible with flowControl (and derivatives), because that unilaterally overrides selenium.reset().
+ *  - Incompatible with flowControl (and derivatives), because they unilaterally override selenium.reset().
  *    Known to have this issue:
  *      selenium_ide__flow_control-1.0.1-fx.xpi
  *      goto_while_for_ide.js
@@ -32,15 +32,16 @@
  *  SelBlocks reuses bits & parts of extensions: flowControl, datadriven, and include.
  *
  * Wishlist:
- *  - better param parsing (commas)
  *  - try/catch
  *  - switch/case
  *  - exitTest
  *  - enforce block boundaries (jumping in/out of middle of blocks)
  *
  * Changes since 1.3.1:
- *  - expression parsing is now more robust, specifically for & call list values
+ *  - Variable and parameter names are validated for alphanumeric conventions
+ *  - Expression parsing is more robust, specifically for & call list values
  *  - Selblocks logging now identifies itself with the prefix [Selblocks]
+ *  - Internal functions & vars no longer pollute the global Javascript name space
  *
  * NOTE - The Stored Variables Viewer addon will display the values of Selblocks parameters,
  *   because they are implemented as regular Selenium variables.
