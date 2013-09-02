@@ -1,16 +1,16 @@
 /**
- * SelBlocks 1.5-b1
+ * SelBlocks 1.5
  *
  * Provides commands for Javascript-like looping and callable functions,
  *   with scoped variables, and XML driven parameterization.
  *
  * (Selbock installs as a Core Extension, not an IDE Extension, because it manipulates the Selenium object)
  *
- * Features:
- *  - Commands: if/else, loadVars/loadJsonVars, forXml/forJson, foreach, for, while, call/script/return
+ * Features
+ *  - Commands: if/else, loadJsonVars/loadXmlVars, forJson/forXml, foreach, for, while, call/script/return
  *  - Script and loop parameters create regular Selenium variables that are local to the block,
  *    overriding variables of the same name, and that are restored when the block exits.
- *  - Variables can be set via external XML/JSON data file(s).
+ *  - Variables can be set via external JSON/XML data file(s).
  *  - Command parameters are Javascript expressions that are evaluated with the Selenium
  *    variables in scope, which can therefore be referenced by their simple names, e.g.: i+1
  *  - A script definition can appear anywhere; they are skipped over in normal execution flow.
@@ -284,7 +284,7 @@ function $X(xpath, contextNode, resultType) {
               cmdAttrs[ifAttrs.elseIdx].endIdx = i;   // else -> endif
             break;
 
-        case "while":    case "for":    case "foreach":    case "forXml":    case "forJson":
+          case "while":    case "for":    case "foreach":    case "forJson":    case "forXml":
             assertNotAndWaitSuffix(i);
             lexStack.push(cmdAttrs.init(i, { blockNature: "loop" }));
             break;
@@ -293,7 +293,7 @@ function $X(xpath, contextNode, resultType) {
             assertCmd(i, lexStack.find(Stack.isLoopBlock), ", is not valid outside of a loop");
             cmdAttrs.init(i, { hdrIdx: lexStack.top().idx }); // -> header
             break;
-        case "endWhile": case "endFor": case "endForeach": case "endForXml": case "endForJson":
+          case "endWhile": case "endFor": case "endForeach": case "endForJson": case "endForXml":
             assertNotAndWaitSuffix(i);
             var expectedCmd = curCmd.substr(3).toLowerCase();
             assertBlockIsPending(expectedCmd, i);
@@ -303,7 +303,7 @@ function $X(xpath, contextNode, resultType) {
             cmdAttrs.init(i, { hdrIdx: hdrAttrs.idx }); // footer -> header
             break;
 
-        case "loadVars": case "loadJsonVars":
+          case "loadJsonVars": case "loadXmlVars":
             assertNotAndWaitSuffix(i);
             break;
 
@@ -509,7 +509,7 @@ function $X(xpath, contextNode, resultType) {
   };
 
   // ================================================================================
-  Selenium.prototype.doLoadVars = function(xmlfile, selector)
+  Selenium.prototype.doLoadXmlVars = function(xmlfile, selector)
   {
     assert(xmlfile, " 'loadVars' requires an XML file path or URL.");
     var xmlReader = new XmlReader(xmlfile);
@@ -533,6 +533,13 @@ function $X(xpath, contextNode, resultType) {
     if (!evalWithVars(selector))
       notifyFatal("<vars> element not found for selector expression: " + selector
         + "; in XML input file " + xmlReader.xmlFilepath);
+  };
+  // deprecated command
+  Selenium.prototype.doLoadVars = function(xmlfile, selector)
+  {
+    sb.LOG.warn("The loadVars command has been deprecated and will be removed in future releases."
+      + " Use doLoadXmlVars instead.");
+    Selenium.prototype.doLoadXmlVars(xmlfile, selector);
   };
 
 
