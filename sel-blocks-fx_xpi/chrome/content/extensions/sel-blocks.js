@@ -175,7 +175,7 @@ function $X(xpath, contextNode, resultType) {
   // preceding the destination would falsely get marked as successfully executed
   var branchIdx = null;
   // TBD: this needs to be revisited if testCase.nextCommand() ever changes
-  // (current as of: selenium-ide-1.1.0)
+  // (current as of: selenium-ide-2.2.0)
   function nextCommand() {
     if (!this.started) {
       this.started = true;
@@ -361,6 +361,19 @@ function $X(xpath, contextNode, resultType) {
   var commandNames = [];
   var iexpr = Object.create(sb.InfixExpressionParser);
 
+  // validate variable/parameter names
+  function validateNames(names, desc) {
+    for (var i = 0; i < names.length; i++) {
+      validateName(names[i], desc);
+    }
+  }
+  function validateName(name, desc) {
+    var match = name.match(/^[a-zA-Z]\w*$/);
+    if (!match) {
+      notifyFatal("Invalid character(s) in " + desc + " name: '" + name + "'");
+    }
+  }
+
   Selenium.prototype.doLabel = function() {
     // noop
   };
@@ -454,7 +467,10 @@ function $X(xpath, contextNode, resultType) {
           loop.condExpr = specs[1];
           loop.iterStmt = specs[2];
           var localVarNames = [];
-          if (localVarsSpec) localVarNames = iexpr.splitList(localVarsSpec, ","); // TBD: validate name chars
+          if (localVarsSpec) {
+            localVarNames = iexpr.splitList(localVarsSpec, ",");
+            validateNames(localVarNames, "variable");
+          }
           return localVarNames;
       }
       ,function(loop) { evalWithVars(loop.initStmt); }          // initialize
@@ -758,6 +774,7 @@ function $X(xpath, contextNode, resultType) {
     var parms = iexpr.splitList(argSpec, ",");
     for (var i = 0; i < parms.length; i++) {
       var keyValue = iexpr.splitList(parms[i], "=");
+      validateName(keyValue[0], "parameter");
       args[keyValue[0]] = evalWithVars(keyValue[1]);
     }
     return args;
@@ -1059,7 +1076,7 @@ function $X(xpath, contextNode, resultType) {
       var json = uneval(obj);
       return json.substring(1, json.length-1);
     }
-  };
+  }
 
   function urlFor(filepath) {
     var URL_PFX = "file://";
