@@ -35,6 +35,7 @@
  *  - try/catch
  *  - switch/case
  *  - exitTest
+ *  - validation of JSON & XML input files
  *  - enforce block boundaries (jumping in-to/out-of the middle of blocks)
  *
  * Changes since 1.3.1:
@@ -82,6 +83,7 @@ function $X(xpath, contextNode, resultType) {
   return nodes;
 }
 
+// protected name space
 (function(){
 
   // =============== Javascript extensions as script helpers ===============
