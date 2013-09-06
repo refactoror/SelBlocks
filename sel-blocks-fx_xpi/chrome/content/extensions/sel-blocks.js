@@ -1,4 +1,4 @@
-/**
+/*
  * SelBlocks 1.5
  *
  * Provides commands for Javascript-like looping and callable functions,
@@ -58,7 +58,7 @@
 // Find an element via locator independent of any selenium commands
 // (findElementOrNull returns the first if there are multiple matches)
 function $e(locator) {
-  return sb.unwrapObject(selenium.browserbot.findElementOrNull(locator));
+  return selblocks.unwrapObject(selenium.browserbot.findElementOrNull(locator));
 }
 
 // Return the singular XPath result as a value of the appropriate type
@@ -66,9 +66,9 @@ function $x(xpath, contextNode, resultType) {
   var doc = selenium.browserbot.getDocument();
   var node;
   if (resultType)
-    node = sbx.selectNode(doc, xpath, contextNode, resultType); // mozilla engine only
+    node = selblocks.sbx.selectNode(doc, xpath, contextNode, resultType); // mozilla engine only
   else
-    node = sbx.selectElement(selenium.browserbot, doc, xpath, contextNode);
+    node = selblocks.sbx.selectElement(selenium.browserbot, doc, xpath, contextNode);
   return node;
 }
 
@@ -77,14 +77,14 @@ function $X(xpath, contextNode, resultType) {
   var doc = selenium.browserbot.getDocument();
   var nodes;
   if (resultType)
-    nodes = sbx.selectNodes(doc, xpath, contextNode, resultType); // mozilla engine only
+    nodes = selblocks.sbx.selectNodes(doc, xpath, contextNode, resultType); // mozilla engine only
   else
-    nodes = sbx.selectElements(selenium.browserbot, doc, xpath, contextNode);
+    nodes = selblocks.sbx.selectElements(selenium.browserbot, doc, xpath, contextNode);
   return nodes;
 }
 
-// protected name space
-(function(){
+// selbocks name-space
+(function(_){
 
   // =============== Javascript extensions as script helpers ===============
 
@@ -139,7 +139,7 @@ function $X(xpath, contextNode, resultType) {
     cmds.here = function() {
       var curIdx = hereIdx();
       if (!cmds[curIdx])
-        sb.LOG.warn("No cmdAttrs defined curIdx=" + curIdx);
+        _.LOG.warn("No cmdAttrs defined curIdx=" + curIdx);
       return cmds[curIdx];
     };
     return cmds;
@@ -186,7 +186,7 @@ function $X(xpath, contextNode, resultType) {
     }
     else {
       if (branchIdx != null) {
-        sb.LOG.info("branch => " + fmtCmdRef(branchIdx));
+        _.LOG.info("branch => " + fmtCmdRef(branchIdx));
         this.debugIndex = branchIdx;
         branchIdx = null;
       }
@@ -215,7 +215,7 @@ function $X(xpath, contextNode, resultType) {
     Selenium.prototype.reset = function() {// this: selenium
       // called before each: execute a single command / run a testcase / run each testcase in a testsuite
       orig_reset.call(this);
-      sb.LOG.trace("In tail intercept :: selenium.reset()");
+      _.LOG.trace("In tail intercept :: selenium.reset()");
 
       // TBD: skip during single command execution
       try {
@@ -230,7 +230,7 @@ function $X(xpath, contextNode, resultType) {
       // custom flow control logic
       // this is called before: execute a single command / run a testcase / run each testcase in a testsuite
       // TBD: this should be a tail intercept rather than brute force replace
-      sb.LOG.debug("Configuring tail intercept: testCase.debugContext.nextCommand()");
+      _.LOG.debug("Configuring tail intercept: testCase.debugContext.nextCommand()");
       testCase.debugContext.nextCommand = nextCommand;
     };
   })();
@@ -362,7 +362,7 @@ function $X(xpath, contextNode, resultType) {
   // ==================== Selblocks Commands (Custom Selenium Actions) ====================
 
   var commandNames = [];
-  var iexpr = Object.create(sb.InfixExpressionParser);
+  var iexpr = Object.create(_.InfixExpressionParser);
 
   // validate variable/parameter names
   function validateNames(names, desc) {
@@ -523,7 +523,7 @@ function $X(xpath, contextNode, resultType) {
 
     var result = evalWithVars(selector);
     if (typeof result != "boolean")
-      sb.LOG.warn(fmtCmdRef(hereIdx()) + ", " + selector + " is not a boolean expression");
+      _.LOG.warn(fmtCmdRef(hereIdx()) + ", " + selector + " is not a boolean expression");
 
     // read until specified set found
     var isEof = xmlReader.EOF();
@@ -539,7 +539,7 @@ function $X(xpath, contextNode, resultType) {
   // deprecated command
   Selenium.prototype.doLoadVars = function(xmlfile, selector)
   {
-    sb.LOG.warn("The loadVars command has been deprecated and will be removed in future releases."
+    _.LOG.warn("The loadVars command has been deprecated and will be removed in future releases."
       + " Use doLoadXmlVars instead.");
     Selenium.prototype.doLoadXmlVars(xmlfile, selector);
   };
@@ -558,7 +558,7 @@ function $X(xpath, contextNode, resultType) {
 
     var result = evalWithVars(selector);
     if (typeof result != "boolean")
-      sb.LOG.warn(fmtCmdRef(hereIdx()) + ", " + selector + " is not a boolean expression");
+      _.LOG.warn(fmtCmdRef(hereIdx()) + ", " + selector + " is not a boolean expression");
 
     // read until specified set found
     var isEof = jsonReader.EOF();
@@ -831,14 +831,14 @@ function $X(xpath, contextNode, resultType) {
 
   // TBD: make into throwable Errors
   function notifyFatalErr(msg, err) {
-    sb.LOG.error("Error " + msg);
-    sb.LOG.logStackTrace(err);
+    _.LOG.error("Error " + msg);
+    _.LOG.logStackTrace(err);
     throw err;
   }
   function notifyFatal(msg) {
     var err = new Error(msg);
-    sb.LOG.error("Error " + msg);
-    sb.LOG.logStackTrace(err);
+    _.LOG.error("Error " + msg);
+    _.LOG.logStackTrace(err);
     throw err;
   }
   function notifyFatalCmdRef(idx, msg) { notifyFatal(fmtCmdRef(idx) + msg); }
@@ -924,7 +924,7 @@ function $X(xpath, contextNode, resultType) {
       var fileReader = new FileReader();
       var fileUrl = urlFor(filepath);
       var xmlHttpReq = fileReader.getDocumentSynchronous(fileUrl);
-      sb.LOG.info("Reading from: " + fileUrl);
+      _.LOG.info("Reading from: " + fileUrl);
 
       var fileObj = xmlHttpReq.responseXML; // XML DOM
       varsets = fileObj.getElementsByTagName("vars"); // HTMLCollection
@@ -944,11 +944,11 @@ function $X(xpath, contextNode, resultType) {
     this.next = function()
     {
       if (this.EOF()) {
-        sb.LOG.error("No more <vars> elements to read after element #" + varsetIdx);
+        _.LOG.error("No more <vars> elements to read after element #" + varsetIdx);
         return;
       }
       varsetIdx++;
-      sb.LOG.debug(varsetIdx + ") " + serializeXml(varsets[curVars]));  // log each name & value
+      _.LOG.debug(varsetIdx + ") " + serializeXml(varsets[curVars]));  // log each name & value
 
       var expected = countAttrs(varsets[0]);
       var found = countAttrs(varsets[curVars]);
@@ -1015,7 +1015,7 @@ function $X(xpath, contextNode, resultType) {
       var fileReader = new FileReader();
       var fileUrl = urlFor(filepath);
       var xmlHttpReq = fileReader.getDocumentSynchronous(fileUrl);
-      sb.LOG.info("Reading from: " + fileUrl);
+      _.LOG.info("Reading from: " + fileUrl);
 
       var fileObj = xmlHttpReq.responseText;
       varsets = eval(fileObj);
@@ -1035,11 +1035,11 @@ function $X(xpath, contextNode, resultType) {
     this.next = function()
     {
       if (this.EOF()) {
-        sb.LOG.error("No more JSON objects to read after object #" + varsetIdx);
+        _.LOG.error("No more JSON objects to read after object #" + varsetIdx);
         return;
       }
       varsetIdx++;
-      sb.LOG.debug(varsetIdx + ") " + serializeJson(varsets[curVars]));  // log each name & value
+      _.LOG.debug(varsetIdx + ") " + serializeJson(varsets[curVars]));  // log each name & value
 
       var expected = countAttrs(varsets[0]);
       var found = countAttrs(varsets[curVars]);
@@ -1109,12 +1109,12 @@ function $X(xpath, contextNode, resultType) {
     var absUrl;
     // htmlSuite mode of SRC? TODO is there a better way to decide whether in SRC mode?
     if (window.location.href.indexOf("selenium-server") >= 0) {
-      sb.LOG.debug("FileReader() is running in SRC mode");
+      _.LOG.debug("FileReader() is running in SRC mode");
       absUrl = absolutify(url, htmlTestRunner.controlPanel.getTestSuiteName());
     } else {
       absUrl = absolutify(url, selenium.browserbot.baseUrl);
     }
-    sb.LOG.debug("FileReader() using URL to get file '" + absUrl + "'");
+    _.LOG.debug("FileReader() using URL to get file '" + absUrl + "'");
     return absUrl;
   };
 
@@ -1157,4 +1157,4 @@ function $X(xpath, contextNode, resultType) {
     return requester;
   };
 
-}());
+}(selblocks));

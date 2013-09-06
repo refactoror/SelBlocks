@@ -1,6 +1,8 @@
 /** LOG wrapper for Selblocks-specific behavior
  */
 
+(function(_){
+
 function sbLogger()
 {
   this.error = function (msg) { this.logit("error", msg); };
@@ -58,4 +60,6 @@ function sbLogger()
   }
 }
 
-sb.LOG = new sbLogger();
+_.LOG = new sbLogger();
+
+}(selblocks));
