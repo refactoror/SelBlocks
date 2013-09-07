@@ -7,7 +7,7 @@
  * (Selbock installs as a Core Extension, not an IDE Extension, because it manipulates the Selenium object)
  *
  * Features
- *  - Commands: if/else, loadJsonVars/loadXmlVars, forJson/forXml, foreach, for, while, call/script/return
+ *  - Commands: if/else, loadJsonVars/loadXmlVars, forJson/forXml, foreach/for/while, call/script/return
  *  - Script and loop parameters create regular Selenium variables that are local to the block,
  *    overriding variables of the same name, and that are restored when the block exits.
  *  - Variables can be set via external JSON/XML data file(s).
@@ -34,7 +34,6 @@
  * Wishlist:
  *  - try/catch
  *  - switch/case
- *  - exitTest
  *  - validation of JSON & XML input files
  *  - enforce block boundaries (jumping in-to/out-of the middle of blocks)
  *
@@ -333,6 +332,10 @@ function $X(xpath, contextNode, resultType) {
               assertMatching(scrAttrs.name, cmdTarget, i, scrAttrs.idx); // match-up on script name
             cmdAttrs[scrAttrs.idx].endIdx = i;          // script -> endscript
             cmdAttrs.init(i, { scrIdx: scrAttrs.idx }); // endScript -> script
+            break;
+
+          case "exitTest":
+            assertNotAndWaitSuffix(i);
             break;
           default:
         }
@@ -762,6 +765,12 @@ function $X(xpath, contextNode, resultType) {
       // no active call, we're just skipping around a script block
     }
   }
+
+
+  // ================================================================================
+  Selenium.prototype.doExitTest = function(target) {
+    _.pushFn(editor.selDebugger.runner.IDETestLoop.prototype, "resume", _.handleAsExitTest);
+  };
 
 
   // ========= storedVars management =========
