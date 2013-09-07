@@ -12,11 +12,6 @@
 <tr><td rowspan="1" colspan="3">foreachX</td></tr>
 </thead><tbody>
 <tr>
-	<td>open</td>
-	<td>http://www.google.com/ig</td>
-	<td></td>
-</tr>
-<tr>
 	<td>echo</td>
 	<td>$x(&quot;//input&quot;)</td>
 	<td></td>
@@ -32,9 +27,19 @@
 	<td></td>
 </tr>
 <tr>
+	<td>emit</td>
+	<td>&quot;START ${_i}) ${link}&quot;</td>
+	<td></td>
+</tr>
+<tr>
 	<td>foreach</td>
 	<td>link</td>
 	<td>$X(&quot;//input&quot;)</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;${_i}) ${link}&quot;</td>
+	<td></td>
 </tr>
 <tr>
 	<td>echo</td>
@@ -44,6 +49,16 @@
 <tr>
 	<td>endForeach</td>
 	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;END ${_i}) ${link}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;START ${&quot; + &quot;_i}) ${&quot; + &quot;link}~0) [object HTMLInputElement]~1) [object HTMLInputElement]~2) [object HTMLInputElement]~END ${&quot; + &quot;_i}) ${&quot; + &quot;link}&quot;</td>
 	<td></td>
 </tr>
 </tbody></table>
