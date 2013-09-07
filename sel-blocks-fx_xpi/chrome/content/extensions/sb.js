@@ -2,17 +2,16 @@ var selblocks = {};
 
 /* Function interception stack.
 */
+// selbocks name-space
 (function(_){
   _.fnStack = [];
   _.pushFn = function(targetObj, targetFnName, fn) {
-_.LOG.warn("intercepting: " + targetFnName);
     var frame = { targetObj: targetObj, targetFnName: targetFnName, savedFn: targetObj[targetFnName] };
     _.fnStack.push(frame);
     targetObj[targetFnName] = fn;
   };
   _.popFn = function() {
     var frame = _.fnStack.pop();
-_.LOG.warn("restoring: " + frame.targetFnName);
     frame.targetObj[frame.targetFnName] = frame.savedFn;
   };
 

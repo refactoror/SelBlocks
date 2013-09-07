@@ -1,6 +1,7 @@
 /** Provides richer functionality than is available via Selenium xpathEvaluator.
  *  Used only by locator-builders, because it assumes a Firefox environment.
  */
+// selbocks name-space
 (function(_){
 
   _.sbx =

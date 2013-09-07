@@ -1,6 +1,7 @@
 /** LOG wrapper for Selblocks-specific behavior
  */
 
+// selbocks name-space
 (function(_){
 
 function sbLogger()
