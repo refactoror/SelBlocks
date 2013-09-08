@@ -2,7 +2,7 @@
  * SelBlocks 1.5
  *
  * Provides commands for Javascript-like looping and callable functions,
- *   with scoped variables, and XML driven parameterization.
+ *   with scoped variables, and JSON/XML driven parameterization.
  *
  * (Selbock installs as a Core Extension, not an IDE Extension, because it manipulates the Selenium object)
  *
@@ -513,6 +513,34 @@ function $X(xpath, contextNode, resultType) {
     iterateLoop();
   };
 
+
+  // ================================================================================
+  Selenium.prototype.doLoadJsonVars = function(jsonFile, selector)
+  {
+    assert(jsonFile, " 'loadJsonVars' requires a JSON file path or URL.");
+    var jsonReader = new JSONReader(jsonFile);
+    jsonReader.load(jsonFile);
+    jsonReader.next(); // read first json object and set values on storedVars
+    if (!selector && !jsonReader.EOF())
+      notifyFatal("Multiple json objects not valid for 'loadJsonVars'."
+        + ' (A specific object can be selected: name="value".)');
+
+    var result = evalWithVars(selector);
+    if (typeof result != "boolean")
+      _.LOG.warn(fmtCmdRef(hereIdx()) + ", " + selector + " is not a boolean expression");
+
+    // read until specified set found
+    var isEof = jsonReader.EOF();
+    while (!isEof && evalWithVars(selector) != true) {
+      jsonReader.next(); // read next json object and set values on storedVars
+      isEof = jsonReader.EOF();
+    } 
+
+    if (!evalWithVars(selector))
+      notifyFatal("JSON element not found for selector expression: " + selector
+        + "; in JSON input file " + jsonReader.jsonFilepath);
+  };
+
   // ================================================================================
   Selenium.prototype.doLoadXmlVars = function(xmlfile, selector)
   {
@@ -549,32 +577,27 @@ function $X(xpath, contextNode, resultType) {
 
 
   // ================================================================================
-  Selenium.prototype.doLoadJsonVars = function(jsonFile, selector)
+  Selenium.prototype.doForJson = function(jsonpath)
   {
-    assert(jsonFile, " 'loadJsonVars' requires a JSON file path or URL.");
-    var jsonReader = new JSONReader(jsonFile);
-    jsonReader.load(jsonFile);
-    jsonReader.next(); // read first json object and set values on storedVars
-    if (!selector && !jsonReader.EOF())
-      notifyFatal("Multiple json objects not valid for 'loadJsonVars'."
-        + ' (A specific object can be selected: name="value".)');
-
-    var result = evalWithVars(selector);
-    if (typeof result != "boolean")
-      _.LOG.warn(fmtCmdRef(hereIdx()) + ", " + selector + " is not a boolean expression");
-
-    // read until specified set found
-    var isEof = jsonReader.EOF();
-    while (!isEof && evalWithVars(selector) != true) {
-      jsonReader.next(); // read next json object and set values on storedVars
-      isEof = jsonReader.EOF();
-    } 
-
-    if (!evalWithVars(selector))
-      notifyFatal("JSON element not found for selector expression: " + selector
-        + "; in JSON input file " + jsonReader.jsonFilepath);
+    enterLoop(
+      function(loop) {  // validate
+          assert(jsonpath, " 'forJson' requires a JSON file path or URL.");
+          loop.jsonReader = new JSONReader();
+          var localVarNames = loop.jsonReader.load(jsonpath);
+          return localVarNames;
+      }
+      ,function() { }   // initialize
+      ,function(loop) { // continue?
+          var isEof = loop.jsonReader.EOF();
+          if (!isEof) loop.jsonReader.next();
+          return !isEof;
+      }
+      ,function() { }
+    );
   };
-
+  Selenium.prototype.doEndForJson = function() {
+    iterateLoop();
+  };
 
   // ================================================================================
   Selenium.prototype.doForXml = function(xmlpath)
@@ -599,30 +622,6 @@ function $X(xpath, contextNode, resultType) {
     iterateLoop();
   };
 
-
-
-  // ================================================================================
-  Selenium.prototype.doForJson = function(jsonpath)
-  {
-    enterLoop(
-      function(loop) {  // validate
-          assert(jsonpath, " 'forJson' requires a JSON file path or URL.");
-          loop.jsonReader = new JSONReader();
-          var localVarNames = loop.jsonReader.load(jsonpath);
-          return localVarNames;
-      }
-      ,function() { }   // initialize
-      ,function(loop) { // continue?
-          var isEof = loop.jsonReader.EOF();
-          if (!isEof) loop.jsonReader.next();
-          return !isEof;
-      }
-      ,function() { }
-    );
-  };
-  Selenium.prototype.doEndForJson = function() {
-    iterateLoop();
-  };
 
 
   // --------------------------------------------------------------------------------
