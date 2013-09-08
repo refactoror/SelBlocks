@@ -64,6 +64,40 @@
 	<td>data/forxml.xml</td>
 	<td>xname == &quot;dogbert&quot;</td>
 </tr>
+<!--=== Error validations-->
+<!---!- -->
+<tr>
+	<td>expectError</td>
+	<td>&quot;Requires an XML file path or URL&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>loadXmlVars</td>
+	<td></td>
+	<td></td>
+</tr>
+<!---!- -->
+<tr>
+	<td>expectError</td>
+	<td>&quot;Multiple XML elements are not valid for this command&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>loadXmlVars</td>
+	<td>data/forxml.xml</td>
+	<td></td>
+</tr>
+<!---!- -->
+<tr>
+	<td>expectError</td>
+	<td>'&quot;flubber&quot; is not a boolean expression'</td>
+	<td></td>
+</tr>
+<tr>
+	<td>loadXmlVars</td>
+	<td>data/forxml.xml</td>
+	<td>&quot;flubber&quot;</td>
+</tr>
 </tbody></table>
 </body>
 </html>
