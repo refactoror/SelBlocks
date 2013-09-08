@@ -514,11 +514,8 @@ function $X(xpath, contextNode, resultType) {
   };
 
   // ================================================================================
-  Selenium.prototype.doLoadJsonVars = function(filepath, selector)
+  function loadVars(reader, desc, filepath, selector)
   {
-    var desc = "JSON object";
-    assert(filepath, " Requires a JSON file path or URL.");
-    var reader = new JSONReader(filepath);
     reader.load(filepath);
     reader.next(); // read first varset and set values on storedVars
     if (!selector && !reader.EOF())
@@ -541,32 +538,18 @@ function $X(xpath, contextNode, resultType) {
         + "; in input file " + filepath);
   };
 
-  // ================================================================================
+  Selenium.prototype.doLoadJsonVars = function(filepath, selector)
+  {
+    assert(filepath, " Requires a JSON file path or URL.");
+    var jsonReader = new JSONReader(filepath);
+    loadVars(jsonReader, "JSON object", filepath, selector);
+  };
+
   Selenium.prototype.doLoadXmlVars = function(filepath, selector)
   {
-    var desc = "XML element";
     assert(filepath, " Requires an XML file path or URL.");
-    var reader = new XmlReader(filepath);
-    reader.load(filepath);
-    reader.next(); // read first varset and set values on storedVars
-    if (!selector && !reader.EOF())
-      notifyFatalHere("Multiple " + desc + "s are not valid for this command."
-        + ' (A specific ' + desc + ' can be selected by specifying: name="value".)');
-
-    var result = evalWithVars(selector);
-    if (typeof result != "boolean")
-      notifyFatalHere(", " + selector + " is not a boolean expression");
-
-    // read until specified set found
-    var isEof = reader.EOF();
-    while (!isEof && evalWithVars(selector) != true) {
-      reader.next(); // read next varset and set values on storedVars
-      isEof = reader.EOF();
-    }
-
-    if (!evalWithVars(selector))
-      notifyFatalHere(desc + " not found for selector expression: " + selector
-        + "; in input file " + filepath);
+    var xmlReader = new XmlReader(filepath);
+    loadVars(xmlReader, "XML element", filepath, selector);
   };
   // deprecated command
   Selenium.prototype.doLoadVars = function(filepath, selector)
