@@ -590,7 +590,6 @@ function $X(xpath, contextNode, resultType) {
     iterateLoop();
   };
 
-  // ================================================================================
   Selenium.prototype.doForXml = function(xmlpath)
   {
     enterLoop(
