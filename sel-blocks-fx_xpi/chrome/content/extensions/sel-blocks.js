@@ -521,6 +521,27 @@ function $X(xpath, contextNode, resultType) {
   };
 
   // ================================================================================
+  Selenium.prototype.doLoadJsonVars = function(filepath, selector)
+  {
+    assert(filepath, " Requires a JSON file path or URL.");
+    var jsonReader = new JSONReader(filepath);
+    loadVars(jsonReader, "JSON object", filepath, selector);
+  };
+
+  Selenium.prototype.doLoadXmlVars = function(filepath, selector)
+  {
+    assert(filepath, " Requires an XML file path or URL.");
+    var xmlReader = new XmlReader(filepath);
+    loadVars(xmlReader, "XML element", filepath, selector);
+  };
+  // deprecated command
+  Selenium.prototype.doLoadVars = function(filepath, selector)
+  {
+    _.LOG.warn("The loadVars command has been deprecated and will be removed in future releases."
+      + " Use doLoadXmlVars instead.");
+    Selenium.prototype.doLoadXmlVars(filepath, selector);
+  };
+
   function loadVars(reader, desc, filepath, selector)
   {
     reader.load(filepath);
@@ -543,27 +564,6 @@ function $X(xpath, contextNode, resultType) {
     if (!evalWithVars(selector))
       notifyFatalHere(desc + " not found for selector expression: " + selector
         + "; in input file " + filepath);
-  };
-
-  Selenium.prototype.doLoadJsonVars = function(filepath, selector)
-  {
-    assert(filepath, " Requires a JSON file path or URL.");
-    var jsonReader = new JSONReader(filepath);
-    loadVars(jsonReader, "JSON object", filepath, selector);
-  };
-
-  Selenium.prototype.doLoadXmlVars = function(filepath, selector)
-  {
-    assert(filepath, " Requires an XML file path or URL.");
-    var xmlReader = new XmlReader(filepath);
-    loadVars(xmlReader, "XML element", filepath, selector);
-  };
-  // deprecated command
-  Selenium.prototype.doLoadVars = function(filepath, selector)
-  {
-    _.LOG.warn("The loadVars command has been deprecated and will be removed in future releases."
-      + " Use doLoadXmlVars instead.");
-    Selenium.prototype.doLoadXmlVars(filepath, selector);
   };
 
 
