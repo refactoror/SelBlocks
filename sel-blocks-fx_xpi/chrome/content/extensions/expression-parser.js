@@ -1,9 +1,9 @@
 /** Parse basic expressions.
 */
 // selbocks name-space
-(function(_){
+(function($$){
 
-  _.InfixExpressionParser =
+  $$.InfixExpressionParser =
   {
     _objname : "InfixExpressionParser"
     ,BRACKET_PAIRS : { "(": ")", "{": "}", "[": "]" }
@@ -14,7 +14,7 @@
     ,splitList : function(str, delim)
     {
       var values = [];
-      var prev, cur = 0;
+      var prev = 0, cur = 0;
       while (cur < str.length) {
         if (str.charAt(cur) != delim) {
           cur = this.spanSub(str, cur);
@@ -24,7 +24,7 @@
         else {
           var value = str.substring(prev, cur);
           if (this.trimListValues)
-            value = value.trim()
+            value = value.trim();
           values.push(value);
           prev = cur + 1;
         }

@@ -1,9 +1,8 @@
-/** LOG wrapper for Selblocks-specific behavior
- */
-
 // selbocks name-space
-(function(_){
+(function($$){
 
+  /* LOG wrapper for Selblocks-specific behavior
+   */
   function Logger()
   {
     this.error = function (msg) { this.logit("error", msg); };
@@ -13,8 +12,8 @@
     this.trace = function (msg) { this.logit("debug", msg); }; // selenium doesn't have trace level
 
     this.logit = function (logLevel, msg) {
-      LOG[logLevel]("[Selblocks] " + msg);  // call the Selenium logger
-    }
+      LOG[logLevel]("[" + $$.name + "] " + msg);  // call the Selenium logger
+    };
 
     // ==================== Stack Tracer ====================
 
@@ -35,7 +34,7 @@
           stackTrace.shift(); // remove the call to genStackTrace() itself
       }
       return stackTrace;
-    }
+    };
 
     this.logStackTrace = function(err)
     {
@@ -58,9 +57,9 @@
       t.shift(); // remove the call to client function
       if (t.length == 0) return "undefined caller function";
       return "caller: " + t[0];
-    }
+    };
   }
 
-  _.LOG = new Logger();
+  $$.LOG = new Logger();
 
 }(selblocks));

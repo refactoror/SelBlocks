@@ -1,7 +1,9 @@
 SETLOCAL
 
 :: Pre-requisites:
-::   Hand-edit sel-blocks-fx_xpi/install.rdf: <em:version>x.y.z
+::   Hand-edit install.rdf: <em:version>x.y.z
+::             about.xul: text box
+::             sel-bocks.js: header comment
 :: Assumptions:
 ::   cygwin grep
 ::   cygwin zip
@@ -18,7 +20,7 @@ echo Selblocks: %SB_VER%
 :: create the Selblocks xpi
 pushd ..\sel-blocks-fx_xpi
 del "%STAGING%sel-blocks-%SB_VER%-fx.xpi"
-zip -r "%STAGING%sel-blocks-%SB_VER%-fx.xpi" * -x@"%STAGING%xpi-excludes.lst"
+zip -r "%STAGING%/../../historical-xpi/sel-blocks-%SB_VER%-fx.xpi" * -x@"%STAGING%xpi-excludes.lst"
 popd
 
 ENDLOCAL
