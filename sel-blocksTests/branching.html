@@ -66,6 +66,51 @@
 	<td>&quot;BEFORE~AFTER&quot;</td>
 	<td></td>
 </tr>
+<!--=== Error validations-->
+<!---!- -->
+<tr>
+	<td>expectError</td>
+	<td>&quot;Target label 'NOWHERE' is not found&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>goto</td>
+	<td>NOWHERE</td>
+	<td></td>
+</tr>
+<!---!- -->
+<tr>
+	<td>expectError</td>
+	<td>&quot;Target label 'NOWHERE' is not found&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>true</td>
+	<td>NOWHERE</td>
+</tr>
+<!---!- -->
+<tr>
+	<td>expectError</td>
+	<td>&quot;Requires a number &gt; 1&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>skipNext</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<!---!- -->
+<tr>
+	<td>expectError</td>
+	<td>&quot;random is not defined&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>skipNext</td>
+	<td>random</td>
+	<td></td>
+</tr>
 </tbody></table>
 </body>
 </html>

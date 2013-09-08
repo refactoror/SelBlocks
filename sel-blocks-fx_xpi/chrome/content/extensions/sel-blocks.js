@@ -390,9 +390,16 @@ function $X(xpath, contextNode, resultType) {
   {
     assertRunning();
     var n = parseInt(evalWithVars(spec), 10);
-    if (isNaN(n))
-      n = 1;
-    if (n != 0) // if n=0, execute the next command as usual
+    if (isNaN(n)) {
+      if (spec.trim() == "")
+        n = 1
+      else
+        notifyFatalHere(" Requires a numeric value");
+    }
+    else if (n < 0)
+      notifyFatalHere(" Requires a number > 1");
+
+      if (n != 0) // if n=0, execute the next command as usual
       setNextCommand(testCase.debugContext.debugIndex + n + 1);
   };
 
