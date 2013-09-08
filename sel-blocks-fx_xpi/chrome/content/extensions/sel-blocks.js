@@ -588,7 +588,7 @@ function $X(xpath, contextNode, resultType) {
   {
     enterLoop(
       function(loop) {  // validate
-          assert(xmlpath, " 'forXml' requires an xml file path or URL.");
+          assert(xmlpath, " 'forXml' requires an XML file path or URL.");
           loop.xmlReader = new XmlReader();
           var localVarNames = loop.xmlReader.load(xmlpath);
           return localVarNames;
