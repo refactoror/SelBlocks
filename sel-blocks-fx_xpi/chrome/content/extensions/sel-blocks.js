@@ -19,6 +19,7 @@
  * Concept of operation:
  *  - selenium.reset() is intercepted to initialize the block structures.
  *  - testCase.nextCommand() is overridden for flow branching.
+ *  - TestLoop.resume() is overridden by exitTest.
  *  - The static structure of commands & blocks is stored in cmdAttrs[] by command index, (ie, script line number).
  *  - The execution state of blocks is pushed onto cmdStack, with a separate instance for each callStack frame.
  *
