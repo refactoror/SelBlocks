@@ -65,9 +65,9 @@ function $x(xpath, contextNode, resultType) {
   var doc = selenium.browserbot.getDocument();
   var node;
   if (resultType)
-    node = selblocks.sbx.selectNode(doc, xpath, contextNode, resultType); // mozilla engine only
+    node = selblocks.xp.selectNode(doc, xpath, contextNode, resultType); // mozilla engine only
   else
-    node = selblocks.sbx.selectElement(selenium.browserbot, doc, xpath, contextNode);
+    node = selblocks.xp.selectElement(doc, xpath, contextNode);
   return node;
 }
 
@@ -76,9 +76,9 @@ function $X(xpath, contextNode, resultType) {
   var doc = selenium.browserbot.getDocument();
   var nodes;
   if (resultType)
-    nodes = selblocks.sbx.selectNodes(doc, xpath, contextNode, resultType); // mozilla engine only
+    nodes = selblocks.xp.selectNodes(doc, xpath, contextNode, resultType); // mozilla engine only
   else
-    nodes = selblocks.sbx.selectElements(selenium.browserbot, doc, xpath, contextNode);
+    nodes = selblocks.xp.selectElements(doc, xpath, contextNode);
   return nodes;
 }
 

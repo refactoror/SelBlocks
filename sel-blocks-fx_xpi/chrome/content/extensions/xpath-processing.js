@@ -4,14 +4,14 @@
 // selbocks name-space
 (function(_){
 
-  _.sbx =
+  _.xp =
   {
     // Evaluate an xpathExpression against the given document object.
     // The document is also the starting context, unless a contextNode is provided.
     // Results are in terms of the most natural type, unless resultType specified.
     evaluateXpath: function(doc, xpath, contextNode, resultType, namespaceResolver, resultObj)
     {
-      _.sbx.logXpathEval(doc, xpath, contextNode);
+      _.xp.logXpathEval(doc, xpath, contextNode);
       var isResultObjProvided = (resultObj != null);
       try {
         var startms = +new Date();
@@ -21,7 +21,7 @@
             , namespaceResolver
             , resultType || XPathResult.ANY_TYPE
             , resultObj);
-        _.LOG.trace("XPATH Result: " + _.sbx.fmtXpathResultType(result) + " : " + xpath);
+        _.LOG.trace("XPATH Result: " + _.xp.fmtXpathResultType(result) + " : " + xpath);
       }
       catch (err) {
         _.LOG.error("XPATH: " + xpath);
@@ -35,30 +35,30 @@
     }
 
     // Find the first matching element
-    ,selectElement: function(bot, doc, xpath, contextNode) {
-      var elems = _.sbx.selectElements(bot, doc, xpath, contextNode);
+    ,selectElement: function(doc, xpath, contextNode) {
+      var elems = _.xp.selectElements(doc, xpath, contextNode);
       return (elems && elems.length > 0 ? elems[0] : null);
     }
 
     // Find all matching elements
     // TBD: make XPath engine choice configurable
-    ,selectElements: function(bot, doc, xpath, contextNode) {
-      var elems = _.sbx.selectNodes(doc, xpath, contextNode);
+    ,selectElements: function(doc, xpath, contextNode) {
+      var elems = _.xp.selectNodes(doc, xpath, contextNode);
       return elems;
     }
 
     // Select a single node
     // (analogous to xpath[1], without the axis-precedence gotchas)
     ,selectNode: function(doc, xpath, contextNode, resultType) {
-      var result = _.sbx.evaluateXpath(doc, xpath, contextNode, resultType || XPathResult.FIRST_ORDERED_NODE_TYPE);
+      var result = _.xp.evaluateXpath(doc, xpath, contextNode, resultType || XPathResult.FIRST_ORDERED_NODE_TYPE);
       return _.unwrapObject(result.singleNodeValue);
     }
 
     // Select one or more nodes as an array
     ,selectNodes: function(doc, xpath, contextNode, resultType) {
-      var result = _.sbx.evaluateXpath(doc, xpath, contextNode, resultType || XPathResult.ORDERED_NODE_SNAPSHOT_TYPE);
+      var result = _.xp.evaluateXpath(doc, xpath, contextNode, resultType || XPathResult.ORDERED_NODE_SNAPSHOT_TYPE);
       var nodes = [];
-      _.sbx.foreachNode(result, function (n, i) {
+      _.xp.foreachNode(result, function (n, i) {
         nodes.push(_.unwrapObject(n));
       });
       return nodes;
@@ -66,13 +66,13 @@
 
     // Select all matching nodes in the document, as a snapshot object
     ,selectNodeSnapshot: function(doc, xpath, contextNode) {
-      return _.sbx.evaluateXpath(doc, xpath, contextNode, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE);
+      return _.xp.evaluateXpath(doc, xpath, contextNode, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE);
     }
 
     // Select the exact matching node, else null
     ,selectUniqueNodeNullable: function(doc, xpath, contextNode)
     {
-      var nodeSet = _.sbx.selectNodeSnapshot(doc, xpath, contextNode);
+      var nodeSet = _.xp.selectNodeSnapshot(doc, xpath, contextNode);
       if (!nodeSet || nodeSet.snapshotLength == 0) {
         return null;
       }
@@ -91,7 +91,7 @@
     //     (for inline styling at least, cascaded styling is not accessible via XPath)
     ,selectValue: function(doc, xpath, contextNode)
     {
-      var result = _.sbx.evaluateXpath(doc, xpath, contextNode, XPathResult.ANY_TYPE);
+      var result = _.xp.evaluateXpath(doc, xpath, contextNode, XPathResult.ANY_TYPE);
       if (!result)
         return null;
 
