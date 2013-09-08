@@ -513,66 +513,67 @@ function $X(xpath, contextNode, resultType) {
     iterateLoop();
   };
 
-
   // ================================================================================
-  Selenium.prototype.doLoadJsonVars = function(jsonFile, selector)
+  Selenium.prototype.doLoadJsonVars = function(filepath, selector)
   {
-    assert(jsonFile, " 'loadJsonVars' requires a JSON file path or URL.");
-    var jsonReader = new JSONReader(jsonFile);
-    jsonReader.load(jsonFile);
-    jsonReader.next(); // read first json object and set values on storedVars
-    if (!selector && !jsonReader.EOF())
-      notifyFatal("Multiple json objects not valid for 'loadJsonVars'."
-        + ' (A specific object can be selected: name="value".)');
+    var desc = "JSON object";
+    assert(filepath, " Requires a JSON file path or URL.");
+    var reader = new JSONReader(filepath);
+    reader.load(filepath);
+    reader.next(); // read first varset and set values on storedVars
+    if (!selector && !reader.EOF())
+      notifyFatalHere(" Multiple " + desc + "s are not valid for this command."
+        + ' (A specific ' + desc + ' can be selected by specifying: name="value".)');
 
     var result = evalWithVars(selector);
     if (typeof result != "boolean")
-      _.LOG.warn(fmtCmdRef(hereIdx()) + ", " + selector + " is not a boolean expression");
+      notifyFatalHere(", " + selector + " is not a boolean expression");
 
     // read until specified set found
-    var isEof = jsonReader.EOF();
+    var isEof = reader.EOF();
     while (!isEof && evalWithVars(selector) != true) {
-      jsonReader.next(); // read next json object and set values on storedVars
-      isEof = jsonReader.EOF();
+      reader.next(); // read next varset and set values on storedVars
+      isEof = reader.EOF();
     } 
 
     if (!evalWithVars(selector))
-      notifyFatal("JSON element not found for selector expression: " + selector
-        + "; in JSON input file " + jsonReader.jsonFilepath);
+      notifyFatalHere(desc + " not found for selector expression: " + selector
+        + "; in input file " + filepath);
   };
 
   // ================================================================================
-  Selenium.prototype.doLoadXmlVars = function(xmlfile, selector)
+  Selenium.prototype.doLoadXmlVars = function(filepath, selector)
   {
-    assert(xmlfile, " 'loadVars' requires an XML file path or URL.");
-    var xmlReader = new XmlReader(xmlfile);
-    xmlReader.load(xmlfile);
-    xmlReader.next(); // read first <vars> and set values on storedVars
-    if (!selector && !xmlReader.EOF())
-      notifyFatal("Multiple var sets not valid for 'loadVars'."
-        + ' (A specific var set can be selected: name="value".)');
+    var desc = "XML element";
+    assert(filepath, " Requires an XML file path or URL.");
+    var reader = new XmlReader(filepath);
+    reader.load(filepath);
+    reader.next(); // read first varset and set values on storedVars
+    if (!selector && !reader.EOF())
+      notifyFatalHere("Multiple " + desc + "s are not valid for this command."
+        + ' (A specific ' + desc + ' can be selected by specifying: name="value".)');
 
     var result = evalWithVars(selector);
     if (typeof result != "boolean")
-      _.LOG.warn(fmtCmdRef(hereIdx()) + ", " + selector + " is not a boolean expression");
+      notifyFatalHere(", " + selector + " is not a boolean expression");
 
     // read until specified set found
-    var isEof = xmlReader.EOF();
+    var isEof = reader.EOF();
     while (!isEof && evalWithVars(selector) != true) {
-      xmlReader.next(); // read next <vars> and set values on storedVars
-      isEof = xmlReader.EOF();
+      reader.next(); // read next varset and set values on storedVars
+      isEof = reader.EOF();
     }
 
     if (!evalWithVars(selector))
-      notifyFatal("<vars> element not found for selector expression: " + selector
-        + "; in XML input file " + xmlReader.xmlFilepath);
+      notifyFatalHere(desc + " not found for selector expression: " + selector
+        + "; in input file " + filepath);
   };
   // deprecated command
-  Selenium.prototype.doLoadVars = function(xmlfile, selector)
+  Selenium.prototype.doLoadVars = function(filepath, selector)
   {
     _.LOG.warn("The loadVars command has been deprecated and will be removed in future releases."
       + " Use doLoadXmlVars instead.");
-    Selenium.prototype.doLoadXmlVars(xmlfile, selector);
+    Selenium.prototype.doLoadXmlVars(filepath, selector);
   };
 
 
@@ -581,7 +582,7 @@ function $X(xpath, contextNode, resultType) {
   {
     enterLoop(
       function(loop) {  // validate
-          assert(jsonpath, " 'forJson' requires a JSON file path or URL.");
+          assert(jsonpath, " Requires a JSON file path or URL.");
           loop.jsonReader = new JSONReader();
           var localVarNames = loop.jsonReader.load(jsonpath);
           return localVarNames;
