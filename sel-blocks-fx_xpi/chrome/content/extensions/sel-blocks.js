@@ -38,10 +38,10 @@
  *  - enforce block boundaries (jumping in-to/out-of the middle of blocks)
  *
  * Changes since 1.3.1:
- *  - New commands: loadJsonVars & forJson
- *  - Expression parsing is more robust, specifically for & call list values
+ *  - New commands: loadJsonVars, forJson, and exitTest
+ *  - Expression parsing is more robust, for & call list parameters in particular
  *  - Variable and parameter names are validated for alphanumeric conventions
- *  - Selblocks logging now identifies itself with the prefix [Selblocks]
+ *  - Logging identifies itself with the prefix [Selblocks]
  *  - Internal functions & vars no longer pollute the global Javascript name space
  *
  * NOTE - The Stored Variables Viewer addon will display the values of Selblocks parameters,
@@ -391,15 +391,13 @@ function $X(xpath, contextNode, resultType) {
     assertRunning();
     var n = parseInt(evalWithVars(spec), 10);
     if (isNaN(n)) {
-      if (spec.trim() == "")
-        n = 1
-      else
-        notifyFatalHere(" Requires a numeric value");
+      if (spec.trim() == "") n = 1
+      else notifyFatalHere(" Requires a numeric value");
     }
     else if (n < 0)
       notifyFatalHere(" Requires a number > 1");
 
-      if (n != 0) // if n=0, execute the next command as usual
+    if (n != 0) // if n=0, execute the next command as usual
       setNextCommand(testCase.debugContext.debugIndex + n + 1);
   };
 
@@ -527,7 +525,6 @@ function $X(xpath, contextNode, resultType) {
     var jsonReader = new JSONReader(filepath);
     loadVars(jsonReader, "JSON object", filepath, selector);
   };
-
   Selenium.prototype.doLoadXmlVars = function(filepath, selector)
   {
     assert(filepath, " Requires an XML file path or URL.");
@@ -758,6 +755,7 @@ function $X(xpath, contextNode, resultType) {
 
   // ================================================================================
   Selenium.prototype.doExitTest = function(target) {
+    // intercept command processing and simply stop test execution instead of executing the next command
     _.pushFn(editor.selDebugger.runner.IDETestLoop.prototype, "resume", _.handleAsExitTest);
   };
 
