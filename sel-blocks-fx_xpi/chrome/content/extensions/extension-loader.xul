@@ -8,7 +8,7 @@
     <html:script type="application/javascript">
         var ide_api = new API();
         ide_api.addPlugin("sel-blocks@chris.noe");
-        ide_api.addPluginProvidedUserExtension("chrome://selblocksSeleExten/content/extensions/sb.js");
+        ide_api.addPluginProvidedUserExtension("chrome://selblocksSeleExten/content/extensions/name-space.js");
         ide_api.addPluginProvidedUserExtension("chrome://selblocksSeleExten/content/extensions/logger.js");
         ide_api.addPluginProvidedUserExtension("chrome://selblocksSeleExten/content/extensions/xpath-processing.js");
         ide_api.addPluginProvidedUserExtension("chrome://selblocksSeleExten/content/extensions/expression-parser.js");
