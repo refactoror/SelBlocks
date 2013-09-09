@@ -1,7 +1,9 @@
 SETLOCAL
 
 :: Pre-requisites:
-::   Hand-edit sel-blocks-fx_xpi/install.rdf: <em:version>x.y.z
+::   Hand-edit install.rdf: <em:version>x.y.z
+::             about.xul: text box
+::             selbench.js: header comment
 :: Assumptions:
 ::   cygwin grep
 ::   cygwin zip
