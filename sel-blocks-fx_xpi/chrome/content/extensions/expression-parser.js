@@ -24,7 +24,7 @@
         else {
           var value = str.substring(prev, cur);
           if (this.trimListValues)
-            value = value.trim()
+            value = value.trim();
           values.push(value);
           prev = cur + 1;
         }

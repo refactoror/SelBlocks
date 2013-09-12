@@ -14,7 +14,6 @@
       _.xp.logXpathEval(doc, xpath, contextNode);
       var isResultObjProvided = (resultObj != null);
       try {
-        var startms = +new Date();
         var result = doc.evaluate(
             xpath
             , contextNode || doc

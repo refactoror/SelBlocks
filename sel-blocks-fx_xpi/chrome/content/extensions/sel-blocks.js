@@ -121,7 +121,7 @@ function $X(xpath, contextNode, resultType) {
 
   var symbols = {}; // command indexes stored by name: function names
   var cmdAttrs = new CmdAttrs();  // static command attributes stored by command index
-  var callStack;    // command execution stack
+  var callStack = null;  // command execution stack
 
   function hereIdx() {
     return testCase.debugContext.debugIndex;
@@ -392,7 +392,7 @@ function $X(xpath, contextNode, resultType) {
     assertRunning();
     var n = parseInt(evalWithVars(spec), 10);
     if (isNaN(n)) {
-      if (spec.trim() == "") n = 1
+      if (spec.trim() == "") n = 1;
       else notifyFatalHere(" Requires a numeric value");
     }
     else if (n < 0)

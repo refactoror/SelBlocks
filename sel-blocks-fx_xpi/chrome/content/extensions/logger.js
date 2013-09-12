@@ -14,7 +14,7 @@
 
     this.logit = function (logLevel, msg) {
       LOG[logLevel]("[Selblocks] " + msg);  // call the Selenium logger
-    }
+    };
 
     // ==================== Stack Tracer ====================
 
@@ -35,7 +35,7 @@
           stackTrace.shift(); // remove the call to genStackTrace() itself
       }
       return stackTrace;
-    }
+    };
 
     this.logStackTrace = function(err)
     {
@@ -58,7 +58,7 @@
       t.shift(); // remove the call to client function
       if (t.length == 0) return "undefined caller function";
       return "caller: " + t[0];
-    }
+    };
   }
 
   _.LOG = new Logger();
