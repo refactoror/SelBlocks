@@ -2,10 +2,10 @@
  * This alters command processing such that the script simply halts rather executing the next command.
  */
 // selbocks name-space
-(function(_){
-  _.handleAsExitTest = function()
+(function($$){
+  $$.handleAsExitTest = function()
   {
-    _.popFn(); // un-intercept TestLoop.resume
+    $$.popFn(); // un-intercept TestLoop.resume
     try {
       selenium.browserbot.runScheduledPollers();
       this.testComplete();
@@ -14,6 +14,6 @@
       this._handleCommandError(e);
       this.testComplete();
     }
-    _.LOG.info("TEST HALTED");
+    $$.LOG.info("TEST HALTED");
   };
 }(selblocks));

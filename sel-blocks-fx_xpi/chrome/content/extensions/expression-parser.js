@@ -1,9 +1,9 @@
 /** Parse basic expressions.
 */
 // selbocks name-space
-(function(_){
+(function($$){
 
-  _.InfixExpressionParser =
+  $$.InfixExpressionParser =
   {
     _objname : "InfixExpressionParser"
     ,BRACKET_PAIRS : { "(": ")", "{": "}", "[": "]" }
