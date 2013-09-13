@@ -119,9 +119,9 @@ function $X(xpath, contextNode, resultType) {
 
   //=============== Command Stack handling ===============
 
-  var symbols = {}; // command indexes stored by name: function names
+  var symbols = {};               // command indexes stored by name: function names
   var cmdAttrs = new CmdAttrs();  // static command attributes stored by command index
-  var callStack = null;  // command execution stack
+  var callStack = null;           // command execution stack
 
   function hereIdx() {
     return testCase.debugContext.debugIndex;
@@ -178,7 +178,7 @@ function $X(xpath, contextNode, resultType) {
   // preceding the destination would falsely get marked as successfully executed
   var branchIdx = null;
   // TBD: this needs to be revisited if testCase.nextCommand() ever changes
-  // (current as of: selenium-ide-2.2.0)
+  // (current as of: selenium-ide-2.3.0)
   function nextCommand() {
     if (!this.started) {
       this.started = true;
@@ -697,7 +697,6 @@ function $X(xpath, contextNode, resultType) {
     var scrIdx = symbols[scrName];
     assert(scrIdx, " Script does not exist: " + scrName + ".");
 
-    var callAttrs = cmdAttrs.here();
     var callFrame = callStack.top();
     if (callFrame.isReturning && callFrame.returnIdx == hereIdx()) {
       // returning from completed script
@@ -764,11 +763,12 @@ function $X(xpath, contextNode, resultType) {
   // ========= storedVars management =========
 
   function evalWithVars(expr) {
+    var result = null;
     try {
       // EXTENSION REVIEWERS: Use of eval is consistent with the Selenium extension itself.
       // Scripted expressions run in the Selenium window, separate from browser windows.
       // Global functions are intentional features provided for use by end user's in their Selenium scripts.
-      var result = eval("with (storedVars) {" + expr + "}");
+      result = eval("with (storedVars) {" + expr + "}");
     }
     catch (err) {
       notifyFatalErr(" While evaluating Javascript expression: " + expr, err);
@@ -1061,7 +1061,8 @@ function $X(xpath, contextNode, resultType) {
     //- determine how many attributes are present on the given obj
     function countAttrs(obj) {
       var n = 0;
-      for (var attrName in obj) n++;
+      for (var attrName in obj)
+        n++;
       return n;
     }
 
@@ -1136,7 +1137,6 @@ function $X(xpath, contextNode, resultType) {
 
   FileReader.prototype.newXMLHttpRequest = function() {
     var requester = 0;
-    var exception = '';
     try {
       // for IE/ActiveX
       if (window.ActiveXObject) {

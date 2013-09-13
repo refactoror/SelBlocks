@@ -14,7 +14,7 @@
     ,splitList : function(str, delim)
     {
       var values = [];
-      var prev, cur = 0;
+      var prev = 0, cur = 0;
       while (cur < str.length) {
         if (str.charAt(cur) != delim) {
           cur = this.spanSub(str, cur);
