@@ -1,5 +1,5 @@
 /*
- * SelBlocks 1.5
+ * SelBlocks 1.5.?
  *
  * Provides commands for Javascript-like looping and callable functions,
  *   with scoped variables, and JSON/XML driven parameterization.
@@ -38,12 +38,7 @@
  *  - validation of JSON & XML input files
  *  - enforce block boundaries (jumping in-to/out-of the middle of blocks)
  *
- * Changes since 1.3.1:
- *  - New commands: loadJsonVars, forJson, and exitTest
- *  - Expression parsing is more robust, for & call list parameters in particular
- *  - Variable and parameter names are validated for alphanumeric conventions
- *  - Logging identifies itself with the prefix [Selblocks]
- *  - Internal functions & vars no longer pollute the global Javascript name space
+ * Changes since 1.5:
  *
  * NOTE - The Stored Variables Viewer addon will display the values of Selblocks parameters,
  *   because they are implemented as regular Selenium variables.
