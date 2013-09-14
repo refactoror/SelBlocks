@@ -1,11 +1,11 @@
-/* This function replaces native Selenium command handling for the exitScript command.
- * This alters command processing such that the script simply halts rather executing the next command.
- */
 // selbocks name-space
 (function($$){
+
+  /* This function replaces native Selenium command handling for the exitScript command.
+   * This alters command processing such that the script simply halts rather executing the next command.
+   */
   $$.handleAsExitTest = function()
   {
-    $$.popFn(); // un-intercept TestLoop.resume
     try {
       selenium.browserbot.runScheduledPollers();
       this.testComplete();
@@ -16,4 +16,5 @@
     }
     $$.LOG.info("TEST HALTED");
   };
+
 }(selblocks));

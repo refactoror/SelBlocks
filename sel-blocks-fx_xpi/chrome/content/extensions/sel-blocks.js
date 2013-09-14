@@ -751,7 +751,7 @@ function $X(xpath, contextNode, resultType) {
   // ================================================================================
   Selenium.prototype.doExitTest = function(target) {
     // intercept command processing and simply stop test execution instead of executing the next command
-    $$.pushFn(editor.selDebugger.runner.IDETestLoop.prototype, "resume", $$.handleAsExitTest);
+    $$.interceptOnce(editor.selDebugger.runner.IDETestLoop.prototype, "resume", $$.handleAsExitTest);
   };
 
 
