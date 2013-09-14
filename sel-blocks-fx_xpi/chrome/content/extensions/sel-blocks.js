@@ -172,7 +172,7 @@ function $X(xpath, contextNode, resultType) {
   // Flow control - we don't just alter debugIndex on the fly, because the command
   // preceding the destination would falsely get marked as successfully executed
   var branchIdx = null;
-  // TBD: this needs to be revisited if testCase.nextCommand() ever changes
+  // TBD: if testCase.nextCommand() ever changes, this will need to be revisited
   // (current as of: selenium-ide-2.3.0)
   function nextCommand() {
     if (!this.started) {
@@ -203,33 +203,28 @@ function $X(xpath, contextNode, resultType) {
     branchIdx = cmdIdx;
   }
 
-  // Tail intercept of Selenium.prototype.reset()
-  (function () { // private scope for orig_reset
-    // called when Selenium IDE opens / on Dev Tools [Reload] button / upon first command execution
-    var orig_reset = Selenium.prototype.reset;
-    Selenium.prototype.reset = function() {// this: selenium
-      // called before each: execute a single command / run a testcase / run each testcase in a testsuite
-      orig_reset.call(this);
-      $$.LOG.trace("In tail intercept :: selenium.reset()");
+  // Selenium calls reset():
+  //  * before each single (double-click) command execution
+  //  * before a testcase is run
+  //  * before each testcase runs in a running testsuite
+  // TBD: skip during single command execution
+  $$.interceptAfter(Selenium.prototype, "reset", function()
+  {
+    $$.LOG.trace("In tail intercept :: Selenium.reset()");
+    try {
+      compileSelBlocks();
+    } catch (err) {
+      notifyFatalErr("In " + err.fileName + " @" + err.lineNumber + ": " + err);
+    }
+    callStack = new Stack();
+    callStack.push({ cmdStack: new Stack() }); // top-level execution state
 
-      // TBD: skip during single command execution
-      try {
-        compileSelBlocks();
-      }
-      catch (err) {
-        notifyFatalErr("In " + err.fileName + " @" + err.lineNumber + ": " + err);
-      }
-      callStack = new Stack();
-      callStack.push({ cmdStack: new Stack() }); // top-level execution state
-
-      // custom flow control logic
-      // this is called before: execute a single command / run a testcase / run each testcase in a testsuite
-      // TBD: this should be a tail intercept rather than brute force replace
-      $$.LOG.debug("Configuring tail intercept: testCase.debugContext.nextCommand()");
-      testCase.debugContext.nextCommand = nextCommand;
-    };
-  })();
-
+    // customize flow control logic
+    // TBD: this should be a tail intercept rather than brute force replace
+    $$.LOG.debug("Configuring tail intercept: testCase.debugContext.nextCommand()");
+    //testCase.debugContext.nextCommand = nextCommand;
+    $$.interceptReplace(testCase.debugContext, "nextCommand", nextCommand);
+  });
 
   // ================================================================================
   // Assemble block relationships and symbol locations
@@ -764,8 +759,7 @@ function $X(xpath, contextNode, resultType) {
       // Scripted expressions run in the Selenium window, separate from browser windows.
       // Global functions are intentional features provided for use by end user's in their Selenium scripts.
       result = eval("with (storedVars) {" + expr + "}");
-    }
-    catch (err) {
+    } catch (err) {
       notifyFatalErr(" While evaluating Javascript expression: " + expr, err);
     }
     return result;
