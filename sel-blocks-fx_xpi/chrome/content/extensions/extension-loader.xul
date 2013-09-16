@@ -14,6 +14,7 @@
         ide_api.addPluginProvidedUserExtension(chr + "/function-intercepting.js");
         ide_api.addPluginProvidedUserExtension(chr + "/xpath-processing.js");
         ide_api.addPluginProvidedUserExtension(chr + "/expression-parser.js");
+        ide_api.addPluginProvidedUserExtension(chr + "/selenium-executionloop-handleAsTryCatch.js");
         ide_api.addPluginProvidedUserExtension(chr + "/selenium-executionloop-handleAsExitTest.js");
         ide_api.addPluginProvidedUserExtension(chr + "/sel-blocks.js");
     </html:script>

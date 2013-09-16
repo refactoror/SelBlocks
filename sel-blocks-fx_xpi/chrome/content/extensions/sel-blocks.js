@@ -21,7 +21,8 @@
  *  - testCase.nextCommand() is overridden for flow branching.
  *  - TestLoop.resume() is overridden by exitTest.
  *  - The static structure of commands & blocks is stored in cmdAttrs[] by command index, (ie, script line number).
- *  - The execution state of blocks is pushed onto cmdStack, with a separate instance for each callStack frame.
+ *  - The execution state each block is pushed onto the cmdStack, with a separate instance for each callStack frame.
+ *    In other words, stack within a stack.
  *
  * Limitations:
  *  - Incompatible with flowControl (and derivatives), because they unilaterally override selenium.reset().
@@ -222,7 +223,6 @@ function $X(xpath, contextNode, resultType) {
     // customize flow control logic
     // TBD: this should be a tail intercept rather than brute force replace
     $$.LOG.debug("Configuring tail intercept: testCase.debugContext.nextCommand()");
-    //testCase.debugContext.nextCommand = nextCommand;
     $$.interceptReplace(testCase.debugContext, "nextCommand", nextCommand);
   });
 
@@ -255,7 +255,7 @@ function $X(xpath, contextNode, resultType) {
 
           case "if":
             assertNotAndWaitSuffix(i);
-            lexStack.push(cmdAttrs.init(i));
+            lexStack.push(cmdAttrs.init(i, { blockNature: "if" }));
             break;
           case "else":
             assertNotAndWaitSuffix(i);
@@ -274,6 +274,41 @@ function $X(xpath, contextNode, resultType) {
             cmdAttrs[ifAttrs.idx].endIdx = i;         // if -> endif
             if (ifAttrs.elseIdx)
               cmdAttrs[ifAttrs.elseIdx].endIdx = i;   // else -> endif
+            break;
+
+          case "try":
+            assertNotAndWaitSuffix(i);
+            lexStack.push(cmdAttrs.init(i, { blockNature: "try", name: cmdTarget }));
+            break;
+          case "catch":
+            assertNotAndWaitSuffix(i);
+            assertBlockIsPending("try", i, ", is not valid without a try block");
+            var tryAttrs = lexStack.top();
+            assertMatching(tryAttrs.cmdName, "try", i, tryAttrs.idx);
+            cmdAttrs.init(i, { tryIdx: tryAttrs.idx });   // catch -> try
+            cmdAttrs[tryAttrs.idx].catchIdx = i;          // try -> catch
+            break;
+          case "finally":
+            assertNotAndWaitSuffix(i);
+            assertBlockIsPending("try", i);
+            var tryAttrs = lexStack.top();
+            assertMatching(tryAttrs.cmdName, "try", i, tryAttrs.idx);
+            cmdAttrs.init(i, { tryIdx: tryAttrs.idx });   // finally -> try
+            cmdAttrs[tryAttrs.idx].finallyIdx = i;        // try -> finally
+            if (tryAttrs.catchIdx)
+              cmdAttrs[tryAttrs.catchIdx].finallyIdx = i; // catch -> finally
+            break;
+          case "endTry":
+            assertNotAndWaitSuffix(i);
+            assertBlockIsPending("try", i);
+            var tryAttrs = lexStack.pop();
+            assertMatching(tryAttrs.cmdName, "try", i, tryAttrs.idx);
+            if (cmdTarget)
+              assertMatching(tryAttrs.name, cmdTarget, i, tryAttrs.idx); // match-up on try-name
+            cmdAttrs.init(i, { tryIdx: tryAttrs.idx });   // endTry -> try
+            cmdAttrs[tryAttrs.idx].endTryIdx = i;         // try -> endTry
+            if (tryAttrs.catchIdx)
+              cmdAttrs[tryAttrs.catchIdx].endTryIdx = i;  // catch -> endTry
             break;
 
           case "while":    case "for":    case "foreach":    case "forJson":    case "forXml":
@@ -306,7 +341,7 @@ function $X(xpath, contextNode, resultType) {
           case "script":
             assertNotAndWaitSuffix(i);
             symbols[cmdTarget] = i;
-            lexStack.push(cmdAttrs.init(i, { name: cmdTarget }));
+            lexStack.push(cmdAttrs.init(i, { blockNature: "script", name: cmdTarget }));
             break;
           case "return":
             assertNotAndWaitSuffix(i);
@@ -439,6 +474,131 @@ function $X(xpath, contextNode, resultType) {
     callStack.top().cmdStack.pop();
     // fall out of if-endIf
   };
+
+  // ================================================================================
+/*
+  try
+  * enable error intercept
+  * on error: (disable intercept), ->catch, else run finally,
+      then re-execute command without capture
+  * on [goto/return] (mark as pending), ->finally, else do it
+  * fallthrough: ->finally/endTry
+  catch (e)
+  * if error does not match, then normal selenium handling
+  * multiple catch statements on a single catch block
+  * on [goto/return] (mark as pending), ->finally, else do it
+  finally
+  endTry
+  * execute pending command if any
+*/
+  // TBD: failed locators, timeouts, asserts
+  Selenium.prototype.doTry = function(tryName)
+  {
+    assertRunning();
+    var tryState = { idx: hereIdx() };
+    callStack.top().cmdStack.push(tryState);
+    var tryAttrs = cmdAttrs.here();
+    var isTryBlockOnly = (!tryAttrs.catchIdx && !tryAttrs.finallyIdx);
+
+    if (isTryBlockOnly) {
+      $$.LOG.warn(fmtCmdRef(hereIdx()) + " has no catch-block and no finally-block, and therefore serves no purpose");
+    }
+
+    if (!!tryAttrs.catchIdx) {
+      var errDcl = testCase.commands[tryAttrs.catchIdx].target;
+      $$.LOG.debug(tryName + " catchable: " + (!!errDcl ? errDcl : "ANY"));
+    }
+
+    if (!isTryBlockOnly) {
+      var handlerAttrs = {
+        catchError: function(e)
+        {
+          var guardError = evalWithVars(errDcl);
+          if (!!tryAttrs.catchIdx && isMatch(e, guardError)) {
+            // an expected kind of error has been caught
+            $$.LOG.info("error is being handled by catch block...");
+            var activeTryCmd = cmdAttrs[dropToActiveTryBlock().idx];
+            setNextCommand(activeTryCmd.catchIdx);
+            return true; // continue
+          }
+          if (!!tryAttrs.finallyIdx) {
+            // an expected kind of error has been caught
+            tryState.pendingIdx = hereIdx();
+            $$.LOG.debug("@ " + (tryState.pendingIdx+1) + " error is suspended while finally block runs");
+            var activeTryCmd = cmdAttrs[dropToActiveTryBlock().idx];
+            setNextCommand(activeTryCmd.finallyIdx);
+            return true; // continue
+          }
+          else {
+            // no matching catch-block and/or has no finally-block
+            return false; // stop the script
+          }
+        }
+      };
+      tryState.isActive = true;
+      $$.interceptPush(editor.selDebugger.runner.IDETestLoop.prototype, "resume",
+          $$.handleAsTryBlock, handlerAttrs);
+
+      //- unwind the command stack to the inner-most active try block
+      function dropToActiveTryBlock()
+      {
+        var activeCmdStack = callStack.top().cmdStack;
+        var tryState = activeCmdStack.unwindTo(function(stackFrame) {
+          return (cmdAttrs[stackFrame.idx].blockNature == "try" && !!stackFrame.isActive);
+        });
+        return tryState;
+      }
+
+      //- error message matcher ----------
+      function isMatch(err, guardError) {
+        if (!guardError) {
+          return true; // no err specified means catch all errors
+        }
+        var errMsg = err.message;
+        if (guardError instanceof RegExp) {
+          return (!!errMsg.match(guardError));
+        }
+        return (errMsg.indexOf(guardError) != -1);
+      }
+    }
+    // continue into try-block
+  };
+
+  Selenium.prototype.doCatch = function(errDcl)
+  {
+    assertRunning();
+    assertActiveCmd(cmdAttrs.here().tryIdx);
+    var tryState = callStack.top().cmdStack.top();
+    deactivateTryBlock(tryState);
+    // continue into catch-block
+  };
+  Selenium.prototype.doFinally = function()
+  {
+    assertRunning();
+    assertActiveCmd(cmdAttrs.here().tryIdx);
+    var tryState = callStack.top().cmdStack.top();
+    deactivateTryBlock(tryState);
+    // continue into finally-block
+  };
+  Selenium.prototype.doEndTry = function(tryName)
+  {
+    assertRunning();
+    assertActiveCmd(cmdAttrs.here().tryIdx);
+    var tryState = callStack.top().cmdStack.pop();
+    deactivateTryBlock(tryState);
+    if(!!tryState.pendingIdx) {
+$$.LOG.warn("@ " + hereIdx() + " re-executing failed command @ " + (tryState.pendingIdx+1));
+      setNextCommand(tryState.pendingIdx);
+    }
+    // fall out of endTry
+  };
+
+  function deactivateTryBlock(tryState) {
+    if (!!tryState.isActive) {
+      $$.interceptPop();
+      tryState.isActive = false;
+    }
+  }
 
   // ================================================================================
   Selenium.prototype.doWhile = function(condExpr)
@@ -744,7 +904,7 @@ function $X(xpath, contextNode, resultType) {
 
 
   // ================================================================================
-  Selenium.prototype.doExitTest = function(target) {
+  Selenium.prototype.doExitTest = function() {
     // intercept command processing and simply stop test execution instead of executing the next command
     $$.interceptOnce(editor.selDebugger.runner.IDETestLoop.prototype, "resume", $$.handleAsExitTest);
   };

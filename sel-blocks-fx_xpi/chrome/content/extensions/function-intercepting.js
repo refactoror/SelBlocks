@@ -31,15 +31,26 @@
   $$.fnStack = [];
 
   // replace the specified function, saving the original function on a stack
-  $$.interceptPush = function(targetObj, targetFnName, fn) {
-    var frame = { targetObj: targetObj, targetFnName: targetFnName, savedFn: targetObj[targetFnName] };
+  $$.interceptPush = function(targetObj, targetFnName, fn, frameAttrs) {
+// $$.LOG.warn("interceptPush " + (frameAttrs ? frameAttrs : ""));
+    var frame = {
+       targetObj: targetObj
+      ,targetFnName: targetFnName
+      ,savedFn: targetObj[targetFnName]
+      ,attrs: frameAttrs
+    };
     $$.fnStack.push(frame);
     targetObj[targetFnName] = fn;
   };
   // restore the most recent function replacement
   $$.interceptPop = function() {
     var frame = $$.fnStack.pop();
+// $$.LOG.warn("interceptPop " + (frame.attrs ? frame.attrs : ""));
     frame.targetObj[frame.targetFnName] = frame.savedFn;
+  };
+  $$.getActiveInterceptAttrs = function() {
+    var topFrame = $$.fnStack[$$.fnStack.length-1];
+    return topFrame.attrs;
   };
 
   // replace the specified function, but then restore the original function as soon as it is call

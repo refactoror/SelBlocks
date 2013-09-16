@@ -11,14 +11,137 @@
 <thead>
 <tr><td rowspan="1" colspan="3">trcatch</td></tr>
 </thead><tbody>
+<!---- nested catch-->
+<tr>
+	<td>getEval</td>
+	<td>selblocks.LOG.info(&quot;---------------------------------------- foo1 ----------------------------------------&quot;)</td>
+	<td></td>
+</tr>
 <tr>
 	<td>try</td>
-	<td></td>
+	<td>fooA</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertEval</td>
 	<td>true</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>try</td>
+	<td>foo1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>true</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>true</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>false</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>true</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>true</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>catch</td>
+	<td>/'false' did not match 'true'/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>selblocks.LOG.warn(&quot;CAUGHT foo1&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>selblocks.LOG.warn(&quot;ALWAYS foo1&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td>foo1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>true</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td>fooA</td>
+	<td></td>
+</tr>
+<!---- try/finally-->
+<tr>
+	<td>getEval</td>
+	<td>selblocks.LOG.info(&quot;---------------------------------------- foo2 ----------------------------------------&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>try</td>
+	<td>foo2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>true</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>true</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>selblocks.LOG.warn(&quot;ALWAYS foo2&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<!---- try/catch ALL-->
+<tr>
+	<td>getEval</td>
+	<td>selblocks.LOG.info(&quot;---------------------------------------- foo3 ----------------------------------------&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>try</td>
+	<td>foo3</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>false</td>
 	<td>true</td>
 </tr>
 <tr>
@@ -33,7 +156,64 @@
 </tr>
 <tr>
 	<td>getEval</td>
-	<td>selblocks.LOG.warn(&quot;CAUGHT&quot;)</td>
+	<td>selblocks.LOG.warn(&quot;CAUGHT foo3&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<!---- try/catch/finally-->
+<!---!- no matching catch block-->
+<tr>
+	<td>getEval</td>
+	<td>selblocks.LOG.info(&quot;---------------------------------------- foo4 ----------------------------------------&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>try</td>
+	<td>foo4-trap</td>
+	<td></td>
+</tr>
+<tr>
+	<td>try</td>
+	<td>foo4</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>true</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>true</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>false</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>true</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>true</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>catch</td>
+	<td>/'false' doesn't match 'true'/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>selblocks.LOG.warn(&quot;CAUGHT foo4&quot;)</td>
 	<td></td>
 </tr>
 <tr>
@@ -43,15 +223,96 @@
 </tr>
 <tr>
 	<td>getEval</td>
-	<td>selblocks.LOG.warn(&quot;AS ALWAYS&quot;)</td>
+	<td>selblocks.LOG.warn(&quot;ALWAYS foo4&quot;)</td>
 	<td></td>
 </tr>
 <tr>
 	<td>endTry</td>
+	<td>foo4</td>
+	<td></td>
+</tr>
+<tr>
+	<td>catch</td>
 	<td></td>
 	<td></td>
 </tr>
-<!------>
+<tr>
+	<td>getEval</td>
+	<td>selblocks.LOG.warn(&quot;CAUGHT foo4-trap&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td>foo4-trap</td>
+	<td></td>
+</tr>
+<!---- try only-->
+<!---!- no handling for error-->
+<tr>
+	<td>getEval</td>
+	<td>selblocks.LOG.info(&quot;---------------------------------------- foo5 ----------------------------------------&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>try</td>
+	<td>foo5-trap</td>
+	<td></td>
+</tr>
+<tr>
+	<td>try</td>
+	<td>foo5</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>true</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>true</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>false</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>true</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>true</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td>foo5</td>
+	<td></td>
+</tr>
+<tr>
+	<td>catch</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>selblocks.LOG.warn(&quot;CAUGHT foo5-trap&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td>foo5-trap</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>selblocks.LOG.warn(&quot;~~~~~ done ~~~~~~&quot;)</td>
+	<td></td>
+</tr>
 </tbody></table>
 </body>
 </html>

@@ -11,7 +11,7 @@
       this.testComplete();
     } catch (e) {
       // seems highly unlikely that there would be an error in this very simple case
-      this._handleCommandError(e);
+      this._handleCommandError(e); // causes command to be marked in red
       this.testComplete();
     }
     $$.LOG.info("TEST HALTED");
