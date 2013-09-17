@@ -529,8 +529,8 @@ function $X(xpath, contextNode, resultType) {
           }
           if (!!tryAttrs.finallyIdx) {
             // an expected kind of error has been caught
-            tryState.pendingIdx = hereIdx();
-            $$.LOG.debug("@ " + (tryState.pendingIdx+1) + " error is suspended while finally block runs");
+            tryState.pendingErrorIdx = hereIdx();
+            $$.LOG.debug("@ " + (tryState.pendingErrorIdx+1) + " error is suspended while finally block runs");
             var activeTryCmd = cmdAttrs[dropToActiveTryBlock().idx];
             setNextCommand(activeTryCmd.finallyIdx);
             return true; // continue
@@ -590,7 +590,7 @@ function $X(xpath, contextNode, resultType) {
     assertActiveCmd(cmdAttrs.here().tryIdx);
     var tryState = callStack.top().cmdStack.pop();
     deactivateTryBlock(tryState);
-    if(!!tryState.pendingErrorIdx) {
+    if (!!tryState.pendingErrorIdx) {
       $$.LOG.warn("@ " + hereIdx() + " re-executing failed command @ " + (tryState.pendingErrorIdx+1));
       setNextCommand(tryState.pendingErrorIdx);
     }
