@@ -119,6 +119,7 @@ function $X(xpath, contextNode, resultType) {
   var cmdAttrs = new CmdAttrs();  // static command attributes stored by command index
   var callStack = null;           // command execution stack
 
+  // the idx of the currently executing command
   function hereIdx() {
     return testCase.debugContext.debugIndex;
   }
@@ -132,7 +133,7 @@ function $X(xpath, contextNode, resultType) {
       cmds[i].cmdName = testCase.commands[i].command;
       return cmds[i];
     };
-    cmds.here = function() {
+    cmds.cur = function() {
       var curIdx = hereIdx();
       if (!cmds[curIdx])
         $$.LOG.warn("No cmdAttrs defined curIdx=" + curIdx);
@@ -231,6 +232,11 @@ function $X(xpath, contextNode, resultType) {
     $$.LOG.debug("Configuring tail intercept: testCase.debugContext.nextCommand()");
     $$.interceptReplace(testCase.debugContext, "nextCommand", nextCommand);
   });
+
+  // the cmdStack for the currently active callStack
+  function activeCmdStack() {
+    return callStack.top().cmdStack;
+  }
 
   // ================================================================================
   // Assemble block relationships and symbol locations
@@ -452,14 +458,14 @@ function $X(xpath, contextNode, resultType) {
   {
     assertRunning();
     var ifState = { idx: hereIdx() };
-    callStack.top().cmdStack.push(ifState);
+    activeCmdStack().push(ifState);
     if (evalWithVars(condExpr)) {
       ifState.skipElseBlock = true;
       // continue into if-block
     }
     else {
       // jump to else or endif
-      var ifAttrs = cmdAttrs.here();
+      var ifAttrs = cmdAttrs.cur();
       if (ifAttrs.elseIdx)
         setNextCommand(ifAttrs.elseIdx);
       else
@@ -469,15 +475,15 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doElse = function()
   {
     assertRunning();
-    assertActiveCmd(cmdAttrs.here().ifIdx);
-    var ifState = callStack.top().cmdStack.top();
+    assertActiveCmd(cmdAttrs.cur().ifIdx);
+    var ifState = activeCmdStack().top();
     if (ifState.skipElseBlock)
-      setNextCommand(cmdAttrs.here().endIdx);
+      setNextCommand(cmdAttrs.cur().endIdx);
   };
   Selenium.prototype.doEndIf = function() {
     assertRunning();
-    assertActiveCmd(cmdAttrs.here().ifIdx);
-    callStack.top().cmdStack.pop();
+    assertActiveCmd(cmdAttrs.cur().ifIdx);
+    activeCmdStack().pop();
     // fall out of if-endIf
   };
 
@@ -502,8 +508,8 @@ function $X(xpath, contextNode, resultType) {
   {
     assertRunning();
     var tryState = { idx: hereIdx() };
-    callStack.top().cmdStack.push(tryState);
-    var tryAttrs = cmdAttrs.here();
+    activeCmdStack().push(tryState);
+    var tryAttrs = cmdAttrs.cur();
     var isTryBlockOnly = (!tryAttrs.catchIdx && !tryAttrs.finallyIdx);
 
     if (isTryBlockOnly) {
@@ -548,8 +554,7 @@ function $X(xpath, contextNode, resultType) {
       //- unwind the command stack to the inner-most active try block
       function dropToActiveTryBlock()
       {
-        var activeCmdStack = callStack.top().cmdStack;
-        var tryState = activeCmdStack.unwindTo(Stack.isActiveTryBlock);
+        var tryState = activeCmdStack().unwindTo(Stack.isActiveTryBlock);
         return tryState;
       }
 
@@ -571,24 +576,24 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doCatch = function(errDcl)
   {
     assertRunning();
-    assertActiveCmd(cmdAttrs.here().tryIdx);
-    var tryState = callStack.top().cmdStack.top();
+    assertActiveCmd(cmdAttrs.cur().tryIdx);
+    var tryState = activeCmdStack().top();
     deactivateTryBlock(tryState);
     // continue into catch-block
   };
   Selenium.prototype.doFinally = function()
   {
     assertRunning();
-    assertActiveCmd(cmdAttrs.here().tryIdx);
-    var tryState = callStack.top().cmdStack.top();
+    assertActiveCmd(cmdAttrs.cur().tryIdx);
+    var tryState = activeCmdStack().top();
     deactivateTryBlock(tryState);
     // continue into finally-block
   };
   Selenium.prototype.doEndTry = function(tryName)
   {
     assertRunning();
-    assertActiveCmd(cmdAttrs.here().tryIdx);
-    var tryState = callStack.top().cmdStack.pop();
+    assertActiveCmd(cmdAttrs.cur().tryIdx);
+    var tryState = activeCmdStack().pop();
     deactivateTryBlock(tryState);
     if (!!tryState.pendingErrorIdx) {
       $$.LOG.warn("@ " + hereIdx() + " re-executing failed command @ " + (tryState.pendingErrorIdx+1));
@@ -775,10 +780,10 @@ function $X(xpath, contextNode, resultType) {
   {
     assertRunning();
     var loopState;
-    if (!callStack.top().cmdStack.isHere()) {
+    if (!activeCmdStack().isHere()) {
       // loop begins
       loopState = { idx: hereIdx() };
-      callStack.top().cmdStack.push(loopState);
+      activeCmdStack().push(loopState);
       var localVars = _validateFunc(loopState);
       loopState.savedVars = getVarState(localVars);
       initVarState(localVars); // because with-scope can reference storedVars only once they exist
@@ -786,30 +791,30 @@ function $X(xpath, contextNode, resultType) {
     }
     else {
       // iteration
-      loopState = callStack.top().cmdStack.top();
+      loopState = activeCmdStack().top();
       _iterFunc(loopState);
     }
 
     if (!_condFunc(loopState)) {
       loopState.isComplete = true;
       // jump to bottom of loop for exit
-      setNextCommand(cmdAttrs.here().ftrIdx);
+      setNextCommand(cmdAttrs.cur().ftrIdx);
     }
     // else continue into body of loop
   }
   function iterateLoop()
   {
     assertRunning();
-    assertActiveCmd(cmdAttrs.here().hdrIdx);
-    var loopState = callStack.top().cmdStack.top();
+    assertActiveCmd(cmdAttrs.cur().hdrIdx);
+    var loopState = activeCmdStack().top();
     if (loopState.isComplete) {
       restoreVarState(loopState.savedVars);
-      callStack.top().cmdStack.pop();
+      activeCmdStack().pop();
       // done, fall out of loop
     }
     else {
       // jump back to top of loop
-      setNextCommand(cmdAttrs.here().hdrIdx);
+      setNextCommand(cmdAttrs.cur().hdrIdx);
     }
   }
 
@@ -838,8 +843,7 @@ function $X(xpath, contextNode, resultType) {
     assertRunning();
     if (condExpr && !evalWithVars(condExpr))
       return;
-    var activeCmdStack = callStack.top().cmdStack;
-    var loopState = activeCmdStack.unwindTo(Stack.isLoopBlock);
+    var loopState = activeCmdStack().unwindTo(Stack.isLoopBlock);
     return loopState;
   }
 
@@ -851,8 +855,8 @@ function $X(xpath, contextNode, resultType) {
     var scrIdx = symbols[scrName];
     assert(scrIdx, " Script does not exist: " + scrName + ".");
 
-    var callFrame = callStack.top();
-    if (callFrame.isReturning && callFrame.returnIdx == hereIdx()) {
+    var activeCallFrame = callStack.top();
+    if (activeCallFrame.isReturning && activeCallFrame.returnIdx == hereIdx()) {
       // returning from completed script
       restoreVarState(callStack.pop().savedVars);
     }
@@ -872,11 +876,11 @@ function $X(xpath, contextNode, resultType) {
   {
     assertRunning();
 
-    var scrAttrs = cmdAttrs.here();
-    var callFrame = callStack.top();
-    if (callFrame.scrIdx == hereIdx()) {
+    var scrAttrs = cmdAttrs.cur();
+    var activeCallFrame = callStack.top();
+    if (activeCallFrame.scrIdx == hereIdx()) {
       // get parameter values
-      setVars(callFrame.args);
+      setVars(activeCallFrame.args);
     }
     else {
       // no active call, skip around script body
@@ -893,13 +897,13 @@ function $X(xpath, contextNode, resultType) {
   function returnFromScript(scrName, returnVal)
   {
     assertRunning();
-    var endAttrs = cmdAttrs.here();
-    var callFrame = callStack.top();
-    if (callFrame.scrIdx == endAttrs.scrIdx) {
+    var endAttrs = cmdAttrs.cur();
+    var activeCallFrame = callStack.top();
+    if (activeCallFrame.scrIdx == endAttrs.scrIdx) {
       if (returnVal) storedVars._result = evalWithVars(returnVal);
-      callFrame.isReturning = true;
+      activeCallFrame.isReturning = true;
       // jump back to call command
-      setNextCommand(callFrame.returnIdx);
+      setNextCommand(activeCallFrame.returnIdx);
     }
     else {
       // no active call, we're just skipping around a script block
@@ -1001,7 +1005,7 @@ function $X(xpath, contextNode, resultType) {
     assert(testCase.debugContext.started, " Command is only valid in a running script.");
   }
   function assertActiveCmd(expectedIdx) {
-    var activeIdx = callStack.top().cmdStack.top().idx;
+    var activeIdx = activeCmdStack().top().idx;
     assert(activeIdx == expectedIdx, " unexpected command, active command was " + fmtCmdRef(activeIdx));
   }
 
