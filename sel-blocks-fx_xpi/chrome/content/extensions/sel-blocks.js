@@ -146,7 +146,7 @@ function $X(xpath, contextNode, resultType) {
     var stack = [];
     stack.isEmpty = function() { return stack.length == 0; };
     stack.top = function()     { return stack[stack.length-1]; };
-    stack.find = function(_testfunc) { return stack[stack.indexWhere(_testfunc)]; };
+    stack.findEnclosing = function(_testfunc) { return stack[stack.indexWhere(_testfunc)]; };
     stack.indexWhere = function(_testfunc) { // undefined if not found
       for (var i = stack.length-1; i >= 0; i--) {
         if (_testfunc(stack[i]))
@@ -164,9 +164,15 @@ function $X(xpath, contextNode, resultType) {
     return stack;
   }
 
-  // Determine if the given stack frame is one of the loop blocks
+  // Determine if the given stack frame is one of the given block kinds
   Stack.isLoopBlock = function(stackFrame) {
     return (cmdAttrs[stackFrame.idx].blockNature == "loop");
+  };
+  Stack.isScriptBlock = function(stackFrame) {
+    return (cmdAttrs[stackFrame.idx].blockNature == "script");
+  };
+  Stack.isActiveTryBlock = function(stackFrame) {
+    return (cmdAttrs[stackFrame.idx].blockNature == "try" && !!stackFrame.isActive);
   };
 
 
@@ -317,7 +323,7 @@ function $X(xpath, contextNode, resultType) {
             break;
           case "continue": case "break":
             assertNotAndWaitSuffix(i);
-            assertCmd(i, lexStack.find(Stack.isLoopBlock), ", is not valid outside of a loop");
+            assertCmd(i, lexStack.findEnclosing(Stack.isLoopBlock), ", is not valid outside of a loop");
             cmdAttrs.init(i, { hdrIdx: lexStack.top().idx }); // -> header
             break;
           case "endWhile": case "endFor": case "endForeach": case "endForJson": case "endForXml":
@@ -346,8 +352,8 @@ function $X(xpath, contextNode, resultType) {
           case "return":
             assertNotAndWaitSuffix(i);
             assertBlockIsPending("script", i, ", is not valid outside of a script/endScript block");
-            var scrpt = lexStack.find(function(attrs) { return (attrs.cmdName == "script"); });
-            cmdAttrs.init(i, { scrIdx: scrpt.idx });    // return -> script
+            var scrptCmd = lexStack.findEnclosing(Stack.isScriptBlock);
+            cmdAttrs.init(i, { scrIdx: scrptCmd.idx }); // return -> script
             break;
           case "endScript":
             assertNotAndWaitSuffix(i);
@@ -543,9 +549,7 @@ function $X(xpath, contextNode, resultType) {
       function dropToActiveTryBlock()
       {
         var activeCmdStack = callStack.top().cmdStack;
-        var tryState = activeCmdStack.unwindTo(function(stackFrame) {
-          return (cmdAttrs[stackFrame.idx].blockNature == "try" && !!stackFrame.isActive);
-        });
+        var tryState = activeCmdStack.unwindTo(Stack.isActiveTryBlock);
         return tryState;
       }
 
@@ -586,9 +590,9 @@ function $X(xpath, contextNode, resultType) {
     assertActiveCmd(cmdAttrs.here().tryIdx);
     var tryState = callStack.top().cmdStack.pop();
     deactivateTryBlock(tryState);
-    if(!!tryState.pendingIdx) {
-$$.LOG.warn("@ " + hereIdx() + " re-executing failed command @ " + (tryState.pendingIdx+1));
-      setNextCommand(tryState.pendingIdx);
+    if(!!tryState.pendingErrorIdx) {
+      $$.LOG.warn("@ " + hereIdx() + " re-executing failed command @ " + (tryState.pendingErrorIdx+1));
+      setNextCommand(tryState.pendingErrorIdx);
     }
     // fall out of endTry
   };
