@@ -1,5 +1,5 @@
 /*
- * SelBlocks 1.5.?
+ * SelBlocks 2.0b
  *
  * Provides commands for Javascript-like looping and callable functions,
  *   with scoped variables, and JSON/XML driven parameterization.
@@ -7,22 +7,25 @@
  * (Selbock installs as a Core Extension, not an IDE Extension, because it manipulates the Selenium object)
  *
  * Features
- *  - Commands: if/else, loadJsonVars/loadXmlVars, forJson/forXml, foreach/for/while, call/script/return
+ *  - Commands: if/else, try/catch/finally, for/foreach/while, call/script/return, loadJsonVars/loadXmlVars,
+ *    forJson/forXml
  *  - Script and loop parameters create regular Selenium variables that are local to the block,
  *    overriding variables of the same name, and that are restored when the block exits.
  *  - Variables can be set via external JSON/XML data file(s).
- *  - Command parameters are Javascript expressions that are evaluated with the Selenium
- *    variables in scope, which can therefore be referenced by their simple names, e.g.: i+1
+ *  - Command parameters are Javascript expressions that are evaluated with Selenium variables
+ *    in scope, which can therefore be referenced by their simple names, e.g.: i+1
  *  - A script definition can appear anywhere; they are skipped over in normal execution flow.
  *  - Script functions can be invoked recursively.
  *
  * Concept of operation:
- *  - selenium.reset() is intercepted to initialize the block structures.
+ *  - Selenium.reset() is intercepted to initialize the block structures.
  *  - testCase.nextCommand() is overridden for flow branching.
- *  - TestLoop.resume() is overridden by exitTest.
- *  - The static structure of commands & blocks is stored in cmdAttrs[] by command index, (ie, script line number).
- *  - The execution state each block is pushed onto the cmdStack, with a separate instance for each callStack frame.
- *    In other words, stack within a stack.
+ *  - The static structure of commands & blocks is stored in cmdAttrs[] by script line number.
+ *    E.g., 'if' gets pointers to its corresponding else and/or endIf.
+ *  - The state of a call to is pushed/popped on callStack as it begins/ends execution
+ *   The state of a block is pushed/popped on the cmdStack as it begins/ends execution.
+ *    A separate instance for each callStack frame. In other words, stacks stored on a stack.
+ *  - TestLoop.resume() is overridden by exitTest, and by try/catch/finally to manage the outcome of errors
  *
  * Limitations:
  *  - Incompatible with flowControl (and derivatives), because they unilaterally override selenium.reset().
@@ -34,12 +37,12 @@
  *  SelBlocks reuses bits & parts of extensions: flowControl, datadriven, and include.
  *
  * Wishlist:
- *  - try/catch
  *  - switch/case
  *  - validation of JSON & XML input files
  *  - enforce block boundaries (jumping in-to/out-of the middle of blocks)
  *
  * Changes since 1.5:
+ *  - added try/catch/finally
  *
  * NOTE - The Stored Variables Viewer addon will display the values of Selblocks parameters,
  *   because they are implemented as regular Selenium variables.
@@ -531,6 +534,7 @@ function $X(xpath, contextNode, resultType) {
             $$.LOG.info("error is being handled by catch block...");
             var activeTryCmd = cmdAttrs[dropToActiveTryBlock().idx];
             setNextCommand(activeTryCmd.catchIdx);
+            tryState.phase = "catching";
             return true; // continue
           }
           if (!!tryAttrs.finallyIdx) {
@@ -539,6 +543,7 @@ function $X(xpath, contextNode, resultType) {
             $$.LOG.debug("@ " + (tryState.pendingErrorIdx+1) + " error is suspended while finally block runs");
             var activeTryCmd = cmdAttrs[dropToActiveTryBlock().idx];
             setNextCommand(activeTryCmd.finallyIdx);
+            tryState.phase = "finalizing";
             return true; // continue
           }
           else {
@@ -548,6 +553,7 @@ function $X(xpath, contextNode, resultType) {
         }
       };
       tryState.isActive = true;
+      tryState.phase = "trying";
       $$.interceptPush(editor.selDebugger.runner.IDETestLoop.prototype, "resume",
           $$.handleAsTryBlock, handlerAttrs);
 
@@ -1002,7 +1008,8 @@ function $X(xpath, contextNode, resultType) {
   function assert(cond, msg) { if (!cond) notifyFatalHere(msg); }
   // TBD: can we at least show result of expressions?
   function assertRunning() {
-    assert(testCase.debugContext.started, " Command is only valid in a running script.");
+    assert(testCase.debugContext.started, " Command is only valid in a running script."
+        + " E.g., cannot be executed via double-click.");
   }
   function assertActiveCmd(expectedIdx) {
     var activeIdx = activeCmdStack().top().idx;

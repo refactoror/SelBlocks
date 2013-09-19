@@ -3,7 +3,7 @@ SETLOCAL
 :: Pre-requisites:
 ::   Hand-edit install.rdf: <em:version>x.y.z
 ::             about.xul: text box
-::             selbench.js: header comment
+::             sel-bocks.js: header comment
 :: Assumptions:
 ::   cygwin grep
 ::   cygwin zip
