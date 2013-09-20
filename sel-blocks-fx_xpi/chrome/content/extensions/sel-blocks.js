@@ -20,12 +20,13 @@
  * Concept of operation:
  *  - Selenium.reset() is intercepted to initialize the block structures.
  *  - testCase.nextCommand() is overridden for flow branching.
- *  - The static structure of commands & blocks is stored in cmdDefs[] by script line number.
- *    E.g., 'if' gets pointers to its corresponding else and/or endIf.
- *  - The state of a call to is pushed/popped on callStack as it begins/ends execution
- *   The state of a block is pushed/popped on the cmdStack as it begins/ends execution.
- *    A separate instance for each callStack frame. In other words, stacks stored on a stack.
  *  - TestLoop.resume() is overridden by exitTest, and by try/catch/finally to manage the outcome of errors
+ *  - The static structure of commands & blocks is stored in cmdDefs[] by script line number.
+ *    E.g., ifDef has pointers to its corresponding else and/or endIf.
+ *  - The state of each script-call is pushed/popped on callStack as it begins/ends execution
+ *    The state of each block is pushed/popped on the cmdStack as it begins/ends execution.
+ *    An independent cmdStack is associated with each script-call. I.e., stacks stored on a stack.
+ *    Non-block commands do not appear on the cmdStack.
  *
  * Limitations:
  *  - Incompatible with flowControl (and derivatives), because they unilaterally override selenium.reset().
@@ -491,21 +492,7 @@ function $X(xpath, contextNode, resultType) {
   };
 
   // ================================================================================
-/*
-  try
-  * enable error intercept
-  * on error: (disable intercept), ->catch, else run finally,
-      then re-execute command without capture
-  * on [goto/return] (mark as pending), ->finally, else do it
-  * fallthrough: ->finally/endTry
-  catch (e)
-  * if error does not match, then normal selenium handling
-  * multiple catch statements on a single catch block
-  * on [goto/return] (mark as pending), ->finally, else do it
-  finally
-  endTry
-  * execute pending command if any
-*/
+
   // TBD: failed locators, timeouts, asserts
   Selenium.prototype.doTry = function(tryName)
   {
