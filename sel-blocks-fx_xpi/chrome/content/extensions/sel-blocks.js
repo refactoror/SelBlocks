@@ -21,7 +21,7 @@
  *  - Selenium.reset() is intercepted to initialize the block structures.
  *  - testCase.nextCommand() is overridden for flow branching.
  *  - TestLoop.resume() is overridden by exitTest, and by try/catch/finally to manage the outcome of errors
- *  - The static structure of commands & blocks is stored in cmdDefs[] by script line number.
+ *  - The static structure of command blocks is stored in blockDefs[] by script line number.
  *    E.g., ifDef has pointers to its corresponding else and/or endIf.
  *  - The state of each script-call is pushed/popped on callStack as it begins/ends execution
  *    The state of each block is pushed/popped on the cmdStack as it begins/ends execution.
@@ -119,9 +119,9 @@ function $X(xpath, contextNode, resultType) {
 
   //=============== Command Stack handling ===============
 
-  var symbols = {};               // command indexes stored by name: function names
-  var cmdDefs = new CmdDefs();    // static command definitions stored by command index
-  var callStack = null;           // command execution stack
+  var symbols = {};                 // command indexes stored by name: function names
+  var blockDefs = new BlockDefs();  // static command definitions stored by command index
+  var callStack = null;             // command execution stack
 
   // the idx of the currently executing command
   function hereIdx() {
@@ -129,7 +129,7 @@ function $X(xpath, contextNode, resultType) {
   }
 
   // Command structure definitions, stored by command index
-  function CmdDefs() {
+  function BlockDefs() {
     var cmds = [];
     cmds.init = function(i, attrs) {
       cmds[i] = attrs || {};
@@ -140,7 +140,7 @@ function $X(xpath, contextNode, resultType) {
     cmds.cur = function() {
       var curIdx = hereIdx();
       if (!cmds[curIdx])
-        $$.LOG.warn("No cmdDefs defined curIdx=" + curIdx);
+        $$.LOG.warn("No blockDef defined at curIdx=" + curIdx);
       return cmds[curIdx];
     };
     return cmds;
@@ -171,13 +171,13 @@ function $X(xpath, contextNode, resultType) {
 
   // Determine if the given stack frame is one of the given block kinds
   Stack.isLoopBlock = function(stackFrame) {
-    return (cmdDefs[stackFrame.idx].blockNature == "loop");
+    return (blockDefs[stackFrame.idx].nature == "loop");
   };
   Stack.isScriptBlock = function(stackFrame) {
-    return (cmdDefs[stackFrame.idx].blockNature == "script");
+    return (blockDefs[stackFrame.idx].nature == "script");
   };
   Stack.isActiveTryBlock = function(stackFrame) {
-    return (cmdDefs[stackFrame.idx].blockNature == "try" && !!stackFrame.isActive);
+    return (blockDefs[stackFrame.idx].nature == "try" && !!stackFrame.isActive);
   };
 
 
@@ -271,48 +271,48 @@ function $X(xpath, contextNode, resultType) {
 
           case "if":
             assertNotAndWaitSuffix(i);
-            lexStack.push(cmdDefs.init(i, { blockNature: "if" }));
+            lexStack.push(blockDefs.init(i, { nature: "if" }));
             break;
           case "else":
             assertNotAndWaitSuffix(i);
             assertBlockIsPending("if", i, ", is not valid outside of an if/endIf block");
             var ifDef = lexStack.top();
             assertMatching(ifDef.cmdName, "if", i, ifDef.idx);
-            cmdDefs.init(i, { ifIdx: ifDef.idx }); // else -> if
-            cmdDefs[ifDef.idx].elseIdx = i;        // if -> else
+            blockDefs.init(i, { ifIdx: ifDef.idx }); // else -> if
+            blockDefs[ifDef.idx].elseIdx = i;        // if -> else
             break;
           case "endIf":
             assertNotAndWaitSuffix(i);
             assertBlockIsPending("if", i);
             var ifDef = lexStack.pop();
             assertMatching(ifDef.cmdName, "if", i, ifDef.idx);
-            cmdDefs.init(i, { ifIdx: ifDef.idx }); // endIf -> if
-            cmdDefs[ifDef.idx].endIdx = i;         // if -> endif
+            blockDefs.init(i, { ifIdx: ifDef.idx }); // endIf -> if
+            blockDefs[ifDef.idx].endIdx = i;         // if -> endif
             if (ifDef.elseIdx)
-              cmdDefs[ifDef.elseIdx].endIdx = i;   // else -> endif
+              blockDefs[ifDef.elseIdx].endIdx = i;   // else -> endif
             break;
 
           case "try":
             assertNotAndWaitSuffix(i);
-            lexStack.push(cmdDefs.init(i, { blockNature: "try", name: cmdTarget }));
+            lexStack.push(blockDefs.init(i, { nature: "try", name: cmdTarget }));
             break;
           case "catch":
             assertNotAndWaitSuffix(i);
             assertBlockIsPending("try", i, ", is not valid without a try block");
             var tryDef = lexStack.top();
             assertMatching(tryDef.cmdName, "try", i, tryDef.idx);
-            cmdDefs.init(i, { tryIdx: tryDef.idx });   // catch -> try
-            cmdDefs[tryDef.idx].catchIdx = i;          // try -> catch
+            blockDefs.init(i, { tryIdx: tryDef.idx });   // catch -> try
+            blockDefs[tryDef.idx].catchIdx = i;          // try -> catch
             break;
           case "finally":
             assertNotAndWaitSuffix(i);
             assertBlockIsPending("try", i);
             var tryDef = lexStack.top();
             assertMatching(tryDef.cmdName, "try", i, tryDef.idx);
-            cmdDefs.init(i, { tryIdx: tryDef.idx });   // finally -> try
-            cmdDefs[tryDef.idx].finallyIdx = i;        // try -> finally
+            blockDefs.init(i, { tryIdx: tryDef.idx });   // finally -> try
+            blockDefs[tryDef.idx].finallyIdx = i;        // try -> finally
             if (tryDef.catchIdx)
-              cmdDefs[tryDef.catchIdx].finallyIdx = i; // catch -> finally
+              blockDefs[tryDef.catchIdx].finallyIdx = i; // catch -> finally
             break;
           case "endTry":
             assertNotAndWaitSuffix(i);
@@ -321,20 +321,20 @@ function $X(xpath, contextNode, resultType) {
             assertMatching(tryDef.cmdName, "try", i, tryDef.idx);
             if (cmdTarget)
               assertMatching(tryDef.name, cmdTarget, i, tryDef.idx); // pair-up on try-name
-            cmdDefs.init(i, { tryIdx: tryDef.idx });   // endTry -> try
-            cmdDefs[tryDef.idx].endTryIdx = i;         // try -> endTry
+            blockDefs.init(i, { tryIdx: tryDef.idx });   // endTry -> try
+            blockDefs[tryDef.idx].endTryIdx = i;         // try -> endTry
             if (tryDef.catchIdx)
-              cmdDefs[tryDef.catchIdx].endTryIdx = i;  // catch -> endTry
+              blockDefs[tryDef.catchIdx].endTryIdx = i;  // catch -> endTry
             break;
 
           case "while":    case "for":    case "foreach":    case "forJson":    case "forXml":
             assertNotAndWaitSuffix(i);
-            lexStack.push(cmdDefs.init(i, { blockNature: "loop" }));
+            lexStack.push(blockDefs.init(i, { nature: "loop" }));
             break;
           case "continue": case "break":
             assertNotAndWaitSuffix(i);
             assertCmd(i, lexStack.findEnclosing(Stack.isLoopBlock), ", is not valid outside of a loop");
-            cmdDefs.init(i, { hdrIdx: lexStack.top().idx }); // -> header
+            blockDefs.init(i, { hdrIdx: lexStack.top().idx }); // -> header
             break;
           case "endWhile": case "endFor": case "endForeach": case "endForJson": case "endForXml":
             assertNotAndWaitSuffix(i);
@@ -342,8 +342,8 @@ function $X(xpath, contextNode, resultType) {
             assertBlockIsPending(expectedCmd, i);
             var hdrDef = lexStack.pop();
             assertMatching(hdrDef.cmdName.toLowerCase(), expectedCmd, i, hdrDef.idx);
-            cmdDefs[hdrDef.idx].ftrIdx = i;            // header -> footer
-            cmdDefs.init(i, { hdrIdx: hdrDef.idx });   // footer -> header
+            blockDefs[hdrDef.idx].ftrIdx = i;            // header -> footer
+            blockDefs.init(i, { hdrIdx: hdrDef.idx });   // footer -> header
             break;
 
           case "loadJsonVars": case "loadXmlVars":
@@ -352,18 +352,18 @@ function $X(xpath, contextNode, resultType) {
 
           case "call":
             assertNotAndWaitSuffix(i);
-            cmdDefs.init(i);
+            blockDefs.init(i);
             break;
           case "script":
             assertNotAndWaitSuffix(i);
             symbols[cmdTarget] = i;
-            lexStack.push(cmdDefs.init(i, { blockNature: "script", name: cmdTarget }));
+            lexStack.push(blockDefs.init(i, { nature: "script", name: cmdTarget }));
             break;
           case "return":
             assertNotAndWaitSuffix(i);
             assertBlockIsPending("script", i, ", is not valid outside of a script/endScript block");
             var scrptCmd = lexStack.findEnclosing(Stack.isScriptBlock);
-            cmdDefs.init(i, { scrIdx: scrptCmd.idx }); // return -> script
+            blockDefs.init(i, { scrIdx: scrptCmd.idx }); // return -> script
             break;
           case "endScript":
             assertNotAndWaitSuffix(i);
@@ -372,8 +372,8 @@ function $X(xpath, contextNode, resultType) {
             assertMatching(scrDef.cmdName, "script", i, scrDef.idx);
             if (cmdTarget)
               assertMatching(scrDef.name, cmdTarget, i, scrDef.idx); // pair-up on script name
-            cmdDefs[scrDef.idx].endIdx = i;            // script -> endscript
-            cmdDefs.init(i, { scrIdx: scrDef.idx });   // endScript -> script
+            blockDefs[scrDef.idx].endIdx = i;            // script -> endscript
+            blockDefs.init(i, { scrIdx: scrDef.idx });   // endScript -> script
             break;
 
           case "exitTest":
@@ -469,7 +469,7 @@ function $X(xpath, contextNode, resultType) {
     }
     else {
       // jump to else or endif
-      var ifDef = cmdDefs.cur();
+      var ifDef = blockDefs.cur();
       if (ifDef.elseIdx)
         setNextCommand(ifDef.elseIdx);
       else
@@ -479,14 +479,14 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doElse = function()
   {
     assertRunning();
-    assertActiveCmd(cmdDefs.cur().ifIdx);
+    assertActiveCmd(blockDefs.cur().ifIdx);
     var ifState = activeCmdStack().top();
     if (ifState.skipElseBlock)
-      setNextCommand(cmdDefs.cur().endIdx);
+      setNextCommand(blockDefs.cur().endIdx);
   };
   Selenium.prototype.doEndIf = function() {
     assertRunning();
-    assertActiveCmd(cmdDefs.cur().ifIdx);
+    assertActiveCmd(blockDefs.cur().ifIdx);
     activeCmdStack().pop();
     // fall out of if-endIf
   };
@@ -499,7 +499,7 @@ function $X(xpath, contextNode, resultType) {
     assertRunning();
     var tryState = { idx: hereIdx() };
     activeCmdStack().push(tryState);
-    var tryDef = cmdDefs.cur();
+    var tryDef = blockDefs.cur();
     var isTryBlockOnly = (!tryDef.catchIdx && !tryDef.finallyIdx);
 
     if (isTryBlockOnly) {
@@ -519,7 +519,7 @@ function $X(xpath, contextNode, resultType) {
           if (!!tryDef.catchIdx && isMatch(e, guardError)) {
             // an expected kind of error has been caught
             $$.LOG.info("error is being handled by catch block...");
-            var activeTryCmd = cmdDefs[dropToActiveTryBlock().idx];
+            var activeTryCmd = blockDefs[dropToActiveTryBlock().idx];
             setNextCommand(activeTryCmd.catchIdx);
             tryState.phase = "catching";
             return true; // continue
@@ -528,7 +528,7 @@ function $X(xpath, contextNode, resultType) {
             // an expected kind of error has been caught
             tryState.pendingErrorIdx = hereIdx();
             $$.LOG.debug("@ " + (tryState.pendingErrorIdx+1) + " error is suspended while finally block runs");
-            var activeTryCmd = cmdDefs[dropToActiveTryBlock().idx];
+            var activeTryCmd = blockDefs[dropToActiveTryBlock().idx];
             setNextCommand(activeTryCmd.finallyIdx);
             tryState.phase = "finalizing";
             return true; // continue
@@ -569,7 +569,7 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doCatch = function(errDcl)
   {
     assertRunning();
-    assertActiveCmd(cmdDefs.cur().tryIdx);
+    assertActiveCmd(blockDefs.cur().tryIdx);
     var tryState = activeCmdStack().top();
     deactivateTryBlock(tryState);
     // continue into catch-block
@@ -577,7 +577,7 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doFinally = function()
   {
     assertRunning();
-    assertActiveCmd(cmdDefs.cur().tryIdx);
+    assertActiveCmd(blockDefs.cur().tryIdx);
     var tryState = activeCmdStack().top();
     deactivateTryBlock(tryState);
     // continue into finally-block
@@ -585,7 +585,7 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doEndTry = function(tryName)
   {
     assertRunning();
-    assertActiveCmd(cmdDefs.cur().tryIdx);
+    assertActiveCmd(blockDefs.cur().tryIdx);
     var tryState = activeCmdStack().pop();
     deactivateTryBlock(tryState);
     if (!!tryState.pendingErrorIdx) {
@@ -791,14 +791,14 @@ function $X(xpath, contextNode, resultType) {
     if (!_condFunc(loopState)) {
       loopState.isComplete = true;
       // jump to bottom of loop for exit
-      setNextCommand(cmdDefs.cur().ftrIdx);
+      setNextCommand(blockDefs.cur().ftrIdx);
     }
     // else continue into body of loop
   }
   function iterateLoop()
   {
     assertRunning();
-    assertActiveCmd(cmdDefs.cur().hdrIdx);
+    assertActiveCmd(blockDefs.cur().hdrIdx);
     var loopState = activeCmdStack().top();
     if (loopState.isComplete) {
       restoreVarState(loopState.savedVars);
@@ -807,7 +807,7 @@ function $X(xpath, contextNode, resultType) {
     }
     else {
       // jump back to top of loop
-      setNextCommand(cmdDefs.cur().hdrIdx);
+      setNextCommand(blockDefs.cur().hdrIdx);
     }
   }
 
@@ -816,8 +816,8 @@ function $X(xpath, contextNode, resultType) {
     var loopState = dropToLoop(condExpr);
     if (loopState) {
       // jump back to top of loop for next iteration, if any
-      var ftrCmd = cmdDefs[loopState.idx];
-      setNextCommand(cmdDefs[ftrCmd.ftrIdx].hdrIdx);
+      var ftrCmd = blockDefs[loopState.idx];
+      setNextCommand(blockDefs[ftrCmd.ftrIdx].hdrIdx);
     }
   };
   Selenium.prototype.doBreak = function(condExpr) {
@@ -825,7 +825,7 @@ function $X(xpath, contextNode, resultType) {
     if (loopState) {
       loopState.isComplete = true;
       // jump to bottom of loop for exit
-      setNextCommand(cmdDefs[loopState.idx].ftrIdx);
+      setNextCommand(blockDefs[loopState.idx].ftrIdx);
     }
   };
 
@@ -869,7 +869,7 @@ function $X(xpath, contextNode, resultType) {
   {
     assertRunning();
 
-    var scrDef = cmdDefs.cur();
+    var scrDef = blockDefs.cur();
     var activeCallFrame = callStack.top();
     if (activeCallFrame.scrIdx == hereIdx()) {
       // get parameter values
@@ -890,7 +890,7 @@ function $X(xpath, contextNode, resultType) {
   function returnFromScript(scrName, returnVal)
   {
     assertRunning();
-    var endDef = cmdDefs.cur();
+    var endDef = blockDefs.cur();
     var activeCallFrame = callStack.top();
     if (activeCallFrame.scrIdx == endDef.scrIdx) {
       if (returnVal) storedVars._result = evalWithVars(returnVal);
