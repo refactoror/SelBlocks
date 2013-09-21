@@ -566,30 +566,20 @@ function $X(xpath, contextNode, resultType) {
     // continue into try-block
   };
 
-  Selenium.prototype.doCatch = function(errDcl)
-  {
-    assertRunning();
-    assertActiveScope(blockDefs.cur().tryIdx);
-    var tryState = activeScopeStack().top();
-    deactivateTryBlock(tryState);
+  Selenium.prototype.doCatch = function(errDcl) {
+    var tryState = transitionTryBlock();
     if (!!tryState.finallyIdx)
       tryState.execPhase = "prefinally";
     // continue into catch-block
   };
-  Selenium.prototype.doFinally = function()
-  {
-    assertRunning();
-    assertActiveScope(blockDefs.cur().tryIdx);
-    var tryState = activeScopeStack().top();
-    deactivateTryBlock(tryState);
+  Selenium.prototype.doFinally = function() {
+    transitionTryBlock();
     // continue into finally-block
   };
   Selenium.prototype.doEndTry = function(tryName)
   {
-    assertRunning();
-    assertActiveScope(blockDefs.cur().tryIdx);
+    transitionTryBlock();
     var tryState = activeScopeStack().pop();
-    deactivateTryBlock(tryState);
     if (!!tryState.pendingErrorIdx) {
       $$.LOG.warn("@ " + (idxHere()+1) + " re-executing failed command @ " + (tryState.pendingErrorIdx+1));
       setNextCommand(tryState.pendingErrorIdx);
@@ -597,12 +587,16 @@ function $X(xpath, contextNode, resultType) {
     // fall out of endTry
   };
 
-  function deactivateTryBlock(tryState) {
+  function transitionTryBlock() {
+    assertRunning();
+    assertActiveScope(blockDefs.cur().tryIdx);
+    var tryState = activeScopeStack().top();
     if (!!tryState.isActive) {
       $$.interceptPop();
       tryState.isActive = false;
       tryState.execPhase = null;
     }
+    return tryState;
   }
 
   // ================================================================================
