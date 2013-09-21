@@ -52,6 +52,7 @@
  *   So this can provide a convenient way to monitor the progress of an executing script.
  */
 
+
 // =============== global functions as script helpers ===============
 // getEval script helpers
 
@@ -408,7 +409,6 @@ function $X(xpath, contextNode, resultType) {
 
   // ==================== Selblocks Commands (Custom Selenium Actions) ====================
 
-  var commandNames = [];
   var iexpr = Object.create($$.InfixExpressionParser);
 
   // validate variable/parameter names
@@ -427,7 +427,6 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doLabel = function() {
     // noop
   };
-  commandNames.push("label");
 
   // Skip the next N commands (default is 1)
   Selenium.prototype.doSkipNext = function(spec)
@@ -502,10 +501,10 @@ function $X(xpath, contextNode, resultType) {
     var tryState = { idx: idxHere() };
     activeScopeStack().push(tryState);
     var tryDef = blockDefs.cur();
-    var isTryBlockOnly = (!tryDef.catchIdx && !tryDef.finallyIdx);
 
-    if (isTryBlockOnly) {
+    if (!tryDef.catchIdx && !tryDef.finallyIdx) {
       $$.LOG.warn(fmtCurCmd() + " has no catch-block and no finally-block, and therefore serves no purpose");
+      return; // continue into try-block without any special handling
     }
 
     if (!!tryDef.catchIdx) {
@@ -513,57 +512,56 @@ function $X(xpath, contextNode, resultType) {
       $$.LOG.debug(tryName + " catchable: " + (!!errDcl ? errDcl : "ANY"));
     }
 
-    if (!isTryBlockOnly) {
-      var handlerAttrs = {
-        catchError: function(e)
-        {
-          var guardError = evalWithVars(errDcl);
-          if (!!tryDef.catchIdx && isMatch(e, guardError)) {
-            // an expected kind of error has been caught
-            $$.LOG.info("error is being handled by catch block...");
-            var activeTryCmd = blockDefs[dropToActiveTryBlock().idx];
-            setNextCommand(activeTryCmd.catchIdx);
-            tryState.execPhase = "catching";
-            return true; // continue
-          }
-          if (!!tryDef.finallyIdx) {
-            // an expected kind of error has been caught
-            tryState.pendingErrorIdx = idxHere();
-            $$.LOG.debug("@ " + (tryState.pendingErrorIdx+1) + " error is suspended while finally block runs");
-            var activeTryCmd = blockDefs[dropToActiveTryBlock().idx];
-            setNextCommand(activeTryCmd.finallyIdx);
-            tryState.execPhase = "finalizing";
-            return true; // continue
-          }
-          else {
-            // no matching catch-block and/or has no finally-block
-            return false; // stop the script
-          }
-        }
-      };
-      tryState.isActive = true;
-      tryState.execPhase = "trying";
-      $$.interceptPush(editor.selDebugger.runner.IDETestLoop.prototype, "resume",
-          $$.handleAsTryBlock, handlerAttrs);
-
-      //- unwind the command stack to the inner-most active try block
-      function dropToActiveTryBlock()
+    var handlerAttrs = {
+      catchError: function(e)
       {
-        var tryState = activeScopeStack().unwindTo(Stack.isActiveTryBlock);
-        return tryState;
-      }
+        var guardError = evalWithVars(errDcl);
+        if (!!tryDef.catchIdx && isMatch(e, guardError)) {
+          // an expected kind of error has been caught
+          $$.LOG.info("error is being handled by catch block...");
+          var activeTryCmd = blockDefs[dropToActiveTryBlock().idx];
+          setNextCommand(activeTryCmd.catchIdx);
+          tryState.execPhase = "prefinally";
+          return true; // continue
+        }
+        if (!!tryDef.finallyIdx) {
+          // an expected kind of error has been caught
+          tryState.pendingErrorIdx = idxHere();
+          $$.LOG.debug("@ " + (tryState.pendingErrorIdx+1) + " error is suspended while finally block runs");
+          var activeTryCmd = blockDefs[dropToActiveTryBlock().idx];
+          setNextCommand(activeTryCmd.finallyIdx);
+          tryState.execPhase = "";
+          return true; // continue
+        }
+        else {
+          // no matching catch-block and/or no finally-block
+          return false; // stop the script
+        }
 
-      //- error message matcher ----------
-      function isMatch(err, guardError) {
-        if (!guardError) {
-          return true; // no err specified means catch all errors
+        //- error message matcher ----------
+        function isMatch(err, guardError) {
+          if (!guardError) {
+            return true; // no err specification means catch all errors
+          }
+          var errMsg = err.message;
+          if (guardError instanceof RegExp) {
+            return (!!errMsg.match(guardError));
+          }
+          return (errMsg.indexOf(guardError) != -1);
         }
-        var errMsg = err.message;
-        if (guardError instanceof RegExp) {
-          return (!!errMsg.match(guardError));
-        }
-        return (errMsg.indexOf(guardError) != -1);
       }
+    };
+
+    tryState.isActive = true;
+    tryState.execPhase = "trying";
+    $$.interceptPush(editor.selDebugger.runner.IDETestLoop.prototype, "resume",
+        $$.handleAsTryBlock, handlerAttrs);
+
+    //- unwind the command stack to the inner-most active try block
+    function dropToActiveTryBlock()
+    {
+      var tryState = activeScopeStack().unwindTo(Stack.isActiveTryBlock);
+      return tryState;
     }
     // continue into try-block
   };
@@ -574,6 +572,8 @@ function $X(xpath, contextNode, resultType) {
     assertActiveScope(blockDefs.cur().tryIdx);
     var tryState = activeScopeStack().top();
     deactivateTryBlock(tryState);
+    if (!!tryState.finallyIdx)
+      tryState.execPhase = "prefinally";
     // continue into catch-block
   };
   Selenium.prototype.doFinally = function()
@@ -591,7 +591,7 @@ function $X(xpath, contextNode, resultType) {
     var tryState = activeScopeStack().pop();
     deactivateTryBlock(tryState);
     if (!!tryState.pendingErrorIdx) {
-      $$.LOG.warn("@ " + idxHere() + " re-executing failed command @ " + (tryState.pendingErrorIdx+1));
+      $$.LOG.warn("@ " + (idxHere()+1) + " re-executing failed command @ " + (tryState.pendingErrorIdx+1));
       setNextCommand(tryState.pendingErrorIdx);
     }
     // fall out of endTry
@@ -601,6 +601,7 @@ function $X(xpath, contextNode, resultType) {
     if (!!tryState.isActive) {
       $$.interceptPop();
       tryState.isActive = false;
+      tryState.execPhase = null;
     }
   }
 
