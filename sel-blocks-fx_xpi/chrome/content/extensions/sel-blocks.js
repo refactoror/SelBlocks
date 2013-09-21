@@ -131,12 +131,14 @@ function $X(xpath, contextNode, resultType) {
   // Command structure definitions, stored by command index
   function BlockDefs() {
     var cmds = [];
+    // initialize the blockDef at the given command index
     cmds.init = function(i, attrs) {
       cmds[i] = attrs || {};
       cmds[i].idx = i;
       cmds[i].cmdName = testCase.commands[i].command;
       return cmds[i];
     };
+    // retrieve the blockDef for the currently executing command
     cmds.cur = function() {
       var curIdx = hereIdx();
       if (!cmds[curIdx])
@@ -170,14 +172,14 @@ function $X(xpath, contextNode, resultType) {
   }
 
   // Determine if the given stack frame is one of the given block kinds
+  Stack.isActiveTryBlock = function(stackFrame) {
+    return (blockDefs[stackFrame.idx].nature == "try" && stackFrame.isActive);
+  };
   Stack.isLoopBlock = function(stackFrame) {
     return (blockDefs[stackFrame.idx].nature == "loop");
   };
   Stack.isScriptBlock = function(stackFrame) {
     return (blockDefs[stackFrame.idx].nature == "script");
-  };
-  Stack.isActiveTryBlock = function(stackFrame) {
-    return (blockDefs[stackFrame.idx].nature == "try" && !!stackFrame.isActive);
   };
 
 
@@ -278,18 +280,18 @@ function $X(xpath, contextNode, resultType) {
             assertBlockIsPending("if", i, ", is not valid outside of an if/endIf block");
             var ifDef = lexStack.top();
             assertMatching(ifDef.cmdName, "if", i, ifDef.idx);
-            blockDefs.init(i, { ifIdx: ifDef.idx }); // else -> if
-            blockDefs[ifDef.idx].elseIdx = i;        // if -> else
+            blockDefs.init(i, { ifIdx: ifDef.idx });       // else -> if
+            blockDefs[ifDef.idx].elseIdx = i;              // if -> else
             break;
           case "endIf":
             assertNotAndWaitSuffix(i);
             assertBlockIsPending("if", i);
             var ifDef = lexStack.pop();
             assertMatching(ifDef.cmdName, "if", i, ifDef.idx);
-            blockDefs.init(i, { ifIdx: ifDef.idx }); // endIf -> if
-            blockDefs[ifDef.idx].endIdx = i;         // if -> endif
+            blockDefs.init(i, { ifIdx: ifDef.idx });       // endIf -> if
+            blockDefs[ifDef.idx].endIdx = i;               // if -> endif
             if (ifDef.elseIdx)
-              blockDefs[ifDef.elseIdx].endIdx = i;   // else -> endif
+              blockDefs[ifDef.elseIdx].endIdx = i;         // else -> endif
             break;
 
           case "try":
@@ -301,18 +303,18 @@ function $X(xpath, contextNode, resultType) {
             assertBlockIsPending("try", i, ", is not valid without a try block");
             var tryDef = lexStack.top();
             assertMatching(tryDef.cmdName, "try", i, tryDef.idx);
-            blockDefs.init(i, { tryIdx: tryDef.idx });   // catch -> try
-            blockDefs[tryDef.idx].catchIdx = i;          // try -> catch
+            blockDefs.init(i, { tryIdx: tryDef.idx });     // catch -> try
+            blockDefs[tryDef.idx].catchIdx = i;            // try -> catch
             break;
           case "finally":
             assertNotAndWaitSuffix(i);
             assertBlockIsPending("try", i);
             var tryDef = lexStack.top();
             assertMatching(tryDef.cmdName, "try", i, tryDef.idx);
-            blockDefs.init(i, { tryIdx: tryDef.idx });   // finally -> try
-            blockDefs[tryDef.idx].finallyIdx = i;        // try -> finally
+            blockDefs.init(i, { tryIdx: tryDef.idx });     // finally -> try
+            blockDefs[tryDef.idx].finallyIdx = i;          // try -> finally
             if (tryDef.catchIdx)
-              blockDefs[tryDef.catchIdx].finallyIdx = i; // catch -> finally
+              blockDefs[tryDef.catchIdx].finallyIdx = i;   // catch -> finally
             break;
           case "endTry":
             assertNotAndWaitSuffix(i);
@@ -321,10 +323,10 @@ function $X(xpath, contextNode, resultType) {
             assertMatching(tryDef.cmdName, "try", i, tryDef.idx);
             if (cmdTarget)
               assertMatching(tryDef.name, cmdTarget, i, tryDef.idx); // pair-up on try-name
-            blockDefs.init(i, { tryIdx: tryDef.idx });   // endTry -> try
-            blockDefs[tryDef.idx].endTryIdx = i;         // try -> endTry
+            blockDefs.init(i, { tryIdx: tryDef.idx });     // endTry -> try
+            blockDefs[tryDef.idx].endTryIdx = i;           // try -> endTry
             if (tryDef.catchIdx)
-              blockDefs[tryDef.catchIdx].endTryIdx = i;  // catch -> endTry
+              blockDefs[tryDef.catchIdx].endTryIdx = i;    // catch -> endTry
             break;
 
           case "while":    case "for":    case "foreach":    case "forJson":    case "forXml":
@@ -334,16 +336,16 @@ function $X(xpath, contextNode, resultType) {
           case "continue": case "break":
             assertNotAndWaitSuffix(i);
             assertCmd(i, lexStack.findEnclosing(Stack.isLoopBlock), ", is not valid outside of a loop");
-            blockDefs.init(i, { hdrIdx: lexStack.top().idx }); // -> header
+            blockDefs.init(i, { beginIdx: lexStack.top().idx }); // -> begin
             break;
           case "endWhile": case "endFor": case "endForeach": case "endForJson": case "endForXml":
             assertNotAndWaitSuffix(i);
             var expectedCmd = curCmd.substr(3).toLowerCase();
             assertBlockIsPending(expectedCmd, i);
-            var hdrDef = lexStack.pop();
-            assertMatching(hdrDef.cmdName.toLowerCase(), expectedCmd, i, hdrDef.idx);
-            blockDefs[hdrDef.idx].ftrIdx = i;            // header -> footer
-            blockDefs.init(i, { hdrIdx: hdrDef.idx });   // footer -> header
+            var beginDef = lexStack.pop();
+            assertMatching(beginDef.cmdName.toLowerCase(), expectedCmd, i, beginDef.idx);
+            blockDefs[beginDef.idx].endIdx = i;            // begin -> end
+            blockDefs.init(i, { beginIdx: beginDef.idx }); // end -> begin
             break;
 
           case "loadJsonVars": case "loadXmlVars":
@@ -363,7 +365,7 @@ function $X(xpath, contextNode, resultType) {
             assertNotAndWaitSuffix(i);
             assertBlockIsPending("script", i, ", is not valid outside of a script/endScript block");
             var scrptCmd = lexStack.findEnclosing(Stack.isScriptBlock);
-            blockDefs.init(i, { scrIdx: scrptCmd.idx }); // return -> script
+            blockDefs.init(i, { scrIdx: scrptCmd.idx });   // return -> script
             break;
           case "endScript":
             assertNotAndWaitSuffix(i);
@@ -372,8 +374,8 @@ function $X(xpath, contextNode, resultType) {
             assertMatching(scrDef.cmdName, "script", i, scrDef.idx);
             if (cmdTarget)
               assertMatching(scrDef.name, cmdTarget, i, scrDef.idx); // pair-up on script name
-            blockDefs[scrDef.idx].endIdx = i;            // script -> endscript
-            blockDefs.init(i, { scrIdx: scrDef.idx });   // endScript -> script
+            blockDefs[scrDef.idx].endIdx = i;              // script -> endscript
+            blockDefs.init(i, { scrIdx: scrDef.idx });     // endScript -> script
             break;
 
           case "exitTest":
@@ -521,7 +523,7 @@ function $X(xpath, contextNode, resultType) {
             $$.LOG.info("error is being handled by catch block...");
             var activeTryCmd = blockDefs[dropToActiveTryBlock().idx];
             setNextCommand(activeTryCmd.catchIdx);
-            tryState.phase = "catching";
+            tryState.execPhase = "catching";
             return true; // continue
           }
           if (!!tryDef.finallyIdx) {
@@ -530,7 +532,7 @@ function $X(xpath, contextNode, resultType) {
             $$.LOG.debug("@ " + (tryState.pendingErrorIdx+1) + " error is suspended while finally block runs");
             var activeTryCmd = blockDefs[dropToActiveTryBlock().idx];
             setNextCommand(activeTryCmd.finallyIdx);
-            tryState.phase = "finalizing";
+            tryState.execPhase = "finalizing";
             return true; // continue
           }
           else {
@@ -540,7 +542,7 @@ function $X(xpath, contextNode, resultType) {
         }
       };
       tryState.isActive = true;
-      tryState.phase = "trying";
+      tryState.execPhase = "trying";
       $$.interceptPush(editor.selDebugger.runner.IDETestLoop.prototype, "resume",
           $$.handleAsTryBlock, handlerAttrs);
 
@@ -791,14 +793,14 @@ function $X(xpath, contextNode, resultType) {
     if (!_condFunc(loopState)) {
       loopState.isComplete = true;
       // jump to bottom of loop for exit
-      setNextCommand(blockDefs.cur().ftrIdx);
+      setNextCommand(blockDefs.cur().endIdx);
     }
     // else continue into body of loop
   }
   function iterateLoop()
   {
     assertRunning();
-    assertActiveCmd(blockDefs.cur().hdrIdx);
+    assertActiveCmd(blockDefs.cur().beginIdx);
     var loopState = activeCmdStack().top();
     if (loopState.isComplete) {
       restoreVarState(loopState.savedVars);
@@ -807,7 +809,7 @@ function $X(xpath, contextNode, resultType) {
     }
     else {
       // jump back to top of loop
-      setNextCommand(blockDefs.cur().hdrIdx);
+      setNextCommand(blockDefs.cur().beginIdx);
     }
   }
 
@@ -816,8 +818,8 @@ function $X(xpath, contextNode, resultType) {
     var loopState = dropToLoop(condExpr);
     if (loopState) {
       // jump back to top of loop for next iteration, if any
-      var ftrCmd = blockDefs[loopState.idx];
-      setNextCommand(blockDefs[ftrCmd.ftrIdx].hdrIdx);
+      var endCmd = blockDefs[loopState.idx];
+      setNextCommand(blockDefs[endCmd.endIdx].beginIdx);
     }
   };
   Selenium.prototype.doBreak = function(condExpr) {
@@ -825,7 +827,7 @@ function $X(xpath, contextNode, resultType) {
     if (loopState) {
       loopState.isComplete = true;
       // jump to bottom of loop for exit
-      setNextCommand(blockDefs[loopState.idx].ftrIdx);
+      setNextCommand(blockDefs[loopState.idx].endIdx);
     }
   };
 
@@ -892,14 +894,14 @@ function $X(xpath, contextNode, resultType) {
     assertRunning();
     var endDef = blockDefs.cur();
     var activeCallFrame = callStack.top();
-    if (activeCallFrame.scrIdx == endDef.scrIdx) {
+    if (activeCallFrame.scrIdx != endDef.scrIdx) {
+      // no active call, we're just skipping around a script block
+    }
+    else {
       if (returnVal) storedVars._result = evalWithVars(returnVal);
       activeCallFrame.isReturning = true;
       // jump back to call command
       setNextCommand(activeCallFrame.returnIdx);
-    }
-    else {
-      // no active call, we're just skipping around a script block
     }
   }
 
