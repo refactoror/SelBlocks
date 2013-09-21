@@ -7,8 +7,8 @@
  * (Selbock installs as a Core Extension, not an IDE Extension, because it manipulates the Selenium object)
  *
  * Features
- *  - Commands: if/else, try/catch/finally, for/foreach/while, call/script/return, loadJsonVars/loadXmlVars,
- *    forJson/forXml
+ *  - Commands: if/else, try/catch/finally, for/foreach/while, call/script/return,
+ *    loadJsonVars/loadXmlVars, forJson/forXml
  *  - Script and loop parameters create regular Selenium variables that are local to the block,
  *    overriding variables of the same name, and that are restored when the block exits.
  *  - Variables can be set via external JSON/XML data file(s).
@@ -24,9 +24,9 @@
  *  - The static structure of command blocks is stored in blockDefs[] by script line number.
  *    E.g., ifDef has pointers to its corresponding else and/or endIf.
  *  - The state of each script-call is pushed/popped on callStack as it begins/ends execution
- *    The state of each block is pushed/popped on the cmdStack as it begins/ends execution.
- *    An independent cmdStack is associated with each script-call. I.e., stacks stored on a stack.
- *    Non-block commands do not appear on the cmdStack.
+ *    The state of each block is pushed/popped on the scopeStack as it begins/ends execution.
+ *    An independent scopeStack is associated with each script-call. I.e., stacks stored on a stack.
+ *    Non-block commands do not appear on the scopeStack.
  *
  * Limitations:
  *  - Incompatible with flowControl (and derivatives), because they unilaterally override selenium.reset().
@@ -117,21 +117,21 @@ function $X(xpath, contextNode, resultType) {
   };
 
 
-  //=============== Command Stack handling ===============
+  //=============== Call/Scope Stack handling ===============
 
   var symbols = {};                 // command indexes stored by name: function names
   var blockDefs = new BlockDefs();  // static command definitions stored by command index
   var callStack = null;             // command execution stack
 
   // the idx of the currently executing command
-  function hereIdx() {
+  function idxHere() {
     return testCase.debugContext.debugIndex;
   }
 
   // Command structure definitions, stored by command index
   function BlockDefs() {
     var cmds = [];
-    // initialize the blockDef at the given command index
+    // initialize blockDef at the given command index
     cmds.init = function(i, attrs) {
       cmds[i] = attrs || {};
       cmds[i].idx = i;
@@ -140,7 +140,7 @@ function $X(xpath, contextNode, resultType) {
     };
     // retrieve the blockDef for the currently executing command
     cmds.cur = function() {
-      var curIdx = hereIdx();
+      var curIdx = idxHere();
       if (!cmds[curIdx])
         $$.LOG.warn("No blockDef defined at curIdx=" + curIdx);
       return cmds[curIdx];
@@ -166,7 +166,7 @@ function $X(xpath, contextNode, resultType) {
       return stack.top();
     };
     stack.isHere = function() {
-      return (stack.length > 0 && stack.top().idx == hereIdx());
+      return (stack.length > 0 && stack.top().idx == idxHere());
     };
     return stack;
   }
@@ -231,7 +231,7 @@ function $X(xpath, contextNode, resultType) {
       notifyFatalErr("In " + err.fileName + " @" + err.lineNumber + ": " + err);
     }
     callStack = new Stack();
-    callStack.push({ cmdStack: new Stack() }); // top-level execution state
+    callStack.push({ scopeStack: new Stack() }); // top-level execution state
 
     // customize flow control logic
     // TBD: this should be a tail intercept rather than brute force replace
@@ -239,9 +239,9 @@ function $X(xpath, contextNode, resultType) {
     $$.interceptReplace(testCase.debugContext, "nextCommand", nextCommand);
   });
 
-  // the cmdStack for the currently active callStack
-  function activeCmdStack() {
-    return callStack.top().cmdStack;
+  // get the scopeStack for the currently active callStack
+  function activeScopeStack() {
+    return callStack.top().scopeStack;
   }
 
   // ================================================================================
@@ -463,8 +463,8 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doIf = function(condExpr, locator)
   {
     assertRunning();
-    var ifState = { idx: hereIdx() };
-    activeCmdStack().push(ifState);
+    var ifState = { idx: idxHere() };
+    activeScopeStack().push(ifState);
     if (evalWithVars(condExpr)) {
       ifState.skipElseBlock = true;
       // continue into if-block
@@ -481,15 +481,15 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doElse = function()
   {
     assertRunning();
-    assertActiveCmd(blockDefs.cur().ifIdx);
-    var ifState = activeCmdStack().top();
+    assertActiveScope(blockDefs.cur().ifIdx);
+    var ifState = activeScopeStack().top();
     if (ifState.skipElseBlock)
       setNextCommand(blockDefs.cur().endIdx);
   };
   Selenium.prototype.doEndIf = function() {
     assertRunning();
-    assertActiveCmd(blockDefs.cur().ifIdx);
-    activeCmdStack().pop();
+    assertActiveScope(blockDefs.cur().ifIdx);
+    activeScopeStack().pop();
     // fall out of if-endIf
   };
 
@@ -499,13 +499,13 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doTry = function(tryName)
   {
     assertRunning();
-    var tryState = { idx: hereIdx() };
-    activeCmdStack().push(tryState);
+    var tryState = { idx: idxHere() };
+    activeScopeStack().push(tryState);
     var tryDef = blockDefs.cur();
     var isTryBlockOnly = (!tryDef.catchIdx && !tryDef.finallyIdx);
 
     if (isTryBlockOnly) {
-      $$.LOG.warn(fmtCmdRef(hereIdx()) + " has no catch-block and no finally-block, and therefore serves no purpose");
+      $$.LOG.warn(fmtCurCmd() + " has no catch-block and no finally-block, and therefore serves no purpose");
     }
 
     if (!!tryDef.catchIdx) {
@@ -528,7 +528,7 @@ function $X(xpath, contextNode, resultType) {
           }
           if (!!tryDef.finallyIdx) {
             // an expected kind of error has been caught
-            tryState.pendingErrorIdx = hereIdx();
+            tryState.pendingErrorIdx = idxHere();
             $$.LOG.debug("@ " + (tryState.pendingErrorIdx+1) + " error is suspended while finally block runs");
             var activeTryCmd = blockDefs[dropToActiveTryBlock().idx];
             setNextCommand(activeTryCmd.finallyIdx);
@@ -549,7 +549,7 @@ function $X(xpath, contextNode, resultType) {
       //- unwind the command stack to the inner-most active try block
       function dropToActiveTryBlock()
       {
-        var tryState = activeCmdStack().unwindTo(Stack.isActiveTryBlock);
+        var tryState = activeScopeStack().unwindTo(Stack.isActiveTryBlock);
         return tryState;
       }
 
@@ -571,27 +571,27 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doCatch = function(errDcl)
   {
     assertRunning();
-    assertActiveCmd(blockDefs.cur().tryIdx);
-    var tryState = activeCmdStack().top();
+    assertActiveScope(blockDefs.cur().tryIdx);
+    var tryState = activeScopeStack().top();
     deactivateTryBlock(tryState);
     // continue into catch-block
   };
   Selenium.prototype.doFinally = function()
   {
     assertRunning();
-    assertActiveCmd(blockDefs.cur().tryIdx);
-    var tryState = activeCmdStack().top();
+    assertActiveScope(blockDefs.cur().tryIdx);
+    var tryState = activeScopeStack().top();
     deactivateTryBlock(tryState);
     // continue into finally-block
   };
   Selenium.prototype.doEndTry = function(tryName)
   {
     assertRunning();
-    assertActiveCmd(blockDefs.cur().tryIdx);
-    var tryState = activeCmdStack().pop();
+    assertActiveScope(blockDefs.cur().tryIdx);
+    var tryState = activeScopeStack().pop();
     deactivateTryBlock(tryState);
     if (!!tryState.pendingErrorIdx) {
-      $$.LOG.warn("@ " + hereIdx() + " re-executing failed command @ " + (tryState.pendingErrorIdx+1));
+      $$.LOG.warn("@ " + idxHere() + " re-executing failed command @ " + (tryState.pendingErrorIdx+1));
       setNextCommand(tryState.pendingErrorIdx);
     }
     // fall out of endTry
@@ -775,10 +775,10 @@ function $X(xpath, contextNode, resultType) {
   {
     assertRunning();
     var loopState;
-    if (!activeCmdStack().isHere()) {
+    if (!activeScopeStack().isHere()) {
       // loop begins
-      loopState = { idx: hereIdx() };
-      activeCmdStack().push(loopState);
+      loopState = { idx: idxHere() };
+      activeScopeStack().push(loopState);
       var localVars = _validateFunc(loopState);
       loopState.savedVars = getVarState(localVars);
       initVarState(localVars); // because with-scope can reference storedVars only once they exist
@@ -786,7 +786,7 @@ function $X(xpath, contextNode, resultType) {
     }
     else {
       // iteration
-      loopState = activeCmdStack().top();
+      loopState = activeScopeStack().top();
       _iterFunc(loopState);
     }
 
@@ -800,11 +800,11 @@ function $X(xpath, contextNode, resultType) {
   function iterateLoop()
   {
     assertRunning();
-    assertActiveCmd(blockDefs.cur().beginIdx);
-    var loopState = activeCmdStack().top();
+    assertActiveScope(blockDefs.cur().beginIdx);
+    var loopState = activeScopeStack().top();
     if (loopState.isComplete) {
       restoreVarState(loopState.savedVars);
-      activeCmdStack().pop();
+      activeScopeStack().pop();
       // done, fall out of loop
     }
     else {
@@ -838,7 +838,7 @@ function $X(xpath, contextNode, resultType) {
     assertRunning();
     if (condExpr && !evalWithVars(condExpr))
       return;
-    var loopState = activeCmdStack().unwindTo(Stack.isLoopBlock);
+    var loopState = activeScopeStack().unwindTo(Stack.isLoopBlock);
     return loopState;
   }
 
@@ -851,7 +851,7 @@ function $X(xpath, contextNode, resultType) {
     assert(scrIdx, " Script does not exist: " + scrName + ".");
 
     var activeCallFrame = callStack.top();
-    if (activeCallFrame.isReturning && activeCallFrame.returnIdx == hereIdx()) {
+    if (activeCallFrame.isReturning && activeCallFrame.returnIdx == idxHere()) {
       // returning from completed script
       restoreVarState(callStack.pop().savedVars);
     }
@@ -861,8 +861,8 @@ function $X(xpath, contextNode, resultType) {
       var savedVars = getVarStateFor(args);
       setVars(args);
 
-      callStack.push({ scrIdx: scrIdx, name: scrName, args: args, returnIdx: hereIdx(),
-        savedVars: savedVars, cmdStack: new Stack() });
+      callStack.push({ scrIdx: scrIdx, name: scrName, args: args, returnIdx: idxHere(),
+        savedVars: savedVars, scopeStack: new Stack() });
       // jump to script body
       setNextCommand(scrIdx);
     }
@@ -873,7 +873,7 @@ function $X(xpath, contextNode, resultType) {
 
     var scrDef = blockDefs.cur();
     var activeCallFrame = callStack.top();
-    if (activeCallFrame.scrIdx == hereIdx()) {
+    if (activeCallFrame.scrIdx == idxHere()) {
       // get parameter values
       setVars(activeCallFrame.args);
     }
@@ -991,7 +991,7 @@ function $X(xpath, contextNode, resultType) {
     throw err;
   }
   function notifyFatalCmdRef(idx, msg) { notifyFatal(fmtCmdRef(idx) + msg); }
-  function notifyFatalHere(msg) { notifyFatal(fmtCmdRef(hereIdx()) + msg); }
+  function notifyFatalHere(msg) { notifyFatal(fmtCurCmd() + msg); }
 
   function assertCmd(idx, cond, msg) { if (!cond) notifyFatalCmdRef(idx, msg); }
   function assert(cond, msg) { if (!cond) notifyFatalHere(msg); }
@@ -1000,11 +1000,14 @@ function $X(xpath, contextNode, resultType) {
     assert(testCase.debugContext.started, " Command is only valid in a running script."
         + " E.g., cannot be executed via double-click.");
   }
-  function assertActiveCmd(expectedIdx) {
-    var activeIdx = activeCmdStack().top().idx;
+  function assertActiveScope(expectedIdx) {
+    var activeIdx = activeScopeStack().top().idx;
     assert(activeIdx == expectedIdx, " unexpected command, active command was " + fmtCmdRef(activeIdx));
   }
 
+  function fmtCurCmd() {
+    return fmtCmdRef(idxHere());
+  }
   function fmtCmdRef(idx) {
     return ("@" + (idx+1) + ": " + fmtCommand(testCase.commands[idx]));
   }
