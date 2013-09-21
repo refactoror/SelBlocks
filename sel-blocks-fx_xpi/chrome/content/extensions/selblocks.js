@@ -1,56 +1,60 @@
 /*
- * SelBlocks 2.0b
+ * SelBlocks 2.0
  *
  * Provides commands for Javascript-like looping and callable functions,
  *   with scoped variables, and JSON/XML driven parameterization.
  *
- * (Selbock installs as a Core Extension, not an IDE Extension, because it manipulates the Selenium object)
+ * (SelBlocks installs as a Core Extension, not an IDE Extension, because it manipulates the Selenium object)
  *
  * Features
- *  - Commands: if/else, try/catch/finally, for/foreach/while, call/script/return, loadJsonVars/loadXmlVars,
- *    forJson/forXml
- *  - Script and loop parameters create regular Selenium variables that are local to the block,
+ *  - Commands: if/else, try/catch/finally, for/foreach/while, call/function/return,
+ *    loadJsonVars/loadXmlVars, forJson/forXml
+ *  - Function and loop parameters create regular Selenium variables that are local to the block,
  *    overriding variables of the same name, and that are restored when the block exits.
  *  - Variables can be set via external JSON/XML data file(s).
  *  - Command parameters are Javascript expressions that are evaluated with Selenium variables
  *    in scope, which can therefore be referenced by their simple names, e.g.: i+1
- *  - A script definition can appear anywhere; they are skipped over in normal execution flow.
- *  - Script functions can be invoked recursively.
+ *  - A function definition can appear anywhere; they are skipped over in normal execution flow.
+ *  - Functions can be invoked recursively.
  *
  * Concept of operation:
  *  - Selenium.reset() is intercepted to initialize the block structures.
  *  - testCase.nextCommand() is overridden for flow branching.
- *  - TestLoop.resume() is overridden by exitTest, and by try/catch/finally to manage the outcome of errors
+ *  - TestLoop.resume() is overridden by exitTest, and by try/catch/finally to manage the outcome of errors.
  *  - The static structure of command blocks is stored in blockDefs[] by script line number.
- *    E.g., ifDef has pointers to its corresponding else and/or endIf.
- *  - The state of each script-call is pushed/popped on callStack as it begins/ends execution
- *    The state of each block is pushed/popped on the cmdStack as it begins/ends execution.
- *    An independent cmdStack is associated with each script-call. I.e., stacks stored on a stack.
- *    Non-block commands do not appear on the cmdStack.
+ *    E.g., ifDef has pointers to its corresponding elseIf, else, endIf commands.
+ *  - The state of each function-call is pushed/popped on callStack as it begins/ends execution
+ *    The state of each block is pushed/popped on the blockStack as it begins/ends execution.
+ *    An independent blockStack is associated with each function-call. I.e., stacks stored on a stack.
+ *    (Non-block commands do not appear on the blockStack.)
  *
  * Limitations:
  *  - Incompatible with flowControl (and derivatives), because they unilaterally override selenium.reset().
  *    Known to have this issue:
- *      selenium_ide__flow_control-1.0.1-fx.xpi
- *      goto_while_for_ide.js
+ *      selenium_ide__flow_control
+ *      goto_while_for_ide
  *
  * Acknowledgements:
  *  SelBlocks reuses bits & parts of extensions: flowControl, datadriven, and include.
  *
  * Wishlist:
- *  - switch/case
+ *  - show line numbers in the IDE
  *  - validation of JSON & XML input files
- *  - enforce block boundaries (jumping in-to/out-of the middle of blocks)
+ *  - highlight a command that is failed-but-caught in blue
  *
  * Changes since 1.5:
- *  - added try/catch/finally
+ *  - added try/catch/finally, elseIf, and exitTest commands
+ *  - block boundaries enforced (jumping in-to and/or out-of the middle of blocks)
+ *  - script/endScript is replaced by function/endFunction
+ *  - implicit initialization of for loop variable(s)
+ *  - improved validation of command expressions
  *
- * NOTE - The Stored Variables Viewer addon will display the values of Selblocks parameters,
- *   because they are implemented as regular Selenium variables.
- *   The only thing special about Selblocks parameters is that they are activated and deactivated
- *   as script execution flows into and out of blocks, eg, for/endFor, script/endScript, etc.
- *   So this can provide a convenient way to monitor the progress of an executing script.
+ * NOTE - The only thing special about SelBlocks parameters is that they are activated and deactivated
+ *   as script execution flows into and out of blocks, (for/endFor, function/endFunction, etc).
+ *   They are implemented as regular Selenium variables, and therefore the progress of an executing
+ *   script can be monitored using the Stored Variables Viewer addon.
  */
+
 
 // =============== global functions as script helpers ===============
 // getEval script helpers
@@ -87,6 +91,8 @@ function $X(xpath, contextNode, resultType) {
 (function($$){
 
   // =============== Javascript extensions as script helpers ===============
+  // EXTENSION REVIEWERS:
+  //   Global functions are intentional features provided for use by end user's in their Selenium scripts.
 
   // eg: "dilbert".isOneOf("dilbert","dogbert","mordac") => true
   String.prototype.isOneOf = function(values)
@@ -116,34 +122,53 @@ function $X(xpath, contextNode, resultType) {
     return this;
   };
 
+  // produce an iterator object for the given array
+  Array.prototype.iterator = function() {
+    return new function(ary) {
+      var cur = 0;
+      this.hasNext = function() { return (cur < ary.length); };
+      this.next = function() { if (this.hasNext()) return ary[cur++]; };
+    }(this);
+  };
 
-  //=============== Command Stack handling ===============
 
-  var symbols = {};                 // command indexes stored by name: function names
-  var blockDefs = new BlockDefs();  // static command definitions stored by command index
-  var callStack = null;             // command execution stack
+  //=============== Call/Scope Stack handling ===============
+
+  var symbols = {};      // command indexes stored by name: function names
+  var blockDefs = null;  // static command definitions stored by command index
+  var callStack = null;  // command execution stack
 
   // the idx of the currently executing command
-  function hereIdx() {
+  function idxHere() {
     return testCase.debugContext.debugIndex;
   }
 
   // Command structure definitions, stored by command index
   function BlockDefs() {
-    var cmds = [];
-    cmds.init = function(i, attrs) {
-      cmds[i] = attrs || {};
-      cmds[i].idx = i;
-      cmds[i].cmdName = testCase.commands[i].command;
-      return cmds[i];
+    var blkDefs = [];
+    // initialize blockDef at the given command index
+    blkDefs.init = function(i, attrs) {
+      blkDefs[i] = attrs || {};
+      blkDefs[i].idx = i;
+      blkDefs[i].cmdName = testCase.commands[i].command;
+      return blkDefs[i];
     };
-    cmds.cur = function() {
-      var curIdx = hereIdx();
-      if (!cmds[curIdx])
-        $$.LOG.warn("No blockDef defined at curIdx=" + curIdx);
-      return cmds[curIdx];
-    };
-    return cmds;
+    return blkDefs;
+  }
+
+  // retrieve the blockDef at the given command idx
+  function blkDefAt(idx) {
+    return blockDefs[idx];
+  }
+  // retrieve the blockDef for the currently executing command
+  function blkDefHere() {
+    return blkDefAt(idxHere());
+  }
+  // retrieve the blockDef for the given blockDef frame
+  function blkDefFor(stackFrame) {
+    if (!stackFrame)
+      return null;
+    return blkDefAt(stackFrame.idx);
   }
 
   // An Array object with stack functionality
@@ -151,41 +176,37 @@ function $X(xpath, contextNode, resultType) {
     var stack = [];
     stack.isEmpty = function() { return stack.length == 0; };
     stack.top = function()     { return stack[stack.length-1]; };
-    stack.findEnclosing = function(_testfunc) { return stack[stack.indexWhere(_testfunc)]; };
-    stack.indexWhere = function(_testfunc) { // undefined if not found
+    stack.findEnclosing = function(_hasCriteria) { return stack[stack.indexWhere(_hasCriteria)]; };
+    stack.indexWhere = function(_hasCriteria) { // undefined if not found
       for (var i = stack.length-1; i >= 0; i--) {
-        if (_testfunc(stack[i]))
+        if (_hasCriteria(stack[i]))
           return i;
       }
     };
-    stack.unwindTo = function(_testfunc) {
-      while (!_testfunc(stack.top()))
+    stack.unwindTo = function(_hasCriteria) {
+      if (stack.length == 0)
+        return null;
+      while (!_hasCriteria(stack.top()))
         stack.pop();
       return stack.top();
     };
     stack.isHere = function() {
-      return (stack.length > 0 && stack.top().idx == hereIdx());
+      return (stack.length > 0 && stack.top().idx == idxHere());
     };
     return stack;
   }
 
   // Determine if the given stack frame is one of the given block kinds
-  Stack.isLoopBlock = function(stackFrame) {
-    return (blockDefs[stackFrame.idx].nature == "loop");
-  };
-  Stack.isScriptBlock = function(stackFrame) {
-    return (blockDefs[stackFrame.idx].nature == "script");
-  };
-  Stack.isActiveTryBlock = function(stackFrame) {
-    return (blockDefs[stackFrame.idx].nature == "try" && !!stackFrame.isActive);
-  };
+  Stack.isTryBlock = function(stackFrame) { return (blkDefFor(stackFrame).nature == "try"); };
+  Stack.isLoopBlock = function(stackFrame) { return (blkDefFor(stackFrame).nature == "loop"); };
+  Stack.isFunctionBlock = function(stackFrame) { return (blkDefFor(stackFrame).nature == "function"); };
 
 
   // Flow control - we don't just alter debugIndex on the fly, because the command
   // preceding the destination would falsely get marked as successfully executed
   var branchIdx = null;
-  // TBD: if testCase.nextCommand() ever changes, this will need to be revisited
-  // (current as of: selenium-ide-2.3.0)
+  // if testCase.nextCommand() ever changes, this will need to be revisited
+  // (current as of: selenium-ide-2.4.0)
   function nextCommand() {
     if (!this.started) {
       this.started = true;
@@ -220,7 +241,7 @@ function $X(xpath, contextNode, resultType) {
   //  * before a testcase is run
   //  * before each testcase runs in a running testsuite
   // TBD: skip during single command execution
-  $$.interceptAfter(Selenium.prototype, "reset", function()
+  $$.fn.interceptAfter(Selenium.prototype, "reset", function()
   {
     $$.LOG.trace("In tail intercept :: Selenium.reset()");
     try {
@@ -229,23 +250,26 @@ function $X(xpath, contextNode, resultType) {
       notifyFatalErr("In " + err.fileName + " @" + err.lineNumber + ": " + err);
     }
     callStack = new Stack();
-    callStack.push({ cmdStack: new Stack() }); // top-level execution state
+    callStack.push({ blockStack: new Stack() }); // top-level execution state
+
+    $$.tcf = { nestingLevel: -1 };
 
     // customize flow control logic
     // TBD: this should be a tail intercept rather than brute force replace
     $$.LOG.debug("Configuring tail intercept: testCase.debugContext.nextCommand()");
-    $$.interceptReplace(testCase.debugContext, "nextCommand", nextCommand);
+    $$.fn.interceptReplace(testCase.debugContext, "nextCommand", nextCommand);
   });
 
-  // the cmdStack for the currently active callStack
-  function activeCmdStack() {
-    return callStack.top().cmdStack;
+  // get the blockStack for the currently active callStack
+  function activeBlockStack() {
+    return callStack.top().blockStack;
   }
 
   // ================================================================================
   // Assemble block relationships and symbol locations
   function compileSelBlocks()
   {
+    blockDefs = new BlockDefs();
     var lexStack = new Stack();
     for (var i = 0; i < testCase.commands.length; i++)
     {
@@ -254,7 +278,7 @@ function $X(xpath, contextNode, resultType) {
         var curCmd = testCase.commands[i].command;
         var aw = curCmd.indexOf("AndWait");
         if (aw != -1) {
-          // just ignore the suffix for now, this may or may not be a Selblocks commands
+          // just ignore the suffix for now, this may or may not be a SelBlocks commands
           curCmd = curCmd.substring(0, aw);
         }
         var cmdTarget = testCase.commands[i].target;
@@ -271,25 +295,38 @@ function $X(xpath, contextNode, resultType) {
 
           case "if":
             assertNotAndWaitSuffix(i);
-            lexStack.push(blockDefs.init(i, { nature: "if" }));
+            lexStack.push(blockDefs.init(i, { nature: "if", elseIfIdxs: [] }));
+            break;
+          case "elseIf":
+            assertNotAndWaitSuffix(i);
+            assertBlockIsPending("elseIf", i, ", is not valid outside of an if/endIf block");
+            var ifDef = lexStack.top();
+            assertMatching(ifDef.cmdName, "if", i, ifDef.idx);
+            var eIdx = blkDefFor(ifDef).elseIdx;
+            if (eIdx)
+              notifyFatal(fmtCmdRef(eIdx) + " An else has to come after all elseIfs.");
+            blockDefs.init(i, { ifIdx: ifDef.idx });       // elseIf -> if
+            blkDefFor(ifDef).elseIfIdxs.push(i);           // if -> elseIf(s)
             break;
           case "else":
             assertNotAndWaitSuffix(i);
             assertBlockIsPending("if", i, ", is not valid outside of an if/endIf block");
             var ifDef = lexStack.top();
             assertMatching(ifDef.cmdName, "if", i, ifDef.idx);
-            blockDefs.init(i, { ifIdx: ifDef.idx }); // else -> if
-            blockDefs[ifDef.idx].elseIdx = i;        // if -> else
+            if (blkDefFor(ifDef).elseIdx)
+              notifyFatal(fmtCmdRef(i) + " There can only be one else associated with a given if.");
+            blockDefs.init(i, { ifIdx: ifDef.idx });       // else -> if
+            blkDefFor(ifDef).elseIdx = i;                  // if -> else
             break;
           case "endIf":
             assertNotAndWaitSuffix(i);
             assertBlockIsPending("if", i);
             var ifDef = lexStack.pop();
             assertMatching(ifDef.cmdName, "if", i, ifDef.idx);
-            blockDefs.init(i, { ifIdx: ifDef.idx }); // endIf -> if
-            blockDefs[ifDef.idx].endIdx = i;         // if -> endif
+            blockDefs.init(i, { ifIdx: ifDef.idx });       // endIf -> if
+            blkDefFor(ifDef).endIdx = i;                   // if -> endif
             if (ifDef.elseIdx)
-              blockDefs[ifDef.elseIdx].endIdx = i;   // else -> endif
+              blkDefAt(ifDef.elseIdx).endIdx = i;          // else -> endif
             break;
 
           case "try":
@@ -301,18 +338,25 @@ function $X(xpath, contextNode, resultType) {
             assertBlockIsPending("try", i, ", is not valid without a try block");
             var tryDef = lexStack.top();
             assertMatching(tryDef.cmdName, "try", i, tryDef.idx);
-            blockDefs.init(i, { tryIdx: tryDef.idx });   // catch -> try
-            blockDefs[tryDef.idx].catchIdx = i;          // try -> catch
+            if (blkDefFor(tryDef).catchIdx)
+              notifyFatal(fmtCmdRef(i) + " There can only be one catch-block associated with a given try.");
+            var fIdx = blkDefFor(tryDef).finallyIdx;
+            if (fIdx)
+              notifyFatal(fmtCmdRef(fIdx) + " A finally-block has to be last in a try section.");
+            blockDefs.init(i, { tryIdx: tryDef.idx });     // catch -> try
+            blkDefFor(tryDef).catchIdx = i;                // try -> catch
             break;
           case "finally":
             assertNotAndWaitSuffix(i);
             assertBlockIsPending("try", i);
             var tryDef = lexStack.top();
             assertMatching(tryDef.cmdName, "try", i, tryDef.idx);
-            blockDefs.init(i, { tryIdx: tryDef.idx });   // finally -> try
-            blockDefs[tryDef.idx].finallyIdx = i;        // try -> finally
+            if (blkDefFor(tryDef).finallyIdx)
+              notifyFatal(fmtCmdRef(i) + " There can only be one finally-block associated with a given try.");
+            blockDefs.init(i, { tryIdx: tryDef.idx });     // finally -> try
+            blkDefFor(tryDef).finallyIdx = i;              // try -> finally
             if (tryDef.catchIdx)
-              blockDefs[tryDef.catchIdx].finallyIdx = i; // catch -> finally
+              blkDefAt(tryDef.catchIdx).finallyIdx = i;    // catch -> finally
             break;
           case "endTry":
             assertNotAndWaitSuffix(i);
@@ -321,10 +365,10 @@ function $X(xpath, contextNode, resultType) {
             assertMatching(tryDef.cmdName, "try", i, tryDef.idx);
             if (cmdTarget)
               assertMatching(tryDef.name, cmdTarget, i, tryDef.idx); // pair-up on try-name
-            blockDefs.init(i, { tryIdx: tryDef.idx });   // endTry -> try
-            blockDefs[tryDef.idx].endTryIdx = i;         // try -> endTry
+            blockDefs.init(i, { tryIdx: tryDef.idx });     // endTry -> try
+            blkDefFor(tryDef).endIdx = i;                  // try -> endTry
             if (tryDef.catchIdx)
-              blockDefs[tryDef.catchIdx].endTryIdx = i;  // catch -> endTry
+              blkDefAt(tryDef.catchIdx).endIdx = i;        // catch -> endTry
             break;
 
           case "while":    case "for":    case "foreach":    case "forJson":    case "forXml":
@@ -334,16 +378,16 @@ function $X(xpath, contextNode, resultType) {
           case "continue": case "break":
             assertNotAndWaitSuffix(i);
             assertCmd(i, lexStack.findEnclosing(Stack.isLoopBlock), ", is not valid outside of a loop");
-            blockDefs.init(i, { hdrIdx: lexStack.top().idx }); // -> header
+            blockDefs.init(i, { beginIdx: lexStack.top().idx }); // -> begin
             break;
           case "endWhile": case "endFor": case "endForeach": case "endForJson": case "endForXml":
             assertNotAndWaitSuffix(i);
             var expectedCmd = curCmd.substr(3).toLowerCase();
             assertBlockIsPending(expectedCmd, i);
-            var hdrDef = lexStack.pop();
-            assertMatching(hdrDef.cmdName.toLowerCase(), expectedCmd, i, hdrDef.idx);
-            blockDefs[hdrDef.idx].ftrIdx = i;            // header -> footer
-            blockDefs.init(i, { hdrIdx: hdrDef.idx });   // footer -> header
+            var beginDef = lexStack.pop();
+            assertMatching(beginDef.cmdName.toLowerCase(), expectedCmd, i, beginDef.idx);
+            blkDefFor(beginDef).endIdx = i;                // begin -> end
+            blockDefs.init(i, { beginIdx: beginDef.idx }); // end -> begin
             break;
 
           case "loadJsonVars": case "loadXmlVars":
@@ -354,26 +398,27 @@ function $X(xpath, contextNode, resultType) {
             assertNotAndWaitSuffix(i);
             blockDefs.init(i);
             break;
-          case "script":
+          case "function":     case "script":
             assertNotAndWaitSuffix(i);
             symbols[cmdTarget] = i;
-            lexStack.push(blockDefs.init(i, { nature: "script", name: cmdTarget }));
+            lexStack.push(blockDefs.init(i, { nature: "function", name: cmdTarget }));
             break;
           case "return":
             assertNotAndWaitSuffix(i);
-            assertBlockIsPending("script", i, ", is not valid outside of a script/endScript block");
-            var scrptCmd = lexStack.findEnclosing(Stack.isScriptBlock);
-            blockDefs.init(i, { scrIdx: scrptCmd.idx }); // return -> script
+            assertBlockIsPending("function", i, ", is not valid outside of a function/endFunction block");
+            var funcCmd = lexStack.findEnclosing(Stack.isFunctionBlock);
+            blockDefs.init(i, { funcIdx: funcCmd.idx });   // return -> function
             break;
-          case "endScript":
+          case "endFunction":  case "endScript":
             assertNotAndWaitSuffix(i);
-            assertBlockIsPending("script", i);
-            var scrDef = lexStack.pop();
-            assertMatching(scrDef.cmdName, "script", i, scrDef.idx);
+            var expectedCmd = curCmd.substr(3).toLowerCase();
+            assertBlockIsPending(expectedCmd, i);
+            var funcDef = lexStack.pop();
+            assertMatching(funcDef.cmdName.toLowerCase(), expectedCmd, i, funcDef.idx);
             if (cmdTarget)
-              assertMatching(scrDef.name, cmdTarget, i, scrDef.idx); // pair-up on script name
-            blockDefs[scrDef.idx].endIdx = i;            // script -> endscript
-            blockDefs.init(i, { scrIdx: scrDef.idx });   // endScript -> script
+              assertMatching(funcDef.name, cmdTarget, i, funcDef.idx); // pair-up on function name
+            blkDefFor(funcDef).endIdx = i;                 // function -> endFunction
+            blockDefs.init(i, { funcIdx: funcDef.idx });   // endFunction -> function
             break;
 
           case "exitTest":
@@ -387,12 +432,12 @@ function $X(xpath, contextNode, resultType) {
       // unterminated block(s)
       var pend = lexStack.pop();
       var expectedCmd = "end" + pend.cmdName.substr(0, 1).toUpperCase() + pend.cmdName.substr(1);
-      throw new Error(fmtCmdRef(pend.idx) + ", without a terminating [" + expectedCmd + "]");
+      throw new SyntaxError(fmtCmdRef(pend.idx) + ", without a terminating [" + expectedCmd + "]");
     }
     //- command validation
     function assertNotAndWaitSuffix(cmdIdx) {
       assertCmd(cmdIdx, (testCase.commands[cmdIdx].command.indexOf("AndWait") == -1),
-        ", AndWait suffix is not valid for Selblocks commands");
+        ", AndWait suffix is not valid for SelBlocks commands");
     }
     //- active block validation
     function assertBlockIsPending(expectedCmd, cmdIdx, desc) {
@@ -404,9 +449,75 @@ function $X(xpath, contextNode, resultType) {
     }
   }
 
-  // ==================== Selblocks Commands (Custom Selenium Actions) ====================
+  // --------------------------------------------------------------------------------
 
-  var commandNames = [];
+  // prevent jumping in-to and/or out-of loop/function/try blocks
+  function assertIntraBlockJumpRestriction(fromIdx, toIdx) {
+    var fromRange = findBlockRange(fromIdx);
+    var toRange   = findBlockRange(toIdx);
+    if (fromRange || toRange) {
+      var msg = " Attempt to jump";
+      if (fromRange) msg += " out of " + fromRange.desc + fromRange.fmt();
+      if (toRange)   msg += " into " + toRange.desc + toRange.fmt();
+      assert(fromRange && fromRange.equals(toRange), msg 
+        + ". You cannot jump into, or out of: loops, functions, or try blocks.");
+    }
+  }
+
+  // ascertain in which, if any, block that an locusIdx occurs
+  function findBlockRange(locusIdx) {
+    for (var idx = locusIdx-1; idx >= 0; idx--) {
+      var blk = blkDefAt(idx);
+      if (blk) {
+        if (locusIdx > blk.endIdx) // ignore blocks that are inside this same block
+          continue;
+        switch (blk.nature) {
+          case "loop":     return new CmdRange(blk.idx, blk.endIdx, blk.cmdName + " loop");
+          case "function": return new CmdRange(blk.idx, blk.endIdx, "function '" + blk.name + "'");
+          case "try":      return isolateTcfRange(locusIdx, blk);
+        }
+      }
+    }
+    // return as undefined (no enclosing block at all)
+  }
+
+  // pin-point in which sub-block, (try, catch or finally), that the idx occurs
+  function isolateTcfRange(idx, tryDef) {
+    // assumptions: idx is known to be between try & endTry, and catch always precedes finally
+    var RANGES = [
+      { ifr: tryDef.finallyIdx, ito: tryDef.endIdx,     desc: "finally", desc2: "end" }
+     ,{ ifr: tryDef.catchIdx,   ito: tryDef.finallyIdx, desc: "catch",   desc2: "finally" }
+     ,{ ifr: tryDef.catchIdx,   ito: tryDef.endIdx,     desc: "catch",   desc2: "end" }
+     ,{ ifr: tryDef.idx,        ito: tryDef.catchIdx,   desc: "try",     desc2: "catch" }
+     ,{ ifr: tryDef.idx,        ito: tryDef.finallyIdx, desc: "try",     desc2: "finally" }
+     ,{ ifr: tryDef.idx,        ito: tryDef.endIdx,     desc: "try",     desc2: "end" }
+    ];
+    for (var i = 0; i < RANGES.length; i++) {
+      var rng = RANGES[i];
+      if (rng.ifr <= idx && idx < rng.ito) {
+        var desc = rng.desc + "-block";
+        if (rng.desc != "try") desc += " for";
+        if (tryDef.name) desc += " '" + tryDef.name + "'";
+        return cmdRange = new CmdRange(rng.ifr, rng.ito, desc);
+      }
+    }
+  }
+
+  // represents a range of script lines
+  function CmdRange(topIdx, bottomIdx, desc) {
+    this.topIdx = topIdx;
+    this.bottomIdx = bottomIdx;
+    this.desc = desc;
+    this.equals = function(cmdRange) {
+      return (cmdRange && cmdRange.topIdx === this.topIdx && cmdRange.bottomIdx === this.bottomIdx);
+    };
+    this.fmt = function() {
+      return " @[" + (this.topIdx+1) + "-" + (this.bottomIdx+1) + "]";
+    };
+  }
+
+  // ==================== SelBlocks Commands (Custom Selenium Actions) ====================
+
   var iexpr = Object.create($$.InfixExpressionParser);
 
   // validate variable/parameter names
@@ -425,7 +536,6 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doLabel = function() {
     // noop
   };
-  commandNames.push("label");
 
   // Skip the next N commands (default is 1)
   Selenium.prototype.doSkipNext = function(spec)
@@ -439,14 +549,18 @@ function $X(xpath, contextNode, resultType) {
     else if (n < 0)
       notifyFatalHere(" Requires a number > 1");
 
-    if (n != 0) // if n=0, execute the next command as usual
-      setNextCommand(testCase.debugContext.debugIndex + n + 1);
+    if (n != 0) { // if n=0, execute the next command as usual
+      destIdx = idxHere() + n + 1;
+      assertIntraBlockJumpRestriction(idxHere(), destIdx);
+      setNextCommand(destIdx);
+    }
   };
 
   Selenium.prototype.doGoto = function(label)
   {
     assertRunning();
     assert(symbols[label], " Target label '" + label + "' is not found.");
+    assertIntraBlockJumpRestriction(idxHere(), symbols[label]);
     setNextCommand(symbols[label]);
   };
 
@@ -461,145 +575,347 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doIf = function(condExpr, locator)
   {
     assertRunning();
-    var ifState = { idx: hereIdx() };
-    activeCmdStack().push(ifState);
-    if (evalWithVars(condExpr)) {
-      ifState.skipElseBlock = true;
-      // continue into if-block
-    }
-    else {
-      // jump to else or endif
-      var ifDef = blockDefs.cur();
-      if (ifDef.elseIdx)
-        setNextCommand(ifDef.elseIdx);
-      else
-        setNextCommand(ifDef.endIdx);
-    }
+    var ifDef = blkDefHere();
+    var ifState = { idx: idxHere(), elseIfItr: ifDef.elseIfIdxs.iterator() };
+    activeBlockStack().push(ifState);
+    cascadeElseIf(ifState, condExpr);
+  };
+  Selenium.prototype.doElseIf = function(condExpr)
+  {
+    assertRunning();
+    assertActiveScope(blkDefHere().ifIdx);
+    var ifState = activeBlockStack().top();
+    if (ifState.skipElseBlocks) // if, or previous elseIf, has already been met
+      setNextCommand(blkDefAt(blkDefHere().ifIdx).endIdx);
+    else
+      cascadeElseIf(ifState, condExpr);
   };
   Selenium.prototype.doElse = function()
   {
     assertRunning();
-    assertActiveCmd(blockDefs.cur().ifIdx);
-    var ifState = activeCmdStack().top();
-    if (ifState.skipElseBlock)
-      setNextCommand(blockDefs.cur().endIdx);
+    assertActiveScope(blkDefHere().ifIdx);
+    var ifState = activeBlockStack().top();
+    if (ifState.skipElseBlocks) // if, or previous elseIf, has already been met
+      setNextCommand(blkDefHere().endIdx);
+    // else continue into else-block
   };
   Selenium.prototype.doEndIf = function() {
     assertRunning();
-    assertActiveCmd(blockDefs.cur().ifIdx);
-    activeCmdStack().pop();
+    assertActiveScope(blkDefHere().ifIdx);
+    activeBlockStack().pop();
     // fall out of if-endIf
   };
 
+  function cascadeElseIf(ifState, condExpr) {
+    assertCompilable("", condExpr, ";", "Invalid condition");
+    if (!evalWithVars(condExpr)) {
+      // jump to next elseIf or else or endif
+      var ifDef = blkDefFor(ifState);
+      if (ifState.elseIfItr.hasNext()) setNextCommand(ifState.elseIfItr.next());
+      else if (ifDef.elseIdx)          setNextCommand(ifDef.elseIdx);
+      else                             setNextCommand(ifDef.endIdx);
+    }
+    else {
+      ifState.skipElseBlocks = true;
+      // continue into if/elseIf block
+    }
+  }
+
   // ================================================================================
 
-  // TBD: failed locators, timeouts, asserts
+  // throw the given Error
+  Selenium.prototype.doThrow = function(err) {
+    err = evalWithVars(err);
+    if (!(err instanceof Error)) {
+      err = new SelblocksError(idxHere(), err);
+    }
+    throw err;
+  };
+
+  // TBD: failed locators/timeouts/asserts ?
   Selenium.prototype.doTry = function(tryName)
   {
     assertRunning();
-    var tryState = { idx: hereIdx() };
-    activeCmdStack().push(tryState);
-    var tryDef = blockDefs.cur();
-    var isTryBlockOnly = (!tryDef.catchIdx && !tryDef.finallyIdx);
+    var tryState = { idx: idxHere(), name: tryName };
+    activeBlockStack().push(tryState);
+    var tryDef = blkDefHere();
 
-    if (isTryBlockOnly) {
-      $$.LOG.warn(fmtCmdRef(hereIdx()) + " has no catch-block and no finally-block, and therefore serves no purpose");
+    if (!tryDef.catchIdx && !tryDef.finallyIdx) {
+      $$.LOG.warn(fmtCurCmd() + " does not have a catch-block nor a finally-block, and therefore serves no purpose");
+      if ($$.tcf.nestingLevel == -1)
+        return; // continue into try-block without any special error handling
     }
 
-    if (!!tryDef.catchIdx) {
+    // log an advisory about the active catch block
+    if (tryDef.catchIdx) {
       var errDcl = testCase.commands[tryDef.catchIdx].target;
-      $$.LOG.debug(tryName + " catchable: " + (!!errDcl ? errDcl : "ANY"));
+      $$.LOG.debug(tryName + " catchable: " + (errDcl ? errDcl : "ANY"));
     }
 
-    if (!isTryBlockOnly) {
-      var handlerAttrs = {
-        catchError: function(e)
-        {
-          var guardError = evalWithVars(errDcl);
-          if (!!tryDef.catchIdx && isMatch(e, guardError)) {
-            // an expected kind of error has been caught
-            $$.LOG.info("error is being handled by catch block...");
-            var activeTryCmd = blockDefs[dropToActiveTryBlock().idx];
-            setNextCommand(activeTryCmd.catchIdx);
-            tryState.phase = "catching";
-            return true; // continue
-          }
-          if (!!tryDef.finallyIdx) {
-            // an expected kind of error has been caught
-            tryState.pendingErrorIdx = hereIdx();
-            $$.LOG.debug("@ " + (tryState.pendingErrorIdx+1) + " error is suspended while finally block runs");
-            var activeTryCmd = blockDefs[dropToActiveTryBlock().idx];
-            setNextCommand(activeTryCmd.finallyIdx);
-            tryState.phase = "finalizing";
-            return true; // continue
-          }
-          else {
-            // no matching catch-block and/or has no finally-block
-            return false; // stop the script
-          }
-        }
-      };
-      tryState.isActive = true;
-      tryState.phase = "trying";
-      $$.interceptPush(editor.selDebugger.runner.IDETestLoop.prototype, "resume",
-          $$.handleAsTryBlock, handlerAttrs);
+    $$.tcf.nestingLevel++;
+    tryState.execPhase = "trying";
 
-      //- unwind the command stack to the inner-most active try block
-      function dropToActiveTryBlock()
-      {
-        var tryState = activeCmdStack().unwindTo(Stack.isActiveTryBlock);
-        return tryState;
-      }
-
-      //- error message matcher ----------
-      function isMatch(err, guardError) {
-        if (!guardError) {
-          return true; // no err specified means catch all errors
-        }
-        var errMsg = err.message;
-        if (guardError instanceof RegExp) {
-          return (!!errMsg.match(guardError));
-        }
-        return (errMsg.indexOf(guardError) != -1);
-      }
+    if ($$.tcf.nestingLevel == 0) {
+      // enable special command handling
+      $$.fn.interceptPush(editor.selDebugger.runner.IDETestLoop.prototype, "resume",
+          $$.handleAsTryBlock, { handleError: handleCommandError });
     }
+    $$.LOG.debug("++ try nesting: " + $$.tcf.nestingLevel);
     // continue into try-block
   };
 
-  Selenium.prototype.doCatch = function(errDcl)
+  Selenium.prototype.doCatch = function()
   {
     assertRunning();
-    assertActiveCmd(blockDefs.cur().tryIdx);
-    var tryState = activeCmdStack().top();
-    deactivateTryBlock(tryState);
-    // continue into catch-block
+    assertActiveScope(blkDefHere().tryIdx);
+    var tryState = activeBlockStack().top();
+    if (tryState.execPhase != "catching") {
+      // skip over unused catch-block
+      var tryDef = blkDefFor(tryState);
+      if (tryDef.finallyIdx)
+        setNextCommand(tryDef.finallyIdx);
+      else
+        setNextCommand(tryDef.endIdx);
+    }
+    $$.LOG.debug("entering catch block");
+    // else continue into catch-block
   };
-  Selenium.prototype.doFinally = function()
-  {
+  Selenium.prototype.doFinally = function() {
     assertRunning();
-    assertActiveCmd(blockDefs.cur().tryIdx);
-    var tryState = activeCmdStack().top();
-    deactivateTryBlock(tryState);
+    assertActiveScope(blkDefHere().tryIdx);
+    delete storedVars._error;
+    $$.LOG.debug("entering finally block");
     // continue into finally-block
   };
   Selenium.prototype.doEndTry = function(tryName)
   {
     assertRunning();
-    assertActiveCmd(blockDefs.cur().tryIdx);
-    var tryState = activeCmdStack().pop();
-    deactivateTryBlock(tryState);
-    if (!!tryState.pendingErrorIdx) {
-      $$.LOG.warn("@ " + hereIdx() + " re-executing failed command @ " + (tryState.pendingErrorIdx+1));
-      setNextCommand(tryState.pendingErrorIdx);
+    assertActiveScope(blkDefHere().tryIdx);
+    delete storedVars._error;
+    var tryState = activeBlockStack().pop();
+    if (tryState.execPhase) { // ie, it DOES have a catch and/or a finally block
+      $$.tcf.nestingLevel--;
+      $$.LOG.debug("-- try nesting: " + $$.tcf.nestingLevel);
+      if ($$.tcf.nestingLevel < 0) {
+        // discontinue try-block handling
+        $$.fn.interceptPop();
+        // $$.tcf.bubbling = null;
+      }
+      if ($$.tcf.bubbling)
+        reBubble();
+      else
+        $$.LOG.debug("no bubbling in process");
     }
+    var tryDef = blkDefFor(tryState);
+    $$.LOG.debug("end of try '" + tryDef.name + "'");
     // fall out of endTry
   };
 
-  function deactivateTryBlock(tryState) {
-    if (!!tryState.isActive) {
-      $$.interceptPop();
-      tryState.isActive = false;
+  // --------------------------------------------------------------------------------
+
+  // alter the behavior of Selenium error handling
+  //   returns true if error is being managed
+  function handleCommandError(err)
+  {
+    var tryState = bubbleToTryBlock(Stack.isTryBlock);
+    var tryDef = blkDefFor(tryState);
+    $$.LOG.debug("error encountered while: " + tryState.execPhase);
+    if (hasUnspentCatch(tryState)) {
+      if (isMatchingCatch(err, tryDef.catchIdx)) {
+        // an expected kind of error has been caught
+        $$.LOG.info("@" + (idxHere()+1) + ", error has been caught" + fmtCatching(tryState));
+        tryState.hasCaught = true;
+        tryState.execPhase = "catching";
+        storedVars._error = err;
+        $$.tcf.bubbling = null;
+        setNextCommand(tryDef.catchIdx);
+        return true;
+      }
     }
+    // error not caught .. instigate bubbling
+    $$.LOG.debug("error not caught, bubbling error: '" + err.message + "'");
+    $$.tcf.bubbling = { mode: "error", error: err, srcIdx: idxHere() };
+    if (hasUnspentFinally(tryState)) {
+      $$.LOG.info("Bubbling suspended while finally block runs");
+      tryState.execPhase = "finallying";
+      tryState.hasFinaled = true;
+      setNextCommand(tryDef.finallyIdx);
+      return true;
+    }
+    if ($$.tcf.nestingLevel > 0) {
+      $$.LOG.info("No further handling, error bubbling will continue outside of this try.");
+      setNextCommand(tryDef.endIdx);
+      return true;
+    }
+    $$.LOG.info("No handling provided in this try section for this error: '" + err.message + "'");
+    return false; // stop test
+  }
+
+  // execute any enclosing finally block(s) until reaching the given type of enclosing block
+  function bubbleCommand(cmdIdx, _isContextBlockType)
+  {
+    var tryState = bubbleToTryBlock(isTryWithMatchingOrFinally);
+    var tryDef = blkDefFor(tryState);
+    $$.tcf.bubbling = { mode: "command", srcIdx: cmdIdx, _isStopCriteria: _isContextBlockType };
+    if (hasUnspentFinally(tryState)) {
+      $$.LOG.info("Command " + fmtCmdRef(cmdIdx) + ", suspended while finally block runs");
+      tryState.execPhase = "finallying";
+      tryState.hasFinaled = true;
+      setNextCommand(tryDef.finallyIdx);
+      // begin finally block
+    }
+    else {
+      $$.LOG.info("No further handling, bubbling continuing outside of this try.");
+      setNextCommand(tryDef.endIdx);
+      // jump out of try section
+    }
+
+    //- determine if catch matches an error, or there is a finally, or the ceiling block has been reached
+    function isTryWithMatchingOrFinally(stackFrame) {
+      if (_isContextBlockType && _isContextBlockType(stackFrame))
+        return true;
+      if ($$.tcf.bubbling && $$.tcf.bubbling.mode == "error" && hasUnspentCatch(stackFrame)) {
+        var tryDef = blkDefFor(stackFrame);
+        if (isMatchingCatch($$.tcf.bubbling.error, tryDef.catchIdx)) {
+          return true;
+        }
+      }
+      return hasUnspentFinally(stackFrame);
+    }
+  }
+
+  //- error message matcher
+  function isMatchingCatch(e, catchIdx) {
+    var errDcl = testCase.commands[catchIdx].target;
+    if (!errDcl) {
+      return true; // no error specified means catch all errors
+    }
+    var errExpr = evalWithVars(errDcl);
+    var errMsg = e.message;
+    if (errExpr instanceof RegExp) {
+      return (errMsg.match(errExpr));
+    }
+    return (errMsg.indexOf(errExpr) != -1);
+  }
+
+  // unwind the blockStack, and callStack (ie, aborting functions), until reaching the given criteria
+  function bubbleToTryBlock(_hasCriteria) {
+    if ($$.tcf.nestingLevel < 0)
+      $$.LOG.warn("bubbleToTryBlock() called outside of any try nesting");
+    var tryState = unwindToBlock(_hasCriteria);
+    while (!tryState && $$.tcf.nestingLevel > -1 && callStack.length > 1) {
+      var callFrame = callStack.pop();
+      $$.LOG.info("function '" + callFrame.name + "' aborting due to error");
+      restoreVarState(callFrame.savedVars);
+      tryState = unwindToBlock(_hasCriteria);
+    }
+    return tryState;
+  }
+
+  // unwind the blockStack until reaching the given criteria
+  function unwindToBlock(_hasCriteria) {
+    var tryState = activeBlockStack().unwindTo(_hasCriteria);
+    if (tryState)
+      $$.LOG.debug("unwound to: " + fmtTry(tryState));
+    return tryState;
+  }
+
+  // resume or conclude command/error bubbling
+  function reBubble() {
+    if ($$.tcf.bubbling.mode == "error") {
+      if ($$.tcf.nestingLevel > -1) {
+        $$.LOG.debug("error-bubbling continuing...");
+        handleCommandError($$.tcf.bubbling.error);
+      }
+      else {
+        $$.LOG.error("Error was not caught: '" + $$.tcf.bubbling.error.message + "'");
+        try { throw $$.tcf.bubbling.error; }
+        finally { $$.tcf.bubbling = null; }
+      }
+    }
+    else { // mode == "command"
+      if (isBubblable()) {
+        $$.LOG.debug("command-bubbling continuing...");
+        bubbleCommand($$.tcf.bubbling.srcIdx, $$.tcf.bubbling._isStopCriteria);
+      }
+      else {
+        $$.LOG.info("command-bubbling complete - suspended command executing now " + fmtCmdRef($$.tcf.bubbling.srcIdx));
+        setNextCommand($$.tcf.bubbling.srcIdx);
+        $$.tcf.bubbling = null;
+      }
+    }
+  }
+
+  // instigate or transform bubbling, as appropriate
+  function transitionBubbling(_isContextBlockType)
+  {
+    if ($$.tcf.bubbling) { // transform bubbling
+      if ($$.tcf.bubbling.mode == "error") {
+        $$.LOG.debug("Bubbling error: '" + $$.tcf.bubbling.error.message + "'"
+          + ", replaced with command " + fmtCmdRef(idxHere()));
+        $$.tcf.bubbling = { mode: "command", srcIdx: idxHere(), _isStopCriteria: _isContextBlockType };
+        return true;
+      }
+      else { // mode == "command"
+        $$.LOG.debug("Command suspension " + fmtCmdRef($$.tcf.bubbling.srcIdx)
+          + ", replaced with " + fmtCmdRef(idxHere()));
+        $$.tcf.bubbling.srcIdx = idxHere();
+        return true;
+      }
+    }
+    if (isBubblable(_isContextBlockType)) { // instigate bubbling
+      bubbleCommand(idxHere(), _isContextBlockType);
+      return true;
+    }
+    // no change to bubbling
+    return false;
+  };
+
+  // determine if bubbling is possible from this point outward
+  function isBubblable(_isContextBlockType) {
+    var canBubble = ($$.tcf.nestingLevel > -1);
+    if (canBubble) {
+      var blkState = activeBlockStack().findEnclosing(isTryOrContextBlockType);
+      return (blkDefFor(blkState).nature == "try");
+    }
+    return canBubble;
+
+    //- determine if 
+    function isTryOrContextBlockType(stackFrame) {
+      if (_isContextBlockType && _isContextBlockType(stackFrame))
+        return true;
+      return Stack.isTryBlock(stackFrame);
+    }
+  }
+
+  function hasUnspentCatch(tryState) {
+    return (blkDefFor(tryState).catchIdx && !tryState.hasCaught);
+  }
+  function hasUnspentFinally(tryState) {
+    return (blkDefFor(tryState).finallyIdx && !tryState.hasFinaled);
+  }
+
+  function fmtTry(tryState)
+  {
+    var tryDef = blkDefFor(tryState);
+    return (
+      (tryDef.name ? "try '" + tryDef.name + "' " : "")
+      + "@" + (tryState.idx+1)
+      + ", " + tryState.execPhase + ".."
+      + " " + $$.tcf.nestingLevel + "n"
+    );
+  }
+
+  function fmtCatching(tryState)
+  {
+    if (!tryState)
+      return "";
+    var bbl = "";
+    if ($$.tcf.bubbling)
+      bbl = "@" + ($$.tcf.bubbling.srcIdx+1) + " ";
+    var tryDef = blkDefFor(tryState);
+    var catchDcl = testCase.commands[tryDef.catchIdx].target;
+    return " :: " + bbl + catchDcl;
   }
 
   // ================================================================================
@@ -608,6 +924,7 @@ function $X(xpath, contextNode, resultType) {
     enterLoop(
       function() {    // validate
           assert(condExpr, " 'while' requires a condition expression.");
+          assertCompilable("", condExpr, ";", "Invalid condition");
           return null;
       }
       ,function() { } // initialize
@@ -620,21 +937,20 @@ function $X(xpath, contextNode, resultType) {
   };
 
   // ================================================================================
-  Selenium.prototype.doFor = function(forSpec, localVarsSpec)
+  Selenium.prototype.doFor = function(forSpec)
   {
     enterLoop(
       function(loop) { // validate
           assert(forSpec, " 'for' requires: <initial-val>; <condition>; <iter-stmt>.");
+          assertCompilable("for ( ", forSpec, " );", "Invalid loop parameters");
           var specs = iexpr.splitList(forSpec, ";");
           assert(specs.length == 3, " 'for' requires <init-stmt>; <condition>; <iter-stmt>.");
           loop.initStmt = specs[0];
           loop.condExpr = specs[1];
           loop.iterStmt = specs[2];
-          var localVarNames = [];
-          if (localVarsSpec) {
-            localVarNames = iexpr.splitList(localVarsSpec, ",");
-            validateNames(localVarNames, "variable");
-          }
+          var localVarNames = parseVarNames(loop.initStmt);
+          $$.LOG.debug("localVarNames: " + localVarNames.join(','));
+          validateNames(localVarNames, "variable");
           return localVarNames;
       }
       ,function(loop) { evalWithVars(loop.initStmt); }          // initialize
@@ -646,6 +962,18 @@ function $X(xpath, contextNode, resultType) {
     iterateLoop();
   };
 
+  function parseVarNames(initStmt) {
+    var varNames = [];
+    if (initStmt) {
+      var vInits = iexpr.splitList(initStmt, ",");
+      for (var i = 0; i < vInits.length; i++) {
+        var vInit = iexpr.splitList(vInits[i], "=");
+        varNames.push(vInit[0]);
+      }
+    }
+    return varNames;
+  };
+
   // ================================================================================
   Selenium.prototype.doForeach = function(varName, valueExpr)
   {
@@ -653,6 +981,7 @@ function $X(xpath, contextNode, resultType) {
       function(loop) { // validate
           assert(varName, " 'foreach' requires a variable name.");
           assert(valueExpr, " 'foreach' requires comma-separated values.");
+          assertCompilable("[ ", valueExpr, " ];", "Invalid value list");
           loop.values = evalWithVars("[" + valueExpr + "]");
           if (loop.values.length == 1 && loop.values[0] instanceof Array) {
             loop.values = loop.values[0]; // if sole element is an array, than use it
@@ -684,16 +1013,17 @@ function $X(xpath, contextNode, resultType) {
     var xmlReader = new XmlReader(filepath);
     loadVars(xmlReader, "XML element", filepath, selector);
   };
-  // deprecated command
   Selenium.prototype.doLoadVars = function(filepath, selector)
   {
     $$.LOG.warn("The loadVars command has been deprecated and will be removed in future releases."
-      + " Use doLoadXmlVars instead.");
+      + " Please use doLoadXmlVars instead.");
     Selenium.prototype.doLoadXmlVars(filepath, selector);
   };
 
   function loadVars(reader, desc, filepath, selector)
   {
+    if (selector)
+      assertCompilable("", selector, ";", "Invalid selector condition");
     reader.load(filepath);
     reader.next(); // read first varset and set values on storedVars
     if (!selector && !reader.EOF())
@@ -773,10 +1103,10 @@ function $X(xpath, contextNode, resultType) {
   {
     assertRunning();
     var loopState;
-    if (!activeCmdStack().isHere()) {
+    if (!activeBlockStack().isHere()) {
       // loop begins
-      loopState = { idx: hereIdx() };
-      activeCmdStack().push(loopState);
+      loopState = { idx: idxHere() };
+      activeBlockStack().push(loopState);
       var localVars = _validateFunc(loopState);
       loopState.savedVars = getVarState(localVars);
       initVarState(localVars); // because with-scope can reference storedVars only once they exist
@@ -784,30 +1114,30 @@ function $X(xpath, contextNode, resultType) {
     }
     else {
       // iteration
-      loopState = activeCmdStack().top();
+      loopState = activeBlockStack().top();
       _iterFunc(loopState);
     }
 
     if (!_condFunc(loopState)) {
       loopState.isComplete = true;
       // jump to bottom of loop for exit
-      setNextCommand(blockDefs.cur().ftrIdx);
+      setNextCommand(blkDefHere().endIdx);
     }
     // else continue into body of loop
   }
   function iterateLoop()
   {
     assertRunning();
-    assertActiveCmd(blockDefs.cur().hdrIdx);
-    var loopState = activeCmdStack().top();
+    assertActiveScope(blkDefHere().beginIdx);
+    var loopState = activeBlockStack().top();
     if (loopState.isComplete) {
       restoreVarState(loopState.savedVars);
-      activeCmdStack().pop();
+      activeBlockStack().pop();
       // done, fall out of loop
     }
     else {
       // jump back to top of loop
-      setNextCommand(blockDefs.cur().hdrIdx);
+      setNextCommand(blkDefHere().beginIdx);
     }
   }
 
@@ -816,8 +1146,8 @@ function $X(xpath, contextNode, resultType) {
     var loopState = dropToLoop(condExpr);
     if (loopState) {
       // jump back to top of loop for next iteration, if any
-      var ftrCmd = blockDefs[loopState.idx];
-      setNextCommand(blockDefs[ftrCmd.ftrIdx].hdrIdx);
+      var endCmd = blkDefFor(loopState);
+      setNextCommand(blkDefAt(endCmd.endIdx).beginIdx);
     }
   };
   Selenium.prototype.doBreak = function(condExpr) {
@@ -825,7 +1155,7 @@ function $X(xpath, contextNode, resultType) {
     if (loopState) {
       loopState.isComplete = true;
       // jump to bottom of loop for exit
-      setNextCommand(blockDefs[loopState.idx].ftrIdx);
+      setNextCommand(blkDefFor(loopState).endIdx);
     }
   };
 
@@ -834,23 +1164,29 @@ function $X(xpath, contextNode, resultType) {
   function dropToLoop(condExpr)
   {
     assertRunning();
+    if (condExpr)
+      assertCompilable("", condExpr, ";", "Invalid condition");
+    if (transitionBubbling(Stack.isLoopBlock))
+      return;
     if (condExpr && !evalWithVars(condExpr))
       return;
-    var loopState = activeCmdStack().unwindTo(Stack.isLoopBlock);
+    var loopState = activeBlockStack().unwindTo(Stack.isLoopBlock);
     return loopState;
   }
 
 
   // ================================================================================
-  Selenium.prototype.doCall = function(scrName, argSpec)
+  Selenium.prototype.doCall = function(funcName, argSpec)
   {
     assertRunning(); // TBD: can we do single execution, ie, run from this point then break on return?
-    var scrIdx = symbols[scrName];
-    assert(scrIdx, " Script does not exist: " + scrName + ".");
+    if (argSpec)
+      assertCompilable("var ", argSpec, ";", "Invalid call parameter(s)");
+    var funcIdx = symbols[funcName];
+    assert(funcIdx, " Function does not exist: " + funcName + ".");
 
     var activeCallFrame = callStack.top();
-    if (activeCallFrame.isReturning && activeCallFrame.returnIdx == hereIdx()) {
-      // returning from completed script
+    if (activeCallFrame.isReturning && activeCallFrame.returnIdx == idxHere()) {
+      // returning from completed function
       restoreVarState(callStack.pop().savedVars);
     }
     else {
@@ -859,55 +1195,68 @@ function $X(xpath, contextNode, resultType) {
       var savedVars = getVarStateFor(args);
       setVars(args);
 
-      callStack.push({ scrIdx: scrIdx, name: scrName, args: args, returnIdx: hereIdx(),
-        savedVars: savedVars, cmdStack: new Stack() });
-      // jump to script body
-      setNextCommand(scrIdx);
+      callStack.push({ funcIdx: funcIdx, name: funcName, args: args, returnIdx: idxHere(),
+        savedVars: savedVars, blockStack: new Stack() });
+      // jump to function body
+      setNextCommand(funcIdx);
     }
   };
-  Selenium.prototype.doScript = function(scrName)
+  Selenium.prototype.doFunction = function(funcName)
   {
     assertRunning();
 
-    var scrDef = blockDefs.cur();
+    var funcDef = blkDefHere();
     var activeCallFrame = callStack.top();
-    if (activeCallFrame.scrIdx == hereIdx()) {
+    if (activeCallFrame.funcIdx == idxHere()) {
       // get parameter values
       setVars(activeCallFrame.args);
     }
     else {
-      // no active call, skip around script body
-      setNextCommand(scrDef.endIdx);
+      // no active call, skip around function body
+      setNextCommand(funcDef.endIdx);
     }
   };
+  Selenium.prototype.doScript = function(scrName)
+  {
+    $$.LOG.warn("The script command has been deprecated and will be removed in future releases."
+      + " Please use function instead.");
+    Selenium.prototype.doFunction(scrName);
+  };
   Selenium.prototype.doReturn = function(value) {
-    returnFromScript(null, value);
+    returnFromFunction(null, value);
+  };
+  Selenium.prototype.doEndFunction = function(funcName) {
+    returnFromFunction(funcName);
   };
   Selenium.prototype.doEndScript = function(scrName) {
-    returnFromScript(scrName);
+    returnFromFunction(scrName);
   };
 
-  function returnFromScript(scrName, returnVal)
+  function returnFromFunction(funcName, returnVal)
   {
     assertRunning();
-    var endDef = blockDefs.cur();
+    if (transitionBubbling(Stack.isFunctionBlock))
+      return;
+    var endDef = blkDefHere();
     var activeCallFrame = callStack.top();
-    if (activeCallFrame.scrIdx == endDef.scrIdx) {
+    if (activeCallFrame.funcIdx != endDef.funcIdx) {
+      // no active call, we're just skipping around a function block
+    }
+    else {
       if (returnVal) storedVars._result = evalWithVars(returnVal);
       activeCallFrame.isReturning = true;
       // jump back to call command
       setNextCommand(activeCallFrame.returnIdx);
-    }
-    else {
-      // no active call, we're just skipping around a script block
     }
   }
 
 
   // ================================================================================
   Selenium.prototype.doExitTest = function() {
+    if (transitionBubbling())
+      return;
     // intercept command processing and simply stop test execution instead of executing the next command
-    $$.interceptOnce(editor.selDebugger.runner.IDETestLoop.prototype, "resume", $$.handleAsExitTest);
+    $$.fn.interceptOnce(editor.selDebugger.runner.IDETestLoop.prototype, "resume", $$.handleAsExitTest);
   };
 
 
@@ -920,8 +1269,8 @@ function $X(xpath, contextNode, resultType) {
       // Scripted expressions run in the Selenium window, separate from browser windows.
       // Global functions are intentional features provided for use by end user's in their Selenium scripts.
       result = eval("with (storedVars) {" + expr + "}");
-    } catch (err) {
-      notifyFatalErr(" While evaluating Javascript expression: " + expr, err);
+    } catch (e) {
+      notifyFatalErr(" While evaluating Javascript expression: " + expr, e);
     }
     return result;
   }
@@ -976,6 +1325,13 @@ function $X(xpath, contextNode, resultType) {
 
   // ========= error handling =========
 
+  function SelblocksError(idx, message) {
+    this.name = "SelblocksError";
+    this.message = (message || "");
+    this.idx = idx;
+  }
+  SelblocksError.prototype = Error.prototype;
+
   // TBD: make into throwable Errors
   function notifyFatalErr(msg, err) {
     $$.LOG.error("Error " + msg);
@@ -989,20 +1345,32 @@ function $X(xpath, contextNode, resultType) {
     throw err;
   }
   function notifyFatalCmdRef(idx, msg) { notifyFatal(fmtCmdRef(idx) + msg); }
-  function notifyFatalHere(msg) { notifyFatal(fmtCmdRef(hereIdx()) + msg); }
+  function notifyFatalHere(msg) { notifyFatal(fmtCurCmd() + msg); }
 
   function assertCmd(idx, cond, msg) { if (!cond) notifyFatalCmdRef(idx, msg); }
   function assert(cond, msg) { if (!cond) notifyFatalHere(msg); }
   // TBD: can we at least show result of expressions?
   function assertRunning() {
-    assert(testCase.debugContext.started, " Command is only valid in a running script."
-        + " E.g., cannot be executed via double-click.");
+    assert(testCase.debugContext.started, " Command is only valid in a running script,"
+        + " i.e., cannot be executed via double-click, or via 'Execute this command'.");
   }
-  function assertActiveCmd(expectedIdx) {
-    var activeIdx = activeCmdStack().top().idx;
+  function assertActiveScope(expectedIdx) {
+    var activeIdx = activeBlockStack().top().idx;
     assert(activeIdx == expectedIdx, " unexpected command, active command was " + fmtCmdRef(activeIdx));
   }
 
+  function assertCompilable(left, stmt, right, explanation) {
+    try {
+      evalWithVars("function selblocksTemp() { " + left + stmt + right + " }");
+    }
+    catch (e) {
+      throw new SyntaxError(fmtCmdRef(idxHere()) + " " + explanation + " '" + stmt +  "': " + e.message);
+    }
+  }
+
+  function fmtCurCmd() {
+    return fmtCmdRef(idxHere());
+  }
   function fmtCmdRef(idx) {
     return ("@" + (idx+1) + ": " + fmtCommand(testCase.commands[idx]));
   }

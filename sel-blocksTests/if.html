@@ -12,6 +12,11 @@
 <tr><td rowspan="1" colspan="3">foreach</td></tr>
 </thead><tbody>
 <tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
 	<td>emit</td>
 	<td>&quot;BEFORE&quot;</td>
 	<td></td>
@@ -221,6 +226,252 @@
 <tr>
 	<td>assertEmitted</td>
 	<td>&quot;BEFORE~truthy~A~Y~truthF~office mate~coffee mate~cell mate~AFTER&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--==-->
+<tr>
+	<td>if</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;if-y&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>elseIf</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;elseIf-y&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<!------>
+<tr>
+	<td>if</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;if-y&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>elseIf</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;elseIf-y&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<!------>
+<tr>
+	<td>if</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;if-y&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>elseIf</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;elseIf-a1y&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>elseIf</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;else-a2y&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<!------>
+<tr>
+	<td>if</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;if-y&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>elseIf</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;elseIf-b1y&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>elseIf</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;elseIf-b2y&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<!------>
+<tr>
+	<td>if</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;if-y&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>elseIf</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;elseIf-y&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>else</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;else-y&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;if-y~elseIf-y~elseIf-a1y~elseIf-b2y~else-y&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<!------>
+<tr>
+	<td>foreach</td>
+	<td>i</td>
+	<td>2, 0, 1, 4, 3, 5</td>
+</tr>
+<tr>
+	<td>if</td>
+	<td>i == 0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;if-${i}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>elseIf</td>
+	<td>i == 1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;elseIf-${i}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>elseIf</td>
+	<td>i == 2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;elseIf-${i}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>elseIf</td>
+	<td>i == 3</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;elseIf-${i}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>else</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;else-${i}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>endForeach</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;elseIf-2~if-0~elseIf-1~else-4~elseIf-3~else-5&quot;</td>
 	<td></td>
 </tr>
 </tbody></table>

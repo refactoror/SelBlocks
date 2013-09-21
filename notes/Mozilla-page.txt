@@ -1,0 +1,84 @@
+================================================================================
+SelBlocks (for Selenium IDE) 2.0
+by refactoror
+
+This is an extension for Selenium IDE that provides javascript-like conditionals, looping, callable functions, error catching, and JSON/XML driven parameterization. Latest version is 2.0.
+
+================================================================================
+About this Add-on
+
+<ul>
+<li>
+Adds the following control structures to Selenese: <code>if</code>/<code>elseIf</code>/<code>else</code>, <code>try</code>/<code>catch</code>/<code>finally</code>/<code>throw</code>, <code>for</code>/<code>foreach</code>/<code>while</code>, <code>continue</code>/<code>break</code>, <code>call</code>/<code>function</code>/<code>return</code>, <code>loadXmlVars</code>/<code>loadJsonVars</code>, <code>forXml</code>/<code>forJson</code>, <code>exitTest</code>
+</li>
+<li>
+Function and loop parameters use regular Selenium variables that are local to the block, overriding variables of the same name, and that are restored when the block exits.
+</li>
+<li>
+Command parameters are javascript expressions that are evaluated with Selenium variables in scope, which can therefore be referenced by their simple names, e.g.: <code>i+1</code>
+</li>
+<li>
+Variables can be configured via external XML and/or JSON files.
+</li>
+<li>
+A function definition can appear anywhere, (they are skipped over in normal execution flow).
+</li>
+<li>
+Functions can be called recursively.
+</li>
+<li>
+Errors bubble upward through try/catch/finally blocks, which can be nested arbitrarially. Catching an error cancels it, or can be re-thrown.
+</li>
+</ul>
+
+Documentation <a href="http://refactoror.wikia.com/wiki/Selblocks_Reference">here</a>.
+
+Note that it take months for Mozilla to review each addon update. For compatibility with Firefox versions above 17, see: https://addons.mozilla.org/en-US/firefox/addon/selenium-ide-sel-blocks/versions/
+
+================================================================================
+Version 2.0
+Released October 28, 2013 31.0 KB
+Works with Firefox 17.0 and later 
+
+Changes since 1.5:
+* New commands: elseIf and try/catch/finally/throw
+* Block boundaries enforced (jumping in-to and/or out-of the middle of blocks)
+* Deprecated script/endScript, use function/endFunction instead
+* Implicit initialization of for loop variable(s)
+* Improved validation of command expressions
+
+================================================================================
+Version 1.5
+Released September 8, 2013 25.4 KB
+Works with Firefox 10.0 and later
+
+Changes since 1.3.1:
+* New commands: loadJsonVars, forJson, and exitTest
+* Expression parsing is more robust, for & call list parameters in particular
+* Variable and parameter names are validated for alphanumeric conventions
+* Logging identifies itself with the prefix [SelBlocks]
+* Internal functions & vars no longer pollute the global Javascript name space
+
+Thanks to Martin Bramwell for JSON proof of concept.
+
+--------------------------------------------------------------------------------
+Version 1.3
+Released August 14, 2011 10.2 KB
+Works with Firefox 1.5 and later
+
+Changes since 1.2:
+* Added continue & break for loops
+
+Works with Selenium 1.0 and 1.1, on Firefox 5, 6, and 7
+
+--------------------------------------------------------------------------------
+Version 1.1
+Released April 10, 2011 9.2 KB
+Works with Firefox 1.5 and later
+
+Changes since 1.0:
+* Fixed branch-to bug where label or block starts on the first line of the script.
+* Fixed foreach bug: input values not being evaluated with stored variables.
+* Added automatic variable ${_i} inside foreach loop: zero-based item index.
+* Added $X(xpath) for retrieving an array of matching elements.
+* Eliminated warn logging of selenium hook setup, etc, changed to debug level.
