@@ -5,33 +5,33 @@
   */
 
   // execute the given function before each call of the specified function
-  $$.interceptBefore = function(targetObj, targetFnName, fn) {
-    var existing_fn = targetObj[targetFnName] = fn;
+  $$.interceptBefore = function(targetObj, targetFnName, _fn) {
+    var existing_fn = targetObj[targetFnName] = _fn;
     targetObj[targetFnName] = function() {
-      fn.call(this);
+      _fn.call(this);
       existing_fn.call(this);
     };
   };
   // execute the given function after each call of the specified function
-  $$.interceptAfter = function(targetObj, targetFnName, fn) {
-    var existing_fn = targetObj[targetFnName] = fn;
+  $$.interceptAfter = function(targetObj, targetFnName, _fn) {
+    var existing_fn = targetObj[targetFnName] = _fn;
     targetObj[targetFnName] = function() {
       existing_fn.call(this);
-      fn.call(this);
+      _fn.call(this);
     };
   };
   // replace the specified function with the given function
-  $$.interceptReplace = function(targetObj, targetFnName, fn) {
+  $$.interceptReplace = function(targetObj, targetFnName, _fn) {
     targetObj[targetFnName] = function() {
-      //var existing_fn = targetObj[targetFnName] = fn;
-      return fn.call(this);
+      //var existing_fn = targetObj[targetFnName] = _fn;
+      return _fn.call(this);
     };
   };
 
   $$.fnStack = [];
 
   // replace the specified function, saving the original function on a stack
-  $$.interceptPush = function(targetObj, targetFnName, fn, frameAttrs) {
+  $$.interceptPush = function(targetObj, targetFnName, _fn, frameAttrs) {
 // $$.LOG.warn("interceptPush " + (frameAttrs ? frameAttrs : ""));
     var frame = {
        targetObj: targetObj
@@ -40,7 +40,7 @@
       ,attrs: frameAttrs
     };
     $$.fnStack.push(frame);
-    targetObj[targetFnName] = fn;
+    targetObj[targetFnName] = _fn;
   };
   // restore the most recent function replacement
   $$.interceptPop = function() {
@@ -54,10 +54,10 @@
   };
 
   // replace the specified function, but then restore the original function as soon as it is call
-  $$.interceptOnce = function(targetObj, targetFnName, fn) {
+  $$.interceptOnce = function(targetObj, targetFnName, _fn) {
     $$.interceptPush(targetObj, targetFnName, function(){
       $$.interceptPop(); // un-intercept
-      fn.call(this);
+      _fn.call(this);
     });
   };
 
