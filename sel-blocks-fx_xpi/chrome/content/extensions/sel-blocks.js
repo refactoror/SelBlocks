@@ -24,9 +24,9 @@
  *  - The static structure of command blocks is stored in blockDefs[] by script line number.
  *    E.g., ifDef has pointers to its corresponding else and/or endIf.
  *  - The state of each script-call is pushed/popped on callStack as it begins/ends execution
- *    The state of each block is pushed/popped on the scopeStack as it begins/ends execution.
- *    An independent scopeStack is associated with each script-call. I.e., stacks stored on a stack.
- *    Non-block commands do not appear on the scopeStack.
+ *    The state of each block is pushed/popped on the blockStack as it begins/ends execution.
+ *    An independent blockStack is associated with each script-call. I.e., stacks stored on a stack.
+ *    (Non-block commands do not appear on the blockStack.)
  *
  * Limitations:
  *  - Incompatible with flowControl (and derivatives), because they unilaterally override selenium.reset().
@@ -232,7 +232,7 @@ function $X(xpath, contextNode, resultType) {
       notifyFatalErr("In " + err.fileName + " @" + err.lineNumber + ": " + err);
     }
     callStack = new Stack();
-    callStack.push({ scopeStack: new Stack() }); // top-level execution state
+    callStack.push({ blockStack: new Stack() }); // top-level execution state
 
     // customize flow control logic
     // TBD: this should be a tail intercept rather than brute force replace
@@ -240,9 +240,9 @@ function $X(xpath, contextNode, resultType) {
     $$.interceptReplace(testCase.debugContext, "nextCommand", nextCommand);
   });
 
-  // get the scopeStack for the currently active callStack
-  function activeScopeStack() {
-    return callStack.top().scopeStack;
+  // get the blockStack for the currently active callStack
+  function activeBlockStack() {
+    return callStack.top().blockStack;
   }
 
   // ================================================================================
@@ -463,7 +463,7 @@ function $X(xpath, contextNode, resultType) {
   {
     assertRunning();
     var ifState = { idx: idxHere() };
-    activeScopeStack().push(ifState);
+    activeBlockStack().push(ifState);
     if (evalWithVars(condExpr)) {
       ifState.skipElseBlock = true;
       // continue into if-block
@@ -481,14 +481,14 @@ function $X(xpath, contextNode, resultType) {
   {
     assertRunning();
     assertActiveScope(blockDefs.cur().ifIdx);
-    var ifState = activeScopeStack().top();
+    var ifState = activeBlockStack().top();
     if (ifState.skipElseBlock)
       setNextCommand(blockDefs.cur().endIdx);
   };
   Selenium.prototype.doEndIf = function() {
     assertRunning();
     assertActiveScope(blockDefs.cur().ifIdx);
-    activeScopeStack().pop();
+    activeBlockStack().pop();
     // fall out of if-endIf
   };
 
@@ -499,7 +499,7 @@ function $X(xpath, contextNode, resultType) {
   {
     assertRunning();
     var tryState = { idx: idxHere() };
-    activeScopeStack().push(tryState);
+    activeBlockStack().push(tryState);
     var tryDef = blockDefs.cur();
 
     if (!tryDef.catchIdx && !tryDef.finallyIdx) {
@@ -519,18 +519,15 @@ function $X(xpath, contextNode, resultType) {
         if (!!tryDef.catchIdx && isMatch(e, guardError)) {
           // an expected kind of error has been caught
           $$.LOG.info("error is being handled by catch block...");
-          var activeTryCmd = blockDefs[dropToActiveTryBlock().idx];
-          setNextCommand(activeTryCmd.catchIdx);
-          tryState.execPhase = "prefinally";
+          var activeTryDef = blockDefs[dropToActiveTryBlock().idx];
+          setNextCommand(activeTryDef.catchIdx);
           return true; // continue
         }
         if (!!tryDef.finallyIdx) {
-          // an expected kind of error has been caught
           tryState.pendingErrorIdx = idxHere();
           $$.LOG.debug("@ " + (tryState.pendingErrorIdx+1) + " error is suspended while finally block runs");
-          var activeTryCmd = blockDefs[dropToActiveTryBlock().idx];
-          setNextCommand(activeTryCmd.finallyIdx);
-          tryState.execPhase = "";
+          var activeTryDef = blockDefs[dropToActiveTryBlock().idx];
+          setNextCommand(activeTryDef.finallyIdx);
           return true; // continue
         }
         else {
@@ -560,13 +557,13 @@ function $X(xpath, contextNode, resultType) {
     //- unwind the command stack to the inner-most active try block
     function dropToActiveTryBlock()
     {
-      var tryState = activeScopeStack().unwindTo(Stack.isActiveTryBlock);
+      var tryState = activeBlockStack().unwindTo(Stack.isActiveTryBlock);
       return tryState;
     }
     // continue into try-block
   };
 
-  Selenium.prototype.doCatch = function(errDcl) {
+  Selenium.prototype.doCatch = function() {
     var tryState = transitionTryBlock();
     if (!!tryState.finallyIdx)
       tryState.execPhase = "prefinally";
@@ -579,7 +576,7 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doEndTry = function(tryName)
   {
     transitionTryBlock();
-    var tryState = activeScopeStack().pop();
+    var tryState = activeBlockStack().pop();
     if (!!tryState.pendingErrorIdx) {
       $$.LOG.warn("@ " + (idxHere()+1) + " re-executing failed command @ " + (tryState.pendingErrorIdx+1));
       setNextCommand(tryState.pendingErrorIdx);
@@ -590,7 +587,7 @@ function $X(xpath, contextNode, resultType) {
   function transitionTryBlock() {
     assertRunning();
     assertActiveScope(blockDefs.cur().tryIdx);
-    var tryState = activeScopeStack().top();
+    var tryState = activeBlockStack().top();
     if (!!tryState.isActive) {
       $$.interceptPop();
       tryState.isActive = false;
@@ -770,10 +767,10 @@ function $X(xpath, contextNode, resultType) {
   {
     assertRunning();
     var loopState;
-    if (!activeScopeStack().isHere()) {
+    if (!activeBlockStack().isHere()) {
       // loop begins
       loopState = { idx: idxHere() };
-      activeScopeStack().push(loopState);
+      activeBlockStack().push(loopState);
       var localVars = _validateFunc(loopState);
       loopState.savedVars = getVarState(localVars);
       initVarState(localVars); // because with-scope can reference storedVars only once they exist
@@ -781,7 +778,7 @@ function $X(xpath, contextNode, resultType) {
     }
     else {
       // iteration
-      loopState = activeScopeStack().top();
+      loopState = activeBlockStack().top();
       _iterFunc(loopState);
     }
 
@@ -796,10 +793,10 @@ function $X(xpath, contextNode, resultType) {
   {
     assertRunning();
     assertActiveScope(blockDefs.cur().beginIdx);
-    var loopState = activeScopeStack().top();
+    var loopState = activeBlockStack().top();
     if (loopState.isComplete) {
       restoreVarState(loopState.savedVars);
-      activeScopeStack().pop();
+      activeBlockStack().pop();
       // done, fall out of loop
     }
     else {
@@ -833,7 +830,7 @@ function $X(xpath, contextNode, resultType) {
     assertRunning();
     if (condExpr && !evalWithVars(condExpr))
       return;
-    var loopState = activeScopeStack().unwindTo(Stack.isLoopBlock);
+    var loopState = activeBlockStack().unwindTo(Stack.isLoopBlock);
     return loopState;
   }
 
@@ -857,7 +854,7 @@ function $X(xpath, contextNode, resultType) {
       setVars(args);
 
       callStack.push({ scrIdx: scrIdx, name: scrName, args: args, returnIdx: idxHere(),
-        savedVars: savedVars, scopeStack: new Stack() });
+        savedVars: savedVars, blockStack: new Stack() });
       // jump to script body
       setNextCommand(scrIdx);
     }
@@ -996,7 +993,7 @@ function $X(xpath, contextNode, resultType) {
         + " E.g., cannot be executed via double-click.");
   }
   function assertActiveScope(expectedIdx) {
-    var activeIdx = activeScopeStack().top().idx;
+    var activeIdx = activeBlockStack().top().idx;
     assert(activeIdx == expectedIdx, " unexpected command, active command was " + fmtCmdRef(activeIdx));
   }
 
