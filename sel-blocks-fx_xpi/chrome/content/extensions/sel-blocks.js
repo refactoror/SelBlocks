@@ -7,15 +7,15 @@
  * (Selbock installs as a Core Extension, not an IDE Extension, because it manipulates the Selenium object)
  *
  * Features
- *  - Commands: if/else, try/catch/finally, for/foreach/while, call/script/return,
+ *  - Commands: if/else, try/catch/finally, for/foreach/while, call/function/return,
  *    loadJsonVars/loadXmlVars, forJson/forXml
- *  - Script and loop parameters create regular Selenium variables that are local to the block,
+ *  - Function and loop parameters create regular Selenium variables that are local to the block,
  *    overriding variables of the same name, and that are restored when the block exits.
  *  - Variables can be set via external JSON/XML data file(s).
  *  - Command parameters are Javascript expressions that are evaluated with Selenium variables
  *    in scope, which can therefore be referenced by their simple names, e.g.: i+1
- *  - A script definition can appear anywhere; they are skipped over in normal execution flow.
- *  - Script functions can be invoked recursively.
+ *  - A function definition can appear anywhere; they are skipped over in normal execution flow.
+ *  - Functions can be invoked recursively.
  *
  * Concept of operation:
  *  - Selenium.reset() is intercepted to initialize the block structures.
@@ -23,9 +23,9 @@
  *  - TestLoop.resume() is overridden by exitTest, and by try/catch/finally to manage the outcome of errors
  *  - The static structure of command blocks is stored in blockDefs[] by script line number.
  *    E.g., ifDef has pointers to its corresponding else and/or endIf.
- *  - The state of each script-call is pushed/popped on callStack as it begins/ends execution
+ *  - The state of each function-call is pushed/popped on callStack as it begins/ends execution
  *    The state of each block is pushed/popped on the blockStack as it begins/ends execution.
- *    An independent blockStack is associated with each script-call. I.e., stacks stored on a stack.
+ *    An independent blockStack is associated with each function-call. I.e., stacks stored on a stack.
  *    (Non-block commands do not appear on the blockStack.)
  *
  * Limitations:
@@ -48,7 +48,7 @@
  * NOTE - The Stored Variables Viewer addon will display the values of Selblocks parameters,
  *   because they are implemented as regular Selenium variables.
  *   The only thing special about Selblocks parameters is that they are activated and deactivated
- *   as script execution flows into and out of blocks, eg, for/endFor, script/endScript, etc.
+ *   as script execution flows into and out of blocks, eg, for/endFor, function/endFunction, etc.
  *   So this can provide a convenient way to monitor the progress of an executing script.
  */
 
@@ -180,8 +180,8 @@ function $X(xpath, contextNode, resultType) {
   Stack.isLoopBlock = function(stackFrame) {
     return (blockDefs[stackFrame.idx].nature == "loop");
   };
-  Stack.isScriptBlock = function(stackFrame) {
-    return (blockDefs[stackFrame.idx].nature == "script");
+  Stack.isFunctionBlock = function(stackFrame) {
+    return (blockDefs[stackFrame.idx].nature == "function");
   };
 
 
@@ -361,26 +361,27 @@ function $X(xpath, contextNode, resultType) {
             assertNotAndWaitSuffix(i);
             blockDefs.init(i);
             break;
-          case "script":
+          case "function":     case "script":
             assertNotAndWaitSuffix(i);
             symbols[cmdTarget] = i;
-            lexStack.push(blockDefs.init(i, { nature: "script", name: cmdTarget }));
+            lexStack.push(blockDefs.init(i, { nature: "function", name: cmdTarget }));
             break;
           case "return":
             assertNotAndWaitSuffix(i);
-            assertBlockIsPending("script", i, ", is not valid outside of a script/endScript block");
-            var scrptCmd = lexStack.findEnclosing(Stack.isScriptBlock);
-            blockDefs.init(i, { scrIdx: scrptCmd.idx });   // return -> script
+            assertBlockIsPending("function", i, ", is not valid outside of a function/endFunction block");
+            var funcCmd = lexStack.findEnclosing(Stack.isFunctionBlock);
+            blockDefs.init(i, { funcIdx: funcCmd.idx });   // return -> function
             break;
-          case "endScript":
+          case "endFunction":  case "endScript":
             assertNotAndWaitSuffix(i);
-            assertBlockIsPending("script", i);
-            var scrDef = lexStack.pop();
-            assertMatching(scrDef.cmdName, "script", i, scrDef.idx);
+            var expectedCmd = curCmd.substr(3).toLowerCase();
+            assertBlockIsPending(expectedCmd, i);
+            var funcDef = lexStack.pop();
+            assertMatching(funcDef.cmdName.toLowerCase(), expectedCmd, i, funcDef.idx);
             if (cmdTarget)
-              assertMatching(scrDef.name, cmdTarget, i, scrDef.idx); // pair-up on script name
-            blockDefs[scrDef.idx].endIdx = i;              // script -> endscript
-            blockDefs.init(i, { scrIdx: scrDef.idx });     // endScript -> script
+              assertMatching(funcDef.name, cmdTarget, i, funcDef.idx); // pair-up on function name
+            blockDefs[funcDef.idx].endIdx = i;             // function -> endFunction
+            blockDefs.init(i, { funcIdx: funcDef.idx });   // endFunction -> function
             break;
 
           case "exitTest":
@@ -599,7 +600,7 @@ function $X(xpath, contextNode, resultType) {
       tryState = bubbleToEnclosingTryBlock();
     }
     // no matching catch and no finally to process
-    return false; // stop the script
+    return false; // stop the test
 
     //- error message matcher ----------
     function isMatchingError(e, errDcl) {
@@ -725,7 +726,7 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doLoadVars = function(filepath, selector)
   {
     $$.LOG.warn("The loadVars command has been deprecated and will be removed in future releases."
-      + " Use doLoadXmlVars instead.");
+      + " Please use doLoadXmlVars instead.");
     Selenium.prototype.doLoadXmlVars(filepath, selector);
   };
 
@@ -879,15 +880,15 @@ function $X(xpath, contextNode, resultType) {
 
 
   // ================================================================================
-  Selenium.prototype.doCall = function(scrName, argSpec)
+  Selenium.prototype.doCall = function(funcName, argSpec)
   {
     assertRunning(); // TBD: can we do single execution, ie, run from this point then break on return?
-    var scrIdx = symbols[scrName];
-    assert(scrIdx, " Script does not exist: " + scrName + ".");
+    var funcIdx = symbols[funcName];
+    assert(funcIdx, " Function does not exist: " + funcName + ".");
 
     var activeCallFrame = callStack.top();
     if (activeCallFrame.isReturning && activeCallFrame.returnIdx == idxHere()) {
-      // returning from completed script
+      // returning from completed function
       restoreVarState(callStack.pop().savedVars);
     }
     else {
@@ -896,41 +897,51 @@ function $X(xpath, contextNode, resultType) {
       var savedVars = getVarStateFor(args);
       setVars(args);
 
-      callStack.push({ scrIdx: scrIdx, name: scrName, args: args, returnIdx: idxHere(),
+      callStack.push({ funcIdx: funcIdx, name: funcName, args: args, returnIdx: idxHere(),
         savedVars: savedVars, blockStack: new Stack() });
-      // jump to script body
-      setNextCommand(scrIdx);
+      // jump to function body
+      setNextCommand(funcIdx);
     }
   };
-  Selenium.prototype.doScript = function(scrName)
+  Selenium.prototype.doFunction = function(funcName)
   {
     assertRunning();
 
-    var scrDef = blockDefs.cur();
+    var funcDef = blockDefs.cur();
     var activeCallFrame = callStack.top();
-    if (activeCallFrame.scrIdx == idxHere()) {
+    if (activeCallFrame.funcIdx == idxHere()) {
       // get parameter values
       setVars(activeCallFrame.args);
     }
     else {
-      // no active call, skip around script body
-      setNextCommand(scrDef.endIdx);
+      // no active call, skip around function body
+      setNextCommand(funcDef.endIdx);
     }
   };
+  // deprecated command
+  Selenium.prototype.doScript = function(scrName)
+  {
+    $$.LOG.warn("The script command has been deprecated and will be removed in future releases."
+      + " Please use function instead.");
+    Selenium.prototype.doFunction(scrName);
+  };
   Selenium.prototype.doReturn = function(value) {
-    returnFromScript(null, value);
+    returnFromFunction(null, value);
+  };
+  Selenium.prototype.doEndFunction = function(funcName) {
+    returnFromFunction(funcName);
   };
   Selenium.prototype.doEndScript = function(scrName) {
-    returnFromScript(scrName);
+    returnFromFunction(scrName);
   };
 
-  function returnFromScript(scrName, returnVal)
+  function returnFromFunction(funcName, returnVal)
   {
     assertRunning();
     var endDef = blockDefs.cur();
     var activeCallFrame = callStack.top();
-    if (activeCallFrame.scrIdx != endDef.scrIdx) {
-      // no active call, we're just skipping around a script block
+    if (activeCallFrame.funcIdx != endDef.funcIdx) {
+      // no active call, we're just skipping around a function block
     }
     else {
       if (returnVal) storedVars._result = evalWithVars(returnVal);
