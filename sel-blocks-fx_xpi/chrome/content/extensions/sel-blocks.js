@@ -173,8 +173,9 @@ function $X(xpath, contextNode, resultType) {
   }
 
   // Determine if the given stack frame is one of the given block kinds
-  Stack.isActiveTryBlock = function(stackFrame) {
-    return (blockDefs[stackFrame.idx].nature == "try" && stackFrame.isActive);
+  Stack.isCatchOrFinallyBlock = function(stackFrame) {
+    var blockDef = blockDefs[stackFrame.idx];
+    return (blockDef.nature == "try" && (!!blockDef.catchIdx || !!blockDef.finallyIdx));
   };
   Stack.isLoopBlock = function(stackFrame) {
     return (blockDefs[stackFrame.idx].nature == "loop");
@@ -187,8 +188,8 @@ function $X(xpath, contextNode, resultType) {
   // Flow control - we don't just alter debugIndex on the fly, because the command
   // preceding the destination would falsely get marked as successfully executed
   var branchIdx = null;
-  // TBD: if testCase.nextCommand() ever changes, this will need to be revisited
-  // (current as of: selenium-ide-2.3.0)
+  // if testCase.nextCommand() ever changes, this will need to be revisited
+  // (current as of: selenium-ide-2.4.0)
   function nextCommand() {
     if (!this.started) {
       this.started = true;
@@ -233,6 +234,9 @@ function $X(xpath, contextNode, resultType) {
     }
     callStack = new Stack();
     callStack.push({ blockStack: new Stack() }); // top-level execution state
+
+    $$.tryNestingLevel = -1;
+    $$.bubblingMode = null;
 
     // customize flow control logic
     // TBD: this should be a tail intercept rather than brute force replace
@@ -498,68 +502,31 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doTry = function(tryName)
   {
     assertRunning();
-    var tryState = { idx: idxHere() };
+    var tryState = { idx: idxHere(), name: tryName };
     activeBlockStack().push(tryState);
     var tryDef = blockDefs.cur();
 
     if (!tryDef.catchIdx && !tryDef.finallyIdx) {
-      $$.LOG.warn(fmtCurCmd() + " has no catch-block and no finally-block, and therefore serves no purpose");
+      $$.LOG.warn(fmtCurCmd() + " does not have a catch-block nor a finally-block, and therefore serves no purpose");
+      tryState.isActive = false;
       return; // continue into try-block without any special handling
     }
 
+    // log an advisory about the active catch block
     if (!!tryDef.catchIdx) {
       var errDcl = testCase.commands[tryDef.catchIdx].target;
       $$.LOG.debug(tryName + " catchable: " + (!!errDcl ? errDcl : "ANY"));
     }
 
-    var handlerAttrs = {
-      catchError: function(e)
-      {
-        var guardError = evalWithVars(errDcl);
-        if (!!tryDef.catchIdx && isMatch(e, guardError)) {
-          // an expected kind of error has been caught
-          $$.LOG.info("error is being handled by catch block...");
-          var activeTryDef = blockDefs[dropToActiveTryBlock().idx];
-          setNextCommand(activeTryDef.catchIdx);
-          return true; // continue
-        }
-        if (!!tryDef.finallyIdx) {
-          tryState.pendingErrorIdx = idxHere();
-          $$.LOG.debug("@ " + (tryState.pendingErrorIdx+1) + " error is suspended while finally block runs");
-          var activeTryDef = blockDefs[dropToActiveTryBlock().idx];
-          setNextCommand(activeTryDef.finallyIdx);
-          return true; // continue
-        }
-        else {
-          // no matching catch-block and/or no finally-block
-          return false; // stop the script
-        }
-
-        //- error message matcher ----------
-        function isMatch(err, guardError) {
-          if (!guardError) {
-            return true; // no err specification means catch all errors
-          }
-          var errMsg = err.message;
-          if (guardError instanceof RegExp) {
-            return (!!errMsg.match(guardError));
-          }
-          return (errMsg.indexOf(guardError) != -1);
-        }
-      }
-    };
-
+    $$.tryNestingLevel++;
     tryState.isActive = true;
-    tryState.execPhase = "trying";
-    $$.interceptPush(editor.selDebugger.runner.IDETestLoop.prototype, "resume",
-        $$.handleAsTryBlock, handlerAttrs);
 
-    //- unwind the command stack to the inner-most active try block
-    function dropToActiveTryBlock()
-    {
-      var tryState = activeBlockStack().unwindTo(Stack.isActiveTryBlock);
-      return tryState;
+    if ($$.tryNestingLevel == 0) {
+      // enable special command handling
+      $$.interceptPush(editor.selDebugger.runner.IDETestLoop.prototype, "resume",
+          $$.handleAsTryBlock, { handleError: handleCommandError });
     }
+    $$.LOG.warn("++ try nesting: " + $$.tryNestingLevel);
     // continue into try-block
   };
 
@@ -577,9 +544,17 @@ function $X(xpath, contextNode, resultType) {
   {
     transitionTryBlock();
     var tryState = activeBlockStack().pop();
-    if (!!tryState.pendingErrorIdx) {
-      $$.LOG.warn("@ " + (idxHere()+1) + " re-executing failed command @ " + (tryState.pendingErrorIdx+1));
-      setNextCommand(tryState.pendingErrorIdx);
+    if (tryState.isActive) {
+      $$.tryNestingLevel--;
+      tryDef = blockDefs[tryState.idx];
+      $$.LOG.warn("-- try nesting: " + $$.tryNestingLevel);
+      if ($$.tryNestingLevel < 0) {
+        // discontinue special command handling
+        $$.interceptPop();
+      }
+      else if ($$.bubblingMode) {
+        resumeErrorBubbling();
+      }
     }
     // fall out of endTry
   };
@@ -589,11 +564,79 @@ function $X(xpath, contextNode, resultType) {
     assertActiveScope(blockDefs.cur().tryIdx);
     var tryState = activeBlockStack().top();
     if (!!tryState.isActive) {
-      $$.interceptPop();
-      tryState.isActive = false;
       tryState.execPhase = null;
     }
     return tryState;
+  }
+
+  // --------------------------------------------------------------------------------
+
+  function resumeErrorBubbling() {
+    handleCommandError($$.bubblingError);
+  }
+
+  function handleCommandError(err)
+  {
+    var tryState = bubbleToEnclosingTryBlock();
+    while (!!tryState) {
+      var tryDef = blockDefs[tryState.idx];
+      if (!!tryDef.catchIdx) {
+        var catchDcl = testCase.commands[tryDef.catchIdx].target;
+        if (isMatchingError(err, catchDcl)) {
+          // an expected kind of error has been caught
+          $$.LOG.info("@" + (idxHere()+1) + ", error is being handled by catch block -> " + (tryDef.catchIdx+1));
+          setNextCommand(tryDef.catchIdx);
+          return true; // continue
+        }
+      }
+      if (!!tryDef.finallyIdx) {
+        $$.LOG.debug("@" + (tryDef.bubblingErrorIdx+1) + " error is suspended while finally block runs");
+        $$.bubblingMode = "error";
+        $$.bubblingError = err;
+        setNextCommand(tryDef.finallyIdx);
+        return true; // continue
+      }
+      tryState = bubbleToEnclosingTryBlock();
+    }
+    // no matching catch and no finally to process
+    return false; // stop the script
+
+    //- error message matcher ----------
+    function isMatchingError(e, errDcl) {
+      if (!errDcl) {
+        return true; // no error specified means catch all errors
+      }
+      var errExpr = evalWithVars(errDcl);
+      var errMsg = e.message;
+      if (errExpr instanceof RegExp) {
+        return (!!errMsg.match(errExpr));
+      }
+      return (errMsg.indexOf(errExpr) != -1);
+    }
+  }
+
+  function bubbleToEnclosingTryBlock() {
+    var tryState = activeBlockStack().unwindTo(Stack.isCatchOrFinallyBlock);
+    $$.LOG.warn("bubble -> " + fmtTry(tryState));
+    while (!tryState && callStack.length > 1) {
+      $$.LOG.warn("forced return from call");
+      restoreVarState(callStack.pop().savedVars);
+      tryState = activeBlockStack().unwindTo(Stack.isCatchOrFinallyBlock);
+      $$.LOG.warn("~ bubble -> " + fmtTry(tryState));
+    }
+    return tryState;
+  }
+
+  function fmtTry(tryState)
+  {
+    if (!tryState)
+      return "null";
+    return (
+      (tryState.name ? "'" + tryState.name + "' " : "")
+      + "@" + tryState.idx
+      + ", " + tryState.execPhase + ".."
+      + " " + $$.tryNestingLevel + "T"
+    );
   }
 
   // ================================================================================

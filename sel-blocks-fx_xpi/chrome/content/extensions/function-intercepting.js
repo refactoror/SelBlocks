@@ -48,7 +48,7 @@
 // $$.LOG.warn("interceptPop " + (frame.attrs ? frame.attrs : ""));
     frame.targetObj[frame.targetFnName] = frame.savedFn;
   };
-  $$.getActiveInterceptAttrs = function() {
+  $$.getInterceptAttrs = function() {
     var topFrame = $$.fnStack[$$.fnStack.length-1];
     return topFrame.attrs;
   };
