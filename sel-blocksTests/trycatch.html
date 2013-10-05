@@ -17,6 +17,7 @@
 	<td>selblocks.LOG.info(&quot;---------------------------------------- foo1 ----------------------------------------&quot;)</td>
 	<td></td>
 </tr>
+<!--v v v-->
 <tr>
 	<td>try</td>
 	<td>fooA</td>
@@ -27,6 +28,7 @@
 	<td>true</td>
 	<td>true</td>
 </tr>
+<!--v v v-->
 <tr>
 	<td>try</td>
 	<td>foo1</td>
@@ -39,17 +41,7 @@
 </tr>
 <tr>
 	<td>assertEval</td>
-	<td>true</td>
-	<td>true</td>
-</tr>
-<tr>
-	<td>assertEval</td>
 	<td>false</td>
-	<td>true</td>
-</tr>
-<tr>
-	<td>assertEval</td>
-	<td>true</td>
 	<td>true</td>
 </tr>
 <tr>
@@ -82,6 +74,7 @@
 	<td>foo1</td>
 	<td></td>
 </tr>
+<!--^ ^ ^ ^-->
 <tr>
 	<td>assertEval</td>
 	<td>true</td>
@@ -92,21 +85,18 @@
 	<td>fooA</td>
 	<td></td>
 </tr>
+<!--^ ^ ^ ^-->
 <!---- try/finally-->
 <tr>
 	<td>getEval</td>
 	<td>selblocks.LOG.info(&quot;---------------------------------------- foo2 ----------------------------------------&quot;)</td>
 	<td></td>
 </tr>
+<!--v v v-->
 <tr>
 	<td>try</td>
 	<td>foo2</td>
 	<td></td>
-</tr>
-<tr>
-	<td>assertEval</td>
-	<td>true</td>
-	<td>true</td>
 </tr>
 <tr>
 	<td>assertEval</td>
@@ -128,12 +118,14 @@
 	<td></td>
 	<td></td>
 </tr>
+<!--^ ^ ^ ^-->
 <!---- try/catch ALL-->
 <tr>
 	<td>getEval</td>
 	<td>selblocks.LOG.info(&quot;---------------------------------------- foo3 ----------------------------------------&quot;)</td>
 	<td></td>
 </tr>
+<!--v v v-->
 <tr>
 	<td>try</td>
 	<td>foo3</td>
@@ -164,6 +156,7 @@
 	<td></td>
 	<td></td>
 </tr>
+<!--^ ^ ^ ^-->
 <!---- try/catch/finally-->
 <!---!- no matching catch block-->
 <tr>
@@ -171,11 +164,13 @@
 	<td>selblocks.LOG.info(&quot;---------------------------------------- foo4 ----------------------------------------&quot;)</td>
 	<td></td>
 </tr>
+<!--v v v-->
 <tr>
 	<td>try</td>
 	<td>foo4-trap</td>
 	<td></td>
 </tr>
+<!--v v v-->
 <tr>
 	<td>try</td>
 	<td>foo4</td>
@@ -188,17 +183,7 @@
 </tr>
 <tr>
 	<td>assertEval</td>
-	<td>true</td>
-	<td>true</td>
-</tr>
-<tr>
-	<td>assertEval</td>
 	<td>false</td>
-	<td>true</td>
-</tr>
-<tr>
-	<td>assertEval</td>
-	<td>true</td>
 	<td>true</td>
 </tr>
 <tr>
@@ -231,6 +216,7 @@
 	<td>foo4</td>
 	<td></td>
 </tr>
+<!--^ ^ ^ ^-->
 <tr>
 	<td>catch</td>
 	<td></td>
@@ -246,6 +232,7 @@
 	<td>foo4-trap</td>
 	<td></td>
 </tr>
+<!--^ ^ ^ ^-->
 <!---- try only-->
 <!---!- no handling for error-->
 <tr>
@@ -253,20 +240,17 @@
 	<td>selblocks.LOG.info(&quot;---------------------------------------- foo5 ----------------------------------------&quot;)</td>
 	<td></td>
 </tr>
+<!--v v v-->
 <tr>
 	<td>try</td>
 	<td>foo5-trap</td>
 	<td></td>
 </tr>
+<!--v v v-->
 <tr>
 	<td>try</td>
 	<td>foo5</td>
 	<td></td>
-</tr>
-<tr>
-	<td>assertEval</td>
-	<td>true</td>
-	<td>true</td>
 </tr>
 <tr>
 	<td>assertEval</td>
@@ -284,15 +268,11 @@
 	<td>true</td>
 </tr>
 <tr>
-	<td>assertEval</td>
-	<td>true</td>
-	<td>true</td>
-</tr>
-<tr>
 	<td>endTry</td>
 	<td>foo5</td>
 	<td></td>
 </tr>
+<!--^ ^ ^ ^-->
 <tr>
 	<td>catch</td>
 	<td></td>
@@ -308,6 +288,7 @@
 	<td>foo5-trap</td>
 	<td></td>
 </tr>
+<!--^ ^ ^ ^-->
 <tr>
 	<td>getEval</td>
 	<td>selblocks.LOG.warn(&quot;~~~~~ done ~~~~~~&quot;)</td>
