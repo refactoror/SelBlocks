@@ -509,7 +509,6 @@ function $X(xpath, contextNode, resultType) {
 
     if (!tryDef.catchIdx && !tryDef.finallyIdx) {
       $$.LOG.warn(fmtCurCmd() + " does not have a catch-block nor a finally-block, and therefore serves no purpose");
-      tryState.isActive = false;
       return; // continue into try-block without any special handling
     }
 
@@ -520,60 +519,69 @@ function $X(xpath, contextNode, resultType) {
     }
 
     $$.tryNestingLevel++;
-    tryState.isActive = true;
+    tryState.execPhase = "trying";
 
     if ($$.tryNestingLevel == 0) {
       // enable special command handling
       $$.interceptPush(editor.selDebugger.runner.IDETestLoop.prototype, "resume",
           $$.handleAsTryBlock, { handleError: handleCommandError });
     }
-    $$.LOG.warn("++ try nesting: " + $$.tryNestingLevel);
+    $$.LOG.debug("++ try nesting: " + $$.tryNestingLevel);
     // continue into try-block
   };
 
-  Selenium.prototype.doCatch = function() {
-    var tryState = transitionTryBlock();
-    if (!!tryState.finallyIdx)
-      tryState.execPhase = "prefinally";
-    // continue into catch-block
+  Selenium.prototype.doCatch = function()
+  {
+    var tryState = assertTryBlock();
+    if (tryState.execPhase != "catching") {
+      // skip over unused catch-block
+      var tryDef = blockDefs[tryState.idx];
+      if (!!tryDef.finallyIdx)
+        setNextCommand(tryDef.finallyIdx);
+      else
+        setNextCommand(tryDef.endTryIdx);
+    }
+    // else continue into catch-block
   };
   Selenium.prototype.doFinally = function() {
-    transitionTryBlock();
+    var tryState = assertTryBlock();
+    tryState.execPhase = "finallying"
     // continue into finally-block
   };
   Selenium.prototype.doEndTry = function(tryName)
   {
-    transitionTryBlock();
+    assertTryBlock();
     var tryState = activeBlockStack().pop();
-    if (tryState.isActive) {
+    if (tryState.execPhase) {
       $$.tryNestingLevel--;
-      tryDef = blockDefs[tryState.idx];
-      $$.LOG.warn("-- try nesting: " + $$.tryNestingLevel);
+      $$.LOG.debug("-- try nesting: " + $$.tryNestingLevel);
       if ($$.tryNestingLevel < 0) {
         // discontinue special command handling
         $$.interceptPop();
+        if ($$.bubblingMode) {
+          $$.LOG.warn("Error was not caught");
+          try { throw $$.bubblingError; }
+          finally { resetBubbling(); }
+        }
       }
       else if ($$.bubblingMode) {
         resumeErrorBubbling();
       }
+      resetBubbling();
     }
     // fall out of endTry
   };
 
-  function transitionTryBlock() {
+  function assertTryBlock() {
     assertRunning();
     assertActiveScope(blockDefs.cur().tryIdx);
-    var tryState = activeBlockStack().top();
-    if (!!tryState.isActive) {
-      tryState.execPhase = null;
-    }
-    return tryState;
+    return activeBlockStack().top();
   }
 
   // --------------------------------------------------------------------------------
 
   function resumeErrorBubbling() {
-    handleCommandError($$.bubblingError);
+    return handleCommandError($$.bubblingError);
   }
 
   function handleCommandError(err)
@@ -586,6 +594,8 @@ function $X(xpath, contextNode, resultType) {
         if (isMatchingError(err, catchDcl)) {
           // an expected kind of error has been caught
           $$.LOG.info("@" + (idxHere()+1) + ", error is being handled by catch block -> " + (tryDef.catchIdx+1));
+          tryState.execPhase = "catching"
+          resetBubbling();
           setNextCommand(tryDef.catchIdx);
           return true; // continue
         }
@@ -618,14 +628,19 @@ function $X(xpath, contextNode, resultType) {
 
   function bubbleToEnclosingTryBlock() {
     var tryState = activeBlockStack().unwindTo(Stack.isCatchOrFinallyBlock);
-    $$.LOG.warn("bubble -> " + fmtTry(tryState));
+    $$.LOG.debug("bubble -> " + fmtTry(tryState));
     while (!tryState && callStack.length > 1) {
-      $$.LOG.warn("forced return from call");
+      $$.LOG.debug("forced return from call");
       restoreVarState(callStack.pop().savedVars);
       tryState = activeBlockStack().unwindTo(Stack.isCatchOrFinallyBlock);
-      $$.LOG.warn("~ bubble -> " + fmtTry(tryState));
+      $$.LOG.debug("~ bubble -> " + fmtTry(tryState));
     }
     return tryState;
+  }
+
+  function resetBubbling() {
+    $$.bubblingMode = null;
+    $$.bubblingError = null;
   }
 
   function fmtTry(tryState)
@@ -636,7 +651,7 @@ function $X(xpath, contextNode, resultType) {
       (tryState.name ? "'" + tryState.name + "' " : "")
       + "@" + tryState.idx
       + ", " + tryState.execPhase + ".."
-      + " " + $$.tryNestingLevel + "T"
+      + " " + $$.tryNestingLevel
     );
   }
 
