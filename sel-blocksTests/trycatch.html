@@ -11,7 +11,7 @@
 <thead>
 <tr><td rowspan="1" colspan="3">trcatch</td></tr>
 </thead><tbody>
-<!---- nested catch-->
+<!--== nested catch-->
 <tr>
 	<td>getEval</td>
 	<td>selblocks.LOG.info(&quot;---------------------------------------- foo1 ----------------------------------------&quot;)</td>
@@ -86,7 +86,7 @@
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
-<!---- try/finally,no error-->
+<!--== try/finally,no error-->
 <tr>
 	<td>getEval</td>
 	<td>selblocks.LOG.info(&quot;---------------------------------------- foo2 ----------------------------------------&quot;)</td>
@@ -119,7 +119,7 @@
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
-<!---- try/catch ALL-->
+<!--== try/catch ALL-->
 <tr>
 	<td>getEval</td>
 	<td>selblocks.LOG.info(&quot;---------------------------------------- foo3 ----------------------------------------&quot;)</td>
@@ -157,7 +157,7 @@
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
-<!---- try/catch/finally-->
+<!--== try/catch/finally-->
 <!---!- no matching catch block-->
 <tr>
 	<td>getEval</td>
@@ -233,7 +233,7 @@
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
-<!---- try only-->
+<!--== try only-->
 <!---!- no handling for error-->
 <tr>
 	<td>getEval</td>
@@ -294,7 +294,7 @@
 	<td>selblocks.LOG.info(&quot;~~~~~ done ~~~~~~&quot;)</td>
 	<td></td>
 </tr>
-<!---- try but no error-->
+<!--== try but no error-->
 <tr>
 	<td>getEval</td>
 	<td>selblocks.LOG.info(&quot;---------------------------------------- foo3 ----------------------------------------&quot;)</td>
@@ -332,12 +332,7 @@
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
-<tr>
-	<td>exitTest</td>
-	<td></td>
-	<td></td>
-</tr>
-<!---- try without matching catch-->
+<!--=- try without matching catch-->
 <!--v v v-->
 <tr>
 	<td>try</td>
@@ -389,6 +384,101 @@
 	<td>assertEval</td>
 	<td>true</td>
 	<td>true</td>
+</tr>
+<!--== bubbling out of function calls-->
+<tr>
+	<td>getEval</td>
+	<td>selblocks.LOG.info(&quot;---------------------------------------- foo-bub ----------------------------------------&quot;)</td>
+	<td></td>
+</tr>
+<!--v v v-->
+<tr>
+	<td>try</td>
+	<td>foo-bub</td>
+	<td></td>
+</tr>
+<tr>
+	<td>call</td>
+	<td>doomed</td>
+	<td></td>
+</tr>
+<tr>
+	<td>catch</td>
+	<td>/'false' did not match 'true'/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>selblocks.LOG.info(&quot;CAUGHT foo-bub&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>false</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>true</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>selblocks.LOG.info(&quot;foo-bub finally outer&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td>foo-bub</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>function</td>
+	<td>doomed</td>
+	<td></td>
+</tr>
+<!--v v v-->
+<tr>
+	<td>try</td>
+	<td>foo-bub-inner</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>false</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>selblocks.LOG.info(&quot;foo-bub finally inner&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td>foo-bub-inner</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>selblocks.LOG.info(&quot;~~~~~ done ~~~~~~&quot;)</td>
+	<td></td>
 </tr>
 </tbody></table>
 </body>

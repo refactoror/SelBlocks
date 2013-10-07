@@ -162,6 +162,8 @@ function $X(xpath, contextNode, resultType) {
       }
     };
     stack.unwindTo = function(_testfunc) {
+      if (stack.length == 0)
+        return null;
       while (!_testfunc(stack.top()))
         stack.pop();
       return stack.top();
@@ -235,8 +237,7 @@ function $X(xpath, contextNode, resultType) {
     callStack = new Stack();
     callStack.push({ blockStack: new Stack() }); // top-level execution state
 
-    $$.tryNestingLevel = -1;
-    $$.bubblingMode = null;
+    $$.try = { nestingLevel: -1 };
 
     // customize flow control logic
     // TBD: this should be a tail intercept rather than brute force replace
@@ -515,18 +516,18 @@ function $X(xpath, contextNode, resultType) {
     // log an advisory about the active catch block
     if (!!tryDef.catchIdx) {
       var errDcl = testCase.commands[tryDef.catchIdx].target;
-      $$.LOG.debug(tryName + " catchable: " + (!!errDcl ? errDcl : "ANY"));
+      $$.LOG.info(tryName + " catchable: " + (!!errDcl ? errDcl : "ANY"));
     }
 
-    $$.tryNestingLevel++;
+    $$.try.nestingLevel++;
     tryState.execPhase = "trying";
 
-    if ($$.tryNestingLevel == 0) {
+    if ($$.try.nestingLevel == 0) {
       // enable special command handling
       $$.interceptPush(editor.selDebugger.runner.IDETestLoop.prototype, "resume",
           $$.handleAsTryBlock, { handleError: handleCommandError });
     }
-    $$.LOG.debug("++ try nesting: " + $$.tryNestingLevel);
+    $$.LOG.info("++ try nesting: " + $$.try.nestingLevel);
     // continue into try-block
   };
 
@@ -546,29 +547,33 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doFinally = function() {
     var tryState = assertTryBlock();
     tryState.execPhase = "finallying"
+    $$.LOG.info("beginning finally block");
     // continue into finally-block
   };
   Selenium.prototype.doEndTry = function(tryName)
   {
     assertTryBlock();
     var tryState = activeBlockStack().pop();
-    if (tryState.execPhase) {
-      $$.tryNestingLevel--;
-      $$.LOG.debug("-- try nesting: " + $$.tryNestingLevel);
-      if ($$.tryNestingLevel < 0) {
-        // discontinue special command handling
+    if (tryState.execPhase) { // ie, it has a catch and/or a finally block
+      $$.try.nestingLevel--;
+      $$.LOG.info("-- try nesting: " + $$.try.nestingLevel);
+      if ($$.try.nestingLevel < 0) {
+        // discontinue try-block handling
         $$.interceptPop();
-        if ($$.bubblingMode) {
-          $$.LOG.warn("Error was not caught");
-          try { throw $$.bubblingError; }
-          finally { resetBubbling(); }
+      }
+      if ($$.try.bubbling) {
+        if ($$.try.nestingLevel > -1) {
+          resumeErrorBubbling();
+        }
+        else {
+          $$.LOG.error("Error was not handled by try/catch: " + $$.try.bubbling.error.message);
+          try { throw $$.try.bubbling.error; }
+          finally { $$.try.bubbling = null; }
         }
       }
-      else if ($$.bubblingMode) {
-        resumeErrorBubbling();
-      }
-      resetBubbling();
+      else $$.LOG.info("no error to bubble");
     }
+    $$.LOG.info("end of try section");
     // fall out of endTry
   };
 
@@ -581,29 +586,32 @@ function $X(xpath, contextNode, resultType) {
   // --------------------------------------------------------------------------------
 
   function resumeErrorBubbling() {
-    return handleCommandError($$.bubblingError);
+    $$.LOG.info("error bubbling continuing...");
+    return handleCommandError($$.try.bubbling.error);
   }
 
   function handleCommandError(err)
   {
     var tryState = bubbleToEnclosingTryBlock();
     while (!!tryState) {
+      $$.LOG.info("error encountered while: " + tryState.execPhase);
       var tryDef = blockDefs[tryState.idx];
       if (!!tryDef.catchIdx) {
         var catchDcl = testCase.commands[tryDef.catchIdx].target;
         if (isMatchingError(err, catchDcl)) {
           // an expected kind of error has been caught
-          $$.LOG.info("@" + (idxHere()+1) + ", error is being handled by catch block -> " + (tryDef.catchIdx+1));
+          $$.LOG.info("@" + (idxHere()+1) + ", error has been caught :: " + catchDcl);
           tryState.execPhase = "catching"
-          resetBubbling();
+          $$.try.bubbling = null;
           setNextCommand(tryDef.catchIdx);
           return true; // continue
         }
       }
+      // error not caught .. instigate bubbling
+      $$.LOG.info("error not caught, bubbling the error: " + err.message);
+      $$.try.bubbling = { mode: "error", error: err };
       if (!!tryDef.finallyIdx) {
-        $$.LOG.debug("@" + (tryDef.bubblingErrorIdx+1) + " error is suspended while finally block runs");
-        $$.bubblingMode = "error";
-        $$.bubblingError = err;
+        $$.LOG.warn("Error suspended while finally block runs :: " + $$.try.bubbling.error.message);
         setNextCommand(tryDef.finallyIdx);
         return true; // continue
       }
@@ -628,19 +636,13 @@ function $X(xpath, contextNode, resultType) {
 
   function bubbleToEnclosingTryBlock() {
     var tryState = activeBlockStack().unwindTo(Stack.isCatchOrFinallyBlock);
-    $$.LOG.debug("bubble -> " + fmtTry(tryState));
-    while (!tryState && callStack.length > 1) {
-      $$.LOG.debug("forced return from call");
-      restoreVarState(callStack.pop().savedVars);
+    while (!tryState && $$.try.nestingLevel > -1 && callStack.length > 1) {
+      var callFrame = callStack.pop();
+      $$.LOG.info("function '" + callFrame.name + "' aborting due to error");
+      restoreVarState(callFrame.savedVars);
       tryState = activeBlockStack().unwindTo(Stack.isCatchOrFinallyBlock);
-      $$.LOG.debug("~ bubble -> " + fmtTry(tryState));
     }
     return tryState;
-  }
-
-  function resetBubbling() {
-    $$.bubblingMode = null;
-    $$.bubblingError = null;
   }
 
   function fmtTry(tryState)
@@ -651,7 +653,7 @@ function $X(xpath, contextNode, resultType) {
       (tryState.name ? "'" + tryState.name + "' " : "")
       + "@" + tryState.idx
       + ", " + tryState.execPhase + ".."
-      + " " + $$.tryNestingLevel
+      + " " + $$.try.nestingLevel
     );
   }
 
