@@ -237,7 +237,7 @@ function $X(xpath, contextNode, resultType) {
     callStack = new Stack();
     callStack.push({ blockStack: new Stack() }); // top-level execution state
 
-    $$.try = { nestingLevel: -1 };
+    $$.tcf = { nestingLevel: -1 };
 
     // customize flow control logic
     // TBD: this should be a tail intercept rather than brute force replace
@@ -519,15 +519,15 @@ function $X(xpath, contextNode, resultType) {
       $$.LOG.info(tryName + " catchable: " + (!!errDcl ? errDcl : "ANY"));
     }
 
-    $$.try.nestingLevel++;
+    $$.tcf.nestingLevel++;
     tryState.execPhase = "trying";
 
-    if ($$.try.nestingLevel == 0) {
+    if ($$.tcf.nestingLevel == 0) {
       // enable special command handling
       $$.interceptPush(editor.selDebugger.runner.IDETestLoop.prototype, "resume",
           $$.handleAsTryBlock, { handleError: handleCommandError });
     }
-    $$.LOG.info("++ try nesting: " + $$.try.nestingLevel);
+    $$.LOG.info("++ try nesting: " + $$.tcf.nestingLevel);
     // continue into try-block
   };
 
@@ -555,20 +555,20 @@ function $X(xpath, contextNode, resultType) {
     assertTryBlock();
     var tryState = activeBlockStack().pop();
     if (tryState.execPhase) { // ie, it has a catch and/or a finally block
-      $$.try.nestingLevel--;
-      $$.LOG.info("-- try nesting: " + $$.try.nestingLevel);
-      if ($$.try.nestingLevel < 0) {
+      $$.tcf.nestingLevel--;
+      $$.LOG.info("-- try nesting: " + $$.tcf.nestingLevel);
+      if ($$.tcf.nestingLevel < 0) {
         // discontinue try-block handling
         $$.interceptPop();
       }
-      if ($$.try.bubbling) {
-        if ($$.try.nestingLevel > -1) {
+      if ($$.tcf.bubbling) {
+        if ($$.tcf.nestingLevel > -1) {
           resumeErrorBubbling();
         }
         else {
-          $$.LOG.error("Error was not handled by try/catch: " + $$.try.bubbling.error.message);
-          try { throw $$.try.bubbling.error; }
-          finally { $$.try.bubbling = null; }
+          $$.LOG.error("Error was not handled by try/catch: " + $$.tcf.bubbling.error.message);
+          try { throw $$.tcf.bubbling.error; }
+          finally { $$.tcf.bubbling = null; }
         }
       }
       else $$.LOG.info("no error to bubble");
@@ -587,7 +587,7 @@ function $X(xpath, contextNode, resultType) {
 
   function resumeErrorBubbling() {
     $$.LOG.info("error bubbling continuing...");
-    return handleCommandError($$.try.bubbling.error);
+    return handleCommandError($$.tcf.bubbling.error);
   }
 
   function handleCommandError(err)
@@ -602,16 +602,16 @@ function $X(xpath, contextNode, resultType) {
           // an expected kind of error has been caught
           $$.LOG.info("@" + (idxHere()+1) + ", error has been caught :: " + catchDcl);
           tryState.execPhase = "catching"
-          $$.try.bubbling = null;
+          $$.tcf.bubbling = null;
           setNextCommand(tryDef.catchIdx);
           return true; // continue
         }
       }
       // error not caught .. instigate bubbling
       $$.LOG.info("error not caught, bubbling the error: " + err.message);
-      $$.try.bubbling = { mode: "error", error: err };
+      $$.tcf.bubbling = { mode: "error", error: err };
       if (!!tryDef.finallyIdx) {
-        $$.LOG.warn("Error suspended while finally block runs :: " + $$.try.bubbling.error.message);
+        $$.LOG.warn("Error suspended while finally block runs :: " + $$.tcf.bubbling.error.message);
         setNextCommand(tryDef.finallyIdx);
         return true; // continue
       }
@@ -636,7 +636,7 @@ function $X(xpath, contextNode, resultType) {
 
   function bubbleToEnclosingTryBlock() {
     var tryState = activeBlockStack().unwindTo(Stack.isCatchOrFinallyBlock);
-    while (!tryState && $$.try.nestingLevel > -1 && callStack.length > 1) {
+    while (!tryState && $$.tcf.nestingLevel > -1 && callStack.length > 1) {
       var callFrame = callStack.pop();
       $$.LOG.info("function '" + callFrame.name + "' aborting due to error");
       restoreVarState(callFrame.savedVars);
@@ -653,7 +653,7 @@ function $X(xpath, contextNode, resultType) {
       (tryState.name ? "'" + tryState.name + "' " : "")
       + "@" + tryState.idx
       + ", " + tryState.execPhase + ".."
-      + " " + $$.try.nestingLevel
+      + " " + $$.tcf.nestingLevel
     );
   }
 
