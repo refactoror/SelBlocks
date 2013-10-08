@@ -559,7 +559,8 @@ function $X(xpath, contextNode, resultType) {
       }
       if ($$.tcf.bubbling) {
         if ($$.tcf.nestingLevel > -1) {
-          resumeErrorBubbling();
+          $$.LOG.info("error-bubbling continuing...");
+          handleCommandError($$.tcf.bubbling.error);
         }
         else {
           $$.LOG.error("Error was not handled by try/catch: " + $$.tcf.bubbling.error.message);
@@ -580,11 +581,6 @@ function $X(xpath, contextNode, resultType) {
   }
 
   // --------------------------------------------------------------------------------
-
-  function resumeErrorBubbling() {
-    $$.LOG.info("error-bubbling continuing...");
-    return handleCommandError($$.tcf.bubbling.error);
-  }
 
   function handleCommandError(err)
   {
