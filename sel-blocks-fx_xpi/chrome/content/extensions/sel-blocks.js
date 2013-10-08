@@ -175,10 +175,6 @@ function $X(xpath, contextNode, resultType) {
   }
 
   // Determine if the given stack frame is one of the given block kinds
-  Stack.hasCatchOrFinallyBlock = function(stackFrame) {
-    var blockDef = blockDefs[stackFrame.idx];
-    return (blockDef.nature == "try" && (!!blockDef.catchIdx || !!blockDef.finallyIdx));
-  };
   Stack.isLoopBlock = function(stackFrame) {
     return (blockDefs[stackFrame.idx].nature == "loop");
   };
@@ -618,7 +614,7 @@ function $X(xpath, contextNode, resultType) {
       tryState = bubbleToEnclosingTryBlock();
     }
     // no matching catch and no finally to process
-    return false; // stop the test
+    return false; // halt the test
 
     //- error message matcher ----------
     function isMatchingError(e, errDcl) {
@@ -635,18 +631,21 @@ function $X(xpath, contextNode, resultType) {
   }
 
   function bubbleToEnclosingTryBlock() {
-    var tryState = unwindToTcf();
+    var tryState = unwindToCatchOrFinally();
     while (!tryState && $$.tcf.nestingLevel > -1 && callStack.length > 1) {
       var callFrame = callStack.pop();
       $$.LOG.info("function '" + callFrame.name + "' aborting due to error");
       restoreVarState(callFrame.savedVars);
-      tryState = unwindToTcf();
+      tryState = unwindToCatchOrFinally();
     }
     return tryState;
   }
 
-  function unwindToTcf() {
-    var tryState = activeBlockStack().unwindTo(Stack.hasCatchOrFinallyBlock);
+  function unwindToCatchOrFinally() {
+    var tryState = activeBlockStack().unwindTo(function(stackFrame) {
+      var blockDef = blockDefs[stackFrame.idx];
+      return (blockDef.nature == "try" && (!!blockDef.catchIdx || !!blockDef.finallyIdx));
+    });
     if (!!tryState)
       $$.LOG.info("unwound to: " + fmtTry(tryState));
     return tryState;

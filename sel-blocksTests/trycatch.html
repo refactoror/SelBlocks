@@ -332,59 +332,6 @@
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
-<!--=- try without matching catch-->
-<!--v v v-->
-<tr>
-	<td>try</td>
-	<td>foo7</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertEval</td>
-	<td>true</td>
-	<td>true</td>
-</tr>
-<tr>
-	<td>assertEval</td>
-	<td>false</td>
-	<td>true</td>
-</tr>
-<tr>
-	<td>assertEval</td>
-	<td>true</td>
-	<td>true</td>
-</tr>
-<tr>
-	<td>catch</td>
-	<td>/'false' did NOT match 'true'/</td>
-	<td></td>
-</tr>
-<tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;CAUGHT foo1&quot;)</td>
-	<td></td>
-</tr>
-<tr>
-	<td>finally</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;ALWAYS foo1&quot;)</td>
-	<td></td>
-</tr>
-<tr>
-	<td>endTry</td>
-	<td>foo7</td>
-	<td></td>
-</tr>
-<!--^ ^ ^ ^-->
-<tr>
-	<td>assertEval</td>
-	<td>true</td>
-	<td>true</td>
-</tr>
 <!--== bubbling out of function calls-->
 <tr>
 	<td>getEval</td>
@@ -411,11 +358,6 @@
 	<td>getEval</td>
 	<td>selblocks.LOG.info(&quot;CAUGHT foo-bub&quot;)</td>
 	<td></td>
-</tr>
-<tr>
-	<td>assertEval</td>
-	<td>true</td>
-	<td>false</td>
 </tr>
 <tr>
 	<td>assertEval</td>
@@ -474,6 +416,64 @@
 	<td>endFunction</td>
 	<td></td>
 	<td></td>
+</tr>
+<tr>
+	<td>exitTest</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--=- try without matching catch-->
+<!--v v v-->
+<tr>
+	<td>try</td>
+	<td>foo7</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>true</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>false</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>true</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>catch</td>
+	<td>/'false' did NOT match 'true'/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>selblocks.LOG.info(&quot;CAUGHT foo1&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>selblocks.LOG.info(&quot;ALWAYS foo1&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td>foo7</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>true</td>
+	<td>true</td>
 </tr>
 <tr>
 	<td>getEval</td>
