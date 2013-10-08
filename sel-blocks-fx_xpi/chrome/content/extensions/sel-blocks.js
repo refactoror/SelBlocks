@@ -175,7 +175,7 @@ function $X(xpath, contextNode, resultType) {
   }
 
   // Determine if the given stack frame is one of the given block kinds
-  Stack.isCatchOrFinallyBlock = function(stackFrame) {
+  Stack.hasCatchOrFinallyBlock = function(stackFrame) {
     var blockDef = blockDefs[stackFrame.idx];
     return (blockDef.nature == "try" && (!!blockDef.catchIdx || !!blockDef.finallyIdx));
   };
@@ -547,7 +547,7 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doFinally = function() {
     var tryState = assertTryBlock();
     tryState.execPhase = "finallying"
-    $$.LOG.info("beginning finally block");
+    $$.LOG.info("entering finally block");
     // continue into finally-block
   };
   Selenium.prototype.doEndTry = function(tryName)
@@ -571,7 +571,7 @@ function $X(xpath, contextNode, resultType) {
           finally { $$.tcf.bubbling = null; }
         }
       }
-      else $$.LOG.info("no error to bubble");
+      else $$.LOG.info("no error to bubble up");
     }
     $$.LOG.info("end of try section");
     // fall out of endTry
@@ -586,7 +586,7 @@ function $X(xpath, contextNode, resultType) {
   // --------------------------------------------------------------------------------
 
   function resumeErrorBubbling() {
-    $$.LOG.info("error bubbling continuing...");
+    $$.LOG.info("error-bubbling continuing...");
     return handleCommandError($$.tcf.bubbling.error);
   }
 
@@ -600,7 +600,7 @@ function $X(xpath, contextNode, resultType) {
         var catchDcl = testCase.commands[tryDef.catchIdx].target;
         if (isMatchingError(err, catchDcl)) {
           // an expected kind of error has been caught
-          $$.LOG.info("@" + (idxHere()+1) + ", error has been caught :: " + catchDcl);
+          $$.LOG.info("@" + (idxHere()+1) + ", error has been caught" + fmtCatching(tryState));
           tryState.execPhase = "catching"
           $$.tcf.bubbling = null;
           setNextCommand(tryDef.catchIdx);
@@ -609,9 +609,9 @@ function $X(xpath, contextNode, resultType) {
       }
       // error not caught .. instigate bubbling
       $$.LOG.info("error not caught, bubbling the error: " + err.message);
-      $$.tcf.bubbling = { mode: "error", error: err };
+      $$.tcf.bubbling = { mode: "error", error: err, srcIdx: idxHere() };
       if (!!tryDef.finallyIdx) {
-        $$.LOG.warn("Error suspended while finally block runs :: " + $$.tcf.bubbling.error.message);
+        $$.LOG.warn("Bubbling suspended while finally block runs :: " + $$.tcf.bubbling.error.message);
         setNextCommand(tryDef.finallyIdx);
         return true; // continue
       }
@@ -635,26 +635,44 @@ function $X(xpath, contextNode, resultType) {
   }
 
   function bubbleToEnclosingTryBlock() {
-    var tryState = activeBlockStack().unwindTo(Stack.isCatchOrFinallyBlock);
+    var tryState = unwindToTcf();
     while (!tryState && $$.tcf.nestingLevel > -1 && callStack.length > 1) {
       var callFrame = callStack.pop();
       $$.LOG.info("function '" + callFrame.name + "' aborting due to error");
       restoreVarState(callFrame.savedVars);
-      tryState = activeBlockStack().unwindTo(Stack.isCatchOrFinallyBlock);
+      tryState = unwindToTcf();
     }
+    return tryState;
+  }
+
+  function unwindToTcf() {
+    var tryState = activeBlockStack().unwindTo(Stack.hasCatchOrFinallyBlock);
+    if (!!tryState)
+      $$.LOG.info("unwound to: " + fmtTry(tryState));
     return tryState;
   }
 
   function fmtTry(tryState)
   {
-    if (!tryState)
-      return "null";
+    var tryDef = blockDefs[tryState.idx];
     return (
-      (tryState.name ? "'" + tryState.name + "' " : "")
-      + "@" + tryState.idx
+      (tryDef.name ? "'" + tryDef.name + "' " : "")
+      + "@" + (tryState.idx+1)
       + ", " + tryState.execPhase + ".."
-      + " " + $$.tcf.nestingLevel
+      + " " + $$.tcf.nestingLevel + "n"
     );
+  }
+
+  function fmtCatching(tryState)
+  {
+    if (!tryState)
+      return "";
+    var bbl = "";
+    if ($$.tcf.bubbling)
+      bbl = "@" + ($$.tcf.bubbling.srcIdx+1) + " ";
+    var tryDef = blockDefs[tryState.idx];
+    var catchDcl = testCase.commands[tryDef.catchIdx].target;
+    return " :: " + bbl + catchDcl;
   }
 
   // ================================================================================
