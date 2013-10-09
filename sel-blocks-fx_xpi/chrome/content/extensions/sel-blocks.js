@@ -282,6 +282,8 @@ function $X(xpath, contextNode, resultType) {
             assertBlockIsPending("if", i, ", is not valid outside of an if/endIf block");
             var ifDef = lexStack.top();
             assertMatching(ifDef.cmdName, "if", i, ifDef.idx);
+            if (blockDefs[ifDef.idx].elseIdx)
+              notifyFatal(fmtCmdRef(i) + " There can only be one else associated with a given if.");
             blockDefs.init(i, { ifIdx: ifDef.idx });       // else -> if
             blockDefs[ifDef.idx].elseIdx = i;              // if -> else
             break;
@@ -305,8 +307,10 @@ function $X(xpath, contextNode, resultType) {
             assertBlockIsPending("try", i, ", is not valid without a try block");
             var tryDef = lexStack.top();
             assertMatching(tryDef.cmdName, "try", i, tryDef.idx);
+            if (blockDefs[tryDef.idx].catchIdx)
+              notifyFatal(fmtCmdRef(i) + " There can only be one catch-block associated with a given try.");
             if (blockDefs[tryDef.idx].finallyIdx)
-              notifyFatal(fmtCmdRef(i) + " Sorry, a finally block has to be the last block in a try section.");
+              notifyFatal(fmtCmdRef(i) + " A finally-block has to be the last block in a try section.");
             blockDefs.init(i, { tryIdx: tryDef.idx });     // catch -> try
             blockDefs[tryDef.idx].catchIdx = i;            // try -> catch
             break;
@@ -315,6 +319,8 @@ function $X(xpath, contextNode, resultType) {
             assertBlockIsPending("try", i);
             var tryDef = lexStack.top();
             assertMatching(tryDef.cmdName, "try", i, tryDef.idx);
+            if (blockDefs[tryDef.idx].finallyIdx)
+              notifyFatal(fmtCmdRef(i) + " There can only be one finally-block associated with a given try.");
             blockDefs.init(i, { tryIdx: tryDef.idx });     // finally -> try
             blockDefs[tryDef.idx].finallyIdx = i;          // try -> finally
             if (tryDef.catchIdx)
