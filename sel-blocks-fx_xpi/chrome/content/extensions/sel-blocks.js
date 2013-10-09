@@ -305,6 +305,8 @@ function $X(xpath, contextNode, resultType) {
             assertBlockIsPending("try", i, ", is not valid without a try block");
             var tryDef = lexStack.top();
             assertMatching(tryDef.cmdName, "try", i, tryDef.idx);
+            if (blockDefs[tryDef.idx].finallyIdx)
+              notifyFatal(fmtCmdRef(i) + " Sorry, a finally block has to be the last block in a try section.");
             blockDefs.init(i, { tryIdx: tryDef.idx });     // catch -> try
             blockDefs[tryDef.idx].catchIdx = i;            // try -> catch
             break;
@@ -542,7 +544,7 @@ function $X(xpath, contextNode, resultType) {
   };
   Selenium.prototype.doFinally = function() {
     var tryState = assertTryBlock();
-    tryState.execPhase = "finallying"
+    tryState.execPhase = "finallying";
     $$.LOG.info("entering finally block");
     // continue into finally-block
   };
@@ -593,7 +595,7 @@ function $X(xpath, contextNode, resultType) {
         if (isMatchingError(err, catchDcl)) {
           // an expected kind of error has been caught
           $$.LOG.info("@" + (idxHere()+1) + ", error has been caught" + fmtCatching(tryState));
-          tryState.execPhase = "catching"
+          tryState.execPhase = "catching";
           $$.tcf.bubbling = null;
           setNextCommand(tryDef.catchIdx);
           return true; // continue
