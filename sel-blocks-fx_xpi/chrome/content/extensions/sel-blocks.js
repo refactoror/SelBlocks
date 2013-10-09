@@ -518,9 +518,9 @@ function $X(xpath, contextNode, resultType) {
     }
 
     // log an advisory about the active catch block
-    if (!!tryDef.catchIdx) {
+    if (tryDef.catchIdx) {
       var errDcl = testCase.commands[tryDef.catchIdx].target;
-      $$.LOG.info(tryName + " catchable: " + (!!errDcl ? errDcl : "ANY"));
+      $$.LOG.info(tryName + " catchable: " + (errDcl ? errDcl : "ANY"));
     }
 
     $$.tcf.nestingLevel++;
@@ -541,7 +541,7 @@ function $X(xpath, contextNode, resultType) {
     if (tryState.execPhase != "catching") {
       // skip over unused catch-block
       var tryDef = blockDefs[tryState.idx];
-      if (!!tryDef.finallyIdx)
+      if (tryDef.finallyIdx)
         setNextCommand(tryDef.finallyIdx);
       else
         setNextCommand(tryDef.endTryIdx);
@@ -593,10 +593,10 @@ function $X(xpath, contextNode, resultType) {
   function handleCommandError(err)
   {
     var tryState = bubbleToEnclosingTryBlock();
-    while (!!tryState) {
+    while (tryState) {
       $$.LOG.info("error encountered while: " + tryState.execPhase);
       var tryDef = blockDefs[tryState.idx];
-      if (!!tryDef.catchIdx) {
+      if (tryDef.catchIdx) {
         var catchDcl = testCase.commands[tryDef.catchIdx].target;
         if (isMatchingError(err, catchDcl)) {
           // an expected kind of error has been caught
@@ -610,7 +610,7 @@ function $X(xpath, contextNode, resultType) {
       // error not caught .. instigate bubbling
       $$.LOG.info("error not caught, bubbling the error: " + err.message);
       $$.tcf.bubbling = { mode: "error", error: err, srcIdx: idxHere() };
-      if (!!tryDef.finallyIdx) {
+      if (tryDef.finallyIdx) {
         $$.LOG.warn("Bubbling suspended while finally block runs :: " + $$.tcf.bubbling.error.message);
         setNextCommand(tryDef.finallyIdx);
         return true; // continue
@@ -628,7 +628,7 @@ function $X(xpath, contextNode, resultType) {
       var errExpr = evalWithVars(errDcl);
       var errMsg = e.message;
       if (errExpr instanceof RegExp) {
-        return (!!errMsg.match(errExpr));
+        return (errMsg.match(errExpr));
       }
       return (errMsg.indexOf(errExpr) != -1);
     }
@@ -648,9 +648,9 @@ function $X(xpath, contextNode, resultType) {
   function unwindToCatchOrFinally() {
     var tryState = activeBlockStack().unwindTo(function(stackFrame) {
       var blockDef = blockDefs[stackFrame.idx];
-      return (blockDef.nature == "try" && (!!blockDef.catchIdx || !!blockDef.finallyIdx));
+      return (blockDef.nature == "try" && (blockDef.catchIdx || blockDef.finallyIdx));
     });
-    if (!!tryState)
+    if (tryState)
       $$.LOG.info("unwound to: " + fmtTry(tryState));
     return tryState;
   }
