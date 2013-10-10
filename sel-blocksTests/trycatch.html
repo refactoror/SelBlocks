@@ -347,7 +347,7 @@
 <tr>
 	<td>call</td>
 	<td>doomed</td>
-	<td></td>
+	<td>n = 0</td>
 </tr>
 <tr>
 	<td>catch</td>
@@ -392,9 +392,34 @@
 	<td></td>
 </tr>
 <tr>
+	<td>getEval</td>
+	<td>selblocks.LOG.info(${n} + &quot;) doomed&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>if</td>
+	<td>n &gt; 2</td>
+	<td></td>
+</tr>
+<tr>
 	<td>assertEval</td>
 	<td>false</td>
 	<td>true</td>
+</tr>
+<tr>
+	<td>else</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>call</td>
+	<td>doomed</td>
+	<td>n = n+1</td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
+	<td></td>
 </tr>
 <tr>
 	<td>finally</td>
@@ -403,7 +428,7 @@
 </tr>
 <tr>
 	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;foo-bub finally inner&quot;)</td>
+	<td>selblocks.LOG.info(${n} + &quot;) doomed finally&quot;)</td>
 	<td></td>
 </tr>
 <tr>

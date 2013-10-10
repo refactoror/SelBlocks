@@ -596,11 +596,12 @@ function $X(xpath, contextNode, resultType) {
     while (tryState) {
       $$.LOG.info("error encountered while: " + tryState.execPhase);
       var tryDef = blockDefs[tryState.idx];
-      if (tryDef.catchIdx) {
+      if (hasUnspentCatchBlock(tryState)) {
         var catchDcl = testCase.commands[tryDef.catchIdx].target;
         if (isMatchingError(err, catchDcl)) {
           // an expected kind of error has been caught
           $$.LOG.info("@" + (idxHere()+1) + ", error has been caught" + fmtCatching(tryState));
+          tryState.hasCaught = true;
           tryState.execPhase = "catching";
           $$.tcf.bubbling = null;
           setNextCommand(tryDef.catchIdx);
@@ -610,8 +611,9 @@ function $X(xpath, contextNode, resultType) {
       // error not caught .. instigate bubbling
       $$.LOG.info("error not caught, bubbling the error: " + err.message);
       $$.tcf.bubbling = { mode: "error", error: err, srcIdx: idxHere() };
-      if (tryDef.finallyIdx) {
+      if (hasUnspentFinallyBlock(tryState)) {
         $$.LOG.warn("Bubbling suspended while finally block runs :: " + $$.tcf.bubbling.error.message);
+        tryState.hasFinally = true;
         setNextCommand(tryDef.finallyIdx);
         return true; // continue
       }
@@ -635,6 +637,8 @@ function $X(xpath, contextNode, resultType) {
   }
 
   function bubbleToEnclosingTryBlock() {
+    if ($$.tcf.nestingLevel < 0)
+      $$.LOG.error("bubbleToEnclosingTryBlock() called outside of any try nesting");
     var tryState = unwindToCatchOrFinally();
     while (!tryState && $$.tcf.nestingLevel > -1 && callStack.length > 1) {
       var callFrame = callStack.pop();
@@ -647,12 +651,20 @@ function $X(xpath, contextNode, resultType) {
 
   function unwindToCatchOrFinally() {
     var tryState = activeBlockStack().unwindTo(function(stackFrame) {
-      var blockDef = blockDefs[stackFrame.idx];
-      return (blockDef.nature == "try" && (blockDef.catchIdx || blockDef.finallyIdx));
+      return (blockDefs[stackFrame.idx].nature == "try"
+        && (hasUnspentCatchBlock(stackFrame) || hasUnspentFinallyBlock(stackFrame))
+      );
     });
     if (tryState)
       $$.LOG.info("unwound to: " + fmtTry(tryState));
     return tryState;
+  }
+
+  function hasUnspentCatchBlock(tryState) {
+    return (blockDefs[tryState.idx].catchIdx   && !tryState.hasCaught);
+  }
+  function hasUnspentFinallyBlock(tryState) {
+    return (blockDefs[tryState.idx].finallyIdx && !tryState.hasFinally);
   }
 
   function fmtTry(tryState)
