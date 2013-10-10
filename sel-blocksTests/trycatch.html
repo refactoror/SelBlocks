@@ -14,7 +14,7 @@
 <!--== nested catch-->
 <tr>
 	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;---------------------------------------- foo1 ----------------------------------------&quot;)</td>
+	<td>selblocks.LOG.info(&quot;---------- foo1 ----------&quot;)</td>
 	<td></td>
 </tr>
 <!--v v v-->
@@ -89,7 +89,7 @@
 <!--== try/finally,no error-->
 <tr>
 	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;---------------------------------------- foo2 ----------------------------------------&quot;)</td>
+	<td>selblocks.LOG.info(&quot;---------- foo2 ----------&quot;)</td>
 	<td></td>
 </tr>
 <!--v v v-->
@@ -122,7 +122,7 @@
 <!--== try/catch ALL-->
 <tr>
 	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;---------------------------------------- foo3 ----------------------------------------&quot;)</td>
+	<td>selblocks.LOG.info(&quot;---------- foo3 ----------&quot;)</td>
 	<td></td>
 </tr>
 <!--v v v-->
@@ -161,7 +161,7 @@
 <!---!- no matching catch block-->
 <tr>
 	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;---------------------------------------- foo4 ----------------------------------------&quot;)</td>
+	<td>selblocks.LOG.info(&quot;---------- foo4 ----------&quot;)</td>
 	<td></td>
 </tr>
 <!--v v v-->
@@ -237,7 +237,7 @@
 <!---!- no handling for error-->
 <tr>
 	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;---------------------------------------- foo5 ----------------------------------------&quot;)</td>
+	<td>selblocks.LOG.info(&quot;---------- foo5 ----------&quot;)</td>
 	<td></td>
 </tr>
 <!--v v v-->
@@ -294,10 +294,10 @@
 	<td>selblocks.LOG.info(&quot;~~~~~ done ~~~~~~&quot;)</td>
 	<td></td>
 </tr>
-<!--== try but no error-->
+<!--== try/catch but no error-->
 <tr>
 	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;---------------------------------------- foo3 ----------------------------------------&quot;)</td>
+	<td>selblocks.LOG.info(&quot;---------- foo3 ----------&quot;)</td>
 	<td></td>
 </tr>
 <!--v v v-->
@@ -335,7 +335,7 @@
 <!--== bubbling out of function calls-->
 <tr>
 	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;---------------------------------------- foo-bub ----------------------------------------&quot;)</td>
+	<td>selblocks.LOG.info(&quot;---------- foo-bub ----------&quot;)</td>
 	<td></td>
 </tr>
 <!--v v v-->
@@ -424,6 +424,11 @@
 </tr>
 <!--=- try without matching catch-->
 <!--v v v-->
+<tr>
+	<td>getEval</td>
+	<td>selblocks.LOG.info(&quot;---------- foo7 ----------&quot;)</td>
+	<td></td>
+</tr>
 <tr>
 	<td>try</td>
 	<td>foo7</td>
