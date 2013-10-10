@@ -222,7 +222,7 @@ function $X(xpath, contextNode, resultType) {
   //  * before a testcase is run
   //  * before each testcase runs in a running testsuite
   // TBD: skip during single command execution
-  $$.interceptAfter(Selenium.prototype, "reset", function()
+  $$.fn.interceptAfter(Selenium.prototype, "reset", function()
   {
     $$.LOG.trace("In tail intercept :: Selenium.reset()");
     try {
@@ -238,7 +238,7 @@ function $X(xpath, contextNode, resultType) {
     // customize flow control logic
     // TBD: this should be a tail intercept rather than brute force replace
     $$.LOG.debug("Configuring tail intercept: testCase.debugContext.nextCommand()");
-    $$.interceptReplace(testCase.debugContext, "nextCommand", nextCommand);
+    $$.fn.interceptReplace(testCase.debugContext, "nextCommand", nextCommand);
   });
 
   // get the blockStack for the currently active callStack
@@ -528,7 +528,7 @@ function $X(xpath, contextNode, resultType) {
 
     if ($$.tcf.nestingLevel == 0) {
       // enable special command handling
-      $$.interceptPush(editor.selDebugger.runner.IDETestLoop.prototype, "resume",
+      $$.fn.interceptPush(editor.selDebugger.runner.IDETestLoop.prototype, "resume",
           $$.handleAsTryBlock, { handleError: handleCommandError });
     }
     $$.LOG.info("++ try nesting: " + $$.tcf.nestingLevel);
@@ -563,7 +563,7 @@ function $X(xpath, contextNode, resultType) {
       $$.LOG.info("-- try nesting: " + $$.tcf.nestingLevel);
       if ($$.tcf.nestingLevel < 0) {
         // discontinue try-block handling
-        $$.interceptPop();
+        $$.fn.interceptPop();
       }
       if ($$.tcf.bubbling) {
         if ($$.tcf.nestingLevel > -1) {
@@ -1005,7 +1005,7 @@ function $X(xpath, contextNode, resultType) {
   // ================================================================================
   Selenium.prototype.doExitTest = function() {
     // intercept command processing and simply stop test execution instead of executing the next command
-    $$.interceptOnce(editor.selDebugger.runner.IDETestLoop.prototype, "resume", $$.handleAsExitTest);
+    $$.fn.interceptOnce(editor.selDebugger.runner.IDETestLoop.prototype, "resume", $$.handleAsExitTest);
   };
 
 

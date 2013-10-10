@@ -10,7 +10,7 @@
       this.continueTestWhenConditionIsTrue();
     } catch (e) {
       var isHandled = this._handleCommandError(e); // causes command to be marked in red
-      var handlerAttrs = $$.getInterceptAttrs();
+      var handlerAttrs = $$.fn.getInterceptAttrs();
       var isCaught = handlerAttrs.handleError(e);
       if (isCaught) {
         this.continueTest();
