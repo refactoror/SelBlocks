@@ -458,17 +458,15 @@ function $X(xpath, contextNode, resultType) {
     for (var i = 0; i < RANGES.length; i++) {
       var rng = RANGES[i];
       if (rng.ifr <= idx && idx < rng.ito) {
-        return cmdRange = new CmdRange(rng.ifr, rng.ito, rng.desc + "-block", rng.dfr, rng.dto);
+        return cmdRange = new CmdRange(rng.ifr, rng.ito, rng.desc + "-block");
       }
     }
   }
  
-  function CmdRange(topIdx, bottomIdx, desc, topDesc, bottomDesc) {
+  function CmdRange(topIdx, bottomIdx, desc) {
     this.topIdx = topIdx;
     this.bottomIdx = bottomIdx;
     this.desc = desc;
-    this.topDesc = topDesc;
-    this.bottomDesc = bottomDesc;
     this.equals = function(cmdRange) {
       return (cmdRange && cmdRange.topIdx === this.topIdx && cmdRange.bottomIdx === this.bottomIdx);
     };
