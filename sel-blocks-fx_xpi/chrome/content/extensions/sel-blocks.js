@@ -417,24 +417,61 @@ function $X(xpath, contextNode, resultType) {
     }
   }
 
-  function assertIntraBlockJumpRestriction(fromIdx, toIdx, msg) {
-    $$.LOG.warn("assertIntraBlockJumpRestriction() fromIdx=" + fromIdx + ", toIdx=" + toIdx);
-    var fromBlk = findBoundingBlock(fromIdx);
-    var toBlk = findBoundingBlock(toIdx);
-    assert(fromBlk === toBlk, msg);
+  // --------------------------------------------------------------------------------
+
+  function assertIntraBlockJumpRestriction(fromIdx, toIdx) {
+    var fromRange = findBlockRange(fromIdx);
+    var toRange   = findBlockRange(toIdx);
+    var msg = " Attempt to jump";
+    if (fromRange) msg += " out of a " + fromRange.desc;
+    if (toRange)   msg += " into a " + toRange.desc;
+    assert(fromRange && fromRange.equals(toRange), msg 
+      + ". You cannot use this command to jump into, or out of: loops, functions, or try blocks.");
   }
 
-  function findBoundingBlock(locusIdx) {
-    for (var idx = locusIdx - 1; idx >= 0; idx--) {
+  function findBlockRange(locusIdx) {
+    for (var idx = locusIdx-1; idx >= 0; idx--) {
       var blockDef = blockDefs[idx];
       if (blockDef) {
-        var nature = blockDef.nature;
-        if (nature == "loop" || nature == "function" || nature == "try") {
-          if (locusIdx < blockDef.endIdx)
-            return blockDef;
+        if (locusIdx > blockDef.endIdx) // ignore blocks that are inside this block
+          continue;
+        switch (blockDef.nature) {
+          case "loop":     return new CmdRange(blockDef.idx, blockDef.endIdx, blockDef.cmdName + " loop");
+          case "function": return new CmdRange(blockDef.idx, blockDef.endIdx, "function '" + blockDef.name + "'");
+          case "try":      return isolateTcfRange(locusIdx, blockDef);
         }
       }
     }
+    // return as undefined (no enclosing block at all)
+  }
+
+  function isolateTcfRange(idx, tryDef) {
+    // assumption: idx known to be between try & endTry, and a catch always precedes a finally
+    var RANGES = [
+      { ifr: tryDef.idx,        ito: tryDef.catchIdx,   desc: "try",     dfr: "try",     dto: "catch" }
+     ,{ ifr: tryDef.finallyIdx, ito: tryDef.endIdx,     desc: "finally", dfr: "finally", dto: "end" }
+     ,{ ifr: tryDef.catchIdx,   ito: tryDef.finallyIdx, desc: "catch",   dfr: "catch",   dto: "finally" }
+     ,{ ifr: tryDef.catchIdx,   ito: tryDef.endIdx,     desc: "catch",   dfr: "catch",   dto: "end" }
+     ,{ ifr: tryDef.idx,        ito: tryDef.finallyIdx, desc: "catch",   dfr: "try",     dto: "finally" }
+     ,{ ifr: tryDef.idx,        ito: tryDef.endIdx,     desc: "try",     dfr: "try",     dto: "end" }
+    ];
+    for (var i = 0; i < RANGES.length; i++) {
+      var rng = RANGES[i];
+      if (rng.ifr <= idx && idx < rng.ito) {
+        return cmdRange = new CmdRange(rng.ifr, rng.ito, rng.desc + "-block", rng.dfr, rng.dto);
+      }
+    }
+  }
+ 
+  function CmdRange(topIdx, bottomIdx, desc, topDesc, bottomDesc) {
+    this.topIdx = topIdx;
+    this.bottomIdx = bottomIdx;
+    this.desc = desc;
+    this.topDesc = topDesc;
+    this.bottomDesc = bottomDesc;
+    this.equals = function(cmdRange) {
+      return (cmdRange && cmdRange.topIdx === this.topIdx && cmdRange.bottomIdx === this.bottomIdx);
+    };
   }
 
   // ==================== Selblocks Commands (Custom Selenium Actions) ====================
@@ -472,8 +509,7 @@ function $X(xpath, contextNode, resultType) {
 
     if (n != 0) { // if n=0, execute the next command as usual
       destIdx = idxHere() + n + 1;
-      assertIntraBlockJumpRestriction(idxHere(), destIdx,
-        " The skipNext command cannot jump into or out of a loop, function, or try block.");
+      assertIntraBlockJumpRestriction(idxHere(), destIdx);
       setNextCommand(destIdx);
     }
   };
@@ -482,8 +518,7 @@ function $X(xpath, contextNode, resultType) {
   {
     assertRunning();
     assert(symbols[label], " Target label '" + label + "' is not found.");
-    assertIntraBlockJumpRestriction(idxHere(), symbols[label],
-      " The goto command cannot jump into or out of a loop, function, or try block.");
+    assertIntraBlockJumpRestriction(idxHere(), symbols[label]);
     setNextCommand(symbols[label]);
   };
 
@@ -616,6 +651,7 @@ function $X(xpath, contextNode, resultType) {
 
   // --------------------------------------------------------------------------------
 
+  // alter the behavior of a selenium error handling
   function handleCommandError(err)
   {
     var tryState = bubbleToEnclosingTryBlock();
