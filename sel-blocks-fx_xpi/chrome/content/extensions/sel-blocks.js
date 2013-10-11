@@ -417,6 +417,26 @@ function $X(xpath, contextNode, resultType) {
     }
   }
 
+  function assertIntraBlockJumpRestriction(fromIdx, toIdx, msg) {
+    $$.LOG.warn("assertIntraBlockJumpRestriction() fromIdx=" + fromIdx + ", toIdx=" + toIdx);
+    var fromBlk = findBoundingBlock(fromIdx);
+    var toBlk = findBoundingBlock(toIdx);
+    assert(fromBlk === toBlk, msg);
+  }
+
+  function findBoundingBlock(locusIdx) {
+    for (var idx = locusIdx - 1; idx >= 0; idx--) {
+      var blockDef = blockDefs[idx];
+      if (blockDef) {
+        var nature = blockDef.nature;
+        if (nature == "loop" || nature == "function" || nature == "try") {
+          if (locusIdx < blockDef.endIdx)
+            return blockDef;
+        }
+      }
+    }
+  }
+
   // ==================== Selblocks Commands (Custom Selenium Actions) ====================
 
   var iexpr = Object.create($$.InfixExpressionParser);
@@ -450,14 +470,20 @@ function $X(xpath, contextNode, resultType) {
     else if (n < 0)
       notifyFatalHere(" Requires a number > 1");
 
-    if (n != 0) // if n=0, execute the next command as usual
-      setNextCommand(testCase.debugContext.debugIndex + n + 1);
+    if (n != 0) { // if n=0, execute the next command as usual
+      destIdx = idxHere() + n + 1;
+      assertIntraBlockJumpRestriction(idxHere(), destIdx,
+        " The skipNext command cannot jump into or out of a loop, function, or try block.");
+      setNextCommand(destIdx);
+    }
   };
 
   Selenium.prototype.doGoto = function(label)
   {
     assertRunning();
     assert(symbols[label], " Target label '" + label + "' is not found.");
+    assertIntraBlockJumpRestriction(idxHere(), symbols[label],
+      " The goto command cannot jump into or out of a loop, function, or try block.");
     setNextCommand(symbols[label]);
   };
 
