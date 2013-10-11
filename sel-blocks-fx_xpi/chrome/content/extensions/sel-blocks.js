@@ -334,9 +334,9 @@ function $X(xpath, contextNode, resultType) {
             if (cmdTarget)
               assertMatching(tryDef.name, cmdTarget, i, tryDef.idx); // pair-up on try-name
             blockDefs.init(i, { tryIdx: tryDef.idx });     // endTry -> try
-            blockDefs[tryDef.idx].endTryIdx = i;           // try -> endTry
+            blockDefs[tryDef.idx].endIdx = i;              // try -> endTry
             if (tryDef.catchIdx)
-              blockDefs[tryDef.catchIdx].endTryIdx = i;    // catch -> endTry
+              blockDefs[tryDef.catchIdx].endIdx = i;       // catch -> endTry
             break;
 
           case "while":    case "for":    case "foreach":    case "forJson":    case "forXml":
@@ -544,7 +544,7 @@ function $X(xpath, contextNode, resultType) {
       if (tryDef.finallyIdx)
         setNextCommand(tryDef.finallyIdx);
       else
-        setNextCommand(tryDef.endTryIdx);
+        setNextCommand(tryDef.endIdx);
     }
     // else continue into catch-block
   };
@@ -772,7 +772,6 @@ function $X(xpath, contextNode, resultType) {
     var xmlReader = new XmlReader(filepath);
     loadVars(xmlReader, "XML element", filepath, selector);
   };
-  // deprecated command
   Selenium.prototype.doLoadVars = function(filepath, selector)
   {
     $$.LOG.warn("The loadVars command has been deprecated and will be removed in future releases."
@@ -968,7 +967,6 @@ function $X(xpath, contextNode, resultType) {
       setNextCommand(funcDef.endIdx);
     }
   };
-  // deprecated command
   Selenium.prototype.doScript = function(scrName)
   {
     $$.LOG.warn("The script command has been deprecated and will be removed in future releases."
@@ -1093,8 +1091,8 @@ function $X(xpath, contextNode, resultType) {
   function assert(cond, msg) { if (!cond) notifyFatalHere(msg); }
   // TBD: can we at least show result of expressions?
   function assertRunning() {
-    assert(testCase.debugContext.started, " Command is only valid in a running script."
-        + " E.g., cannot be executed via double-click.");
+    assert(testCase.debugContext.started, " Command is only valid in a running script,"
+        + " i.e., cannot be executed via double-click, or via 'Execute this command'.");
   }
   function assertActiveScope(expectedIdx) {
     var activeIdx = activeBlockStack().top().idx;
