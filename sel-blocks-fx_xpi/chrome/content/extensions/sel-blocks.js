@@ -250,6 +250,7 @@ function $X(xpath, contextNode, resultType) {
   // Assemble block relationships and symbol locations
   function compileSelBlocks()
   {
+    blockDefs = new BlockDefs()
     var lexStack = new Stack();
     for (var i = 0; i < testCase.commands.length; i++)
     {
@@ -423,10 +424,10 @@ function $X(xpath, contextNode, resultType) {
     var fromRange = findBlockRange(fromIdx);
     var toRange   = findBlockRange(toIdx);
     var msg = " Attempt to jump";
-    if (fromRange) msg += " out of a " + fromRange.desc;
-    if (toRange)   msg += " into a " + toRange.desc;
+    if (fromRange) msg += " out of " + fromRange.desc + fromRange.fmt();
+    if (toRange)   msg += " into " + toRange.desc + toRange.fmt();
     assert(fromRange && fromRange.equals(toRange), msg 
-      + ". You cannot use this command to jump into, or out of: loops, functions, or try blocks.");
+      + ". You cannot jump into, or out of: loops, functions, or try blocks.");
   }
 
   function findBlockRange(locusIdx) {
@@ -448,17 +449,20 @@ function $X(xpath, contextNode, resultType) {
   function isolateTcfRange(idx, tryDef) {
     // assumption: idx known to be between try & endTry, and a catch always precedes a finally
     var RANGES = [
-      { ifr: tryDef.idx,        ito: tryDef.catchIdx,   desc: "try",     dfr: "try",     dto: "catch" }
-     ,{ ifr: tryDef.finallyIdx, ito: tryDef.endIdx,     desc: "finally", dfr: "finally", dto: "end" }
-     ,{ ifr: tryDef.catchIdx,   ito: tryDef.finallyIdx, desc: "catch",   dfr: "catch",   dto: "finally" }
-     ,{ ifr: tryDef.catchIdx,   ito: tryDef.endIdx,     desc: "catch",   dfr: "catch",   dto: "end" }
-     ,{ ifr: tryDef.idx,        ito: tryDef.finallyIdx, desc: "catch",   dfr: "try",     dto: "finally" }
-     ,{ ifr: tryDef.idx,        ito: tryDef.endIdx,     desc: "try",     dfr: "try",     dto: "end" }
+      { ifr: tryDef.finallyIdx, ito: tryDef.endIdx,     desc: "finally", desc2: "end" }
+     ,{ ifr: tryDef.catchIdx,   ito: tryDef.finallyIdx, desc: "catch",   desc2: "finally" }
+     ,{ ifr: tryDef.catchIdx,   ito: tryDef.endIdx,     desc: "catch",   desc2: "end" }
+     ,{ ifr: tryDef.idx,        ito: tryDef.catchIdx,   desc: "try",     desc2: "catch" }
+     ,{ ifr: tryDef.idx,        ito: tryDef.finallyIdx, desc: "try",     desc2: "finally" }
+     ,{ ifr: tryDef.idx,        ito: tryDef.endIdx,     desc: "try",     desc2: "end" }
     ];
     for (var i = 0; i < RANGES.length; i++) {
       var rng = RANGES[i];
       if (rng.ifr <= idx && idx < rng.ito) {
-        return cmdRange = new CmdRange(rng.ifr, rng.ito, rng.desc + "-block");
+        var desc = rng.desc + "-block";
+        if (rng.desc != "try") desc += " for";
+        if (tryDef.name) desc += " '" + tryDef.name + "'";
+        return cmdRange = new CmdRange(rng.ifr, rng.ito, desc);
       }
     }
   }
@@ -469,6 +473,9 @@ function $X(xpath, contextNode, resultType) {
     this.desc = desc;
     this.equals = function(cmdRange) {
       return (cmdRange && cmdRange.topIdx === this.topIdx && cmdRange.bottomIdx === this.bottomIdx);
+    };
+    this.fmt = function() {
+      return " @[" + (this.topIdx+1) + "-" + (this.bottomIdx+1) + "]";
     };
   }
 
