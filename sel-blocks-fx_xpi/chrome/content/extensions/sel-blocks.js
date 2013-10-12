@@ -20,9 +20,9 @@
  * Concept of operation:
  *  - Selenium.reset() is intercepted to initialize the block structures.
  *  - testCase.nextCommand() is overridden for flow branching.
- *  - TestLoop.resume() is overridden by exitTest, and by try/catch/finally to manage the outcome of errors
+ *  - TestLoop.resume() is overridden by exitTest, and by try/catch/finally to manage the outcome of errors.
  *  - The static structure of command blocks is stored in blockDefs[] by script line number.
- *    E.g., ifDef has pointers to its corresponding else and/or endIf.
+ *    E.g., ifDef has pointers to its corresponding elseIf, else, endIf commands.
  *  - The state of each function-call is pushed/popped on callStack as it begins/ends execution
  *    The state of each block is pushed/popped on the blockStack as it begins/ends execution.
  *    An independent blockStack is associated with each function-call. I.e., stacks stored on a stack.
@@ -38,12 +38,14 @@
  *  SelBlocks reuses bits & parts of extensions: flowControl, datadriven, and include.
  *
  * Wishlist:
- *  - switch/case
  *  - validation of JSON & XML input files
- *  - enforce block boundaries (jumping in-to/out-of the middle of blocks)
  *
  * Changes since 1.5:
  *  - added try/catch/finally
+ *  - added elseIf command
+ *  - added exitTest command
+ *  - block boundaries enforced (jumping in-to/out-of the middle of blocks)
+ *  - function/endFunction replaces script/endScript
  *
  * NOTE - The Stored Variables Viewer addon will display the values of Selblocks parameters,
  *   because they are implemented as regular Selenium variables.
@@ -120,9 +122,9 @@ function $X(xpath, contextNode, resultType) {
 
   //=============== Call/Scope Stack handling ===============
 
-  var symbols = {};                 // command indexes stored by name: function names
-  var blockDefs = new BlockDefs();  // static command definitions stored by command index
-  var callStack = null;             // command execution stack
+  var symbols = {};      // command indexes stored by name: function names
+  var blockDefs = null;  // static command definitions stored by command index
+  var callStack = null;  // command execution stack
 
   // the idx of the currently executing command
   function idxHere() {
