@@ -457,14 +457,14 @@ function $X(xpath, contextNode, resultType) {
 
   function findBlockRange(locusIdx) {
     for (var idx = locusIdx-1; idx >= 0; idx--) {
-      var blockDef = blockDefs[idx];
-      if (blockDef) {
-        if (locusIdx > blockDef.endIdx) // ignore blocks that are inside this block
+      var blk = blockDefs[idx];
+      if (blk) {
+        if (locusIdx > blk.endIdx) // ignore blocks that are inside this block
           continue;
-        switch (blockDef.nature) {
-          case "loop":     return new CmdRange(blockDef.idx, blockDef.endIdx, blockDef.cmdName + " loop");
-          case "function": return new CmdRange(blockDef.idx, blockDef.endIdx, "function '" + blockDef.name + "'");
-          case "try":      return isolateTcfRange(locusIdx, blockDef);
+        switch (blk.nature) {
+          case "loop":     return new CmdRange(blk.idx, blk.endIdx, blk.cmdName + " loop");
+          case "function": return new CmdRange(blk.idx, blk.endIdx, "function '" + blk.name + "'");
+          case "try":      return isolateTcfRange(locusIdx, blk);
         }
       }
     }
@@ -585,6 +585,7 @@ function $X(xpath, contextNode, resultType) {
     var ifState = activeBlockStack().top();
     if (ifState.skipElseBlocks) // if, or previous elseIf, has already been met
       setNextCommand(blockDefs.here().endIdx);
+    // else continue into else-block
   };
   Selenium.prototype.doEndIf = function() {
     assertRunning();
@@ -594,16 +595,16 @@ function $X(xpath, contextNode, resultType) {
   };
 
   function cascadeElseIf(ifState, condExpr) {
-    if (evalWithVars(condExpr)) {
-      ifState.skipElseBlocks = true;
-      // continue into if/elseIf-block
-    }
-    else {
+    if (!evalWithVars(condExpr)) {
       // jump to next elseIf or else or endif
       var ifDef = blockDefs[ifState.idx];
       if (ifState.elseIfItr.hasNext()) setNextCommand(ifState.elseIfItr.next());
       else if (ifDef.elseIdx)          setNextCommand(ifDef.elseIdx);
       else                             setNextCommand(ifDef.endIdx);
+    }
+    else {
+      ifState.skipElseBlocks = true;
+      // continue into if/elseIf-block
     }
   }
 
