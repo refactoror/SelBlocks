@@ -119,6 +119,15 @@ function $X(xpath, contextNode, resultType) {
     return this;
   };
 
+  // produce an array iterator object for the given array
+  Array.prototype.iterator = function() {
+    return new function(ary) {
+      var cur = 0;
+      this.hasNext = function() { return (cur < ary.length); };
+      this.next = function() { if (this.hasNext()) return ary[cur++]; };
+    }(this);
+  };
+
 
   //=============== Call/Scope Stack handling ===============
 
@@ -554,7 +563,8 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doIf = function(condExpr, locator)
   {
     assertRunning();
-    var ifState = { idx: idxHere(), curElseIf: -1 };
+    var ifDef = blockDefs.here();
+    var ifState = { idx: idxHere(), elseIfItr: ifDef.elseIfIdxs.iterator() };
     activeBlockStack().push(ifState);
     cascadeElseIf(ifState, condExpr);
   };
@@ -595,12 +605,9 @@ function $X(xpath, contextNode, resultType) {
     else {
       // jump to elseIf or else or endif
       var ifDef = blockDefs[ifState.idx];
-      if (ifDef.elseIfIdxs.length > 0 && ++ifState.curElseIf < ifDef.elseIfIdxs.length)
-        setNextCommand(ifDef.elseIfIdxs[ifState.curElseIf]);
-      else if (ifDef.elseIdx)
-        setNextCommand(ifDef.elseIdx);
-      else
-        setNextCommand(ifDef.endIdx);
+      if (ifState.elseIfItr.hasNext()) setNextCommand(ifState.elseIfItr.next());
+      else if (ifDef.elseIdx)          setNextCommand(ifDef.elseIdx);
+      else                             setNextCommand(ifDef.endIdx);
     }
   }
 
