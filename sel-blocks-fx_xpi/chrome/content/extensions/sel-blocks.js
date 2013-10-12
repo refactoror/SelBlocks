@@ -142,7 +142,7 @@ function $X(xpath, contextNode, resultType) {
       return cmds[i];
     };
     // retrieve the blockDef for the currently executing command
-    cmds.cur = function() {
+    cmds.here = function() {
       var curIdx = idxHere();
       if (!cmds[curIdx])
         $$.LOG.warn("No blockDef defined at curIdx=" + curIdx);
@@ -252,7 +252,7 @@ function $X(xpath, contextNode, resultType) {
   // Assemble block relationships and symbol locations
   function compileSelBlocks()
   {
-    blockDefs = new BlockDefs()
+    blockDefs = new BlockDefs();
     var lexStack = new Stack();
     for (var i = 0; i < testCase.commands.length; i++)
     {
@@ -561,11 +561,11 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doElseIf = function(condExpr)
   {
     assertRunning();
-    assertActiveScope(blockDefs.cur().ifIdx);
+    assertActiveScope(blockDefs.here().ifIdx);
     var ifState = activeBlockStack().top();
     if (ifState.skipElseBlocks) {
       // if, or previous elseIf, has already been met
-      setNextCommand(blockDefs[blockDefs.cur().ifIdx].endIdx);
+      setNextCommand(blockDefs[blockDefs.here().ifIdx].endIdx);
       return;
     }
     cascadeElseIf(ifState, condExpr);
@@ -573,16 +573,16 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doElse = function()
   {
     assertRunning();
-    assertActiveScope(blockDefs.cur().ifIdx);
+    assertActiveScope(blockDefs.here().ifIdx);
     var ifState = activeBlockStack().top();
     if (ifState.skipElseBlocks) {
       // if, or previous elseIf, has already been met
-      setNextCommand(blockDefs.cur().endIdx);
+      setNextCommand(blockDefs.here().endIdx);
     }
   };
   Selenium.prototype.doEndIf = function() {
     assertRunning();
-    assertActiveScope(blockDefs.cur().ifIdx);
+    assertActiveScope(blockDefs.here().ifIdx);
     activeBlockStack().pop();
     // fall out of if-endIf
   };
@@ -612,7 +612,7 @@ function $X(xpath, contextNode, resultType) {
     assertRunning();
     var tryState = { idx: idxHere(), name: tryName };
     activeBlockStack().push(tryState);
-    var tryDef = blockDefs.cur();
+    var tryDef = blockDefs.here();
 
     if (!tryDef.catchIdx && !tryDef.finallyIdx) {
       $$.LOG.warn(fmtCurCmd() + " does not have a catch-block nor a finally-block, and therefore serves no purpose");
@@ -660,7 +660,7 @@ function $X(xpath, contextNode, resultType) {
   {
     assertTryBlock();
     var tryState = activeBlockStack().pop();
-    if (tryState.execPhase) { // ie, it has a catch and/or a finally block
+    if (tryState.execPhase) { // ie, it does have a catch and/or a finally block
       $$.tcf.nestingLevel--;
       $$.LOG.info("-- try nesting: " + $$.tcf.nestingLevel);
       if ($$.tcf.nestingLevel < 0) {
@@ -686,13 +686,13 @@ function $X(xpath, contextNode, resultType) {
 
   function assertTryBlock() {
     assertRunning();
-    assertActiveScope(blockDefs.cur().tryIdx);
+    assertActiveScope(blockDefs.here().tryIdx);
     return activeBlockStack().top();
   }
 
   // --------------------------------------------------------------------------------
 
-  // alter the behavior of a selenium error handling
+  // alter the behavior of Selenium error handling
   function handleCommandError(err)
   {
     var tryState = bubbleToEnclosingTryBlock();
@@ -716,7 +716,7 @@ function $X(xpath, contextNode, resultType) {
       $$.tcf.bubbling = { mode: "error", error: err, srcIdx: idxHere() };
       if (hasUnspentFinallyBlock(tryState)) {
         $$.LOG.warn("Bubbling suspended while finally block runs :: " + $$.tcf.bubbling.error.message);
-        tryState.hasFinally = true;
+        tryState.hasFinaled = true;
         setNextCommand(tryDef.finallyIdx);
         return true; // continue
       }
@@ -764,10 +764,10 @@ function $X(xpath, contextNode, resultType) {
   }
 
   function hasUnspentCatchBlock(tryState) {
-    return (blockDefs[tryState.idx].catchIdx   && !tryState.hasCaught);
+    return (blockDefs[tryState.idx].catchIdx && !tryState.hasCaught);
   }
   function hasUnspentFinallyBlock(tryState) {
-    return (blockDefs[tryState.idx].finallyIdx && !tryState.hasFinally);
+    return (blockDefs[tryState.idx].finallyIdx && !tryState.hasFinaled);
   }
 
   function fmtTry(tryState)
@@ -981,14 +981,14 @@ function $X(xpath, contextNode, resultType) {
     if (!_condFunc(loopState)) {
       loopState.isComplete = true;
       // jump to bottom of loop for exit
-      setNextCommand(blockDefs.cur().endIdx);
+      setNextCommand(blockDefs.here().endIdx);
     }
     // else continue into body of loop
   }
   function iterateLoop()
   {
     assertRunning();
-    assertActiveScope(blockDefs.cur().beginIdx);
+    assertActiveScope(blockDefs.here().beginIdx);
     var loopState = activeBlockStack().top();
     if (loopState.isComplete) {
       restoreVarState(loopState.savedVars);
@@ -997,7 +997,7 @@ function $X(xpath, contextNode, resultType) {
     }
     else {
       // jump back to top of loop
-      setNextCommand(blockDefs.cur().beginIdx);
+      setNextCommand(blockDefs.here().beginIdx);
     }
   }
 
@@ -1059,7 +1059,7 @@ function $X(xpath, contextNode, resultType) {
   {
     assertRunning();
 
-    var funcDef = blockDefs.cur();
+    var funcDef = blockDefs.here();
     var activeCallFrame = callStack.top();
     if (activeCallFrame.funcIdx == idxHere()) {
       // get parameter values
@@ -1089,7 +1089,7 @@ function $X(xpath, contextNode, resultType) {
   function returnFromFunction(funcName, returnVal)
   {
     assertRunning();
-    var endDef = blockDefs.cur();
+    var endDef = blockDefs.here();
     var activeCallFrame = callStack.top();
     if (activeCallFrame.funcIdx != endDef.funcIdx) {
       // no active call, we're just skipping around a function block
