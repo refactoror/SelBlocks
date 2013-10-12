@@ -699,11 +699,11 @@ function $X(xpath, contextNode, resultType) {
   // alter the behavior of Selenium error handling
   function handleCommandError(err)
   {
-    var tryState = bubbleToEnclosingTryBlock();
+    var tryState = bubbleToTryBlock(hasUnspentCatchOrFinally);
     while (tryState) {
       $$.LOG.info("error encountered while: " + tryState.execPhase);
       var tryDef = blockDefs[tryState.idx];
-      if (hasUnspentCatchBlock(tryState)) {
+      if (hasUnspentCatch(tryState)) {
         var catchDcl = testCase.commands[tryDef.catchIdx].target;
         if (isMatchingError(err, catchDcl)) {
           // an expected kind of error has been caught
@@ -718,13 +718,13 @@ function $X(xpath, contextNode, resultType) {
       // error not caught .. instigate bubbling
       $$.LOG.info("error not caught, bubbling the error: " + err.message);
       $$.tcf.bubbling = { mode: "error", error: err, srcIdx: idxHere() };
-      if (hasUnspentFinallyBlock(tryState)) {
+      if (hasUnspentFinally(tryState)) {
         $$.LOG.warn("Bubbling suspended while finally block runs :: " + $$.tcf.bubbling.error.message);
         tryState.hasFinaled = true;
         setNextCommand(tryDef.finallyIdx);
         return true; // continue
       }
-      tryState = bubbleToEnclosingTryBlock();
+      tryState = bubbleToTryBlock(hasUnspentCatchOrFinally);
     }
     // no matching catch and no finally to process
     return false; // halt the test
@@ -743,35 +743,36 @@ function $X(xpath, contextNode, resultType) {
     }
   }
 
-  function bubbleToEnclosingTryBlock() {
+  function bubbleToTryBlock(_hasCriteria) {
     if ($$.tcf.nestingLevel < 0)
-      $$.LOG.error("bubbleToEnclosingTryBlock() called outside of any try nesting");
-    var tryState = unwindToCatchOrFinally();
+      $$.LOG.error("bubbleToTryBlock() called outside of any try nesting");
+    var tryState = unwindToTryBlock(_hasCriteria);
     while (!tryState && $$.tcf.nestingLevel > -1 && callStack.length > 1) {
       var callFrame = callStack.pop();
       $$.LOG.info("function '" + callFrame.name + "' aborting due to error");
       restoreVarState(callFrame.savedVars);
-      tryState = unwindToCatchOrFinally();
+      tryState = unwindToTryBlock(_hasCriteria);
     }
     return tryState;
   }
 
-  function unwindToCatchOrFinally() {
+  function unwindToTryBlock(_hasCriteria) {
     var tryState = activeBlockStack().unwindTo(function(stackFrame) {
-      return (blockDefs[stackFrame.idx].nature == "try"
-        && (hasUnspentCatchBlock(stackFrame) || hasUnspentFinallyBlock(stackFrame))
-      );
+      return (blockDefs[stackFrame.idx].nature == "try" && _hasCriteria(stackFrame));
     });
     if (tryState)
       $$.LOG.info("unwound to: " + fmtTry(tryState));
     return tryState;
   }
 
-  function hasUnspentCatchBlock(tryState) {
+  function hasUnspentCatch(tryState) {
     return (blockDefs[tryState.idx].catchIdx && !tryState.hasCaught);
   }
-  function hasUnspentFinallyBlock(tryState) {
+  function hasUnspentFinally(tryState) {
     return (blockDefs[tryState.idx].finallyIdx && !tryState.hasFinaled);
+  }
+  function hasUnspentCatchOrFinally(tryState) {
+    return (hasUnspentCatch(tryState) || hasUnspentFinally(tryState));
   }
 
   function fmtTry(tryState)
