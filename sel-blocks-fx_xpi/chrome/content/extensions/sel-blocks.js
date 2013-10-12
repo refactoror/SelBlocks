@@ -310,8 +310,9 @@ function $X(xpath, contextNode, resultType) {
             assertMatching(tryDef.cmdName, "try", i, tryDef.idx);
             if (blockDefs[tryDef.idx].catchIdx)
               notifyFatal(fmtCmdRef(i) + " There can only be one catch-block associated with a given try.");
-            if (blockDefs[tryDef.idx].finallyIdx)
-              notifyFatal(fmtCmdRef(i) + " A finally-block has to be the last block in a try section.");
+            var fIdx = blockDefs[tryDef.idx].finallyIdx;
+            if (fIdx)
+              notifyFatal(fmtCmdRef(fIdx) + " A finally-block has to be last in a try section.");
             blockDefs.init(i, { tryIdx: tryDef.idx });     // catch -> try
             blockDefs[tryDef.idx].catchIdx = i;            // try -> catch
             break;
@@ -423,11 +424,13 @@ function $X(xpath, contextNode, resultType) {
   function assertIntraBlockJumpRestriction(fromIdx, toIdx) {
     var fromRange = findBlockRange(fromIdx);
     var toRange   = findBlockRange(toIdx);
-    var msg = " Attempt to jump";
-    if (fromRange) msg += " out of " + fromRange.desc + fromRange.fmt();
-    if (toRange)   msg += " into " + toRange.desc + toRange.fmt();
-    assert(fromRange && fromRange.equals(toRange), msg 
-      + ". You cannot jump into, or out of: loops, functions, or try blocks.");
+    if (fromRange || toRange) {
+      var msg = " Attempt to jump";
+      if (fromRange) msg += " out of " + fromRange.desc + fromRange.fmt();
+      if (toRange)   msg += " into " + toRange.desc + toRange.fmt();
+      assert(fromRange && fromRange.equals(toRange), msg 
+        + ". You cannot jump into, or out of: loops, functions, or try blocks.");
+    }
   }
 
   function findBlockRange(locusIdx) {
