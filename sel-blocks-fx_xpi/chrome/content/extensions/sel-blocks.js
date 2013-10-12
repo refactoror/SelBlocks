@@ -276,7 +276,18 @@ function $X(xpath, contextNode, resultType) {
 
           case "if":
             assertNotAndWaitSuffix(i);
-            lexStack.push(blockDefs.init(i, { nature: "if" }));
+            lexStack.push(blockDefs.init(i, { nature: "if", elseIfIdxs: [] }));
+            break;
+          case "elseIf":
+            assertNotAndWaitSuffix(i);
+            assertBlockIsPending("elseIf", i, ", is not valid outside of an if/endIf block");
+            var ifDef = lexStack.top();
+            assertMatching(ifDef.cmdName, "if", i, ifDef.idx);
+            var eIdx = blockDefs[ifDef.idx].elseIdx;
+            if (eIdx)
+              notifyFatal(fmtCmdRef(eIdx) + " An else has to come after all elseIfs.");
+            blockDefs.init(i, { ifIdx: ifDef.idx });       // elseIf -> if
+            blockDefs[ifDef.idx].elseIfIdxs.push(i);       // if -> elseIf(s)
             break;
           case "else":
             assertNotAndWaitSuffix(i);
@@ -541,28 +552,31 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doIf = function(condExpr, locator)
   {
     assertRunning();
-    var ifState = { idx: idxHere() };
+    var ifState = { idx: idxHere(), curElseIf: -1 };
     activeBlockStack().push(ifState);
-    if (evalWithVars(condExpr)) {
-      ifState.skipElseBlock = true;
-      // continue into if-block
+    cascadeElseIf(ifState, condExpr);
+  };
+  Selenium.prototype.doElseIf = function(condExpr)
+  {
+    assertRunning();
+    assertActiveScope(blockDefs.cur().ifIdx);
+    var ifState = activeBlockStack().top();
+    if (ifState.skipElseBlocks) {
+      // if, or previous elseIf, has already been met
+      setNextCommand(blockDefs[blockDefs.cur().ifIdx].endIdx);
+      return;
     }
-    else {
-      // jump to else or endif
-      var ifDef = blockDefs.cur();
-      if (ifDef.elseIdx)
-        setNextCommand(ifDef.elseIdx);
-      else
-        setNextCommand(ifDef.endIdx);
-    }
+    cascadeElseIf(ifState, condExpr);
   };
   Selenium.prototype.doElse = function()
   {
     assertRunning();
     assertActiveScope(blockDefs.cur().ifIdx);
     var ifState = activeBlockStack().top();
-    if (ifState.skipElseBlock)
+    if (ifState.skipElseBlocks) {
+      // if, or previous elseIf, has already been met
       setNextCommand(blockDefs.cur().endIdx);
+    }
   };
   Selenium.prototype.doEndIf = function() {
     assertRunning();
@@ -570,6 +584,23 @@ function $X(xpath, contextNode, resultType) {
     activeBlockStack().pop();
     // fall out of if-endIf
   };
+
+  function cascadeElseIf(ifState, condExpr) {
+    if (evalWithVars(condExpr)) {
+      ifState.skipElseBlocks = true;
+      // continue into if/elseIf-block
+    }
+    else {
+      // jump to elseIf or else or endif
+      var ifDef = blockDefs[ifState.idx];
+      if (ifDef.elseIfIdxs.length > 0 && ++ifState.curElseIf < ifDef.elseIfIdxs.length)
+        setNextCommand(ifDef.elseIfIdxs[ifState.curElseIf]);
+      else if (ifDef.elseIdx)
+        setNextCommand(ifDef.elseIdx);
+      else
+        setNextCommand(ifDef.endIdx);
+    }
+  }
 
   // ================================================================================
 
