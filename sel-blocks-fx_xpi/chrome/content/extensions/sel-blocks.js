@@ -119,7 +119,7 @@ function $X(xpath, contextNode, resultType) {
     return this;
   };
 
-  // produce an array iterator object for the given array
+  // produce an iterator object for the given array
   Array.prototype.iterator = function() {
     return new function(ary) {
       var cur = 0;
@@ -573,22 +573,18 @@ function $X(xpath, contextNode, resultType) {
     assertRunning();
     assertActiveScope(blockDefs.here().ifIdx);
     var ifState = activeBlockStack().top();
-    if (ifState.skipElseBlocks) {
-      // if, or previous elseIf, has already been met
+    if (ifState.skipElseBlocks) // if, or previous elseIf, has already been met
       setNextCommand(blockDefs[blockDefs.here().ifIdx].endIdx);
-      return;
-    }
-    cascadeElseIf(ifState, condExpr);
+    else
+      cascadeElseIf(ifState, condExpr);
   };
   Selenium.prototype.doElse = function()
   {
     assertRunning();
     assertActiveScope(blockDefs.here().ifIdx);
     var ifState = activeBlockStack().top();
-    if (ifState.skipElseBlocks) {
-      // if, or previous elseIf, has already been met
+    if (ifState.skipElseBlocks) // if, or previous elseIf, has already been met
       setNextCommand(blockDefs.here().endIdx);
-    }
   };
   Selenium.prototype.doEndIf = function() {
     assertRunning();
@@ -603,7 +599,7 @@ function $X(xpath, contextNode, resultType) {
       // continue into if/elseIf-block
     }
     else {
-      // jump to elseIf or else or endif
+      // jump to next elseIf or else or endif
       var ifDef = blockDefs[ifState.idx];
       if (ifState.elseIfItr.hasNext()) setNextCommand(ifState.elseIfItr.next());
       else if (ifDef.elseIdx)          setNextCommand(ifDef.elseIdx);
