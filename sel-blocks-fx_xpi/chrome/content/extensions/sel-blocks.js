@@ -671,18 +671,10 @@ function $X(xpath, contextNode, resultType) {
         // discontinue try-block handling
         $$.fn.interceptPop();
       }
-      if ($$.tcf.bubbling) {
-        if ($$.tcf.nestingLevel > -1) {
-          $$.LOG.info("error-bubbling continuing...");
-          handleCommandError($$.tcf.bubbling.error);
-        }
-        else {
-          $$.LOG.error("Error was not handled by try/catch: " + $$.tcf.bubbling.error.message);
-          try { throw $$.tcf.bubbling.error; }
-          finally { $$.tcf.bubbling = null; }
-        }
-      }
-      else $$.LOG.info("no error to bubble up");
+      if ($$.tcf.bubbling)
+        reBubble();
+      else
+        $$.LOG.info("no bubbling in process");
     }
     $$.LOG.info("end of try section");
     // fall out of endTry
@@ -692,6 +684,18 @@ function $X(xpath, contextNode, resultType) {
     assertRunning();
     assertActiveScope(blockDefs.here().tryIdx);
     return activeBlockStack().top();
+  }
+
+  function reBubble() {
+    if ($$.tcf.nestingLevel > -1) {
+      $$.LOG.info("error-bubbling continuing...");
+      handleCommandError($$.tcf.bubbling.error);
+    }
+    else {
+      $$.LOG.error("Error was not handled by try/catch: " + $$.tcf.bubbling.error.message);
+      try { throw $$.tcf.bubbling.error; }
+      finally { $$.tcf.bubbling = null; }
+    }
   }
 
   // --------------------------------------------------------------------------------
@@ -780,7 +784,7 @@ function $X(xpath, contextNode, resultType) {
   {
     var tryDef = blockDefs[tryState.idx];
     return (
-      (tryDef.name ? "'" + tryDef.name + "' " : "")
+      (tryDef.name ? "try '" + tryDef.name + "' " : "")
       + "@" + (tryState.idx+1)
       + ", " + tryState.execPhase + ".."
       + " " + $$.tcf.nestingLevel + "n"
