@@ -442,8 +442,227 @@
 	<td></td>
 	<td></td>
 </tr>
+<!--=- bubbling commands-->
+<!----- return w/finally-->
+<tr>
+	<td>emit</td>
+	<td>&quot;START&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>function</td>
+	<td>fancy</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;in fancy&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>try</td>
+	<td>fancy-foo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;returning&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>return</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;finallying&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;calling&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>call</td>
+	<td>fancy</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;returned&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;START~calling~in fancy~returning~finallying~returned&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<!----- break w/finally-->
+<tr>
+	<td>emit</td>
+	<td>&quot;START&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>delete storedVars.w</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>3</td>
+	<td>w</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;entering while&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>w &gt; 0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>try</td>
+	<td>foo2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;trying&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>if</td>
+	<td>w==1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;breaking&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>break</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;finallying&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;iter=${w}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>${w}-1</td>
+	<td>w</td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;END&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;START~entering while~trying~finallying~iter=3~trying~finallying~iter=2~trying~breaking~finallying~END&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<!----- exitTest w/finally-->
+<tr>
+	<td>emit</td>
+	<td>&quot;START&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>try</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;trying&quot;</td>
+	<td></td>
+</tr>
 <tr>
 	<td>exitTest</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;finallying&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;START~trying~finallying&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
 	<td></td>
 	<td></td>
 </tr>

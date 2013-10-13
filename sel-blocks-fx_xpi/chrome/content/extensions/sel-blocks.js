@@ -687,14 +687,27 @@ function $X(xpath, contextNode, resultType) {
   }
 
   function reBubble() {
-    if ($$.tcf.nestingLevel > -1) {
-      $$.LOG.info("error-bubbling continuing...");
-      handleCommandError($$.tcf.bubbling.error);
+    if ($$.tcf.bubbling.mode == "error") {
+      if ($$.tcf.nestingLevel > -1) {
+        $$.LOG.info("error-bubbling continuing...");
+        handleCommandError($$.tcf.bubbling.error);
+      }
+      else {
+        $$.LOG.error("Error was not handled by try/catch: " + $$.tcf.bubbling.error.message);
+        try { throw $$.tcf.bubbling.error; }
+        finally { $$.tcf.bubbling = null; }
+      }
     }
-    else {
-      $$.LOG.error("Error was not handled by try/catch: " + $$.tcf.bubbling.error.message);
-      try { throw $$.tcf.bubbling.error; }
-      finally { $$.tcf.bubbling = null; }
+    else { // mode == "command"
+      if ($$.tcf.nestingLevel > -1) {
+        $$.LOG.info("command-bubbling continuing...");
+        bubbleCommand($$.tcf.bubbling.srcIdx, $$.tcf.bubbling._isStopCriteria);
+      }
+      else {
+        $$.LOG.info("re-trying suspended command " + fmtCmdRef($$.tcf.bubbling.srcIdx));
+        setNextCommand($$.tcf.bubbling.srcIdx);
+        $$.tcf.bubbling = null;
+      }
     }
   }
 
@@ -744,6 +757,29 @@ function $X(xpath, contextNode, resultType) {
         return (errMsg.match(errExpr));
       }
       return (errMsg.indexOf(errExpr) != -1);
+    }
+  }
+
+  // execute any enclosing finally block(s) until reaching the given type of block
+  function bubbleCommand(cmdIdx, _isStopAt)
+  {
+    function isTryWithFinally(stackFrame) {
+      return ( (blockDefs[stackFrame.idx].nature == "try" && hasUnspentFinally(stackFrame))
+        || (_isStopAt ? _isStopAt(stackFrame) : false)
+      );
+    }
+    //
+    var tryState = bubbleToTryBlock(isTryWithFinally);
+    while (tryState) {
+      var tryDef = blockDefs[tryState.idx];
+      $$.tcf.bubbling = { mode: "command", srcIdx: cmdIdx, _isStopCriteria: _isStopAt };
+      if (hasUnspentFinally(tryState)) {
+        $$.LOG.warn("Command " + fmtCmdRef(cmdIdx) + ", suspended while finally block runs");
+        tryState.hasFinaled = true;
+        setNextCommand(tryDef.finallyIdx);
+        return;
+      }
+      tryState = bubbleToTryBlock(isTryWithFinally);
     }
   }
 
@@ -1034,6 +1070,10 @@ function $X(xpath, contextNode, resultType) {
   function dropToLoop(condExpr)
   {
     assertRunning();
+    if ($$.tcf.nestingLevel > -1) {
+      bubbleCommand(idxHere(), Stack.isLoopBlock);
+      return;
+    }
     if (condExpr && !evalWithVars(condExpr))
       return;
     var loopState = activeBlockStack().unwindTo(Stack.isLoopBlock);
@@ -1099,6 +1139,10 @@ function $X(xpath, contextNode, resultType) {
   function returnFromFunction(funcName, returnVal)
   {
     assertRunning();
+    if ($$.tcf.nestingLevel > -1) {
+      bubbleCommand(idxHere(), Stack.isFunctionBlock);
+      return;
+    }
     var endDef = blockDefs.here();
     var activeCallFrame = callStack.top();
     if (activeCallFrame.funcIdx != endDef.funcIdx) {
@@ -1115,6 +1159,10 @@ function $X(xpath, contextNode, resultType) {
 
   // ================================================================================
   Selenium.prototype.doExitTest = function() {
+    if ($$.tcf.nestingLevel > -1) {
+      bubbleCommand(idxHere());
+      return;
+    }
     // intercept command processing and simply stop test execution instead of executing the next command
     $$.fn.interceptOnce(editor.selDebugger.runner.IDETestLoop.prototype, "resume", $$.handleAsExitTest);
   };
