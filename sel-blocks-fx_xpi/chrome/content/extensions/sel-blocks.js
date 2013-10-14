@@ -699,7 +699,7 @@ function $X(xpath, contextNode, resultType) {
       }
     }
     else { // mode == "command"
-      if ($$.tcf.nestingLevel > -1) {
+      if (isBubblable()) {
         $$.LOG.info("command-bubbling continuing...");
         bubbleCommand($$.tcf.bubbling.srcIdx, $$.tcf.bubbling._isStopCriteria);
       }
@@ -801,6 +801,16 @@ function $X(xpath, contextNode, resultType) {
     if (tryState)
       $$.LOG.info("unwound to: " + fmtTry(tryState));
     return tryState;
+  }
+
+  function isBubblable() {
+    var canBubble = ($$.tcf.nestingLevel > -1);
+    if (canBubble) {
+      var blk = activeBlockStack().top();
+      if (blk)
+        canBubble = (blk.execPhase != "finallying");
+    }
+    return canBubble;
   }
 
   function isTryWithCatchOrFinally(stackFrame) {
@@ -1070,7 +1080,7 @@ function $X(xpath, contextNode, resultType) {
   function dropToLoop(condExpr)
   {
     assertRunning();
-    if ($$.tcf.nestingLevel > -1) {
+    if (isBubblable()) {
       bubbleCommand(idxHere(), Stack.isLoopBlock);
       return;
     }
@@ -1139,7 +1149,7 @@ function $X(xpath, contextNode, resultType) {
   function returnFromFunction(funcName, returnVal)
   {
     assertRunning();
-    if ($$.tcf.nestingLevel > -1) {
+    if (isBubblable()) {
       bubbleCommand(idxHere(), Stack.isFunctionBlock);
       return;
     }
@@ -1159,7 +1169,7 @@ function $X(xpath, contextNode, resultType) {
 
   // ================================================================================
   Selenium.prototype.doExitTest = function() {
-    if ($$.tcf.nestingLevel > -1) {
+    if (isBubblable()) {
       bubbleCommand(idxHere());
       return;
     }

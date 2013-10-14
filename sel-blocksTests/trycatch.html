@@ -442,83 +442,7 @@
 	<td></td>
 	<td></td>
 </tr>
-<!--=- bubbling commands-->
-<!----- return w/finally-->
-<tr>
-	<td>emit</td>
-	<td>&quot;START&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>function</td>
-	<td>fancy</td>
-	<td></td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;in fancy&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>try</td>
-	<td>fancy-foo</td>
-	<td></td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;returning&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>return</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>finally</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;finallying&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>endTry</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>endFunction</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;calling&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>call</td>
-	<td>fancy</td>
-	<td></td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;returned&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertEmitted</td>
-	<td>&quot;START~calling~in fancy~returning~finallying~returned&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
+<!--=- command bubbling-->
 <!----- break w/finally-->
 <tr>
 	<td>emit</td>
@@ -613,6 +537,87 @@
 <tr>
 	<td>assertEmitted</td>
 	<td>&quot;START~entering while~trying~finallying~iter=3~trying~finallying~iter=2~trying~breaking~finallying~END&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<!----- return w/finally-->
+<tr>
+	<td>emit</td>
+	<td>&quot;START&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;calling&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>call</td>
+	<td>fancy</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;returned ${_result}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>function</td>
+	<td>fancy</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;in fancy&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>try</td>
+	<td>fancy-foo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;returning&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>return</td>
+	<td>1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;finallying&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>return</td>
+	<td>2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;START~calling~in fancy~returning~finallying~returned 2&quot;</td>
 	<td></td>
 </tr>
 <tr>
