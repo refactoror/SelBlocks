@@ -656,7 +656,6 @@ function $X(xpath, contextNode, resultType) {
   };
   Selenium.prototype.doFinally = function() {
     var tryState = assertTryBlock();
-    tryState.execPhase = "finallying";
     $$.LOG.info("entering finally block");
     // continue into finally-block
   };
@@ -693,7 +692,7 @@ function $X(xpath, contextNode, resultType) {
         handleCommandError($$.tcf.bubbling.error);
       }
       else {
-        $$.LOG.error("Error was not handled by try/catch: " + $$.tcf.bubbling.error.message);
+        $$.LOG.error("Error was not caught: " + $$.tcf.bubbling.error.message);
         try { throw $$.tcf.bubbling.error; }
         finally { $$.tcf.bubbling = null; }
       }
@@ -704,7 +703,7 @@ function $X(xpath, contextNode, resultType) {
         bubbleCommand($$.tcf.bubbling.srcIdx, $$.tcf.bubbling._isStopCriteria);
       }
       else {
-        $$.LOG.info("re-trying suspended command " + fmtCmdRef($$.tcf.bubbling.srcIdx));
+        $$.LOG.info("command-bubbling complete - suspended command executing now " + fmtCmdRef($$.tcf.bubbling.srcIdx));
         setNextCommand($$.tcf.bubbling.srcIdx);
         $$.tcf.bubbling = null;
       }
@@ -737,6 +736,7 @@ function $X(xpath, contextNode, resultType) {
       $$.tcf.bubbling = { mode: "error", error: err, srcIdx: idxHere() };
       if (hasUnspentFinally(tryState)) {
         $$.LOG.warn("Bubbling suspended while finally block runs :: " + $$.tcf.bubbling.error.message);
+        tryState.execPhase = "finallying";
         tryState.hasFinaled = true;
         setNextCommand(tryDef.finallyIdx);
         return true; // continue
@@ -761,25 +761,26 @@ function $X(xpath, contextNode, resultType) {
   }
 
   // execute any enclosing finally block(s) until reaching the given type of block
-  function bubbleCommand(cmdIdx, _isStopAt)
+  function bubbleCommand(cmdIdx, _isCeilingBlock)
   {
-    function isTryWithFinally(stackFrame) {
-      return ( (blockDefs[stackFrame.idx].nature == "try" && hasUnspentFinally(stackFrame))
-        || (_isStopAt ? _isStopAt(stackFrame) : false)
-      );
-    }
-    //
     var tryState = bubbleToTryBlock(isTryWithFinally);
     while (tryState) {
       var tryDef = blockDefs[tryState.idx];
-      $$.tcf.bubbling = { mode: "command", srcIdx: cmdIdx, _isStopCriteria: _isStopAt };
+      $$.tcf.bubbling = { mode: "command", srcIdx: cmdIdx, _isStopCriteria: _isCeilingBlock };
       if (hasUnspentFinally(tryState)) {
         $$.LOG.warn("Command " + fmtCmdRef(cmdIdx) + ", suspended while finally block runs");
+        tryState.execPhase = "finallying";
         tryState.hasFinaled = true;
         setNextCommand(tryDef.finallyIdx);
         return;
       }
       tryState = bubbleToTryBlock(isTryWithFinally);
+    }
+    //- find enclosing finally-blocks, stopping at the given block type
+    function isTryWithFinally(stackFrame) {
+      return ( (blockDefs[stackFrame.idx].nature == "try" && hasUnspentFinally(stackFrame))
+        || (_isCeilingBlock ? _isCeilingBlock(stackFrame) : false)
+      );
     }
   }
 
