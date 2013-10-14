@@ -13,8 +13,24 @@
 </thead><tbody>
 <!--== nested catch-->
 <tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;---------- foo1 ----------&quot;)</td>
+	<td>log</td>
+	<td>&quot;---------- foo1 ----------&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;START 1A&quot;</td>
+	<td></td>
+</tr>
+<!--v v v-->
+<tr>
+	<td>try</td>
+	<td>foo1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;trying foo1&quot;</td>
 	<td></td>
 </tr>
 <!--v v v-->
@@ -24,39 +40,28 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertEval</td>
-	<td>true</td>
-	<td>true</td>
+	<td>emit</td>
+	<td>&quot;trying fooA&quot;</td>
+	<td></td>
 </tr>
-<!--v v v-->
 <tr>
-	<td>try</td>
-	<td>foo1</td>
+	<td>throw</td>
+	<td>&quot;blamo 1A nested catch&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertEval</td>
-	<td>true</td>
-	<td>true</td>
-</tr>
-<tr>
-	<td>assertEval</td>
-	<td>false</td>
-	<td>true</td>
-</tr>
-<tr>
-	<td>assertEval</td>
-	<td>true</td>
-	<td>true</td>
+	<td>&quot;this command should not be reached&quot;</td>
+	<td></td>
 </tr>
 <tr>
 	<td>catch</td>
-	<td>/'false' did not match 'true'/</td>
+	<td>/blamo 1A nested catch/</td>
 	<td></td>
 </tr>
 <tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;CAUGHT foo1&quot;)</td>
+	<td>emit</td>
+	<td>&quot;caught 1A&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -65,20 +70,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;ALWAYS foo1&quot;)</td>
+	<td>emit</td>
+	<td>&quot;finally 1A&quot;</td>
 	<td></td>
-</tr>
-<tr>
-	<td>endTry</td>
-	<td>foo1</td>
-	<td></td>
-</tr>
-<!--^ ^ ^ ^-->
-<tr>
-	<td>assertEval</td>
-	<td>true</td>
-	<td>true</td>
 </tr>
 <tr>
 	<td>endTry</td>
@@ -86,10 +80,41 @@
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
+<tr>
+	<td>emit</td>
+	<td>&quot;DONE 1&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td>foo1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;DONE 1A&quot;</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;START 1A~trying foo1~trying fooA~caught 1A~finally 1A~DONE 1~DONE 1A&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
 <!--== try/finally,no error-->
 <tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;---------- foo2 ----------&quot;)</td>
+	<td>log</td>
+	<td>&quot;---------- foo2 ----------&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;START 2&quot;</td>
 	<td></td>
 </tr>
 <!--v v v-->
@@ -99,9 +124,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertEval</td>
-	<td>true</td>
-	<td>true</td>
+	<td>emit</td>
+	<td>&quot;trying 2&quot;</td>
+	<td></td>
 </tr>
 <tr>
 	<td>finally</td>
@@ -109,8 +134,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;ALWAYS foo2&quot;)</td>
+	<td>emit</td>
+	<td>&quot;finally 2&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -119,10 +144,30 @@
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
+<tr>
+	<td>emit</td>
+	<td>&quot;DONE 2&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;START 2~trying 2~finally 2~DONE 2&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
 <!--== try/catch ALL-->
 <tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;---------- foo3 ----------&quot;)</td>
+	<td>log</td>
+	<td>&quot;---------- foo3 ----------&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;START 3&quot;</td>
 	<td></td>
 </tr>
 <!--v v v-->
@@ -132,14 +177,14 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertEval</td>
-	<td>false</td>
-	<td>true</td>
+	<td>throw</td>
+	<td>&quot;blamo 3 catch ALL&quot;</td>
+	<td></td>
 </tr>
 <tr>
 	<td>assertEval</td>
-	<td>true</td>
-	<td>true</td>
+	<td>&quot;this command should not be reached&quot;</td>
+	<td></td>
 </tr>
 <tr>
 	<td>catch</td>
@@ -147,8 +192,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;CAUGHT foo3&quot;)</td>
+	<td>emit</td>
+	<td>&quot;caught 3&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -157,17 +202,42 @@
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
-<!--== try/catch/finally-->
+<tr>
+	<td>emit</td>
+	<td>&quot;DONE 3&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;START 3~caught 3~DONE 3&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--== try, bubble, catch-->
 <!---!- no matching catch block-->
 <tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;---------- foo4 ----------&quot;)</td>
+	<td>log</td>
+	<td>&quot;---------- foo4 ----------&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;START 4&quot;</td>
 	<td></td>
 </tr>
 <!--v v v-->
 <tr>
 	<td>try</td>
 	<td>foo4-trap</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;trying 4-trap&quot;</td>
 	<td></td>
 </tr>
 <!--v v v-->
@@ -177,28 +247,28 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertEval</td>
-	<td>true</td>
-	<td>true</td>
-</tr>
-<tr>
-	<td>assertEval</td>
-	<td>false</td>
-	<td>true</td>
-</tr>
-<tr>
-	<td>assertEval</td>
-	<td>true</td>
-	<td>true</td>
-</tr>
-<tr>
-	<td>catch</td>
-	<td>/'false' did NOT match 'true'/</td>
+	<td>emit</td>
+	<td>&quot;trying 4&quot;</td>
 	<td></td>
 </tr>
 <tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;CAUGHT foo4&quot;)</td>
+	<td>throw</td>
+	<td>&quot;blamo 4 try-catch-finally&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>catch</td>
+	<td>/will NOT catch it/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;caught 4&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -207,8 +277,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;ALWAYS foo4&quot;)</td>
+	<td>emit</td>
+	<td>&quot;finally 4&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -223,8 +293,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;CAUGHT foo4-trap&quot;)</td>
+	<td>emit</td>
+	<td>&quot;caught 4-trap&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -233,17 +303,30 @@
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
+<tr>
+	<td>emit</td>
+	<td>&quot;DONE 4&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;START 4~trying 4-trap~trying 4~finally 4~caught 4-trap~DONE 4&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
 <!--== try only-->
-<!---!- no handling for error-->
 <tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;---------- foo5 ----------&quot;)</td>
+	<td>log</td>
+	<td>&quot;---------- foo5 ----------&quot;</td>
 	<td></td>
 </tr>
-<!--v v v-->
 <tr>
-	<td>try</td>
-	<td>foo5-trap</td>
+	<td>emit</td>
+	<td>&quot;START 5&quot;</td>
 	<td></td>
 </tr>
 <!--v v v-->
@@ -253,19 +336,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertEval</td>
-	<td>true</td>
-	<td>true</td>
-</tr>
-<tr>
-	<td>assertEval</td>
-	<td>false</td>
-	<td>true</td>
-</tr>
-<tr>
-	<td>assertEval</td>
-	<td>true</td>
-	<td>true</td>
+	<td>emit</td>
+	<td>&quot;trying 5&quot;</td>
+	<td></td>
 </tr>
 <tr>
 	<td>endTry</td>
@@ -274,30 +347,29 @@
 </tr>
 <!--^ ^ ^ ^-->
 <tr>
-	<td>catch</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;CAUGHT foo5-trap&quot;)</td>
+	<td>emit</td>
+	<td>&quot;DONE 5&quot;</td>
 	<td></td>
 </tr>
 <tr>
-	<td>endTry</td>
-	<td>foo5-trap</td>
+	<td>assertEmitted</td>
+	<td>&quot;START 5~trying 5~DONE 5&quot;</td>
 	<td></td>
 </tr>
-<!--^ ^ ^ ^-->
 <tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;~~~~~ done ~~~~~~&quot;)</td>
+	<td>resetEmitted</td>
+	<td></td>
 	<td></td>
 </tr>
 <!--== try/catch but no error-->
 <tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;---------- foo3 ----------&quot;)</td>
+	<td>log</td>
+	<td>&quot;---------- foo6 ----------&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;START 6&quot;</td>
 	<td></td>
 </tr>
 <!--v v v-->
@@ -307,14 +379,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>assertEval</td>
-	<td>true</td>
-	<td>true</td>
-</tr>
-<tr>
-	<td>assertEval</td>
-	<td>true</td>
-	<td>true</td>
+	<td>emit</td>
+	<td>&quot;trying 6&quot;</td>
+	<td></td>
 </tr>
 <tr>
 	<td>catch</td>
@@ -322,8 +389,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;CAUGHT foo3&quot;)</td>
+	<td>assertEval</td>
+	<td>&quot;should NEVER enter this catch block&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -332,16 +399,46 @@
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
+<tr>
+	<td>emit</td>
+	<td>&quot;DONE 6&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;START 6~trying 6~DONE 6&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
 <!--== bubbling out of function calls-->
 <tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;---------- foo-bub ----------&quot;)</td>
+	<td>log</td>
+	<td>&quot;---------- foo7 ----------&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;START 7&quot;</td>
 	<td></td>
 </tr>
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>foo-bub</td>
+	<td>foo7</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;trying 7&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;calling 7&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -350,19 +447,19 @@
 	<td>n = 0</td>
 </tr>
 <tr>
-	<td>catch</td>
-	<td>/'false' did not match 'true'/</td>
-	<td></td>
-</tr>
-<tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;CAUGHT foo-bub&quot;)</td>
-	<td></td>
-</tr>
-<tr>
 	<td>assertEval</td>
-	<td>true</td>
-	<td>true</td>
+	<td>&quot;this command should not be reached&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>catch</td>
+	<td>/blamo 7/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;caught 7&quot;</td>
+	<td></td>
 </tr>
 <tr>
 	<td>finally</td>
@@ -370,13 +467,13 @@
 	<td></td>
 </tr>
 <tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;foo-bub finally outer&quot;)</td>
+	<td>emit</td>
+	<td>&quot;finally 7&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>endTry</td>
-	<td>foo-bub</td>
+	<td>foo7</td>
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
@@ -388,23 +485,28 @@
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>foo-bub-inner</td>
+	<td>foo7-inner</td>
 	<td></td>
 </tr>
 <tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(${n} + &quot;) doomed&quot;)</td>
+	<td>emit</td>
+	<td>&quot;${n}) trying 7-inner&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>if</td>
-	<td>n &gt; 2</td>
+	<td>n &lt; 2</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertEval</td>
-	<td>false</td>
-	<td>true</td>
+	<td>emit</td>
+	<td>&quot;${n}) calling 7&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>call</td>
+	<td>doomed</td>
+	<td>n = n+1</td>
 </tr>
 <tr>
 	<td>else</td>
@@ -412,9 +514,14 @@
 	<td></td>
 </tr>
 <tr>
-	<td>call</td>
-	<td>doomed</td>
-	<td>n = n+1</td>
+	<td>emit</td>
+	<td>&quot;${n}) throwing 7&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>throw</td>
+	<td>&quot;blamo 7&quot;</td>
+	<td></td>
 </tr>
 <tr>
 	<td>endIf</td>
@@ -427,13 +534,13 @@
 	<td></td>
 </tr>
 <tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(${n} + &quot;) doomed finally&quot;)</td>
+	<td>emit</td>
+	<td>&quot;${n}) finally 7&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>endTry</td>
-	<td>foo-bub-inner</td>
+	<td>foo7-inner</td>
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
@@ -442,11 +549,31 @@
 	<td></td>
 	<td></td>
 </tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;DONE 7&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;START 7~trying 7~calling 7~0) trying 7-inner~0) calling 7~1) trying 7-inner~1) calling 7~2) trying 7-inner~2) throwing 7~2) finally 7~1) finally 7~0) finally 7~caught 7~finally 7~DONE 7&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
 <!--=- command bubbling-->
 <!----- break w/finally-->
 <tr>
+	<td>log</td>
+	<td>&quot;---------- foo8 ----------&quot;</td>
+	<td></td>
+</tr>
+<tr>
 	<td>emit</td>
-	<td>&quot;START&quot;</td>
+	<td>&quot;START 8&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -461,7 +588,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;entering while&quot;</td>
+	<td>&quot;while'g 8&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -471,22 +598,22 @@
 </tr>
 <tr>
 	<td>try</td>
-	<td>foo2</td>
+	<td>foo8</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;trying&quot;</td>
+	<td>&quot;${w}) trying 8&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>if</td>
-	<td>w==1</td>
+	<td>w==2</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;breaking&quot;</td>
+	<td>&quot;${w}) BREAK 8&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -506,17 +633,17 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;finallying&quot;</td>
+	<td>&quot;${w}) finallying 8&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>endTry</td>
-	<td></td>
+	<td>foo8</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;iter=${w}&quot;</td>
+	<td>&quot;${w}) iterating 8&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -531,12 +658,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;END&quot;</td>
+	<td>&quot;DONE 8&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START~entering while~trying~finallying~iter=3~trying~finallying~iter=2~trying~breaking~finallying~END&quot;</td>
+	<td>&quot;START 8~while'g 8~3) trying 8~3) finallying 8~3) iterating 8~2) trying 8~2) BREAK 8~2) finallying 8~DONE 8&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -546,13 +673,18 @@
 </tr>
 <!----- return w/finally-->
 <tr>
-	<td>emit</td>
-	<td>&quot;START&quot;</td>
+	<td>log</td>
+	<td>&quot;---------- foo9 ----------&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;calling&quot;</td>
+	<td>&quot;START 9&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;calling 9&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -582,7 +714,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;returning&quot;</td>
+	<td>&quot;trying 9&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;returning (1)&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -597,7 +734,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;finallying&quot;</td>
+	<td>&quot;finallying 9&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;returning (2)&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -616,8 +758,13 @@
 	<td></td>
 </tr>
 <tr>
+	<td>emit</td>
+	<td>&quot;DONE 9&quot;</td>
+	<td></td>
+</tr>
+<tr>
 	<td>assertEmitted</td>
-	<td>&quot;START~calling~in fancy~returning~finallying~returned 2&quot;</td>
+	<td>&quot;START 9~calling 9~in fancy~trying 9~returning (1)~finallying 9~returning (2)~returned 2~DONE 9&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -627,8 +774,13 @@
 </tr>
 <!----- exitTest w/finally-->
 <tr>
+	<td>log</td>
+	<td>&quot;---------- foo10 ----------&quot;</td>
+	<td></td>
+</tr>
+<tr>
 	<td>emit</td>
-	<td>&quot;START&quot;</td>
+	<td>&quot;START 10&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -638,7 +790,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;trying&quot;</td>
+	<td>&quot;trying 10&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;exitTest..&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -653,12 +810,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;finallying&quot;</td>
+	<td>&quot;finallying 10&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START~trying~finallying&quot;</td>
+	<td>&quot;START 10~trying 10~exitTest..~finallying 10&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -674,13 +831,13 @@
 <!--=- try without matching catch-->
 <!--v v v-->
 <tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;---------- foo7 ----------&quot;)</td>
+	<td>log</td>
+	<td>&quot;---------- foo11 ----------&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>try</td>
-	<td>foo7</td>
+	<td>foo11</td>
 	<td></td>
 </tr>
 <tr>
@@ -689,23 +846,23 @@
 	<td>true</td>
 </tr>
 <tr>
-	<td>assertEval</td>
-	<td>false</td>
-	<td>true</td>
+	<td>throw</td>
+	<td>&quot;blamo catch me if you can&quot;</td>
+	<td></td>
 </tr>
 <tr>
 	<td>assertEval</td>
-	<td>true</td>
-	<td>true</td>
+	<td>&quot;this command should not be reached&quot;</td>
+	<td></td>
 </tr>
 <tr>
 	<td>catch</td>
-	<td>/'false' did NOT match 'true'/</td>
+	<td>/will NOT catch it/</td>
 	<td></td>
 </tr>
 <tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;CAUGHT foo1&quot;)</td>
+	<td>log</td>
+	<td>&quot;caught foo11&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -714,13 +871,13 @@
 	<td></td>
 </tr>
 <tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;ALWAYS foo1&quot;)</td>
+	<td>log</td>
+	<td>&quot;finally 11&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>endTry</td>
-	<td>foo7</td>
+	<td>foo11</td>
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
@@ -730,8 +887,8 @@
 	<td>true</td>
 </tr>
 <tr>
-	<td>getEval</td>
-	<td>selblocks.LOG.info(&quot;~~~~~ done ~~~~~~&quot;)</td>
+	<td>assertEmitted</td>
+	<td>&quot;&quot;</td>
 	<td></td>
 </tr>
 </tbody></table>
