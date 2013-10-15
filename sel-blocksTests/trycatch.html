@@ -22,6 +22,11 @@
 	<td>&quot;START 1A&quot;</td>
 	<td></td>
 </tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
 <!--v v v-->
 <tr>
 	<td>try</td>
@@ -32,6 +37,11 @@
 	<td>emit</td>
 	<td>&quot;trying foo1&quot;</td>
 	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
 </tr>
 <!--v v v-->
 <tr>
@@ -51,7 +61,7 @@
 </tr>
 <tr>
 	<td>assertEval</td>
-	<td>&quot;this command should not be reached&quot;</td>
+	<td>&quot;this command should not be reached, due to thrown&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -81,6 +91,11 @@
 </tr>
 <!--^ ^ ^ ^-->
 <tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr>
 	<td>emit</td>
 	<td>&quot;DONE 1&quot;</td>
 	<td></td>
@@ -90,12 +105,17 @@
 	<td>foo1</td>
 	<td></td>
 </tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
 <tr>
 	<td>emit</td>
 	<td>&quot;DONE 1A&quot;</td>
 	<td></td>
 </tr>
-<!--^ ^ ^ ^-->
 <tr>
 	<td>assertEmitted</td>
 	<td>&quot;START 1A~trying foo1~trying fooA~caught 1A~finally 1A~DONE 1~DONE 1A&quot;</td>
@@ -116,6 +136,11 @@
 	<td>emit</td>
 	<td>&quot;START 2&quot;</td>
 	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
 </tr>
 <!--v v v-->
 <tr>
@@ -145,6 +170,11 @@
 </tr>
 <!--^ ^ ^ ^-->
 <tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr>
 	<td>emit</td>
 	<td>&quot;DONE 2&quot;</td>
 	<td></td>
@@ -170,6 +200,11 @@
 	<td>&quot;START 3&quot;</td>
 	<td></td>
 </tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
 <!--v v v-->
 <tr>
 	<td>try</td>
@@ -183,7 +218,7 @@
 </tr>
 <tr>
 	<td>assertEval</td>
-	<td>&quot;this command should not be reached&quot;</td>
+	<td>&quot;this command should not be reached, due to thrown&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -202,6 +237,11 @@
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
 <tr>
 	<td>emit</td>
 	<td>&quot;DONE 3&quot;</td>
@@ -229,6 +269,11 @@
 	<td>&quot;START 4&quot;</td>
 	<td></td>
 </tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
 <!--v v v-->
 <tr>
 	<td>try</td>
@@ -239,6 +284,11 @@
 	<td>emit</td>
 	<td>&quot;trying 4-trap&quot;</td>
 	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
 </tr>
 <!--v v v-->
 <tr>
@@ -258,7 +308,7 @@
 </tr>
 <tr>
 	<td>assertEval</td>
-	<td>&quot;this command should not be reached&quot;</td>
+	<td>&quot;this command should not be reached, due to throw&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -288,6 +338,11 @@
 </tr>
 <!--^ ^ ^ ^-->
 <tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+</tr>
+<tr>
 	<td>catch</td>
 	<td></td>
 	<td></td>
@@ -303,6 +358,11 @@
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
 <tr>
 	<td>emit</td>
 	<td>&quot;DONE 4&quot;</td>
@@ -329,6 +389,11 @@
 	<td>&quot;START 5&quot;</td>
 	<td></td>
 </tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
 <!--v v v-->
 <tr>
 	<td>try</td>
@@ -346,6 +411,11 @@
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
 <tr>
 	<td>emit</td>
 	<td>&quot;DONE 5&quot;</td>
@@ -372,6 +442,11 @@
 	<td>&quot;START 6&quot;</td>
 	<td></td>
 </tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
 <!--v v v-->
 <tr>
 	<td>try</td>
@@ -390,7 +465,7 @@
 </tr>
 <tr>
 	<td>assertEval</td>
-	<td>&quot;should NEVER enter this catch block&quot;</td>
+	<td>&quot;should NEVER enter this catch block, due to no error&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -399,6 +474,11 @@
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
 <tr>
 	<td>emit</td>
 	<td>&quot;DONE 6&quot;</td>
@@ -425,6 +505,11 @@
 	<td>&quot;START 7&quot;</td>
 	<td></td>
 </tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
 <!--v v v-->
 <tr>
 	<td>try</td>
@@ -448,7 +533,7 @@
 </tr>
 <tr>
 	<td>assertEval</td>
-	<td>&quot;this command should not be reached&quot;</td>
+	<td>&quot;this command should not be reached, due error thrown in function&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -475,6 +560,11 @@
 	<td>endTry</td>
 	<td>foo7</td>
 	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
 </tr>
 <!--^ ^ ^ ^-->
 <tr>
@@ -545,6 +635,11 @@
 </tr>
 <!--^ ^ ^ ^-->
 <tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+</tr>
+<tr>
 	<td>endFunction</td>
 	<td></td>
 	<td></td>
@@ -597,6 +692,12 @@
 	<td></td>
 </tr>
 <tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr>
 	<td>try</td>
 	<td>foo8</td>
 	<td></td>
@@ -641,6 +742,12 @@
 	<td>foo8</td>
 	<td></td>
 </tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
 <tr>
 	<td>emit</td>
 	<td>&quot;${w}) iterating 8&quot;</td>
@@ -674,22 +781,22 @@
 <!----- return w/finally-->
 <tr>
 	<td>log</td>
-	<td>&quot;---------- foo9 ----------&quot;</td>
+	<td>&quot;---------- foo9a ----------&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;START 9&quot;</td>
+	<td>&quot;START 9a&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;calling 9&quot;</td>
+	<td>&quot;calling 9a&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>call</td>
-	<td>fancy</td>
+	<td>fancyA</td>
 	<td></td>
 </tr>
 <tr>
@@ -699,7 +806,7 @@
 </tr>
 <tr>
 	<td>function</td>
-	<td>fancy</td>
+	<td>fancyA</td>
 	<td></td>
 </tr>
 <tr>
@@ -708,13 +815,19 @@
 	<td></td>
 </tr>
 <tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr>
 	<td>try</td>
 	<td>fancy-foo</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;trying 9&quot;</td>
+	<td>&quot;trying 9a&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -734,7 +847,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;finallying 9&quot;</td>
+	<td>&quot;finallying 9a&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -752,6 +865,12 @@
 	<td></td>
 	<td></td>
 </tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached, due to return/return above&quot;</td>
+	<td></td>
+</tr>
 <tr>
 	<td>endFunction</td>
 	<td></td>
@@ -759,12 +878,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;DONE 9&quot;</td>
+	<td>&quot;DONE 9a&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START 9~calling 9~in fancy~trying 9~returning (1)~finallying 9~returning (2)~returned 2~DONE 9&quot;</td>
+	<td>&quot;START 9a~calling 9a~in fancy~trying 9a~returning (1)~finallying 9a~returning (2)~returned 2~DONE 9a&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -772,7 +891,120 @@
 	<td></td>
 	<td></td>
 </tr>
-<!----- exitTest w/finally-->
+<!----- return w/finally-->
+<tr>
+	<td>log</td>
+	<td>&quot;---------- foo9b ----------&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;START 9b&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;calling 9b&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>call</td>
+	<td>fancyB</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;returned ${_result}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>function</td>
+	<td>fancyB</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;in fancy&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr>
+	<td>try</td>
+	<td>fancy-foo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;trying 9b&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;throwing&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>throw</td>
+	<td>&quot;won't last very long&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;finallying 9b&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;returning (2)&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>return</td>
+	<td>2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached, due to throw/return above&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;DONE 9b&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;START 9b~calling 9b~in fancy~trying 9b~throwing~finallying 9b~returning (2)~returned 2~DONE 9b&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--== exitTest w/finally-->
 <tr>
 	<td>log</td>
 	<td>&quot;---------- foo10 ----------&quot;</td>
@@ -784,8 +1016,14 @@
 	<td></td>
 </tr>
 <tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr>
 	<td>try</td>
-	<td></td>
+	<td>foo10</td>
 	<td></td>
 </tr>
 <tr>
@@ -795,7 +1033,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;exitTest..&quot;</td>
+	<td>&quot;exitTest ...&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -815,7 +1053,7 @@
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START 10~trying 10~exitTest..~finallying 10&quot;</td>
+	<td>&quot;START 10~trying 10~exitTest ...~finallying 10&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -825,16 +1063,27 @@
 </tr>
 <tr>
 	<td>endTry</td>
+	<td>foo10</td>
 	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached, due to exitTest above&quot;</td>
 	<td></td>
 </tr>
 <!--=- try without matching catch-->
-<!--v v v-->
 <tr>
 	<td>log</td>
 	<td>&quot;---------- foo11 ----------&quot;</td>
 	<td></td>
 </tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
 <tr>
 	<td>try</td>
 	<td>foo11</td>
@@ -881,6 +1130,11 @@
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
 <tr>
 	<td>assertEval</td>
 	<td>true</td>

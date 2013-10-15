@@ -675,7 +675,8 @@ function $X(xpath, contextNode, resultType) {
       else
         $$.LOG.info("no bubbling in process");
     }
-    $$.LOG.info("end of try section");
+    var tryDef = blockDefs[tryState.idx];
+    $$.LOG.info("end of try '" + tryDef.name + "'");
     // fall out of endTry
   };
 
@@ -761,12 +762,12 @@ function $X(xpath, contextNode, resultType) {
   }
 
   // execute any enclosing finally block(s) until reaching the given type of block
-  function bubbleCommand(cmdIdx, _isCeilingBlock)
+  function bubbleCommand(cmdIdx, _isBubbleCeiling)
   {
     var tryState = bubbleToTryBlock(isTryWithFinally);
     while (tryState) {
       var tryDef = blockDefs[tryState.idx];
-      $$.tcf.bubbling = { mode: "command", srcIdx: cmdIdx, _isStopCriteria: _isCeilingBlock };
+      $$.tcf.bubbling = { mode: "command", srcIdx: cmdIdx, _isStopCriteria: _isBubbleCeiling };
       if (hasUnspentFinally(tryState)) {
         $$.LOG.warn("Command " + fmtCmdRef(cmdIdx) + ", suspended while finally block runs");
         tryState.execPhase = "finallying";
@@ -779,7 +780,7 @@ function $X(xpath, contextNode, resultType) {
     //- find enclosing finally-blocks, stopping at the given block type
     function isTryWithFinally(stackFrame) {
       return ( (blockDefs[stackFrame.idx].nature == "try" && hasUnspentFinally(stackFrame))
-        || (_isCeilingBlock ? _isCeilingBlock(stackFrame) : false)
+        || (_isBubbleCeiling ? _isBubbleCeiling(stackFrame) : false)
       );
     }
   }
@@ -803,6 +804,29 @@ function $X(xpath, contextNode, resultType) {
       $$.LOG.info("unwound to: " + fmtTry(tryState));
     return tryState;
   }
+
+  function isBubblableOrTransform(_isBubbleCeiling)
+  {
+    if ($$.tcf.bubbling) {
+      if ($$.tcf.bubbling.mode == "error") {
+        $$.LOG.warn("Bubbling error: " + $$.tcf.bubbling.error.message
+          + ", replaced with command " + fmtCmdRef(idxHere()));
+        $$.tcf.bubbling = { mode: "command", srcIdx: idxHere(), _isStopCriteria: _isBubbleCeiling };
+        return true;
+      }
+      else { // mode == "command"
+        $$.LOG.warn("Command suspension " + fmtCmdRef($$.tcf.bubbling.srcIdx)
+          + ", replaced with " + fmtCmdRef(idxHere()));
+        $$.tcf.bubbling.srcIdx = idxHere();
+        return true;
+      }
+    }
+    if (isBubblable()) {
+      bubbleCommand(idxHere(), _isBubbleCeiling);
+      return true;
+    }
+    return false;
+  };
 
   function isBubblable() {
     var canBubble = ($$.tcf.nestingLevel > -1);
@@ -1081,10 +1105,8 @@ function $X(xpath, contextNode, resultType) {
   function dropToLoop(condExpr)
   {
     assertRunning();
-    if (isBubblable()) {
-      bubbleCommand(idxHere(), Stack.isLoopBlock);
+    if (isBubblableOrTransform(Stack.isLoopBlock))
       return;
-    }
     if (condExpr && !evalWithVars(condExpr))
       return;
     var loopState = activeBlockStack().unwindTo(Stack.isLoopBlock);
@@ -1149,11 +1171,9 @@ function $X(xpath, contextNode, resultType) {
 
   function returnFromFunction(funcName, returnVal)
   {
-    assertRunning();
-    if (isBubblable()) {
-      bubbleCommand(idxHere(), Stack.isFunctionBlock);
+    if (isBubblableOrTransform(Stack.isFunctionBlock))
       return;
-    }
+    assertRunning();
     var endDef = blockDefs.here();
     var activeCallFrame = callStack.top();
     if (activeCallFrame.funcIdx != endDef.funcIdx) {
@@ -1170,10 +1190,8 @@ function $X(xpath, contextNode, resultType) {
 
   // ================================================================================
   Selenium.prototype.doExitTest = function() {
-    if (isBubblable()) {
-      bubbleCommand(idxHere());
+    if (isBubblableOrTransform())
       return;
-    }
     // intercept command processing and simply stop test execution instead of executing the next command
     $$.fn.interceptOnce(editor.selDebugger.runner.IDETestLoop.prototype, "resume", $$.handleAsExitTest);
   };
