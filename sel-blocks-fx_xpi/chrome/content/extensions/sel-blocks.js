@@ -31,8 +31,8 @@
  * Limitations:
  *  - Incompatible with flowControl (and derivatives), because they unilaterally override selenium.reset().
  *    Known to have this issue:
- *      selenium_ide__flow_control-1.0.1-fx.xpi
- *      goto_while_for_ide.js
+ *      selenium_ide__flow_control
+ *      goto_while_for_ide
  *
  * Acknowledgements:
  *  SelBlocks reuses bits & parts of extensions: flowControl, datadriven, and include.
@@ -785,6 +785,7 @@ function $X(xpath, contextNode, resultType) {
     }
   }
 
+  // unwind the blockStack, and callStack, until reaching the given criteria
   function bubbleToTryBlock(_hasCriteria) {
     if ($$.tcf.nestingLevel < 0)
       $$.LOG.error("bubbleToTryBlock() called outside of any try nesting");
@@ -798,6 +799,7 @@ function $X(xpath, contextNode, resultType) {
     return tryState;
   }
 
+  // unwind the blockStack until reaching the given criteria
   function unwindToBlock(_hasCriteria) {
     var tryState = activeBlockStack().unwindTo(_hasCriteria);
     if (tryState)
@@ -805,9 +807,10 @@ function $X(xpath, contextNode, resultType) {
     return tryState;
   }
 
-  function isBubblableOrTransform(_isBubbleCeiling)
+  // instigate or continue bubbling, if appropriate
+  function transitionBubbling(_isBubbleCeiling)
   {
-    if ($$.tcf.bubbling) {
+    if ($$.tcf.bubbling) { // transform bubbling
       if ($$.tcf.bubbling.mode == "error") {
         $$.LOG.warn("Bubbling error: " + $$.tcf.bubbling.error.message
           + ", replaced with command " + fmtCmdRef(idxHere()));
@@ -821,7 +824,7 @@ function $X(xpath, contextNode, resultType) {
         return true;
       }
     }
-    if (isBubblable()) {
+    if (isBubblable()) { // instigate bubbling
       bubbleCommand(idxHere(), _isBubbleCeiling);
       return true;
     }
@@ -1105,7 +1108,7 @@ function $X(xpath, contextNode, resultType) {
   function dropToLoop(condExpr)
   {
     assertRunning();
-    if (isBubblableOrTransform(Stack.isLoopBlock))
+    if (transitionBubbling(Stack.isLoopBlock))
       return;
     if (condExpr && !evalWithVars(condExpr))
       return;
@@ -1171,7 +1174,7 @@ function $X(xpath, contextNode, resultType) {
 
   function returnFromFunction(funcName, returnVal)
   {
-    if (isBubblableOrTransform(Stack.isFunctionBlock))
+    if (transitionBubbling(Stack.isFunctionBlock))
       return;
     assertRunning();
     var endDef = blockDefs.here();
@@ -1190,7 +1193,7 @@ function $X(xpath, contextNode, resultType) {
 
   // ================================================================================
   Selenium.prototype.doExitTest = function() {
-    if (isBubblableOrTransform())
+    if (transitionBubbling())
       return;
     // intercept command processing and simply stop test execution instead of executing the next command
     $$.fn.interceptOnce(editor.selDebugger.runner.IDETestLoop.prototype, "resume", $$.handleAsExitTest);
