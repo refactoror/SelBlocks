@@ -718,61 +718,41 @@ function $X(xpath, contextNode, resultType) {
   {
     var tryState = bubbleToTryBlock(isTryBlock);
     var tryDef = blockDefs[tryState.idx];
-    $$.LOG.info("Bubbling begins: " + fmtTry(tryState) + " : " + hasUnspentFinally(tryState));
-    if (tryState.execPhase != "trying" && !hasUnspentFinally(tryState)) {
-      $$.LOG.warn("No unspent finally block, ending this try section :: " + err.message);
-      $$.tcf.bubbling = { mode: "error", error: err, srcIdx: idxHere() };
+    $$.LOG.info("error encountered while: " + tryState.execPhase);
+    if (hasUnspentCatch(tryState)) {
+      if (isMatchingCatch(err, tryDef.catchIdx)) {
+        // an expected kind of error has been caught
+        $$.LOG.info("@" + (idxHere()+1) + ", error has been caught" + fmtCatching(tryState));
+        tryState.hasCaught = true;
+        tryState.execPhase = "catching";
+        $$.tcf.bubbling = null;
+        setNextCommand(tryDef.catchIdx);
+        return true; // continue
+      }
+    }
+    // error not caught .. instigate bubbling
+    $$.LOG.info("error not caught, bubbling the error: " + err.message);
+    $$.tcf.bubbling = { mode: "error", error: err, srcIdx: idxHere() };
+    if (hasUnspentFinally(tryState)) {
+      $$.LOG.warn("Bubbling suspended while finally block runs");
+      tryState.execPhase = "finallying";
+      tryState.hasFinaled = true;
+      setNextCommand(tryDef.finallyIdx);
+      return true; // continue
+    }
+    if ($$.tcf.nestingLevel > 0) {
+      $$.LOG.warn("No further handling, bubbling will continue after this try section.");
       setNextCommand(tryDef.endIdx);
       return true;
     }
-    while (tryState) {
-      $$.LOG.info("error encountered while: " + tryState.execPhase);
-      if (hasUnspentCatch(tryState)) {
-        var catchDcl = testCase.commands[tryDef.catchIdx].target;
-        if (isMatchingError(err, catchDcl)) {
-          // an expected kind of error has been caught
-          $$.LOG.info("@" + (idxHere()+1) + ", error has been caught" + fmtCatching(tryState));
-          tryState.hasCaught = true;
-          tryState.execPhase = "catching";
-          $$.tcf.bubbling = null;
-          setNextCommand(tryDef.catchIdx);
-          return true; // continue
-        }
-      }
-      // error not caught .. instigate bubbling
-      $$.LOG.info("error not caught, bubbling the error: " + err.message);
-      $$.tcf.bubbling = { mode: "error", error: err, srcIdx: idxHere() };
-      if (hasUnspentFinally(tryState)) {
-        $$.LOG.warn("Bubbling suspended while finally block runs :: " + $$.tcf.bubbling.error.message);
-        tryState.execPhase = "finallying";
-        tryState.hasFinaled = true;
-        setNextCommand(tryDef.finallyIdx);
-        return true; // continue
-      }
-      tryState = bubbleToTryBlock(isTryWithCatchOrFinally);
-      tryDef = blockDefs[tryState.idx];
-    }
-    // no matching catch and no finally to process
-    return false; // halt the test
-
-    //- error message matcher ----------
-    function isMatchingError(e, errDcl) {
-      if (!errDcl) {
-        return true; // no error specified means catch all errors
-      }
-      var errExpr = evalWithVars(errDcl);
-      var errMsg = e.message;
-      if (errExpr instanceof RegExp) {
-        return (errMsg.match(errExpr));
-      }
-      return (errMsg.indexOf(errExpr) != -1);
-    }
+    $$.LOG.warn("No handling provided for this error.");
+    return false;
   }
 
   // execute any enclosing finally block(s) until reaching the given type of block
   function bubbleCommand(cmdIdx, _isBubbleCeiling)
   {
-    var tryState = bubbleToTryBlock(isTryWithFinally);
+    var tryState = bubbleToTryBlock(isTryWithMatchingOrFinally);
     while (tryState) {
       var tryDef = blockDefs[tryState.idx];
       $$.tcf.bubbling = { mode: "command", srcIdx: cmdIdx, _isStopCriteria: _isBubbleCeiling };
@@ -783,14 +763,34 @@ function $X(xpath, contextNode, resultType) {
         setNextCommand(tryDef.finallyIdx);
         return;
       }
-      tryState = bubbleToTryBlock(isTryWithFinally);
+      tryState = bubbleToTryBlock(isTryWithMatchingOrFinally);
     }
-    //- find enclosing finally-blocks, stopping at the given block type
-    function isTryWithFinally(stackFrame) {
-      return ( (blockDefs[stackFrame.idx].nature == "try" && hasUnspentFinally(stackFrame))
-        || (_isBubbleCeiling ? _isBubbleCeiling(stackFrame) : false)
-      );
+    //- find next enclosing try, or stop at the given block type
+    function isTryWithMatchingOrFinally(stackFrame) {
+      if (_isBubbleCeiling && _isBubbleCeiling(stackFrame))
+        return true;
+      if ($$.tcf.bubbling && $$.tcf.bubbling.mode == "error" && hasUnspentCatch(stackFrame)) {
+        var tryDef = blockDefs[stackFrame.idx];
+        if (isMatchingCatch($$.tcf.bubbling.error, tryDef.catchIdx)) {
+          return true;
+        }
+      }
+      return hasUnspentFinally(stackFrame);
     }
+  }
+
+  //- error message matcher ----------
+  function isMatchingCatch(e, catchIdx) {
+    var errDcl = testCase.commands[catchIdx].target;
+    if (!errDcl) {
+      return true; // no error specified means catch all errors
+    }
+    var errExpr = evalWithVars(errDcl);
+    var errMsg = e.message;
+    if (errExpr instanceof RegExp) {
+      return (errMsg.match(errExpr));
+    }
+    return (errMsg.indexOf(errExpr) != -1);
   }
 
   // unwind the blockStack, and callStack, until reaching the given criteria
