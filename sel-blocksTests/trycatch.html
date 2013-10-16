@@ -1004,6 +1004,146 @@
 	<td></td>
 	<td></td>
 </tr>
+<!----- return w/finally-->
+<tr>
+	<td>log</td>
+	<td>&quot;---------- foo9c ----------&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;START 9c&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;calling 9c&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>call</td>
+	<td>fancyC</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;returned ${_result}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>function</td>
+	<td>fancyC</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;in fancy&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr>
+	<td>try</td>
+	<td>fancy-foo-guardrail</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+</tr>
+<!--v v v-->
+<tr>
+	<td>try</td>
+	<td>fancy-foo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;trying 9c&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;returning (1)&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>return</td>
+	<td>1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;finallying 9c&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;throwing&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>throw</td>
+	<td>&quot;this-error-replaces-return-1&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>catch</td>
+	<td>/this-error-replaces-return-1/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;caught 9c&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;DONE 9c&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;START 9c~calling 9c~in fancy~trying 9c~returning (1)~finallying 9c~throwing~caught 9c~returned ${_result}~DONE 9c&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
 <!--== exitTest w/finally-->
 <tr>
 	<td>log</td>

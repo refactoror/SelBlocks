@@ -716,10 +716,17 @@ function $X(xpath, contextNode, resultType) {
   // alter the behavior of Selenium error handling
   function handleCommandError(err)
   {
-    var tryState = bubbleToTryBlock(isTryWithCatchOrFinally);
+    var tryState = bubbleToTryBlock(isTryBlock);
+    var tryDef = blockDefs[tryState.idx];
+    $$.LOG.info("Bubbling begins: " + fmtTry(tryState) + " : " + hasUnspentFinally(tryState));
+    if (tryState.execPhase != "trying" && !hasUnspentFinally(tryState)) {
+      $$.LOG.warn("No unspent finally block, ending this try section :: " + err.message);
+      $$.tcf.bubbling = { mode: "error", error: err, srcIdx: idxHere() };
+      setNextCommand(tryDef.endIdx);
+      return true;
+    }
     while (tryState) {
       $$.LOG.info("error encountered while: " + tryState.execPhase);
-      var tryDef = blockDefs[tryState.idx];
       if (hasUnspentCatch(tryState)) {
         var catchDcl = testCase.commands[tryDef.catchIdx].target;
         if (isMatchingError(err, catchDcl)) {
@@ -743,6 +750,7 @@ function $X(xpath, contextNode, resultType) {
         return true; // continue
       }
       tryState = bubbleToTryBlock(isTryWithCatchOrFinally);
+      tryDef = blockDefs[tryState.idx];
     }
     // no matching catch and no finally to process
     return false; // halt the test
@@ -841,6 +849,9 @@ function $X(xpath, contextNode, resultType) {
     return canBubble;
   }
 
+  function isTryBlock(stackFrame) {
+    return (blockDefs[stackFrame.idx].nature == "try");
+  }
   function isTryWithCatchOrFinally(stackFrame) {
     return ( blockDefs[stackFrame.idx].nature == "try" && hasUnspentCatchOrFinally(stackFrame) );
   }
@@ -1174,9 +1185,9 @@ function $X(xpath, contextNode, resultType) {
 
   function returnFromFunction(funcName, returnVal)
   {
+    assertRunning();
     if (transitionBubbling(Stack.isFunctionBlock))
       return;
-    assertRunning();
     var endDef = blockDefs.here();
     var activeCallFrame = callStack.top();
     if (activeCallFrame.funcIdx != endDef.funcIdx) {
