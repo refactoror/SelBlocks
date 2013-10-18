@@ -11,7 +11,254 @@
 <thead>
 <tr><td rowspan="1" colspan="3">trcatch</td></tr>
 </thead><tbody>
-<!--== nested catch-->
+<!--= no-op try-->
+<tr>
+	<td>log</td>
+	<td>&quot;---------- foo5 ----------&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;START 5&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr>
+	<td>try</td>
+	<td>foo5</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;trying 5&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td>foo5</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;DONE 5&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;START 5~trying 5~DONE 5&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--== try/finally, w/no error-->
+<tr>
+	<td>log</td>
+	<td>&quot;---------- foo2 ----------&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;START 2&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr>
+	<td>try</td>
+	<td>foo2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;trying 2&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;finally 2&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;DONE 2&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;START 2~trying 2~finally 2~DONE 2&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--== try/catch, but no error-->
+<tr>
+	<td>log</td>
+	<td>&quot;---------- foo6 ----------&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;START 6&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr>
+	<td>try</td>
+	<td>foo6</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;trying 6&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>catch</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;should NEVER enter this catch block, due to no error&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;DONE 6&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;START 6~trying 6~DONE 6&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--== catch specific error-->
+<tr>
+	<td>log</td>
+	<td>&quot;---------- foo3 ----------&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;START 3&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr>
+	<td>try</td>
+	<td>foo3</td>
+	<td></td>
+</tr>
+<tr>
+	<td>throw</td>
+	<td>&quot;blamo 3 catch ALL&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached, due to thrown&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>catch</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;caught 3&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;DONE 3&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;START 3~caught 3~DONE 3&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--== catch specific error, then finally-->
 <tr>
 	<td>log</td>
 	<td>&quot;---------- foo1 ----------&quot;</td>
@@ -126,139 +373,7 @@
 	<td></td>
 	<td></td>
 </tr>
-<!--== try/finally,no error-->
-<tr>
-	<td>log</td>
-	<td>&quot;---------- foo2 ----------&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;START 2&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertEval</td>
-	<td>selblocks.tcf.nestingLevel</td>
-	<td>-1</td>
-</tr>
-<!--v v v-->
-<tr>
-	<td>try</td>
-	<td>foo2</td>
-	<td></td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;trying 2&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>finally</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;finally 2&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>endTry</td>
-	<td></td>
-	<td></td>
-</tr>
-<!--^ ^ ^ ^-->
-<tr>
-	<td>assertEval</td>
-	<td>selblocks.tcf.nestingLevel</td>
-	<td>-1</td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;DONE 2&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertEmitted</td>
-	<td>&quot;START 2~trying 2~finally 2~DONE 2&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
-<!--== try/catch ALL-->
-<tr>
-	<td>log</td>
-	<td>&quot;---------- foo3 ----------&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;START 3&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertEval</td>
-	<td>selblocks.tcf.nestingLevel</td>
-	<td>-1</td>
-</tr>
-<!--v v v-->
-<tr>
-	<td>try</td>
-	<td>foo3</td>
-	<td></td>
-</tr>
-<tr>
-	<td>throw</td>
-	<td>&quot;blamo 3 catch ALL&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertEval</td>
-	<td>&quot;this command should not be reached, due to thrown&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>catch</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;caught 3&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>endTry</td>
-	<td></td>
-	<td></td>
-</tr>
-<!--^ ^ ^ ^-->
-<tr>
-	<td>assertEval</td>
-	<td>selblocks.tcf.nestingLevel</td>
-	<td>-1</td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;DONE 3&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertEmitted</td>
-	<td>&quot;START 3~caught 3~DONE 3&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
-<!--== try, bubble, catch-->
-<!---!- no matching catch block-->
+<!--== bubble up to catch ALL-->
 <tr>
 	<td>log</td>
 	<td>&quot;---------- foo4 ----------&quot;</td>
@@ -378,123 +493,7 @@
 	<td></td>
 	<td></td>
 </tr>
-<!--== try only-->
-<tr>
-	<td>log</td>
-	<td>&quot;---------- foo5 ----------&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;START 5&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertEval</td>
-	<td>selblocks.tcf.nestingLevel</td>
-	<td>-1</td>
-</tr>
-<!--v v v-->
-<tr>
-	<td>try</td>
-	<td>foo5</td>
-	<td></td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;trying 5&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>endTry</td>
-	<td>foo5</td>
-	<td></td>
-</tr>
-<!--^ ^ ^ ^-->
-<tr>
-	<td>assertEval</td>
-	<td>selblocks.tcf.nestingLevel</td>
-	<td>-1</td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;DONE 5&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertEmitted</td>
-	<td>&quot;START 5~trying 5~DONE 5&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
-<!--== try/catch but no error-->
-<tr>
-	<td>log</td>
-	<td>&quot;---------- foo6 ----------&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;START 6&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertEval</td>
-	<td>selblocks.tcf.nestingLevel</td>
-	<td>-1</td>
-</tr>
-<!--v v v-->
-<tr>
-	<td>try</td>
-	<td>foo6</td>
-	<td></td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;trying 6&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>catch</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertEval</td>
-	<td>&quot;should NEVER enter this catch block, due to no error&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>endTry</td>
-	<td></td>
-	<td></td>
-</tr>
-<!--^ ^ ^ ^-->
-<tr>
-	<td>assertEval</td>
-	<td>selblocks.tcf.nestingLevel</td>
-	<td>-1</td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;DONE 6&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>assertEmitted</td>
-	<td>&quot;START 6~trying 6~DONE 6&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
-<!--== bubbling out of function calls-->
+<!--== bubbling out of nested function calls-->
 <tr>
 	<td>log</td>
 	<td>&quot;---------- foo7 ----------&quot;</td>
@@ -778,7 +777,7 @@
 	<td></td>
 	<td></td>
 </tr>
-<!----- return w/finally-->
+<!----- return replaced in finally-->
 <tr>
 	<td>log</td>
 	<td>&quot;---------- foo9a ----------&quot;</td>
@@ -891,7 +890,7 @@
 	<td></td>
 	<td></td>
 </tr>
-<!----- return w/finally-->
+<!----- error replaced by return in finally-->
 <tr>
 	<td>log</td>
 	<td>&quot;---------- foo9b ----------&quot;</td>
@@ -1004,7 +1003,7 @@
 	<td></td>
 	<td></td>
 </tr>
-<!----- return w/finally-->
+<!----- return replaced by error in finally-->
 <tr>
 	<td>log</td>
 	<td>&quot;---------- foo9c ----------&quot;</td>
@@ -1144,7 +1143,7 @@
 	<td></td>
 	<td></td>
 </tr>
-<!--== exitTest w/finally-->
+<!--== exitTest w/finally processing-->
 <tr>
 	<td>log</td>
 	<td>&quot;---------- foo10 ----------&quot;</td>
@@ -1212,7 +1211,7 @@
 	<td>&quot;this command should not be reached, due to exitTest above&quot;</td>
 	<td></td>
 </tr>
-<!--=- try without matching catch-->
+<!--== try without matching catch-->
 <tr>
 	<td>log</td>
 	<td>&quot;---------- foo11 ----------&quot;</td>
