@@ -154,7 +154,7 @@ function $X(xpath, contextNode, resultType) {
     cmds.here = function() {
       var curIdx = idxHere();
       if (!cmds[curIdx])
-        $$.LOG.warn("No blockDef defined at curIdx=" + curIdx);
+        $$.LOG.warn("No blockDef defined @" + (curIdx+1));
       return cmds[curIdx];
     };
     return cmds;
@@ -740,12 +740,12 @@ function $X(xpath, contextNode, resultType) {
       setNextCommand(tryDef.finallyIdx);
       return true; // continue
     }
-    if ($$.tcf.nestingLevel > 0) {
-      $$.LOG.warn("No further handling, bubbling will continue after this try section.");
+    if ($$.tcf.nestingLevel > -1) {
+      $$.LOG.warn("No further handling, bubbling will continue outside of this try.");
       setNextCommand(tryDef.endIdx);
       return true;
     }
-    $$.LOG.warn("No handling provided for this error.");
+    $$.LOG.warn("No handling provided by this try section for this error.");
     return false;
   }
 
