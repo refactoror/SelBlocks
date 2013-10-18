@@ -620,7 +620,8 @@ function $X(xpath, contextNode, resultType) {
 
     if (!tryDef.catchIdx && !tryDef.finallyIdx) {
       $$.LOG.warn(fmtCurCmd() + " does not have a catch-block nor a finally-block, and therefore serves no purpose");
-      return; // continue into try-block without any special handling
+      if ($$.tcf.nestingLevel == -1)
+        return; // continue into try-block without any special error handling
     }
 
     // log an advisory about the active catch block

@@ -493,15 +493,15 @@
 	<td></td>
 	<td></td>
 </tr>
-<!--== bubble up to catch specific error-->
+<!--== bubble out of no-op try to catch specific error-->
 <tr>
 	<td>log</td>
-	<td>&quot;---------- foo0 ----------&quot;</td>
+	<td>&quot;---------- foo0a ----------&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;START 0&quot;</td>
+	<td>&quot;START 0a&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -512,12 +512,12 @@
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>foo0</td>
+	<td>foo0a</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;trying foo0&quot;</td>
+	<td>&quot;trying foo0a&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -528,12 +528,12 @@
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>foo0A</td>
+	<td>foo0aA</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;trying foo0A&quot;</td>
+	<td>&quot;trying foo0aA&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -543,12 +543,127 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;throwing foo0A&quot;</td>
+	<td>&quot;throwing foo0aA&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>throw</td>
-	<td>&quot;blamo 0A nested catch&quot;</td>
+	<td>&quot;blamo 0aA nested catch&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached, due to throw&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td>foo0aA</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>catch</td>
+	<td>/blamo 0aA nested catch/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;caught 0a&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;finally 0a&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td>foo0a</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;DONE 0aA&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;START 0a~trying foo0a~trying foo0aA~throwing foo0aA~caught 0a~finally 0a~DONE 0aA&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--== bubble up to catch specific error-->
+<tr>
+	<td>log</td>
+	<td>&quot;---------- foo0b ----------&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;START 0b&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr>
+	<td>try</td>
+	<td>foo0b</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;trying foo0b&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+</tr>
+<!--v v v-->
+<tr>
+	<td>try</td>
+	<td>foo0bA</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;trying foo0bA&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;throwing foo0bA&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>throw</td>
+	<td>&quot;blamo 0bA nested catch&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -563,23 +678,23 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;finally 0A&quot;</td>
+	<td>&quot;finally 0bA&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>endTry</td>
-	<td>foo0A</td>
+	<td>foo0bA</td>
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
 <tr>
 	<td>catch</td>
-	<td>/blamo 0A nested catch/</td>
+	<td>/blamo 0bA nested catch/</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;caught 0&quot;</td>
+	<td>&quot;caught 0b&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -589,12 +704,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;finally 0&quot;</td>
+	<td>&quot;finally 0b&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>endTry</td>
-	<td>foo0</td>
+	<td>foo0b</td>
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
@@ -605,12 +720,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;DONE 0A&quot;</td>
+	<td>&quot;DONE 0bA&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START 0~trying foo0~trying foo0A~throwing foo0A~finally 0A~caught 0~finally 0~DONE 0A&quot;</td>
+	<td>&quot;START 0b~trying foo0b~trying foo0bA~throwing foo0bA~finally 0bA~caught 0b~finally 0b~DONE 0bA&quot;</td>
 	<td></td>
 </tr>
 <tr>
