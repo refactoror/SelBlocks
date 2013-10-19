@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
-<title>trycatch</title>
+<title>try</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">trcatch</td></tr>
+<tr><td rowspan="1" colspan="3">try</td></tr>
 </thead><tbody>
-<!--= no-op try-->
+<!-- ===============-->
 <tr>
 	<td>log</td>
-	<td>&quot;---------- foo0 ----------&quot;</td>
+	<td>&quot;-- no-op try --&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;START 0&quot;</td>
+	<td>&quot;([/&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -30,17 +31,17 @@
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>foo0</td>
+	<td>t-noop</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;trying 0&quot;</td>
+	<td>&quot;trying&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>endTry</td>
-	<td>foo0</td>
+	<td>t-noop</td>
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
@@ -51,12 +52,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;DONE 0&quot;</td>
+	<td>&quot;/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START 0~trying 0~DONE 0&quot;</td>
+	<td>&quot;([/~trying~/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -64,15 +65,15 @@
 	<td></td>
 	<td></td>
 </tr>
-<!--== try/finally, w/no error-->
+<!-- ===============-->
 <tr>
 	<td>log</td>
-	<td>&quot;---------- foo1 ----------&quot;</td>
+	<td>&quot;-- try/finally, w/no error --&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;START 1&quot;</td>
+	<td>&quot;([/&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -83,12 +84,12 @@
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>foo1</td>
+	<td>t-fin</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;trying 1&quot;</td>
+	<td>&quot;trying&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -98,7 +99,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;finally 1&quot;</td>
+	<td>&quot;finally&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -114,12 +115,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;DONE 1&quot;</td>
+	<td>&quot;/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START 1~trying 1~finally 1~DONE 1&quot;</td>
+	<td>&quot;([/~trying~finally~/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -127,15 +128,15 @@
 	<td></td>
 	<td></td>
 </tr>
-<!--== try/catch, but no error-->
+<!-- ===============-->
 <tr>
 	<td>log</td>
-	<td>&quot;---------- foo2 ----------&quot;</td>
+	<td>&quot;-- try/catch, but no error --&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;START 2&quot;</td>
+	<td>&quot;([/&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -146,12 +147,12 @@
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>foo2</td>
+	<td>tc0</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;trying 2&quot;</td>
+	<td>&quot;trying&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -177,12 +178,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;DONE 2&quot;</td>
+	<td>&quot;/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START 2~trying 2~DONE 2&quot;</td>
+	<td>&quot;([/~trying~/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -190,15 +191,15 @@
 	<td></td>
 	<td></td>
 </tr>
-<!--== catch specific error-->
+<!-- ===============-->
 <tr>
 	<td>log</td>
-	<td>&quot;---------- foo3 ----------&quot;</td>
+	<td>&quot;-- catch specific error --&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;START 3&quot;</td>
+	<td>&quot;([/&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -209,12 +210,12 @@
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>foo3</td>
+	<td>tc1</td>
 	<td></td>
 </tr>
 <tr>
 	<td>throw</td>
-	<td>&quot;blamo 3 catch ALL&quot;</td>
+	<td>&quot;blamo catch ALL&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -229,7 +230,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;caught 3&quot;</td>
+	<td>&quot;caught&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -245,12 +246,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;DONE 3&quot;</td>
+	<td>&quot;/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START 3~caught 3~DONE 3&quot;</td>
+	<td>&quot;([/~caught~/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -258,15 +259,15 @@
 	<td></td>
 	<td></td>
 </tr>
-<!--== catch specific error, then finally-->
+<!-- ===============-->
 <tr>
 	<td>log</td>
-	<td>&quot;---------- foo4 ----------&quot;</td>
+	<td>&quot;-- catch specific error, then finally --&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;START 4A&quot;</td>
+	<td>&quot;([/&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -277,12 +278,12 @@
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>foo4</td>
+	<td>t-outer</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;trying foo4&quot;</td>
+	<td>&quot;trying outer&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -290,20 +291,25 @@
 	<td>selblocks.tcf.nestingLevel</td>
 	<td>-1</td>
 </tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+</tr>
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>fooA</td>
+	<td>t-inner</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;trying fooA&quot;</td>
+	<td>&quot;trying inner&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>throw</td>
-	<td>&quot;blamo 4A nested catch&quot;</td>
+	<td>&quot;blamo inner catch&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -313,12 +319,12 @@
 </tr>
 <tr>
 	<td>catch</td>
-	<td>/blamo 4A nested catch/</td>
+	<td>/blamo inner catch/</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;caught 4A&quot;</td>
+	<td>&quot;caught&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -328,12 +334,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;finally 4A&quot;</td>
+	<td>&quot;finally&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>endTry</td>
-	<td>fooA</td>
+	<td>t-inner</td>
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
@@ -344,12 +350,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;DONE 4&quot;</td>
+	<td>&quot;/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>endTry</td>
-	<td>foo4</td>
+	<td>t-outer</td>
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
@@ -360,12 +366,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;DONE 4A&quot;</td>
+	<td>&quot;/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START 4A~trying foo4~trying fooA~caught 4A~finally 4A~DONE 4~DONE 4A&quot;</td>
+	<td>&quot;([/~trying outer~([/~trying inner~caught~finally~/])~/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -373,15 +379,15 @@
 	<td></td>
 	<td></td>
 </tr>
-<!--== bubble up to catch ALL-->
+<!-- ===============-->
 <tr>
 	<td>log</td>
-	<td>&quot;---------- foo5 ----------&quot;</td>
+	<td>&quot;-- bubble up to catch ALL --&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;START 5&quot;</td>
+	<td>&quot;([/&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -392,12 +398,12 @@
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>foo5-trap</td>
+	<td>t-outer</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;trying 5-trap&quot;</td>
+	<td>&quot;trying-outer&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -408,17 +414,17 @@
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>foo5</td>
+	<td>t-inner</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;trying 5&quot;</td>
+	<td>&quot;trying&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>throw</td>
-	<td>&quot;blamo 5 try-catch-finally&quot;</td>
+	<td>&quot;blamo try-catch-finally&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -433,7 +439,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;caught 5&quot;</td>
+	<td>&quot;caught&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -443,12 +449,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;finally 5&quot;</td>
+	<td>&quot;finally&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>endTry</td>
-	<td>foo5</td>
+	<td>t-inner</td>
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
@@ -464,12 +470,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;caught 5-trap&quot;</td>
+	<td>&quot;caught-outer&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>endTry</td>
-	<td>foo5-trap</td>
+	<td>t-outer</td>
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
@@ -480,12 +486,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;DONE 5&quot;</td>
+	<td>&quot;/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START 5~trying 5-trap~trying 5~finally 5~caught 5-trap~DONE 5&quot;</td>
+	<td>&quot;([/~trying-outer~trying~finally~caught-outer~/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -493,15 +499,15 @@
 	<td></td>
 	<td></td>
 </tr>
-<!--== bubble out of no-op try to catch specific error-->
+<!-- ===============-->
 <tr>
 	<td>log</td>
-	<td>&quot;---------- foo6a ----------&quot;</td>
+	<td>&quot;-- bubble out of no-op try to catch specific error --&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;START 6a&quot;</td>
+	<td>&quot;([/&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -512,12 +518,12 @@
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>foo6a</td>
+	<td>noop</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;trying foo6a&quot;</td>
+	<td>&quot;trying outer&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -528,12 +534,12 @@
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>foo6aA</td>
+	<td>inner</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;trying foo6aA&quot;</td>
+	<td>&quot;trying inner&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -543,12 +549,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;throwing foo6aA&quot;</td>
+	<td>&quot;throwing inner&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>throw</td>
-	<td>&quot;blamo 6aA nested catch&quot;</td>
+	<td>&quot;blamo&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -558,18 +564,18 @@
 </tr>
 <tr>
 	<td>endTry</td>
-	<td>foo6aA</td>
+	<td>inner</td>
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
 <tr>
 	<td>catch</td>
-	<td>/blamo 6aA nested catch/</td>
+	<td>/blamo/</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;caught 6a&quot;</td>
+	<td>&quot;caught&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -579,12 +585,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;finally 6a&quot;</td>
+	<td>&quot;finally&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>endTry</td>
-	<td>foo6a</td>
+	<td>noop</td>
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
@@ -595,12 +601,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;DONE 6aA&quot;</td>
+	<td>&quot;/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START 6a~trying foo6a~trying foo6aA~throwing foo6aA~caught 6a~finally 6a~DONE 6aA&quot;</td>
+	<td>&quot;([/~trying outer~trying inner~throwing inner~caught~finally~/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -608,15 +614,15 @@
 	<td></td>
 	<td></td>
 </tr>
-<!--== bubble up to catch specific error-->
+<!-- ===============-->
 <tr>
 	<td>log</td>
-	<td>&quot;---------- foo6b ----------&quot;</td>
+	<td>&quot;-- bubble up to catch specific error --&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;START 6b&quot;</td>
+	<td>&quot;([/&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -627,12 +633,12 @@
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>foo6b</td>
+	<td>outer</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;trying foo6b&quot;</td>
+	<td>&quot;trying outer&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -643,12 +649,12 @@
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>foo6bA</td>
+	<td>inner</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;trying foo6bA&quot;</td>
+	<td>&quot;trying inner&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -658,12 +664,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;throwing foo6bA&quot;</td>
+	<td>&quot;throwing inner&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>throw</td>
-	<td>&quot;blamo 6bA nested catch&quot;</td>
+	<td>&quot;blamo&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -678,23 +684,23 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;finally 6bA&quot;</td>
+	<td>&quot;finally&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>endTry</td>
-	<td>foo6bA</td>
+	<td>inner</td>
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
 <tr>
 	<td>catch</td>
-	<td>/blamo 6bA nested catch/</td>
+	<td>/blamo/</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;caught 6b&quot;</td>
+	<td>&quot;caught&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -704,12 +710,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;finally 6b&quot;</td>
+	<td>&quot;finally&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>endTry</td>
-	<td>foo6b</td>
+	<td>outer</td>
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
@@ -720,12 +726,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;DONE 6bA&quot;</td>
+	<td>&quot;/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START 6b~trying foo6b~trying foo6bA~throwing foo6bA~finally 6bA~caught 6b~finally 6b~DONE 6bA&quot;</td>
+	<td>&quot;([/~trying outer~trying inner~throwing inner~finally~caught~finally~/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -733,15 +739,15 @@
 	<td></td>
 	<td></td>
 </tr>
-<!--== bubbling out of nested function calls-->
+<!-- ===============-->
 <tr>
 	<td>log</td>
-	<td>&quot;---------- foo7 ----------&quot;</td>
+	<td>&quot;-- bubbling out of nested function calls --&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;START 7&quot;</td>
+	<td>&quot;([/&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -752,22 +758,22 @@
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>foo7</td>
+	<td>invoke</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;trying 7&quot;</td>
+	<td>&quot;trying&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;calling 7&quot;</td>
+	<td>&quot;calling&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>call</td>
-	<td>doomed</td>
+	<td>subBub</td>
 	<td>n = 0</td>
 </tr>
 <tr>
@@ -777,12 +783,12 @@
 </tr>
 <tr>
 	<td>catch</td>
-	<td>/blamo 7/</td>
+	<td>/blamo/</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;caught 7&quot;</td>
+	<td>&quot;caught&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -792,12 +798,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;finally 7&quot;</td>
+	<td>&quot;finally&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>endTry</td>
-	<td>foo7</td>
+	<td>invoke</td>
 	<td></td>
 </tr>
 <tr>
@@ -808,18 +814,18 @@
 <!--^ ^ ^ ^-->
 <tr>
 	<td>function</td>
-	<td>doomed</td>
+	<td>subBub</td>
 	<td></td>
 </tr>
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>foo7-inner</td>
+	<td>tcf-inner</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;${n}) trying 7-inner&quot;</td>
+	<td>&quot;${n}) trying-inner&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -829,12 +835,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;${n}) calling 7&quot;</td>
+	<td>&quot;${n}) calling&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>call</td>
-	<td>doomed</td>
+	<td>subBub</td>
 	<td>n = n+1</td>
 </tr>
 <tr>
@@ -844,12 +850,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;${n}) throwing 7&quot;</td>
+	<td>&quot;${n}) throwing&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>throw</td>
-	<td>&quot;blamo 7&quot;</td>
+	<td>&quot;blamo&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -864,12 +870,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;${n}) finally 7&quot;</td>
+	<td>&quot;${n}) finally&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>endTry</td>
-	<td>foo7-inner</td>
+	<td>tcf-inner</td>
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
@@ -885,12 +891,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;DONE 7&quot;</td>
+	<td>&quot;/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START 7~trying 7~calling 7~0) trying 7-inner~0) calling 7~1) trying 7-inner~1) calling 7~2) trying 7-inner~2) throwing 7~2) finally 7~1) finally 7~0) finally 7~caught 7~finally 7~DONE 7&quot;</td>
+	<td>&quot;([/~trying~calling~0) trying-inner~0) calling~1) trying-inner~1) calling~2) trying-inner~2) throwing~2) finally~1) finally~0) finally~caught~finally~/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -898,16 +904,15 @@
 	<td></td>
 	<td></td>
 </tr>
-<!--=- command bubbling-->
-<!----- break w/finally-->
+<!-- ===============-->
 <tr>
 	<td>log</td>
-	<td>&quot;---------- foo8 ----------&quot;</td>
+	<td>&quot;-- command bubbling, break w/finally --&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;START 8&quot;</td>
+	<td>&quot;([/&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -922,7 +927,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;while'g 8&quot;</td>
+	<td>&quot;while'g&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -938,12 +943,12 @@
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>foo8</td>
+	<td>breaker</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;${w}) trying 8&quot;</td>
+	<td>&quot;${w}) trying&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -953,7 +958,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;${w}) BREAK 8&quot;</td>
+	<td>&quot;${w}) BREAK&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -973,12 +978,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;${w}) finallying 8&quot;</td>
+	<td>&quot;${w}) finallying&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>endTry</td>
-	<td>foo8</td>
+	<td>breaker</td>
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
@@ -989,7 +994,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;${w}) iterating 8&quot;</td>
+	<td>&quot;${w}) iterating&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1004,12 +1009,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;DONE 8&quot;</td>
+	<td>&quot;/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START 8~while'g 8~3) trying 8~3) finallying 8~3) iterating 8~2) trying 8~2) BREAK 8~2) finallying 8~DONE 8&quot;</td>
+	<td>&quot;([/~while'g~3) trying~3) finallying~3) iterating~2) trying~2) BREAK~2) finallying~/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1017,25 +1022,24 @@
 	<td></td>
 	<td></td>
 </tr>
-<!----- return replaced in finally-->
 <tr>
 	<td>log</td>
-	<td>&quot;---------- foo9a ----------&quot;</td>
+	<td>&quot;-- command bubbling, return replaced --&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;START 9a&quot;</td>
+	<td>&quot;([/a&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;calling 9a&quot;</td>
+	<td>&quot;callinga&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>call</td>
-	<td>fancyA</td>
+	<td>cmdBubA</td>
 	<td></td>
 </tr>
 <tr>
@@ -1045,12 +1049,12 @@
 </tr>
 <tr>
 	<td>function</td>
-	<td>fancyA</td>
+	<td>cmdBubA</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;in fancy&quot;</td>
+	<td>&quot;in cmdBubA&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1061,12 +1065,12 @@
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>fancy-foo</td>
+	<td>cmdBub-tcf</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;trying 9a&quot;</td>
+	<td>&quot;tryinga&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1086,7 +1090,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;finallying 9a&quot;</td>
+	<td>&quot;finallyinga&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1117,12 +1121,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;DONE 9a&quot;</td>
+	<td>&quot;/])a&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START 9a~calling 9a~in fancy~trying 9a~returning (1)~finallying 9a~returning (2)~returned 2~DONE 9a&quot;</td>
+	<td>&quot;([/a~callinga~in cmdBubA~tryinga~returning (1)~finallyinga~returning (2)~returned 2~/])a&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1130,25 +1134,24 @@
 	<td></td>
 	<td></td>
 </tr>
-<!----- error replaced by return in finally-->
 <tr>
 	<td>log</td>
-	<td>&quot;---------- foo9b ----------&quot;</td>
+	<td>&quot;-- command bubbling, error replaced by return --&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;START 9b&quot;</td>
+	<td>&quot;([/&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;calling 9b&quot;</td>
+	<td>&quot;calling&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>call</td>
-	<td>fancyB</td>
+	<td>cmdBubB</td>
 	<td></td>
 </tr>
 <tr>
@@ -1158,12 +1161,12 @@
 </tr>
 <tr>
 	<td>function</td>
-	<td>fancyB</td>
+	<td>cmdBubB</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;in fancy&quot;</td>
+	<td>&quot;in cmdBubB&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1174,12 +1177,12 @@
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>fancy-foo</td>
+	<td>cmdBub-tcf</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;trying 9b&quot;</td>
+	<td>&quot;trying&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1199,7 +1202,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;finallying 9b&quot;</td>
+	<td>&quot;finallying&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1230,12 +1233,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;DONE 9b&quot;</td>
+	<td>&quot;/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START 9b~calling 9b~in fancy~trying 9b~throwing~finallying 9b~returning (2)~returned 2~DONE 9b&quot;</td>
+	<td>&quot;([/~calling~in cmdBubB~trying~throwing~finallying~returning (2)~returned 2~/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1243,25 +1246,24 @@
 	<td></td>
 	<td></td>
 </tr>
-<!----- return replaced by error in finally-->
 <tr>
 	<td>log</td>
-	<td>&quot;---------- foo9c ----------&quot;</td>
+	<td>&quot;-- command bubbling, return replaced by error --&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;START 9c&quot;</td>
+	<td>&quot;([/c&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;calling 9c&quot;</td>
+	<td>&quot;callingc&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>call</td>
-	<td>fancyC</td>
+	<td>cmdBubC</td>
 	<td></td>
 </tr>
 <tr>
@@ -1271,12 +1273,12 @@
 </tr>
 <tr>
 	<td>function</td>
-	<td>fancyC</td>
+	<td>cmdBubC</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;in fancy&quot;</td>
+	<td>&quot;in cmdBubC&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1287,7 +1289,7 @@
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>fancy-foo-guardrail</td>
+	<td>cmdBub-tcf-guardrail</td>
 	<td></td>
 </tr>
 <tr>
@@ -1298,12 +1300,12 @@
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>fancy-foo</td>
+	<td>cmdBub-tcf</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;trying 9c&quot;</td>
+	<td>&quot;tryingc&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1323,7 +1325,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;finallying 9c&quot;</td>
+	<td>&quot;finallyingc&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1349,7 +1351,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;caught 9c&quot;</td>
+	<td>&quot;caughtc&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1370,12 +1372,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;DONE 9c&quot;</td>
+	<td>&quot;/])c&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START 9c~calling 9c~in fancy~trying 9c~returning (1)~finallying 9c~throwing~caught 9c~returned ${_result}~DONE 9c&quot;</td>
+	<td>&quot;([/c~callingc~in cmdBubC~tryingc~returning (1)~finallyingc~throwing~caughtc~returned ${_result}~/])c&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1383,15 +1385,14 @@
 	<td></td>
 	<td></td>
 </tr>
-<!--== exitTest w/finally processing-->
 <tr>
 	<td>log</td>
-	<td>&quot;---------- foo10 ----------&quot;</td>
+	<td>&quot;-- exitTest w/finally processing --&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;START 10&quot;</td>
+	<td>&quot;([/&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1402,12 +1403,12 @@
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>foo10</td>
+	<td>abort</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;trying 10&quot;</td>
+	<td>&quot;trying&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1427,12 +1428,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;finallying 10&quot;</td>
+	<td>&quot;finallying&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START 10~trying 10~exitTest ...~finallying 10&quot;</td>
+	<td>&quot;([/~trying~exitTest ...~finallying&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1442,7 +1443,7 @@
 </tr>
 <tr>
 	<td>endTry</td>
-	<td>foo10</td>
+	<td>abort</td>
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
@@ -1451,10 +1452,10 @@
 	<td>&quot;this command should not be reached, due to exitTest above&quot;</td>
 	<td></td>
 </tr>
-<!--== try without matching catch-->
+<!-- ===============-->
 <tr>
 	<td>log</td>
-	<td>&quot;---------- foo11 ----------&quot;</td>
+	<td>&quot;-- try without matching catch --&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1465,7 +1466,7 @@
 <!--v v v-->
 <tr>
 	<td>try</td>
-	<td>foo11</td>
+	<td>miss</td>
 	<td></td>
 </tr>
 <tr>
@@ -1490,7 +1491,7 @@
 </tr>
 <tr>
 	<td>log</td>
-	<td>&quot;caught foo11&quot;</td>
+	<td>&quot;caught miss&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1500,12 +1501,12 @@
 </tr>
 <tr>
 	<td>log</td>
-	<td>&quot;finally 11&quot;</td>
+	<td>&quot;finally&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>endTry</td>
-	<td>foo11</td>
+	<td>miss</td>
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
