@@ -610,7 +610,7 @@ function $X(xpath, contextNode, resultType) {
 
   // ================================================================================
 
-  // TBD: failed locators, timeouts, asserts
+  // TBD: failed locators/timeouts/asserts ?
   Selenium.prototype.doTry = function(tryName)
   {
     assertRunning();
@@ -687,6 +687,7 @@ function $X(xpath, contextNode, resultType) {
     return activeBlockStack().top();
   }
 
+  // resume or conclude command/error bubbling
   function reBubble() {
     if ($$.tcf.bubbling.mode == "error") {
       if ($$.tcf.nestingLevel > -1) {
@@ -729,7 +730,7 @@ function $X(xpath, contextNode, resultType) {
         tryState.execPhase = "catching";
         $$.tcf.bubbling = null;
         setNextCommand(tryDef.catchIdx);
-        return true; // continue
+        return true;
       }
     }
     // error not caught .. instigate bubbling
@@ -740,15 +741,15 @@ function $X(xpath, contextNode, resultType) {
       tryState.execPhase = "finallying";
       tryState.hasFinaled = true;
       setNextCommand(tryDef.finallyIdx);
-      return true; // continue
+      return true;
     }
-    if ($$.tcf.nestingLevel > -1) {
+    if ($$.tcf.nestingLevel > 0) {
       $$.LOG.warn("No further handling, error bubbling will continue outside of this try.");
       setNextCommand(tryDef.endIdx);
       return true;
     }
-    $$.LOG.warn("No handling provided by this try section for this error.");
-    return false;
+    $$.LOG.warn("No handling provided by this try section for this error: '" + err.message + "'");
+    return false; // stop test
   }
 
   // execute any enclosing finally block(s) until reaching the given type of block
@@ -770,7 +771,7 @@ function $X(xpath, contextNode, resultType) {
       // jump out of try section
     }
 
-    //- determine if catch matches an error, or there is a finally, or the ceiling has been reached
+    //- determine if catch matches an error, or there is a finally, or the ceiling block has been reached
     function isTryWithMatchingOrFinally(stackFrame) {
       if (_isBubbleCeiling && _isBubbleCeiling(stackFrame))
         return true;
@@ -784,7 +785,7 @@ function $X(xpath, contextNode, resultType) {
     }
   }
 
-  //- error message matcher ----------
+  //- error message matcher
   function isMatchingCatch(e, catchIdx) {
     var errDcl = testCase.commands[catchIdx].target;
     if (!errDcl) {
@@ -820,7 +821,7 @@ function $X(xpath, contextNode, resultType) {
     return tryState;
   }
 
-  // instigate or continue bubbling, if appropriate
+  // instigate or transform bubbling, as appropriate
   function transitionBubbling(_isBubbleCeiling)
   {
     if ($$.tcf.bubbling) { // transform bubbling
@@ -841,6 +842,7 @@ function $X(xpath, contextNode, resultType) {
       bubbleCommand(idxHere(), _isBubbleCeiling);
       return true;
     }
+    // no change to bubbling
     return false;
   };
 
@@ -856,12 +858,6 @@ function $X(xpath, contextNode, resultType) {
 
   function isTryBlock(stackFrame) {
     return (blockDefs[stackFrame.idx].nature == "try");
-  }
-  function isTryWithCatchOrFinally(stackFrame) {
-    return ( blockDefs[stackFrame.idx].nature == "try" && hasUnspentCatchOrFinally(stackFrame) );
-  }
-  function hasUnspentCatchOrFinally(tryState) {
-    return (hasUnspentCatch(tryState) || hasUnspentFinally(tryState));
   }
   function hasUnspentCatch(tryState) {
     return (blockDefs[tryState.idx].catchIdx && !tryState.hasCaught);
