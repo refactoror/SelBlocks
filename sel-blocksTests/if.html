@@ -388,10 +388,85 @@
 	<td></td>
 	<td></td>
 </tr>
-<!------>
 <tr>
 	<td>assertEmitted</td>
 	<td>&quot;if-y~elseIf-y~elseIf-a1y~elseIf-b2y~else-y&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<!------>
+<tr>
+	<td>for</td>
+	<td>i=0; i &lt;= 5; i++</td>
+	<td>i</td>
+</tr>
+<tr>
+	<td>if</td>
+	<td>i == 0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;if-${i}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>elseIf</td>
+	<td>i == 1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;elseIf-${i}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>elseIf</td>
+	<td>i == 2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;elseIf-${i}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>elseIf</td>
+	<td>i == 3</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;elseIf-${i}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>else</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;else-${i}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;if-0~elseIf-1~elseIf-2~elseIf-3~else-4~else-5&quot;</td>
 	<td></td>
 </tr>
 </tbody></table>
