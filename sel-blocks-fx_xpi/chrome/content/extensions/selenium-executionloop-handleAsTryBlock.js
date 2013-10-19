@@ -11,8 +11,8 @@
     } catch (e) {
       var isHandled = this._handleCommandError(e); // causes command to be marked in red
       var handlerAttrs = $$.fn.getInterceptAttrs();
-      var isCaught = handlerAttrs.handleError(e);
-      if (isCaught) {
+      var isManaged = handlerAttrs.handleError(e);
+      if (isManaged) {
         this.continueTest();
       } else {
         this.testComplete();

@@ -694,7 +694,7 @@ function $X(xpath, contextNode, resultType) {
         handleCommandError($$.tcf.bubbling.error);
       }
       else {
-        $$.LOG.error("Error was not caught: " + $$.tcf.bubbling.error.message);
+        $$.LOG.error("Error was not caught: '" + $$.tcf.bubbling.error.message + "'");
         try { throw $$.tcf.bubbling.error; }
         finally { $$.tcf.bubbling = null; }
       }
@@ -715,6 +715,7 @@ function $X(xpath, contextNode, resultType) {
   // --------------------------------------------------------------------------------
 
   // alter the behavior of Selenium error handling
+  //   returns true if error is being managed
   function handleCommandError(err)
   {
     var tryState = bubbleToTryBlock(isTryBlock);
@@ -732,7 +733,7 @@ function $X(xpath, contextNode, resultType) {
       }
     }
     // error not caught .. instigate bubbling
-    $$.LOG.info("error not caught, bubbling the error: " + err.message);
+    $$.LOG.info("error not caught, bubbling error: '" + err.message + "'");
     $$.tcf.bubbling = { mode: "error", error: err, srcIdx: idxHere() };
     if (hasUnspentFinally(tryState)) {
       $$.LOG.warn("Bubbling suspended while finally block runs");
@@ -742,7 +743,7 @@ function $X(xpath, contextNode, resultType) {
       return true; // continue
     }
     if ($$.tcf.nestingLevel > -1) {
-      $$.LOG.warn("No further handling, bubbling will continue outside of this try.");
+      $$.LOG.warn("No further handling, error bubbling will continue outside of this try.");
       setNextCommand(tryDef.endIdx);
       return true;
     }
@@ -754,19 +755,22 @@ function $X(xpath, contextNode, resultType) {
   function bubbleCommand(cmdIdx, _isBubbleCeiling)
   {
     var tryState = bubbleToTryBlock(isTryWithMatchingOrFinally);
-    while (tryState) {
-      var tryDef = blockDefs[tryState.idx];
-      $$.tcf.bubbling = { mode: "command", srcIdx: cmdIdx, _isStopCriteria: _isBubbleCeiling };
-      if (hasUnspentFinally(tryState)) {
-        $$.LOG.warn("Command " + fmtCmdRef(cmdIdx) + ", suspended while finally block runs");
-        tryState.execPhase = "finallying";
-        tryState.hasFinaled = true;
-        setNextCommand(tryDef.finallyIdx);
-        return;
-      }
-      tryState = bubbleToTryBlock(isTryWithMatchingOrFinally);
+    var tryDef = blockDefs[tryState.idx];
+    $$.tcf.bubbling = { mode: "command", srcIdx: cmdIdx, _isStopCriteria: _isBubbleCeiling };
+    if (hasUnspentFinally(tryState)) {
+      $$.LOG.warn("Command " + fmtCmdRef(cmdIdx) + ", suspended while finally block runs");
+      tryState.execPhase = "finallying";
+      tryState.hasFinaled = true;
+      setNextCommand(tryDef.finallyIdx);
+      // begin finally block
     }
-    //- find next enclosing try, or stop at the given block type
+    else {
+      $$.LOG.warn("No further handling, bubbling continuing outside of this try.");
+      setNextCommand(tryDef.endIdx);
+      // jump out of try section
+    }
+
+    //- determine if catch matches an error, or there is a finally, or the ceiling has been reached
     function isTryWithMatchingOrFinally(stackFrame) {
       if (_isBubbleCeiling && _isBubbleCeiling(stackFrame))
         return true;
@@ -794,7 +798,7 @@ function $X(xpath, contextNode, resultType) {
     return (errMsg.indexOf(errExpr) != -1);
   }
 
-  // unwind the blockStack, and callStack, until reaching the given criteria
+  // unwind the blockStack, and callStack (ie, aborting functions), until reaching the given criteria
   function bubbleToTryBlock(_hasCriteria) {
     if ($$.tcf.nestingLevel < 0)
       $$.LOG.error("bubbleToTryBlock() called outside of any try nesting");
@@ -821,7 +825,7 @@ function $X(xpath, contextNode, resultType) {
   {
     if ($$.tcf.bubbling) { // transform bubbling
       if ($$.tcf.bubbling.mode == "error") {
-        $$.LOG.warn("Bubbling error: " + $$.tcf.bubbling.error.message
+        $$.LOG.warn("Bubbling error: '" + $$.tcf.bubbling.error.message + "'"
           + ", replaced with command " + fmtCmdRef(idxHere()));
         $$.tcf.bubbling = { mode: "command", srcIdx: idxHere(), _isStopCriteria: _isBubbleCeiling };
         return true;
