@@ -604,7 +604,7 @@ function $X(xpath, contextNode, resultType) {
     }
     else {
       ifState.skipElseBlocks = true;
-      // continue into if/elseIf-block
+      // continue into if/elseIf block
     }
   }
 
@@ -660,6 +660,7 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doFinally = function() {
     assertRunning();
     assertActiveScope(blockDefs.here().tryIdx);
+    delete storedVars._error;
     var tryState = activeBlockStack().top();
     $$.LOG.info("entering finally block");
     // continue into finally-block
@@ -668,6 +669,7 @@ function $X(xpath, contextNode, resultType) {
   {
     assertRunning();
     assertActiveScope(blockDefs.here().tryIdx);
+    delete storedVars._error;
     var tryState = activeBlockStack().pop();
     if (tryState.execPhase) { // ie, it DOES have a catch and/or a finally block
       $$.tcf.nestingLevel--;
@@ -704,6 +706,7 @@ function $X(xpath, contextNode, resultType) {
         tryState.execPhase = "catching";
         $$.tcf.bubbling = null;
         setNextCommand(tryDef.catchIdx);
+        storedVars._error = err;
         return true;
       }
     }

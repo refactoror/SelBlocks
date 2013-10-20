@@ -162,7 +162,7 @@
 </tr>
 <tr>
 	<td>assertEval</td>
-	<td>&quot;should NEVER enter this catch block, due to no error&quot;</td>
+	<td>&quot;should NEVER enter this catch block due to no error&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -230,7 +230,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;caught&quot;</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -251,7 +251,7 @@
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;([/~caught~/])&quot;</td>
+	<td>&quot;([/~caught 'blamo catch ALL'~/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -309,7 +309,7 @@
 </tr>
 <tr>
 	<td>throw</td>
-	<td>&quot;blamo inner catch&quot;</td>
+	<td>&quot;blamo inner&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -319,12 +319,12 @@
 </tr>
 <tr>
 	<td>catch</td>
-	<td>/blamo inner catch/</td>
+	<td>/blamo inner/</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;caught&quot;</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -371,7 +371,7 @@
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;([/~trying outer~([/~trying inner~caught~finally~/])~/])&quot;</td>
+	<td>&quot;([/~trying outer~([/~trying inner~caught 'blamo inner'~finally~/])~/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -439,7 +439,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;caught&quot;</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -460,7 +460,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;caught-outer&quot;</td>
+	<td>&quot;caught-outer '&quot; + _error.message + &quot;'&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -481,7 +481,7 @@
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;([/~trying-outer~trying~caught-outer~/])&quot;</td>
+	<td>&quot;([/~trying-outer~trying~caught-outer 'blamo try-catch-finally'~/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -492,7 +492,7 @@
 <!-- ===============-->
 <tr>
 	<td>log</td>
-	<td>&quot;-- bubble up to catch ALL with finally --&quot;</td>
+	<td>&quot;-- bubble up to catch ALL via finally --&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -549,7 +549,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;caught&quot;</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -580,7 +580,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;caught-outer&quot;</td>
+	<td>&quot;caught-outer '&quot; + _error.message + &quot;'&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -601,7 +601,7 @@
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;([/~trying-outer~trying~finally~caught-outer~/])&quot;</td>
+	<td>&quot;([/~trying-outer~trying~finally~caught-outer 'blamo try-catch-finally'~/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -685,7 +685,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;caught&quot;</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -716,7 +716,7 @@
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;([/~trying outer~trying inner~throwing inner~caught~finally~/])&quot;</td>
+	<td>&quot;([/~trying outer~trying inner~throwing inner~caught 'blamo'~finally~/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -810,7 +810,122 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;caught&quot;</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td>bub-spec-outer</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;([/~trying outer~trying inner~throwing inner~finally~caught 'blamo'~/])&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<!-- ===============-->
+<tr>
+	<td>log</td>
+	<td>&quot;-- bubble up to catch specific error via finally --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr>
+	<td>try</td>
+	<td>bub-spec-outer</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;trying outer&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+</tr>
+<!--v v v-->
+<tr>
+	<td>try</td>
+	<td>bub-spec-inner</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;trying inner&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;throwing inner&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>throw</td>
+	<td>&quot;blamo&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached, due to throw&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;finally&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td>bub-spec-inner</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>catch</td>
+	<td>/blamo/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -841,7 +956,7 @@
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;([/~trying outer~trying inner~throwing inner~finally~caught~finally~/])&quot;</td>
+	<td>&quot;([/~trying outer~trying inner~throwing inner~finally~caught 'blamo'~finally~/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -852,7 +967,7 @@
 <!-- ===============-->
 <tr>
 	<td>log</td>
-	<td>&quot;-- bubbling out of nested function calls --&quot;</td>
+	<td>&quot;-- bubble out of nested function calls --&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -898,7 +1013,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;caught&quot;</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1006,7 +1121,7 @@
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;([/~trying~calling~0) trying-inner~0) calling~1) trying-inner~1) calling~2) trying-inner~2) throwing~2) finally~1) finally~0) finally~caught~finally~/])&quot;</td>
+	<td>&quot;([/~trying~calling~0) trying-inner~0) calling~1) trying-inner~1) calling~2) trying-inner~2) throwing~2) finally~1) finally~0) finally~caught 'blamo'~finally~/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1132,19 +1247,20 @@
 	<td></td>
 	<td></td>
 </tr>
+<!-- ===============-->
 <tr>
 	<td>log</td>
-	<td>&quot;-- command bubbling, return replaced --&quot;</td>
+	<td>&quot;-- command bubbling, error replaced by return --&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;([/a&quot;</td>
+	<td>&quot;([/&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;callinga&quot;</td>
+	<td>&quot;calling&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1180,7 +1296,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;tryinga&quot;</td>
+	<td>&quot;trying&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1200,7 +1316,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;finallyinga&quot;</td>
+	<td>&quot;finallying&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1231,12 +1347,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;/])a&quot;</td>
+	<td>&quot;/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;([/a~callinga~in cmdBubA~tryinga~returning (1)~finallyinga~returning (2)~returned 2~/])a&quot;</td>
+	<td>&quot;([/~calling~in cmdBubA~trying~returning (1)~finallying~returning (2)~returned 2~/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1244,6 +1360,7 @@
 	<td></td>
 	<td></td>
 </tr>
+<!-- ===============-->
 <tr>
 	<td>log</td>
 	<td>&quot;-- command bubbling, error replaced by return --&quot;</td>
@@ -1302,7 +1419,7 @@
 </tr>
 <tr>
 	<td>throw</td>
-	<td>&quot;won't last very long&quot;</td>
+	<td>&quot;short-lived error&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1356,6 +1473,7 @@
 	<td></td>
 	<td></td>
 </tr>
+<!-- ===============-->
 <tr>
 	<td>log</td>
 	<td>&quot;-- command bubbling, return replaced by error --&quot;</td>
@@ -1363,12 +1481,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;([/c&quot;</td>
+	<td>&quot;([/&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;callingc&quot;</td>
+	<td>&quot;calling&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1415,7 +1533,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;tryingc&quot;</td>
+	<td>&quot;trying&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1435,7 +1553,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;finallyingc&quot;</td>
+	<td>&quot;finallying&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1461,7 +1579,7 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;caughtc&quot;</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1482,12 +1600,12 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;/])c&quot;</td>
+	<td>&quot;/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;([/c~callingc~in cmdBubC~tryingc~returning (1)~finallyingc~throwing~caughtc~returned ${_result}~/])c&quot;</td>
+	<td>&quot;([/~calling~in cmdBubC~trying~returning (1)~finallying~throwing~caught 'this-error-replaces-return-1'~returned 2~/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -1495,6 +1613,7 @@
 	<td></td>
 	<td></td>
 </tr>
+<!-- ===============-->
 <tr>
 	<td>log</td>
 	<td>&quot;-- exitTest w/finally processing --&quot;</td>
@@ -1601,7 +1720,7 @@
 </tr>
 <tr>
 	<td>log</td>
-	<td>&quot;caught miss&quot;</td>
+	<td>&quot;caught miss '&quot; + _error.message + &quot;'&quot;</td>
 	<td></td>
 </tr>
 <tr>
