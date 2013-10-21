@@ -186,12 +186,9 @@ function $X(xpath, contextNode, resultType) {
   }
 
   // Determine if the given stack frame is one of the given block kinds
-  Stack.isLoopBlock = function(stackFrame) {
-    return (blockDefs[stackFrame.idx].nature == "loop");
-  };
-  Stack.isFunctionBlock = function(stackFrame) {
-    return (blockDefs[stackFrame.idx].nature == "function");
-  };
+  Stack.isTryBlock = function(stackFrame) { return (blockDefs[stackFrame.idx].nature == "try"); }
+  Stack.isLoopBlock = function(stackFrame) { return (blockDefs[stackFrame.idx].nature == "loop"); };
+  Stack.isFunctionBlock = function(stackFrame) { return (blockDefs[stackFrame.idx].nature == "function"); };
 
 
   // Flow control - we don't just alter debugIndex on the fly, because the command
@@ -695,7 +692,7 @@ function $X(xpath, contextNode, resultType) {
   //   returns true if error is being managed
   function handleCommandError(err)
   {
-    var tryState = bubbleToTryBlock(isTryBlock);
+    var tryState = bubbleToTryBlock(Stack.isTryBlock);
     var tryDef = blockDefs[tryState.idx];
     $$.LOG.info("error encountered while: " + tryState.execPhase);
     if (hasUnspentCatch(tryState)) {
@@ -704,9 +701,9 @@ function $X(xpath, contextNode, resultType) {
         $$.LOG.info("@" + (idxHere()+1) + ", error has been caught" + fmtCatching(tryState));
         tryState.hasCaught = true;
         tryState.execPhase = "catching";
+        storedVars._error = err;
         $$.tcf.bubbling = null;
         setNextCommand(tryDef.catchIdx);
-        storedVars._error = err;
         return true;
       }
     }
@@ -730,11 +727,11 @@ function $X(xpath, contextNode, resultType) {
   }
 
   // execute any enclosing finally block(s) until reaching the given type of enclosing block
-  function bubbleCommand(cmdIdx, _isBubbleCeiling)
+  function bubbleCommand(cmdIdx, _isContextBlockType)
   {
     var tryState = bubbleToTryBlock(isTryWithMatchingOrFinally);
     var tryDef = blockDefs[tryState.idx];
-    $$.tcf.bubbling = { mode: "command", srcIdx: cmdIdx, _isStopCriteria: _isBubbleCeiling };
+    $$.tcf.bubbling = { mode: "command", srcIdx: cmdIdx, _isStopCriteria: _isContextBlockType };
     if (hasUnspentFinally(tryState)) {
       $$.LOG.warn("Command " + fmtCmdRef(cmdIdx) + ", suspended while finally block runs");
       tryState.execPhase = "finallying";
@@ -750,7 +747,7 @@ function $X(xpath, contextNode, resultType) {
 
     //- determine if catch matches an error, or there is a finally, or the ceiling block has been reached
     function isTryWithMatchingOrFinally(stackFrame) {
-      if (_isBubbleCeiling && _isBubbleCeiling(stackFrame))
+      if (_isContextBlockType && _isContextBlockType(stackFrame))
         return true;
       if ($$.tcf.bubbling && $$.tcf.bubbling.mode == "error" && hasUnspentCatch(stackFrame)) {
         var tryDef = blockDefs[stackFrame.idx];
@@ -825,13 +822,13 @@ function $X(xpath, contextNode, resultType) {
   }
 
   // instigate or transform bubbling, as appropriate
-  function transitionBubbling(_isBubbleCeiling)
+  function transitionBubbling(_isContextBlockType)
   {
     if ($$.tcf.bubbling) { // transform bubbling
       if ($$.tcf.bubbling.mode == "error") {
         $$.LOG.warn("Bubbling error: '" + $$.tcf.bubbling.error.message + "'"
           + ", replaced with command " + fmtCmdRef(idxHere()));
-        $$.tcf.bubbling = { mode: "command", srcIdx: idxHere(), _isStopCriteria: _isBubbleCeiling };
+        $$.tcf.bubbling = { mode: "command", srcIdx: idxHere(), _isStopCriteria: _isContextBlockType };
         return true;
       }
       else { // mode == "command"
@@ -841,28 +838,31 @@ function $X(xpath, contextNode, resultType) {
         return true;
       }
     }
-    if (isBubblable()) { // instigate bubbling
-      bubbleCommand(idxHere(), _isBubbleCeiling);
+    if (isBubblable(_isContextBlockType)) { // instigate bubbling
+      bubbleCommand(idxHere(), _isContextBlockType);
       return true;
     }
     // no change to bubbling
     return false;
   };
 
-  // determine if there bubbling is possible from this point outward
-  function isBubblable() {
+  // determine if bubbling is possible from this point outward
+  function isBubblable(_isContextBlockType) {
     var canBubble = ($$.tcf.nestingLevel > -1);
     if (canBubble) {
-      var blk = activeBlockStack().top();
-      if (blk)
-        canBubble = (blk.execPhase != "finallying");
+      var blkState = activeBlockStack().findEnclosing(isTryOrContextBlockType);
+      return (blockDefs[blkState.idx].nature == "try");
     }
     return canBubble;
+
+    //- determine if 
+    function isTryOrContextBlockType(stackFrame) {
+      if (_isContextBlockType && _isContextBlockType(stackFrame))
+        return true;
+      return Stack.isTryBlock(stackFrame);
+    }
   }
 
-  function isTryBlock(stackFrame) {
-    return (blockDefs[stackFrame.idx].nature == "try");
-  }
   function hasUnspentCatch(tryState) {
     return (blockDefs[tryState.idx].catchIdx && !tryState.hasCaught);
   }
