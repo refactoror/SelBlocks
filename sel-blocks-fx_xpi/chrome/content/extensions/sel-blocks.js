@@ -194,7 +194,7 @@ function $X(xpath, contextNode, resultType) {
   }
 
   // Determine if the given stack frame is one of the given block kinds
-  Stack.isTryBlock = function(stackFrame) { return (blkFor(stackFrame).nature == "try"); }
+  Stack.isTryBlock = function(stackFrame) { return (blkFor(stackFrame).nature == "try"); };
   Stack.isLoopBlock = function(stackFrame) { return (blkFor(stackFrame).nature == "loop"); };
   Stack.isFunctionBlock = function(stackFrame) { return (blkFor(stackFrame).nature == "function"); };
 
@@ -666,7 +666,6 @@ function $X(xpath, contextNode, resultType) {
     assertRunning();
     assertActiveScope(blkHere().tryIdx);
     delete storedVars._error;
-    var tryState = activeBlockStack().top();
     $$.LOG.info("entering finally block");
     // continue into finally-block
   };
@@ -919,7 +918,7 @@ function $X(xpath, contextNode, resultType) {
   };
 
   // ================================================================================
-  Selenium.prototype.doFor = function(forSpec, localVarsSpec)
+  Selenium.prototype.doFor = function(forSpec)
   {
     enterLoop(
       function(loop) { // validate
@@ -929,11 +928,9 @@ function $X(xpath, contextNode, resultType) {
           loop.initStmt = specs[0];
           loop.condExpr = specs[1];
           loop.iterStmt = specs[2];
-          var localVarNames = [];
-          if (localVarsSpec) {
-            localVarNames = iexpr.splitList(localVarsSpec, ",");
-            validateNames(localVarNames, "variable");
-          }
+          var localVarNames = parseVarNames(loop.initStmt);
+          $$.LOG.warn("localVarNames: " + localVarNames.join(','));
+          validateNames(localVarNames, "variable");
           return localVarNames;
       }
       ,function(loop) { evalWithVars(loop.initStmt); }          // initialize
@@ -943,6 +940,18 @@ function $X(xpath, contextNode, resultType) {
   };
   Selenium.prototype.doEndFor = function() {
     iterateLoop();
+  };
+
+  function parseVarNames(initStmt) {
+    var varNames = [];
+    if (initStmt) {
+      var vInits = iexpr.splitList(initStmt, ",");
+      for (var i = 0; i < vInits.length; i++) {
+        var vInit = iexpr.splitList(vInits[i], "=");
+        varNames.push(vInit[0]);
+      }
+    }
+    return varNames;
   };
 
   // ================================================================================

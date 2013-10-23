@@ -23,12 +23,12 @@
 </tr>
 <tr>
 	<td>for</td>
-	<td>f=3; f &lt;= 5; f++</td>
-	<td>f</td>
+	<td>s=0,f=3; f &lt;= 5; f++</td>
+	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;iter=${f}&quot;</td>
+	<td>&quot;iter=${f}.${s}&quot;</td>
 	<td></td>
 </tr>
 <tr>
@@ -44,7 +44,7 @@
 <!----- check results-->
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START $&quot; + &quot;{f}~iter=3~iter=4~iter=5~END $&quot; + &quot;{f}&quot;</td>
+	<td>&quot;START $&quot; + &quot;{f}~iter=3.0~iter=4.0~iter=5.0~END $&quot; + &quot;{f}&quot;</td>
 	<td></td>
 </tr>
 </tbody></table>
