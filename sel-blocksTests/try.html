@@ -967,6 +967,131 @@
 <!-- ===============-->
 <tr>
 	<td>log</td>
+	<td>&quot;-- throw, catch, rethrow --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr>
+	<td>try</td>
+	<td>outer</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;trying outer&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+</tr>
+<!--v v v-->
+<tr>
+	<td>try</td>
+	<td>inner</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;trying inner&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>1</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;throwing blamo1&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>throw</td>
+	<td>&quot;blamo1&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached, due to throw&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>catch</td>
+	<td>/blamo1/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;throwing blamo2&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>throw</td>
+	<td>&quot;blamo2&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td>inner</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>catch</td>
+	<td>/blamo2/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td>outer</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;([/~trying outer~trying inner~throwing blamo1~caught 'blamo1'~throwing blamo2~caught 'blamo2'~/])&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<!-- ===============-->
+<tr>
+	<td>log</td>
 	<td>&quot;-- bubble out of nested function calls --&quot;</td>
 	<td></td>
 </tr>
