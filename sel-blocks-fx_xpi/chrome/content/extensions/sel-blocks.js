@@ -323,7 +323,7 @@ function $X(xpath, contextNode, resultType) {
             blockDefs.init(i, { ifIdx: ifDef.idx });       // endIf -> if
             blkFor(ifDef).endIdx = i;                      // if -> endif
             if (ifDef.elseIdx)
-            	blkAt(ifDef.elseIdx).endIdx = i;           // else -> endif
+            	blkAt(ifDef.elseIdx).endIdx = i;             // else -> endif
             break;
 
           case "try":
@@ -353,7 +353,7 @@ function $X(xpath, contextNode, resultType) {
             blockDefs.init(i, { tryIdx: tryDef.idx });     // finally -> try
             blkFor(tryDef).finallyIdx = i;                 // try -> finally
             if (tryDef.catchIdx)
-            	blkAt(tryDef.catchIdx).finallyIdx = i;     // catch -> finally
+            	blkAt(tryDef.catchIdx).finallyIdx = i;       // catch -> finally
             break;
           case "endTry":
             assertNotAndWaitSuffix(i);
@@ -365,7 +365,7 @@ function $X(xpath, contextNode, resultType) {
             blockDefs.init(i, { tryIdx: tryDef.idx });     // endTry -> try
             blkFor(tryDef).endIdx = i;                     // try -> endTry
             if (tryDef.catchIdx)
-            	blkAt(tryDef.catchIdx).endIdx = i;         // catch -> endTry
+            	blkAt(tryDef.catchIdx).endIdx = i;           // catch -> endTry
             break;
 
           case "while":    case "for":    case "foreach":    case "forJson":    case "forXml":
@@ -448,6 +448,7 @@ function $X(xpath, contextNode, resultType) {
 
   // --------------------------------------------------------------------------------
 
+  // prevent jumping in-to and/or out-of loop/function/try blocks
   function assertIntraBlockJumpRestriction(fromIdx, toIdx) {
     var fromRange = findBlockRange(fromIdx);
     var toRange   = findBlockRange(toIdx);
@@ -460,11 +461,12 @@ function $X(xpath, contextNode, resultType) {
     }
   }
 
+  // ascertain in which, if any, block that an locusIdx occurs
   function findBlockRange(locusIdx) {
     for (var idx = locusIdx-1; idx >= 0; idx--) {
       var blk = blkAt(idx);
       if (blk) {
-        if (locusIdx > blk.endIdx) // ignore blocks that are inside this block
+        if (locusIdx > blk.endIdx) // ignore blocks that are inside this same block
           continue;
         switch (blk.nature) {
           case "loop":     return new CmdRange(blk.idx, blk.endIdx, blk.cmdName + " loop");
@@ -476,8 +478,9 @@ function $X(xpath, contextNode, resultType) {
     // return as undefined (no enclosing block at all)
   }
 
+  // pin-point in which sub-block, (try, catch or finally), that the idx occurs
   function isolateTcfRange(idx, tryDef) {
-    // assumption: idx known to be between try & endTry, and a catch always precedes a finally
+    // assumptions: idx is known to be between try & endTry, and catch always precedes finally
     var RANGES = [
       { ifr: tryDef.finallyIdx, ito: tryDef.endIdx,     desc: "finally", desc2: "end" }
      ,{ ifr: tryDef.catchIdx,   ito: tryDef.finallyIdx, desc: "catch",   desc2: "finally" }
@@ -496,7 +499,8 @@ function $X(xpath, contextNode, resultType) {
       }
     }
   }
- 
+
+  // represents a range of script lines
   function CmdRange(topIdx, bottomIdx, desc) {
     this.topIdx = topIdx;
     this.bottomIdx = bottomIdx;
@@ -1226,8 +1230,6 @@ function $X(xpath, contextNode, resultType) {
 
   // ================================================================================
   Selenium.prototype.doExitTest = function() {
-    if (transitionBubbling())
-      return;
     // intercept command processing and simply stop test execution instead of executing the next command
     $$.fn.interceptOnce(editor.selDebugger.runner.IDETestLoop.prototype, "resume", $$.handleAsExitTest);
   };
