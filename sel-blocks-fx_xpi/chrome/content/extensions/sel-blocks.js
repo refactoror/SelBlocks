@@ -604,6 +604,7 @@ function $X(xpath, contextNode, resultType) {
   };
 
   function cascadeElseIf(ifState, condExpr) {
+    assertCompilable("", condExpr, ";", "Invalid condition");
     if (!evalWithVars(condExpr)) {
       // jump to next elseIf or else or endif
       var ifDef = blkFor(ifState);
@@ -910,6 +911,7 @@ function $X(xpath, contextNode, resultType) {
     enterLoop(
       function() {    // validate
           assert(condExpr, " 'while' requires a condition expression.");
+          assertCompilable("", condExpr, ";", "Invalid condition");
           return null;
       }
       ,function() { } // initialize
@@ -927,6 +929,7 @@ function $X(xpath, contextNode, resultType) {
     enterLoop(
       function(loop) { // validate
           assert(forSpec, " 'for' requires: <initial-val>; <condition>; <iter-stmt>.");
+          assertCompilable("for ( ", forSpec, " );", "Invalid loop parameters");
           var specs = iexpr.splitList(forSpec, ";");
           assert(specs.length == 3, " 'for' requires <init-stmt>; <condition>; <iter-stmt>.");
           loop.initStmt = specs[0];
@@ -965,6 +968,7 @@ function $X(xpath, contextNode, resultType) {
       function(loop) { // validate
           assert(varName, " 'foreach' requires a variable name.");
           assert(valueExpr, " 'foreach' requires comma-separated values.");
+          assertCompilable("[ ", valueExpr, " ];", "Invalid value list");
           loop.values = evalWithVars("[" + valueExpr + "]");
           if (loop.values.length == 1 && loop.values[0] instanceof Array) {
             loop.values = loop.values[0]; // if sole element is an array, than use it
@@ -1005,6 +1009,8 @@ function $X(xpath, contextNode, resultType) {
 
   function loadVars(reader, desc, filepath, selector)
   {
+    if (selector)
+      assertCompilable("", selector, ";", "Invalid selector condition");
     reader.load(filepath);
     reader.next(); // read first varset and set values on storedVars
     if (!selector && !reader.EOF())
@@ -1145,6 +1151,8 @@ function $X(xpath, contextNode, resultType) {
   function dropToLoop(condExpr)
   {
     assertRunning();
+    if (condExpr)
+      assertCompilable("", condExpr, ";", "Invalid condition");
     if (transitionBubbling(Stack.isLoopBlock))
       return;
     if (condExpr && !evalWithVars(condExpr))
@@ -1158,6 +1166,8 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doCall = function(funcName, argSpec)
   {
     assertRunning(); // TBD: can we do single execution, ie, run from this point then break on return?
+    if (argSpec)
+      assertCompilable("var ", argSpec, ";", "Invalid call parameters");
     var funcIdx = symbols[funcName];
     assert(funcIdx, " Function does not exist: " + funcName + ".");
 
@@ -1244,10 +1254,14 @@ function $X(xpath, contextNode, resultType) {
       // Scripted expressions run in the Selenium window, separate from browser windows.
       // Global functions are intentional features provided for use by end user's in their Selenium scripts.
       result = eval("with (storedVars) {" + expr + "}");
-    } catch (err) {
-      notifyFatalErr(" While evaluating Javascript expression: " + expr, err);
+    } catch (e) {
+      notifyFatalErr(" While evaluating Javascript expression: " + expr, e);
     }
     return result;
+  }
+
+  function compileWithVars(stmts) {
+    eval("function selblocksTemp() { " + stmts + " }");
   }
 
   function parseArgs(argSpec) { // comma-sep -> new prop-set
@@ -1325,6 +1339,13 @@ function $X(xpath, contextNode, resultType) {
   function assertActiveScope(expectedIdx) {
     var activeIdx = activeBlockStack().top().idx;
     assert(activeIdx == expectedIdx, " unexpected command, active command was " + fmtCmdRef(activeIdx));
+  }
+
+  function assertCompilable(left, stmt, right, explanation) {
+    try { compileWithVars(left + stmt + right); }
+    catch (e) {
+      throw new Error(fmtCmdRef(idxHere()) + " " + explanation + " '" + stmt +  "': " + e.message);
+    }
   }
 
   function fmtCurCmd() {
