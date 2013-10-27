@@ -1,8 +1,7 @@
 // selbocks name-space
 (function($$){
-
   /* This function replaces native Selenium command handling for the exitScript command.
-   * This alters command processing such that the script simply halts rather executing the next command.
+   * It alters command processing such that the script simply halts rather executing the next command.
    */
   $$.handleAsExitTest = function()
   {

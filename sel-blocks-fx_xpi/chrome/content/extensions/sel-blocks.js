@@ -38,20 +38,20 @@
  *  SelBlocks reuses bits & parts of extensions: flowControl, datadriven, and include.
  *
  * Wishlist:
+ *  - show line numbers in the IDE
  *  - validation of JSON & XML input files
  *
  * Changes since 1.5:
- *  - added try/catch/finally
- *  - added elseIf command
- *  - added exitTest command
- *  - block boundaries enforced (jumping in-to/out-of the middle of blocks)
- *  - function/endFunction replaces script/endScript
+ *  - added try/catch/finally, elseIf, and exitTest commands
+ *  - block boundaries enforced (jumping in-to and/or out-of the middle of blocks)
+ *  - script/endScript is replaced by function/endFunction
+ *  - implicit initialization of for loop variable(s)
+ *  - improved validation of command expressions
  *
- * NOTE - The Stored Variables Viewer addon will display the values of Selblocks parameters,
- *   because they are implemented as regular Selenium variables.
- *   The only thing special about Selblocks parameters is that they are activated and deactivated
- *   as script execution flows into and out of blocks, eg, for/endFor, function/endFunction, etc.
- *   So this can provide a convenient way to monitor the progress of an executing script.
+ * NOTE - The only thing special about Selblocks parameters is that they are activated and deactivated
+ *   as script execution flows into and out of blocks, (for/endFor, function/endFunction, etc).
+ *   They are implemented as regular Selenium variables, and therefore the progress of an executing
+ *   script can be monitored using the Stored Variables Viewer addon.
  */
 
 
@@ -1167,7 +1167,7 @@ function $X(xpath, contextNode, resultType) {
   {
     assertRunning(); // TBD: can we do single execution, ie, run from this point then break on return?
     if (argSpec)
-      assertCompilable("var ", argSpec, ";", "Invalid call parameters");
+      assertCompilable("var ", argSpec, ";", "Invalid call parameter(s)");
     var funcIdx = symbols[funcName];
     assert(funcIdx, " Function does not exist: " + funcName + ".");
 
@@ -1262,10 +1262,6 @@ function $X(xpath, contextNode, resultType) {
     return result;
   }
 
-  function compileWithVars(stmts) {
-    eval("function selblocksTemp() { " + stmts + " }");
-  }
-
   function parseArgs(argSpec) { // comma-sep -> new prop-set
     var args = {};
     var parms = iexpr.splitList(argSpec, ",");
@@ -1344,7 +1340,9 @@ function $X(xpath, contextNode, resultType) {
   }
 
   function assertCompilable(left, stmt, right, explanation) {
-    try { compileWithVars(left + stmt + right); }
+    try {
+      evalWithVars("function selblocksTemp() { " + left + stmt + right + " }");
+    }
     catch (e) {
       throw new Error(fmtCmdRef(idxHere()) + " " + explanation + " '" + stmt +  "': " + e.message);
     }
