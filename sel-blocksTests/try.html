@@ -19,6 +19,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
 	<td>emit</td>
 	<td>&quot;([/&quot;</td>
 	<td></td>
@@ -60,15 +65,15 @@
 	<td>&quot;([/~trying~/])&quot;</td>
 	<td></td>
 </tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
 <!-- ===============-->
 <tr>
 	<td>log</td>
 	<td>&quot;-- try/finally, w/no error --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
@@ -123,15 +128,15 @@
 	<td>&quot;([/~trying~finally~/])&quot;</td>
 	<td></td>
 </tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
 <!-- ===============-->
 <tr>
 	<td>log</td>
 	<td>&quot;-- try/catch, but no error --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
@@ -186,15 +191,15 @@
 	<td>&quot;([/~trying~/])&quot;</td>
 	<td></td>
 </tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
 <!-- ===============-->
 <tr>
 	<td>log</td>
 	<td>&quot;-- catch specific error --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
@@ -254,15 +259,15 @@
 	<td>&quot;([/~caught 'blamo catch ALL'~/])&quot;</td>
 	<td></td>
 </tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
 <!-- ===============-->
 <tr>
 	<td>log</td>
 	<td>&quot;-- catch specific error, then finally --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
@@ -374,15 +379,15 @@
 	<td>&quot;([/~trying outer~([/~trying inner~caught 'blamo inner'~finally~/])~/])&quot;</td>
 	<td></td>
 </tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
 <!-- ===============-->
 <tr>
 	<td>log</td>
 	<td>&quot;-- catch/throw, finally/throw --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
@@ -514,15 +519,15 @@
 	<td>&quot;([/~trying~throwing A~caught 'blamoA'~throwing B~finally~throwing C~caught 'blamoC'~/])&quot;</td>
 	<td></td>
 </tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
 <!-- ===============-->
 <tr>
 	<td>log</td>
 	<td>&quot;-- bubble up to catch ALL --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
@@ -624,15 +629,15 @@
 	<td>&quot;([/~trying-outer~trying~caught-outer 'blamo try-catch-finally'~/])&quot;</td>
 	<td></td>
 </tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
 <!-- ===============-->
 <tr>
 	<td>log</td>
 	<td>&quot;-- bubble up to catch ALL via finally --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
@@ -744,15 +749,15 @@
 	<td>&quot;([/~trying-outer~trying~finally~caught-outer 'blamo try-catch-finally'~/])&quot;</td>
 	<td></td>
 </tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
 <!-- ===============-->
 <tr>
 	<td>log</td>
 	<td>&quot;-- bubble out of no-op try to catch specific error --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
@@ -859,15 +864,15 @@
 	<td>&quot;([/~trying outer~trying inner~throwing inner~caught 'blamo'~finally~/])&quot;</td>
 	<td></td>
 </tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
 <!-- ===============-->
 <tr>
 	<td>log</td>
 	<td>&quot;-- bubble up to catch specific error --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
@@ -974,15 +979,15 @@
 	<td>&quot;([/~trying outer~trying inner~throwing inner~finally~caught 'blamo'~/])&quot;</td>
 	<td></td>
 </tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
 <!-- ===============-->
 <tr>
 	<td>log</td>
 	<td>&quot;-- bubble up to catch specific error via finally --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
@@ -1099,15 +1104,15 @@
 	<td>&quot;([/~trying outer~trying inner~throwing inner~finally~caught 'blamo'~finally~/])&quot;</td>
 	<td></td>
 </tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
 <!-- ===============-->
 <tr>
 	<td>log</td>
 	<td>&quot;-- throw, catch, rethrow --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
@@ -1224,15 +1229,15 @@
 	<td>&quot;([/~trying outer~trying inner~throwing blamo1~caught 'blamo1'~throwing blamo2~caught 'blamo2'~/])&quot;</td>
 	<td></td>
 </tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
 <!-- ===============-->
 <tr>
 	<td>log</td>
 	<td>&quot;-- bubble out of nested function calls --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
@@ -1389,15 +1394,15 @@
 	<td>&quot;([/~trying~calling~0) trying-inner~0) calling~1) trying-inner~1) calling~2) trying-inner~2) throwing~2) finally~1) finally~0) finally~caught 'blamo'~finally~/])&quot;</td>
 	<td></td>
 </tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
 <!-- ===============-->
 <tr>
 	<td>log</td>
 	<td>&quot;-- command bubbling, break w/finally --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
@@ -1492,15 +1497,15 @@
 	<td>&quot;([/~while'g~3) trying~3) finallying~3) iterating~2) trying~2) BREAK~2) finallying~/])&quot;</td>
 	<td></td>
 </tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
 <!-- ===============-->
 <tr>
 	<td>log</td>
 	<td>&quot;-- command bubbling, intra-try break --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
@@ -1595,15 +1600,15 @@
 	<td>&quot;([/~trying~while'g~3) iterating~2) BREAK~finallying~/])&quot;</td>
 	<td></td>
 </tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
 <!-- ===============-->
 <tr>
 	<td>log</td>
 	<td>&quot;-- command bubbling, continue w/finally --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
@@ -1698,15 +1703,15 @@
 	<td>&quot;([/~while'g~3) trying~3) finallying~3) iterating~2) trying~2) CONTINUE~2) finallying~1) trying~1) finallying~1) iterating~/])&quot;</td>
 	<td></td>
 </tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
 <!-- ===============-->
 <tr>
 	<td>log</td>
 	<td>&quot;-- command bubbling, intra-try continue --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
@@ -1801,15 +1806,15 @@
 	<td>&quot;([/~trying~while'g~3) iterating~2) CONTINUE~1) iterating~finallying~/])&quot;</td>
 	<td></td>
 </tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
 <!-- ===============-->
 <tr>
 	<td>log</td>
 	<td>&quot;-- command bubbling, error replaced by return --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
@@ -1914,15 +1919,15 @@
 	<td>&quot;([/~calling~in cmdBubA~trying~returning (1)~finallying~returning (2)~returned 2~/])&quot;</td>
 	<td></td>
 </tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
 <!-- ===============-->
 <tr>
 	<td>log</td>
 	<td>&quot;-- command bubbling, error replaced by return --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
@@ -2027,15 +2032,15 @@
 	<td>&quot;([/~calling~in cmdBubB~trying~throwing~finallying~returning (2)~returned 2~/])&quot;</td>
 	<td></td>
 </tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
 <!-- ===============-->
 <tr>
 	<td>log</td>
 	<td>&quot;-- command bubbling, return replaced by error --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
@@ -2167,15 +2172,15 @@
 	<td>&quot;([/~calling~in cmdBubC~trying~returning (1)~finallying~throwing~caught 'this-error-replaces-return-1'~returned 2~/])&quot;</td>
 	<td></td>
 </tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
 <!-- ===============-->
 <tr>
 	<td>log</td>
 	<td>&quot;-- exitTest w/finally processing --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
@@ -2244,6 +2249,11 @@
 <tr>
 	<td>log</td>
 	<td>&quot;-- try without matching catch --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
