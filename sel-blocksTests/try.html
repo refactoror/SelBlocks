@@ -382,6 +382,146 @@
 <!-- ===============-->
 <tr>
 	<td>log</td>
+	<td>&quot;-- catch/throw, finally/throw --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr>
+	<td>try</td>
+	<td>tcf-trap</td>
+	<td></td>
+</tr>
+<!--v v v-->
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+</tr>
+<tr>
+	<td>try</td>
+	<td>tcf</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;trying&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;throwing A&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>throw</td>
+	<td>&quot;blamoA&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached, due to thrown&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>catch</td>
+	<td>/blamoA/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;throwing B&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>throw</td>
+	<td>&quot;blamoB&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;finally&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;throwing C&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>throw</td>
+	<td>&quot;blamoC&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+</tr>
+<tr>
+	<td>catch</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;([/~trying~throwing A~caught 'blamoA'~throwing B~finally~throwing C~caught 'blamoC'~/])&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<!-- ===============-->
+<tr>
+	<td>log</td>
 	<td>&quot;-- bubble up to catch ALL --&quot;</td>
 	<td></td>
 </tr>
@@ -2162,6 +2302,11 @@
 	<td>assertEval</td>
 	<td>selblocks.tcf.nestingLevel</td>
 	<td>-1</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;trying&quot;</td>
+	<td></td>
 </tr>
 </tbody></table>
 </body>
