@@ -1240,6 +1240,8 @@ function $X(xpath, contextNode, resultType) {
 
   // ================================================================================
   Selenium.prototype.doExitTest = function() {
+    if (transitionBubbling())
+      return;
     // intercept command processing and simply stop test execution instead of executing the next command
     $$.fn.interceptOnce(editor.selDebugger.runner.IDETestLoop.prototype, "resume", $$.handleAsExitTest);
   };
