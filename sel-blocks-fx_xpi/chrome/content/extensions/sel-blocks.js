@@ -620,6 +620,11 @@ function $X(xpath, contextNode, resultType) {
 
   // ================================================================================
 
+  // display alert message with the evaluated expression
+  Selenium.prototype.doThrow = function(expr) {
+    throw new Error(evalWithVars(expr));
+  };
+
   // TBD: failed locators/timeouts/asserts ?
   Selenium.prototype.doTry = function(tryName)
   {
