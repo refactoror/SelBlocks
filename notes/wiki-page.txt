@@ -1,0 +1,134 @@
+=SelBlocks 1.5=
+
+Installer: https://addons.mozilla.org/en-US/firefox/addon/selenium-ide-sel-blocks/versions/
+
+=Description=
+
+Provides commands for javascript-like looping and callable functions, with scoped variables, and XML driven parameterization.
+
+=Features=
+
+* Adds the following control structures to Selenese: <tt>if</tt>/<tt>else</tt>, <tt>for</tt>/<tt>foreach</tt>/<tt>while</tt>, <tt>continue</tt>/<tt>break</tt>, <tt>loadJsonVars</tt>/<tt>loadXmlVars</tt>, <tt>forXml</tt>/<tt>forJson</tt>, <tt>call</tt>/<tt>script</tt>/<tt>return</tt>, <tt>exitTest</tt>
+* Script and loop parameters use regular selenium variables that are local to the block, overriding variables of the same name, and that are restored when the block exits.
+* Command parameters are javascript expressions that are evaluated with the selenium variables in scope, which can therefore be referenced by their simple names, e.g.: <tt>i+1</tt>
+* Variables can be configured via external XML.
+* A script definition can appear anywhere; they are skipped over in normal execution flow.
+* Script functions can be called recursively.
+
+=Examples of Use=
+
+Note that Selenium performs variable substitution before each command executes. When Selenium variables are used in Selblock parameters, which are JavaScript expressions, they are evaluated as literals. So for example, you would write: <tt>$(userid}</tt>. Or more simply: <tt>userid</tt>.
+
+ foreach|userid|"dilbert","dogbert"
+   getEval|LOG.info("${userid}");
+   if|${userid}=="dilbert"
+     getEval|LOG.info("${userid}, our hero");
+   else
+     getEval|LOG.info("${userid}");
+   endIf
+ endForeach
+
+ for|i=1; i <= 10; i++|i
+   getEval|LOG.info(${i});
+ endFor
+
+ loadVars|varset.xml
+ loadVars|varset.xml|userid=="wally"
+ getEval|LOG.info("${role}");
+
+ forXml|varset.xml
+   getEval|LOG.info("${userid}: ${role}");
+ endForXml
+
+ -- log odd numbers from 0 to 10
+ for|i=0; i <= 100; i++|i
+   break|i==10
+   continue|i%2==0
+   getEval|LOG.info("${i}");
+ endFor
+
+ -- extravagant example, but demonstrates possibilities
+ call|factorial|n=7
+ script|factorial
+   if|n<=1
+     return|1
+   else
+     call|factorial|n=n-1
+     return|n*_result
+   endIf
+ endScript
+ getEval|LOG.info("${_result}");
+
+ skipNext|1
+ getEval|LOG.info("this will NOT execute");
+ skipNext|0
+ getEval|LOG.info("this WILL execute");
+ goto|HERE
+ getEval|LOG.info("this will NOT execute");
+ label|HERE
+ gotoIf|true|THERE
+ getEval|LOG.info("this will NOT execute");
+ label|THERE
+
+ exitText
+ getEval|LOG.info("this and any following commands will NOT execute");
+
+Sample varset.xml:
+
+ <testdata>
+   <vars userid="dilbert" role="superuser" />
+   <vars userid="wally"   role="lazyuser" />
+ </testdata>
+
+Sample varset.json:
+
+ [
+   { userid: "dilbert", role: "superuser" }
+  ,{ userid: "wally",   role: "lazyuser" }
+ ]
+
+Note that if a data file is in the same directory as the invoking script, then a relative path can be used.
+
+=Automatic Variables=
+
+SelBlocks provides automatic variables in two situations:
+
+* Inside a <tt>foreach</tt>/<tt>endForeach</tt> loop, <tt>${_i}</tt> holds the zero-based index of the loop iteration.
+* When a script terminates via the <tt>return</tt> command, <tt>${_result}</tt> holds the result value.
+
+These variables can of course be referenced in SelBlocks commands as <tt>_i</tt> and <tt>_result</tt>.
+
+=Javascript Extensions=
+
+These can be used in Selblock expressions:
+
+ String.isOneOf : Example: if|employee.isOneOf("dilbert","wally","ratbert")
+ String.mapTo : Example: if|employee.mapTo("peon", ["dilbert","wally"]) == "peon"
+
+ $e(locator) : Example: $e("link=SelBlocks review")
+ $x(xpath) : Example: $x("//input[@id=(//label[.='User ID']/@for)]")
+
+=Dependencies=
+
+NONE
+
+''Note that the [https://addons.mozilla.org/en-US/firefox/addon/stored-variables-viewer-seleni/ Stored Variables Viewer] addon will display the values of SelBlocks parameters, because they are implemented as regular Selenium variables. The only thing special about SelBlocks parameters is that they are activated and deactivated as script execution flows into and out of blocks, eg, <tt>for</tt>/<tt>endFor</tt>, <tt>script</tt>/<tt>endScript</tt>, etc. So this can provide a convenient way to monitor the progress of an executing script.''
+
+=Limitations=
+
+Incompatible with flowControl (and derivatives), because they unilaterally modify <tt>selenium.reset()</tt>. Note however that SelBlocks provides equivalent commands, and is generally a plug-compatible replacement.
+
+=Philosophical Note=
+
+I tend to agree, in principle, with Dan Fabulich's view on keeping HTML Selenese simple. However, in practice I'm able to maintain MUCH simpler scripts by using if/else and looping. There is no language translation for Selblock commands, so they're comment-out in an exported script. Although hand-translation in the target language ought to be pretty straightforward. I would just say, use these constructs judiciously.
+
+=Revision History=
+
+* 2013-09-08: v1.5
+* 2013-07-28: v1.3.1
+* 2011-08-14: v1.3
+* 2011-08-05: v1.2
+* 2011-04-10: v1.1
+* 2011-03-28: v1.0
+
+All versions: https://addons.mozilla.org/en-US/firefox/addon/selenium-ide-sel-blocks/versions/
