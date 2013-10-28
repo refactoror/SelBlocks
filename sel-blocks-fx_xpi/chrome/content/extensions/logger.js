@@ -1,7 +1,7 @@
 // selbocks name-space
 (function($$){
 
-  /* LOG wrapper for Selblocks-specific behavior
+  /* LOG wrapper for SelBlocks-specific behavior
    */
   function Logger()
   {

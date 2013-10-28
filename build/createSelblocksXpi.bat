@@ -10,14 +10,14 @@ SETLOCAL
 
 set STAGING=%~dp0
 
-:: parse Selblocks version # from its install.rdf
+:: parse SelBlocks version # from its install.rdf
 call :S_GET_ADDON_VER ..\sel-blocks-fx_xpi
 set SB_VER=%_ver%
 
-echo Selblocks: %SB_VER%
+echo SelBlocks: %SB_VER%
 
 
-:: create the Selblocks xpi
+:: create the SelBlocks xpi
 pushd ..\sel-blocks-fx_xpi
 del "%STAGING%sel-blocks-%SB_VER%-fx.xpi"
 mkdir "%STAGING%/../../_historical-xpi"

@@ -48,7 +48,7 @@
  *  - implicit initialization of for loop variable(s)
  *  - improved validation of command expressions
  *
- * NOTE - The only thing special about Selblocks parameters is that they are activated and deactivated
+ * NOTE - The only thing special about SelBlocks parameters is that they are activated and deactivated
  *   as script execution flows into and out of blocks, (for/endFor, function/endFunction, etc).
  *   They are implemented as regular Selenium variables, and therefore the progress of an executing
  *   script can be monitored using the Stored Variables Viewer addon.
@@ -275,7 +275,7 @@ function $X(xpath, contextNode, resultType) {
         var curCmd = testCase.commands[i].command;
         var aw = curCmd.indexOf("AndWait");
         if (aw != -1) {
-          // just ignore the suffix for now, this may or may not be a Selblocks commands
+          // just ignore the suffix for now, this may or may not be a SelBlocks commands
           curCmd = curCmd.substring(0, aw);
         }
         var cmdTarget = testCase.commands[i].target;
@@ -434,7 +434,7 @@ function $X(xpath, contextNode, resultType) {
     //- command validation
     function assertNotAndWaitSuffix(cmdIdx) {
       assertCmd(cmdIdx, (testCase.commands[cmdIdx].command.indexOf("AndWait") == -1),
-        ", AndWait suffix is not valid for Selblocks commands");
+        ", AndWait suffix is not valid for SelBlocks commands");
     }
     //- active block validation
     function assertBlockIsPending(expectedCmd, cmdIdx, desc) {
@@ -513,7 +513,7 @@ function $X(xpath, contextNode, resultType) {
     };
   }
 
-  // ==================== Selblocks Commands (Custom Selenium Actions) ====================
+  // ==================== SelBlocks Commands (Custom Selenium Actions) ====================
 
   var iexpr = Object.create($$.InfixExpressionParser);
 

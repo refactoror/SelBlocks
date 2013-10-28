@@ -16,6 +16,6 @@
         ide_api.addPluginProvidedUserExtension(chr + "/expression-parser.js");
         ide_api.addPluginProvidedUserExtension(chr + "/selenium-executionloop-handleAsExitTest.js");
         ide_api.addPluginProvidedUserExtension(chr + "/selenium-executionloop-handleAsTryBlock.js");
-        ide_api.addPluginProvidedUserExtension(chr + "/sel-blocks.js");
+        ide_api.addPluginProvidedUserExtension(chr + "/selblocks.js");
     </html:script>
 </overlay>
