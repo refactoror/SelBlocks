@@ -646,7 +646,7 @@ function $X(xpath, contextNode, resultType) {
     // log an advisory about the active catch block
     if (tryDef.catchIdx) {
       var errDcl = testCase.commands[tryDef.catchIdx].target;
-      $$.LOG.info(tryName + " catchable: " + (errDcl ? errDcl : "ANY"));
+      $$.LOG.debug(tryName + " catchable: " + (errDcl ? errDcl : "ANY"));
     }
 
     $$.tcf.nestingLevel++;
@@ -657,7 +657,7 @@ function $X(xpath, contextNode, resultType) {
       $$.fn.interceptPush(editor.selDebugger.runner.IDETestLoop.prototype, "resume",
           $$.handleAsTryBlock, { handleError: handleCommandError });
     }
-    $$.LOG.info("++ try nesting: " + $$.tcf.nestingLevel);
+    $$.LOG.debug("++ try nesting: " + $$.tcf.nestingLevel);
     // continue into try-block
   };
 
@@ -674,13 +674,14 @@ function $X(xpath, contextNode, resultType) {
       else
         setNextCommand(tryDef.endIdx);
     }
+    $$.LOG.debugdebug("entering catch block");
     // else continue into catch-block
   };
   Selenium.prototype.doFinally = function() {
     assertRunning();
     assertActiveScope(blkDefHere().tryIdx);
     delete storedVars._error;
-    $$.LOG.info("entering finally block");
+    $$.LOG.debug("entering finally block");
     // continue into finally-block
   };
   Selenium.prototype.doEndTry = function(tryName)
@@ -691,7 +692,7 @@ function $X(xpath, contextNode, resultType) {
     var tryState = activeBlockStack().pop();
     if (tryState.execPhase) { // ie, it DOES have a catch and/or a finally block
       $$.tcf.nestingLevel--;
-      $$.LOG.info("-- try nesting: " + $$.tcf.nestingLevel);
+      $$.LOG.debug("-- try nesting: " + $$.tcf.nestingLevel);
       if ($$.tcf.nestingLevel < 0) {
         // discontinue try-block handling
         $$.fn.interceptPop();
@@ -700,10 +701,10 @@ function $X(xpath, contextNode, resultType) {
       if ($$.tcf.bubbling)
         reBubble();
       else
-        $$.LOG.info("no bubbling in process");
+        $$.LOG.debug("no bubbling in process");
     }
     var tryDef = blkDefFor(tryState);
-    $$.LOG.info("end of try '" + tryDef.name + "'");
+    $$.LOG.debug("end of try '" + tryDef.name + "'");
     // fall out of endTry
   };
 
@@ -715,7 +716,7 @@ function $X(xpath, contextNode, resultType) {
   {
     var tryState = bubbleToTryBlock(Stack.isTryBlock);
     var tryDef = blkDefFor(tryState);
-    $$.LOG.info("error encountered while: " + tryState.execPhase);
+    $$.LOG.debug("error encountered while: " + tryState.execPhase);
     if (hasUnspentCatch(tryState)) {
       if (isMatchingCatch(err, tryDef.catchIdx)) {
         // an expected kind of error has been caught
@@ -729,21 +730,21 @@ function $X(xpath, contextNode, resultType) {
       }
     }
     // error not caught .. instigate bubbling
-    $$.LOG.info("error not caught, bubbling error: '" + err.message + "'");
+    $$.LOG.debug("error not caught, bubbling error: '" + err.message + "'");
     $$.tcf.bubbling = { mode: "error", error: err, srcIdx: idxHere() };
     if (hasUnspentFinally(tryState)) {
-      $$.LOG.warn("Bubbling suspended while finally block runs");
+      $$.LOG.info("Bubbling suspended while finally block runs");
       tryState.execPhase = "finallying";
       tryState.hasFinaled = true;
       setNextCommand(tryDef.finallyIdx);
       return true;
     }
     if ($$.tcf.nestingLevel > 0) {
-      $$.LOG.warn("No further handling, error bubbling will continue outside of this try.");
+      $$.LOG.info("No further handling, error bubbling will continue outside of this try.");
       setNextCommand(tryDef.endIdx);
       return true;
     }
-    $$.LOG.warn("No handling provided in this try section for this error: '" + err.message + "'");
+    $$.LOG.info("No handling provided in this try section for this error: '" + err.message + "'");
     return false; // stop test
   }
 
@@ -754,14 +755,14 @@ function $X(xpath, contextNode, resultType) {
     var tryDef = blkDefFor(tryState);
     $$.tcf.bubbling = { mode: "command", srcIdx: cmdIdx, _isStopCriteria: _isContextBlockType };
     if (hasUnspentFinally(tryState)) {
-      $$.LOG.warn("Command " + fmtCmdRef(cmdIdx) + ", suspended while finally block runs");
+      $$.LOG.info("Command " + fmtCmdRef(cmdIdx) + ", suspended while finally block runs");
       tryState.execPhase = "finallying";
       tryState.hasFinaled = true;
       setNextCommand(tryDef.finallyIdx);
       // begin finally block
     }
     else {
-      $$.LOG.warn("No further handling, bubbling continuing outside of this try.");
+      $$.LOG.info("No further handling, bubbling continuing outside of this try.");
       setNextCommand(tryDef.endIdx);
       // jump out of try section
     }
@@ -797,7 +798,7 @@ function $X(xpath, contextNode, resultType) {
   // unwind the blockStack, and callStack (ie, aborting functions), until reaching the given criteria
   function bubbleToTryBlock(_hasCriteria) {
     if ($$.tcf.nestingLevel < 0)
-      $$.LOG.error("bubbleToTryBlock() called outside of any try nesting");
+      $$.LOG.warn("bubbleToTryBlock() called outside of any try nesting");
     var tryState = unwindToBlock(_hasCriteria);
     while (!tryState && $$.tcf.nestingLevel > -1 && callStack.length > 1) {
       var callFrame = callStack.pop();
@@ -812,7 +813,7 @@ function $X(xpath, contextNode, resultType) {
   function unwindToBlock(_hasCriteria) {
     var tryState = activeBlockStack().unwindTo(_hasCriteria);
     if (tryState)
-      $$.LOG.info("unwound to: " + fmtTry(tryState));
+      $$.LOG.debug("unwound to: " + fmtTry(tryState));
     return tryState;
   }
 
@@ -820,7 +821,7 @@ function $X(xpath, contextNode, resultType) {
   function reBubble() {
     if ($$.tcf.bubbling.mode == "error") {
       if ($$.tcf.nestingLevel > -1) {
-        $$.LOG.info("error-bubbling continuing...");
+        $$.LOG.debug("error-bubbling continuing...");
         handleCommandError($$.tcf.bubbling.error);
       }
       else {
@@ -831,7 +832,7 @@ function $X(xpath, contextNode, resultType) {
     }
     else { // mode == "command"
       if (isBubblable()) {
-        $$.LOG.info("command-bubbling continuing...");
+        $$.LOG.debug("command-bubbling continuing...");
         bubbleCommand($$.tcf.bubbling.srcIdx, $$.tcf.bubbling._isStopCriteria);
       }
       else {
@@ -847,13 +848,13 @@ function $X(xpath, contextNode, resultType) {
   {
     if ($$.tcf.bubbling) { // transform bubbling
       if ($$.tcf.bubbling.mode == "error") {
-        $$.LOG.warn("Bubbling error: '" + $$.tcf.bubbling.error.message + "'"
+        $$.LOG.debug("Bubbling error: '" + $$.tcf.bubbling.error.message + "'"
           + ", replaced with command " + fmtCmdRef(idxHere()));
         $$.tcf.bubbling = { mode: "command", srcIdx: idxHere(), _isStopCriteria: _isContextBlockType };
         return true;
       }
       else { // mode == "command"
-        $$.LOG.warn("Command suspension " + fmtCmdRef($$.tcf.bubbling.srcIdx)
+        $$.LOG.debug("Command suspension " + fmtCmdRef($$.tcf.bubbling.srcIdx)
           + ", replaced with " + fmtCmdRef(idxHere()));
         $$.tcf.bubbling.srcIdx = idxHere();
         return true;
@@ -945,7 +946,7 @@ function $X(xpath, contextNode, resultType) {
           loop.condExpr = specs[1];
           loop.iterStmt = specs[2];
           var localVarNames = parseVarNames(loop.initStmt);
-          $$.LOG.warn("localVarNames: " + localVarNames.join(','));
+          $$.LOG.debug("localVarNames: " + localVarNames.join(','));
           validateNames(localVarNames, "variable");
           return localVarNames;
       }
