@@ -429,7 +429,7 @@ function $X(xpath, contextNode, resultType) {
       // unterminated block(s)
       var pend = lexStack.pop();
       var expectedCmd = "end" + pend.cmdName.substr(0, 1).toUpperCase() + pend.cmdName.substr(1);
-      throw new Error(fmtCmdRef(pend.idx) + ", without a terminating [" + expectedCmd + "]");
+      throw new SyntaxError(fmtCmdRef(pend.idx) + ", without a terminating [" + expectedCmd + "]");
     }
     //- command validation
     function assertNotAndWaitSuffix(cmdIdx) {
@@ -1361,7 +1361,7 @@ function $X(xpath, contextNode, resultType) {
       evalWithVars("function selblocksTemp() { " + left + stmt + right + " }");
     }
     catch (e) {
-      throw new Error(fmtCmdRef(idxHere()) + " " + explanation + " '" + stmt +  "': " + e.message);
+      throw new SyntaxError(fmtCmdRef(idxHere()) + " " + explanation + " '" + stmt +  "': " + e.message);
     }
   }
 
