@@ -1,5 +1,5 @@
 /*
- * SelBlocks 2.0b
+ * SelBlocks 2.0
  *
  * Provides commands for Javascript-like looping and callable functions,
  *   with scoped variables, and JSON/XML driven parameterization.
