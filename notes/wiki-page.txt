@@ -4,7 +4,7 @@ Installer: https://addons.mozilla.org/en-US/firefox/addon/selenium-ide-sel-block
 
 =Description=
 
-Provides commands for javascript-like conditionals, looping, callable functions, error catching, and JSON/XML driven parameterization.
+Provides Selenium commands for javascript-like conditionals, looping, callable functions, error catching, and JSON/XML driven parameterization.
 
 =Features=
 
@@ -154,10 +154,10 @@ I tend to agree, in principle, with Dan Fabulich's view on keeping HTML Selenese
 
 * 2013-10-28: v2.0
 ** Added elseIf and try/catch/finally/throw commands
+** Improved validation of command expressions
 ** Block boundaries are now enforced (prevent jumping in-to and/or out-of blocks)
-** script/endScript is replaced by function/endFunction
-** implicit initialization of for loop variable(s)
-** improved validation of command expressions
+** Deprecates script/endScript, instead use function/endFunction
+** Implicit initialization of for loop variable(s):<br><tt>for|i=1;i<=10;i++|i</tt> becomes just <tt>for|i=1;i<=10;i++</tt>
 * 2013-09-08: v1.5
 ** Added loadJsonVars and forJson
 ** Made parameter expressions for robust

@@ -1,39 +1,54 @@
 ================================================================================
-SelBlocks (for Selenium IDE) 2.0
+SelBlocks (for Selenium IDE) 2.0.1
 by refactoror
 
-This is an extension for Selenium IDE that provides javascript-like conditionals, looping, callable functions, error catching, and JSON/XML driven parameterization. Latest version is 2.0.
+Latest version 2.0.1
+
+This is an extension for Selenium IDE that provides javascript-like conditionals, looping, callable functions, error catching, and JSON/XML driven parameterization.
 
 ================================================================================
 About this Add-on
 
+<strong>SelBlocks 2.0.1</strong>
 <ul>
-<li>
-Adds the following control structures to Selenese: <code>if</code>/<code>elseIf</code>/<code>else</code>, <code>try</code>/<code>catch</code>/<code>finally</code>/<code>throw</code>, <code>for</code>/<code>foreach</code>/<code>while</code>, <code>continue</code>/<code>break</code>, <code>call</code>/<code>function</code>/<code>return</code>, <code>loadXmlVars</code>/<code>loadJsonVars</code>, <code>forXml</code>/<code>forJson</code>, <code>exitTest</code>
-</li>
-<li>
-Function and loop parameters use regular Selenium variables that are local to the block, overriding variables of the same name, and that are restored when the block exits.
-</li>
-<li>
-Command parameters are javascript expressions that are evaluated with Selenium variables in scope, which can therefore be referenced by their simple names, e.g.: <code>i+1</code>
-</li>
-<li>
-Variables can be configured via external XML and/or JSON files.
-</li>
-<li>
-A function definition can appear anywhere, (they are skipped over in normal execution flow).
-</li>
-<li>
-Functions can be called recursively.
-</li>
-<li>
-Errors bubble upward through try/catch/finally blocks, which can be nested arbitrarially. Catching an error cancels it, or can be re-thrown.
-</li>
+  <li>Adds the following control structures to Selenese:
+    <ul>
+    <blockquote><code>if</code>/<code>elseIf</code>/<code>else</code></blockquote>
+    <blockquote><code>try</code>/<code>catch</code>/<code>finally</code>/<code>throw</code></blockquote>
+    <blockquote><code>for</code>/<code>foreach</code>/<code>while</code></blockquote>
+    <blockquote><code>continue</code>/<code>break</code></blockquote>
+    <blockquote><code>call</code>/<code>function</code>/<code>return</code></blockquote>
+    <blockquote><code>loadXmlVars</code>/<code>loadJsonVars</code></blockquote>
+    <blockquote><code>forXml</code>/<code>forJson</code></blockquote>
+    <blockquote><code>exitTest</code></blockquote>
+    </ul>
+  </li>
+  <li>Function and loop parameters use regular Selenium variables that are local to the block, overriding variables of the same name, and that are restored when the block exits.
+  </li>
+  <li>Command parameters are javascript expressions that are evaluated with Selenium variables in scope, which can therefore be referenced by their simple names, e.g.: <code>i+1</code>
+  </li>
+  <li>Variables can be configured via external XML and/or JSON files.
+  </li>
+  <li>A function definition can appear anywhere, (they are skipped over in normal execution flow).
+  </li>
+  <li>Functions can be called recursively.
+  </li>
+  <li>Errors bubble upward through try/catch/finally blocks, which can be nested arbitrarially. Catching an error cancels it, or can be re-thrown.
+  </li>
 </ul>
+
+Note that it take months for Mozilla to review each addon update. For compatibility with Firefox versions above 17, see: https://addons.mozilla.org/en-US/firefox/addon/selenium-ide-sel-blocks/versions/
 
 Documentation <a href="http://refactoror.wikia.com/wiki/Selblocks_Reference">here</a>.
 
-Note that it take months for Mozilla to review each addon update. For compatibility with Firefox versions above 17, see: https://addons.mozilla.org/en-US/firefox/addon/selenium-ide-sel-blocks/versions/
+================================================================================
+Version 2.0.1
+Released February 13, 2014 33.1 KB
+Works with Firefox 17.0 and later 
+
+Changes since 2.0:
+* Replace Array.iterator with arrayIterator()
+* Miscellaneous jsLint cleanups
 
 ================================================================================
 Version 2.0

@@ -4,7 +4,7 @@
   <Description about="urn:mozilla:install-manifest">
     <em:id>sel-blocks@chris.noe</em:id>
     <em:name>Selenium IDE - SelBlocks</em:name>
-    <em:version>2.0</em:version>
+    <em:version>2.0.1</em:version>
     <em:creator>Chris Noe</em:creator>
     <em:description>A structured commands extension plugin for Selenium-IDE</em:description>
     <em:type>2</em:type> <!--Type extension-->
@@ -21,12 +21,14 @@
       </Description>
     </em:targetApplication>
 
+  <!-- Selenium dependency
     <em:requires>
-     <Description> <!-- Selenium -->
+     <Description>
          <em:id>{a6fd85ed-e919-4a43-a5af-8da18bda539f}</em:id>
          <em:minVersion>1.1</em:minVersion>
          <em:maxVersion>2.*</em:maxVersion>
      </Description>
     </em:requires>
+  -->
   </Description>
 </RDF>

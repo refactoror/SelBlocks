@@ -21,7 +21,7 @@ echo SelBlocks: %SB_VER%
 pushd ..\sel-blocks-fx_xpi
 del "%STAGING%sel-blocks-%SB_VER%-fx.xpi"
 mkdir "%STAGING%/../../_historical-xpi"
-zip -r "%STAGING%/../../_historical-xpi/sel-blocks-%SB_VER%-fx.xpi" * -x@"%STAGING%xpi-excludes.lst"
+zip -r "%STAGING%/../sel-blocks-%SB_VER%-fx.xpi" * -x@"%STAGING%xpi-excludes.lst"
 popd
 
 ENDLOCAL

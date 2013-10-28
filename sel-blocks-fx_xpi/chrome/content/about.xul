@@ -1,34 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE window SYSTEM "chrome://ace/locale/ace.dtd">
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<!DOCTYPE window SYSTEM "chrome://ace/locale/ace.dtd" >
+<?xml-stylesheet href="chrome://selblocksSeleExten/content/selblocks.css" type="text/css"?>
 
 <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        xmlns:h="http://www.w3.org/1999/xhtml"
   title="SelBlocks - About"
   class="dialog"
   orient="vertical" autostretch="always"
   onload="sizeToContent()"
 >
-  <vbox>
-    <hbox>
-      <image src="/skin/leftbracket.png" />
-      <vbox>
-        <text value="SelBlocks 2.0" style="font-weight: bold; font-size: medium;" />
-        <text value="for Selenium IDE" style="font-weight: bold; font-size: small;" />
-      </vbox>
-      <image src="/skin/rightbracket.png" />
-    </hbox>
+  <hbox pack="center">
+    <vbox>
+      <hbox>
+        <image src="/skin/leftbracket.png" />
+        <vbox>
+          <text value="SelBlocks 2.0" style="font-weight: bold; font-size: medium;" />
+          <text value="for Selenium IDE" style="font-weight: bold; font-size: small;" />
+        </vbox>
+        <image src="/skin/rightbracket.png" />
+      </hbox>
 
-    <separator />
-    <hbox pack="center">
-      <text value="Created By: " style="font-weight: bold;" />
-      <text value="Chris Noé" class="url"
-        onclick="window.open('http://refactoror.net/'); window.close();" />
-    </hbox>
+      <hbox pack="center" style="margin-top: 5px;">
+        <text value="Created By: " style="font-weight: bold;" />
+        <text value="Chris Noé" class="url"
+          onclick="window.open('http://refactoror.net/'); window.close();" />
+      </hbox>
+    </vbox>
+  </hbox>
 
-    <separator />
-    <box pack="center">
-      <button label="Close" oncommand="window.close();" />
-    </box>
+  <vbox pack="left">
+    <h:ul style="width: 450px; max-width: 450px; font-size: 10pt;">
+      <h:li>
+        Commands:
+        <span class="code">if/else/elseIf</span>,
+        <span class="code">try/catch/finally</span>,
+        <span class="code">throw</span>,
+        <span class="code">for/foreach/while</span>,
+        <span class="code">call/function/return</span>,
+        <span class="code">loadJsonVars/loadXmlVars</span>,
+        <span class="code">forJson/forXml</span>
+      </h:li>
+      <h:li>
+        Function and loop parameters create regular Selenium variables that are local to a block,
+        overriding variables of the same name, and that are restored when the block exits.
+      </h:li>
+      <h:li>
+        Selenium variables can be set via external JSON/XML data file(s).
+      </h:li>
+      <h:li>
+        Command parameters are Javascript expressions that are evaluated with Selenium variables in scope,
+        which can therefore be referenced by their simple names, e.g.: <span class="code">i+1</span>
+      </h:li>
+      <h:li>
+        A function definition can appear anywhere; they are skipped in normal execution flow.
+      </h:li>
+      <h:li>
+        Functions can be invoked recursively.
+      </h:li>
+    </h:ul>
   </vbox>
+
+  <vbox pack="right">
+      <hbox style="margin-top: 5px; font-size: 120%;">
+        <h:span style="margin: 3px;">See:</h:span>
+        <text class="url" value="SelBlocks Documentation" style="color: blue; text-decoration: underline;"
+            onclick="window.open('http://refactoror.wikia.com/wiki/Selblocks_Reference')" />
+      </hbox>
+  </vbox>
+
+  <hbox pack="center" style="margin-top: 5px;">
+    <button label="Close" oncommand="window.close();" />
+  </hbox>
 
 </window>
