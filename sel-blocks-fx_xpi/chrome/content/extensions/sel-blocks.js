@@ -620,9 +620,13 @@ function $X(xpath, contextNode, resultType) {
 
   // ================================================================================
 
-  // display alert message with the evaluated expression
-  Selenium.prototype.doThrow = function(expr) {
-    throw new Error(evalWithVars(expr));
+  // throw the given Error
+  Selenium.prototype.doThrow = function(err) {
+    err = evalWithVars(err);
+    if (!(err instanceof Error)) {
+      err = new SelblocksError(idxHere(), err);
+    }
+    throw err;
   };
 
   // TBD: failed locators/timeouts/asserts ?
@@ -1316,6 +1320,13 @@ function $X(xpath, contextNode, resultType) {
   }
 
   // ========= error handling =========
+
+  function SelblocksError(idx, message) {
+    this.name = "SelblocksError";
+    this.message = (message || "");
+    this.idx = idx;
+  }
+  SelblocksError.prototype = Error.prototype;
 
   // TBD: make into throwable Errors
   function notifyFatalErr(msg, err) {
