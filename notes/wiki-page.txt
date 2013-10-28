@@ -1,34 +1,36 @@
-=SelBlocks 1.5=
+=SelBlocks 2.0=
 
 Installer: https://addons.mozilla.org/en-US/firefox/addon/selenium-ide-sel-blocks/versions/
 
 =Description=
 
-Provides commands for javascript-like looping and callable functions, with scoped variables, and XML driven parameterization.
+Provides commands for javascript-like conditionals, looping, callable functions, error catching, and JSON/XML driven parameterization.
 
 =Features=
 
-* Adds the following control structures to Selenese: <tt>if</tt>/<tt>else</tt>, <tt>for</tt>/<tt>foreach</tt>/<tt>while</tt>, <tt>continue</tt>/<tt>break</tt>, <tt>loadJsonVars</tt>/<tt>loadXmlVars</tt>, <tt>forXml</tt>/<tt>forJson</tt>, <tt>call</tt>/<tt>script</tt>/<tt>return</tt>, <tt>exitTest</tt>
-* Script and loop parameters use regular selenium variables that are local to the block, overriding variables of the same name, and that are restored when the block exits.
-* Command parameters are javascript expressions that are evaluated with the selenium variables in scope, which can therefore be referenced by their simple names, e.g.: <tt>i+1</tt>
-* Variables can be configured via external XML.
-* A script definition can appear anywhere; they are skipped over in normal execution flow.
-* Script functions can be called recursively.
+* Adds the following control structures to Selenese: <tt>if</tt>/<tt>elseIf</tt>/<tt>else</tt>, <tt>try</tt>/<tt>catch</tt>/<tt>finally</tt>/<tt>throw</tt>, <tt>for</tt>/<tt>foreach</tt>/<tt>while</tt>, <tt>continue</tt>/<tt>break</tt>, <tt>call</tt>/<tt>function</tt>/<tt>return</tt>, <tt>loadXmlVars</tt>/<tt>loadJsonVars</tt>, <tt>forXml</tt>/<tt>forJson</tt>, <tt>exitTest</tt>
+* Function and loop parameters use regular Selenium variables that are local to the block, overriding variables of the same name, and that are restored when the block exits.
+* Command parameters are javascript expressions that are evaluated with Selenium variables in scope, which can therefore be referenced by their simple names, e.g.: <tt>i+1</tt>
+* Variables can be configured via external XML and/or JSON files.
+* A function definition can appear anywhere, (they are skipped over in normal execution flow).
+* Functions can be called recursively.
 
 =Examples of Use=
 
-Note that Selenium performs variable substitution before each command executes. When Selenium variables are used in Selblock parameters, which are JavaScript expressions, they are evaluated as literals. So for example, you would write: <tt>$(userid}</tt>. Or more simply: <tt>userid</tt>.
+Note that Selenium performs variable substitution before each command executes. When Selenium variables are used in SelBlock parameters, which are JavaScript expressions, they are evaluated as literals. So for example, you would write: <tt>$(userid}</tt>. Or more simply: <tt>userid</tt>.
 
  foreach|userid|"dilbert","dogbert"
    getEval|LOG.info("${userid}");
    if|${userid}=="dilbert"
      getEval|LOG.info("${userid}, our hero");
+   elseIf|${userid}=="ratbert"
+     getEval|LOG.info("${userid}, the villain");
    else
      getEval|LOG.info("${userid}");
    endIf
  endForeach
 
- for|i=1; i <= 10; i++|i
+ for|i=1; i <= 10; i++
    getEval|LOG.info(${i});
  endFor
 
@@ -41,7 +43,7 @@ Note that Selenium performs variable substitution before each command executes. 
  endForXml
 
  -- log odd numbers from 0 to 10
- for|i=0; i <= 100; i++|i
+ for|i=0; i <= 100; i++
    break|i==10
    continue|i%2==0
    getEval|LOG.info("${i}");
@@ -49,14 +51,14 @@ Note that Selenium performs variable substitution before each command executes. 
 
  -- extravagant example, but demonstrates possibilities
  call|factorial|n=7
- script|factorial
+ function|factorial
    if|n<=1
      return|1
    else
      call|factorial|n=n-1
      return|n*_result
    endIf
- endScript
+ endFunction
  getEval|LOG.info("${_result}");
 
  skipNext|1
@@ -87,20 +89,46 @@ Sample varset.json:
   ,{ userid: "wally",   role: "lazyuser" }
  ]
 
-Note that if a data file is in the same directory as the invoking script, then a relative path can be used.
+Note that if a data file is in the same directory as the invoking test script, then a relative file path can be used.
+
+=try/catch/finally blocks=
+
+Try can provide special handling when an error is thrown, and can guarantee execution of "cleanup" logic.
+
+The catch block specifies what to do if an error is thrown in the try block. That is, if any statement within the try block, or in a function or sub-function called from within the try block, throws an error, then control jumps to the matching catch block and the error is cleared. If no error is thrown in the try block, the catch is skipped. Catch intercepts a given error by matching on its error message, which is  specified as a <tt>"substring"</tt>, or as a <tt>/regular expression/</tt>. Providing no specification matches all errors.
+
+The finally block executes after the try and catch blocks. It always executes regardless of whether or not an error is thrown or caught. It executes even if the try or catch block concludes via "flow change" commands: <tt>continue</tt>, <tt>break</tt>, or <tt>return</tt> commands.
+
+Try blocks can be nested. If an inner try does not catch an error, the enclosing try/catch is entered. The contents of all nested finally block(s) are guaranteed to execute, innermost to outermost - again, even if error(s) occur along the way.
+
+Both <tt>catch</tt> and <tt>finally</tt> are optional, but if neither is provided then the try simply has no effect. An optional identifier may be specified on <tt>try</tt> and <tt>endTry</tt>, which will be validated for proper pairing.
+
+=Example of try/catch/finally=
+
+ try|outer
+   try|inner
+     throw|"kablamo"
+     getEval|alert("this alert will NOT get executed")
+   finally
+     getEval|alert("1st")
+   endTry|inner
+   catch|/blamo/
+     getEval|alert("2nd")
+ endTry|outer
 
 =Automatic Variables=
 
-SelBlocks provides automatic variables in two situations:
+SelBlocks provides automatic variables in three situations:
 
 * Inside a <tt>foreach</tt>/<tt>endForeach</tt> loop, <tt>${_i}</tt> holds the zero-based index of the loop iteration.
-* When a script terminates via the <tt>return</tt> command, <tt>${_result}</tt> holds the result value.
+* When a function terminates via the <tt>return</tt> command, <tt>${_result}</tt> holds the result value.
+* When an error is caught by a <tt>catch</tt>, <tt>${_error}</tt> holds the caught error object.
 
-These variables can of course be referenced in SelBlocks commands as <tt>_i</tt> and <tt>_result</tt>.
+These variables can of course be referenced by SelBlocks commands as <tt>_i</tt>, <tt>_result</tt> and <tt>_error</tt>.
 
 =Javascript Extensions=
 
-These can be used in Selblock expressions:
+These can be used in SelBlock expressions:
 
  String.isOneOf : Example: if|employee.isOneOf("dilbert","wally","ratbert")
  String.mapTo : Example: if|employee.mapTo("peon", ["dilbert","wally"]) == "peon"
@@ -112,7 +140,7 @@ These can be used in Selblock expressions:
 
 NONE
 
-''Note that the [https://addons.mozilla.org/en-US/firefox/addon/stored-variables-viewer-seleni/ Stored Variables Viewer] addon will display the values of SelBlocks parameters, because they are implemented as regular Selenium variables. The only thing special about SelBlocks parameters is that they are activated and deactivated as script execution flows into and out of blocks, eg, <tt>for</tt>/<tt>endFor</tt>, <tt>script</tt>/<tt>endScript</tt>, etc. So this can provide a convenient way to monitor the progress of an executing script.''
+''Note that the [https://addons.mozilla.org/en-US/firefox/addon/stored-variables-viewer-seleni/ Stored Variables Viewer] addon will display the values of SelBlocks parameters, because they are implemented as regular Selenium variables. The only thing special about SelBlocks parameters is that they are activated and deactivated as execution flows into and out of blocks, eg, <tt>for</tt>/<tt>endFor</tt>, <tt>function</tt>/<tt>endFunction</tt>, etc. So this can provide a convenient way to monitor the progress of an executing test script.''
 
 =Limitations=
 
@@ -120,12 +148,21 @@ Incompatible with flowControl (and derivatives), because they unilaterally modif
 
 =Philosophical Note=
 
-I tend to agree, in principle, with Dan Fabulich's view on keeping HTML Selenese simple. However, in practice I'm able to maintain MUCH simpler scripts by using if/else and looping. There is no language translation for Selblock commands, so they're comment-out in an exported script. Although hand-translation in the target language ought to be pretty straightforward. I would just say, use these constructs judiciously.
+I tend to agree, in principle, with Dan Fabulich's view on keeping HTML Selenese simple. But in practice I am able to maintain MUCH simpler scripts by using some if/else and looping. Note that there is no language translation for SelBlock commands, so they're comment-out in exported test scripts. Although hand-translation in the target language ought to be pretty straightforward. I would just say, use these constructs judiciously.
 
 =Revision History=
 
+* 2013-10-28: v2.0
+** Added elseIf and try/catch/finally/throw commands
+** Block boundaries are now enforced (prevent jumping in-to and/or out-of blocks)
+** script/endScript is replaced by function/endFunction
+** implicit initialization of for loop variable(s)
+** improved validation of command expressions
 * 2013-09-08: v1.5
+** Added loadJsonVars and forJson
+** Made parameter expressions for robust
 * 2013-07-28: v1.3.1
+** Firefox 4+ compatability
 * 2011-08-14: v1.3
 * 2011-08-05: v1.2
 * 2011-04-10: v1.1

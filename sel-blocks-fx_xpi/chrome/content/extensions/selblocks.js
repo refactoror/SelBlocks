@@ -91,6 +91,8 @@ function $X(xpath, contextNode, resultType) {
 (function($$){
 
   // =============== Javascript extensions as script helpers ===============
+  // EXTENSION REVIEWERS:
+  //   Global functions are intentional features provided for use by end user's in their Selenium scripts.
 
   // eg: "dilbert".isOneOf("dilbert","dogbert","mordac") => true
   String.prototype.isOneOf = function(values)
