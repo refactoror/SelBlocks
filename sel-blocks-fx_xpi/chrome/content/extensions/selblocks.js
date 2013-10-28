@@ -4,7 +4,7 @@
  * Provides commands for Javascript-like looping and callable functions,
  *   with scoped variables, and JSON/XML driven parameterization.
  *
- * (Selbock installs as a Core Extension, not an IDE Extension, because it manipulates the Selenium object)
+ * (SelBlocks installs as a Core Extension, not an IDE Extension, because it manipulates the Selenium object)
  *
  * Features
  *  - Commands: if/else, try/catch/finally, for/foreach/while, call/function/return,
@@ -40,6 +40,7 @@
  * Wishlist:
  *  - show line numbers in the IDE
  *  - validation of JSON & XML input files
+ *  - highlight a command that is failed-but-caught in blue
  *
  * Changes since 1.5:
  *  - added try/catch/finally, elseIf, and exitTest commands
@@ -674,7 +675,7 @@ function $X(xpath, contextNode, resultType) {
       else
         setNextCommand(tryDef.endIdx);
     }
-    $$.LOG.debugdebug("entering catch block");
+    $$.LOG.debug("entering catch block");
     // else continue into catch-block
   };
   Selenium.prototype.doFinally = function() {

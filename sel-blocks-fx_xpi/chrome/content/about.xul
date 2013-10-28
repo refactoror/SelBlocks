@@ -3,7 +3,7 @@
 <!DOCTYPE window SYSTEM "chrome://ace/locale/ace.dtd" >
 
 <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-  title="Selblocks - About"
+  title="SelBlocks - About"
   class="dialog"
   orient="vertical" autostretch="always"
   onload="sizeToContent()"
@@ -12,7 +12,7 @@
     <hbox>
       <image src="/skin/leftbracket.png" />
       <vbox>
-        <text value="Selblocks 2.0b" style="font-weight: bold; font-size: medium;" />
+        <text value="SelBlocks 2.0b" style="font-weight: bold; font-size: medium;" />
         <text value="for Selenium IDE" style="font-weight: bold; font-size: small;" />
       </vbox>
       <image src="/skin/rightbracket.png" />
