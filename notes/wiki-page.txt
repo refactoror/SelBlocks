@@ -4,7 +4,7 @@ Installer: https://addons.mozilla.org/en-US/firefox/addon/selenium-ide-sel-block
 
 =Description=
 
-Provides commands for javascript-like conditionals, looping, callable functions, error catching, and JSON/XML driven parameterization.
+Provides Selenium commands for javascript-like conditionals, looping, callable functions, error catching, and JSON/XML driven parameterization.
 
 =Features=
 
