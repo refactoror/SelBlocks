@@ -6,17 +6,6 @@
  *
  * (SelBlocks installs as a Core Extension, not an IDE Extension, because it manipulates the Selenium object)
  *
- * Features
- *  - Commands: if/else, try/catch/finally, for/foreach/while, call/function/return,
- *    loadJsonVars/loadXmlVars, forJson/forXml
- *  - Function and loop parameters create regular Selenium variables that are local to the block,
- *    overriding variables of the same name, and that are restored when the block exits.
- *  - Variables can be set via external JSON/XML data file(s).
- *  - Command parameters are Javascript expressions that are evaluated with Selenium variables
- *    in scope, which can therefore be referenced by their simple names, e.g.: i+1
- *  - A function definition can appear anywhere; they are skipped over in normal execution flow.
- *  - Functions can be invoked recursively.
- *
  * Concept of operation:
  *  - Selenium.reset() is intercepted to initialize the block structures.
  *  - testCase.nextCommand() is overridden for flow branching.
