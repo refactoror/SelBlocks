@@ -38,10 +38,21 @@
 	<td>&quot;orange&quot;.mapTo(&quot;primary&quot;, [&quot;red&quot;,&quot;green&quot;,&quot;blue&quot;])</td>
 	<td></td>
 </tr>
+<!----- translate()-->
+<tr>
+	<td>emit</td>
+	<td>&quot;red&quot;.translate(&quot;e&quot;, &quot;E&quot;)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;red&quot;.translate([&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;], [&quot;blue&quot;, &quot;red&quot;, &quot;green&quot;])</td>
+	<td></td>
+</tr>
 <!----- check results-->
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;true~false~primary~orange&quot;</td>
+	<td>&quot;true~false~primary~orange~rEd~blue&quot;</td>
 	<td></td>
 </tr>
 </tbody></table>
