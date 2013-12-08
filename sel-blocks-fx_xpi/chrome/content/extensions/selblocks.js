@@ -449,9 +449,14 @@ function $X(xpath, contextNode, resultType) {
     }
     if (!lexStack.isEmpty()) {
       // unterminated block(s)
-      var pend = lexStack.pop();
-      var endCmd = "end" + pend.cmdName.substr(0, 1).toUpperCase() + pend.cmdName.substr(1);
-      throw new SyntaxError(fmtCmdRef(pend.idx) + ", without a terminating [" + endCmd + "]");
+      var cmdErrors = [];
+      while (!lexStack.isEmpty()) {
+        var pend = lexStack.pop();
+        cmdErrors.unshift(fmtCmdRef(pend.idx) + " without a terminating "
+          + "'end" + pend.cmdName.substr(0, 1).toUpperCase() + pend.cmdName.substr(1) + "'"
+        );
+      }
+      throw new SyntaxError(cmdErrors.join("; "));
     }
     //- command validation
     function assertNotAndWaitSuffix(cmdIdx) {
