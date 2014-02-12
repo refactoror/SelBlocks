@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE window SYSTEM "chrome://ace/locale/ace.dtd">
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://selblocksSeleExten/content/selblocks.css" type="text/css"?>
-<!DOCTYPE window SYSTEM "chrome://ace/locale/ace.dtd">
 
 <window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         xmlns:h="http://www.w3.org/1999/xhtml"
@@ -30,7 +30,7 @@
   </hbox>
 
   <vbox pack="left">
-    <h:ul style="width: 400px; max-width: 400px; font-size: 10pt;">
+    <h:ul style="width: 450px; max-width: 450px; font-size: 10pt;">
       <h:li>
         Commands:
         <span class="code">if/else/elseIf</span>,
@@ -46,7 +46,7 @@
         overriding variables of the same name, and that are restored when the block exits.
       </h:li>
       <h:li>
-        Variables can be set via external JSON/XML data file(s).
+        Selenium variables can be set via external JSON/XML data file(s).
       </h:li>
       <h:li>
         Command parameters are Javascript expressions that are evaluated with Selenium variables in scope,
@@ -59,14 +59,18 @@
         Functions can be invoked recursively.
       </h:li>
     </h:ul>
-    <hbox>
-      <h:span style="margin: 3px;">See also:</h:span>
-      <h:a class="text-link" target="blank" href="http://refactoror.wikia.com/wiki/Selblocks_Reference">SelBlock Documentaiton</h:a>
-    </hbox>
-
-    <box pack="center" style="margin-top: 5px;">
-      <button label="Close" oncommand="window.close();" />
-    </box>
   </vbox>
+
+  <vbox pack="right">
+      <hbox style="margin-top: 5px; font-size: 120%;">
+        <h:span style="margin: 3px;">See:</h:span>
+        <text class="url" value="SelBlocks Documentation" style="color: blue; text-decoration: underline;"
+            onclick="window.open('http://refactoror.wikia.com/wiki/Selblocks_Reference')" />
+      </hbox>
+  </vbox>
+
+  <hbox pack="center" style="margin-top: 5px;">
+    <button label="Close" oncommand="window.close();" />
+  </hbox>
 
 </window>
