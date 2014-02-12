@@ -1,5 +1,5 @@
 /*
- * SelBlocks 2.0
+ * SelBlocks 2.0.1
  *
  * Provides commands for Javascript-like looping and callable functions,
  *   with scoped variables, and JSON/XML driven parameterization.
@@ -85,7 +85,7 @@ function $X(xpath, contextNode, resultType) {
 
   // =============== Javascript extensions as script helpers ===============
   // EXTENSION REVIEWERS:
-  //   Global functions are intentional features provided for use by end user's in their Selenium scripts.
+  // Global functions are intentional features provided for use by end user's in their Selenium scripts.
 
   // eg: "dilbert".isOneOf("dilbert","dogbert","mordac") => true
   String.prototype.isOneOf = function(valuesObj)
@@ -120,13 +120,41 @@ function $X(xpath, contextNode, resultType) {
     return this;
   };
 
-  // produce an iterator object for the given array
-  Array.prototype.iterator = function() {
-    return new function(ary) {
-      var cur = 0;
-      this.hasNext = function() { return (cur < ary.length); };
-      this.next = function() { if (this.hasNext()) { return ary[cur++]; } };
-    }(this);
+  // Return a translated version of a string
+  // given string args, translate each occurrence of characters in t1 with the corresponding character from t2
+  // given array args, if the string occurs in t1, return the corresponding string from t2, else null
+  String.prototype.translate = function(t1, t2)
+  {
+    assert(t1.constructor === t2.constructor, "translate() function requires arrays of the same type");
+    assert(t1.length === t2.length, "translate() function requires arrays of equal size");
+    var i;
+    if (t1.constructor === String) {
+      var buf = "";
+      for (i = 0; i < this.length; i++) {
+        var c = this.substr(i,1);
+        var t;
+        for (t = 0; t < t1.length; t++) {
+          if (c === t1.substr(t,1)) {
+            c = t2.substr(t,1);
+            break;
+          }
+        }
+        buf += c;
+      }
+      return buf;
+    }
+
+    if (t1.constructor === Array) {
+      for (i = 0; i < t1.length; i++) {
+        if (t1[i] == this) {
+          return t2[i];
+        }
+      }
+    }
+    else {
+      assert(false, "translate() function requires arguments of type String or Array");
+    }
+    return null;
   };
 
 
@@ -606,7 +634,7 @@ function $X(xpath, contextNode, resultType) {
   {
     assertRunning();
     var ifDef = blkDefHere();
-    var ifState = { idx: idxHere(), elseIfItr: ifDef.elseIfIdxs.iterator() };
+    var ifState = { idx: idxHere(), elseIfItr: arrayIterator(ifDef.elseIfIdxs) };
     activeBlockStack().push(ifState);
     cascadeElseIf(ifState, condExpr);
   };
@@ -1321,8 +1349,7 @@ function $X(xpath, contextNode, resultType) {
     var result = null;
     try {
       // EXTENSION REVIEWERS: Use of eval is consistent with the Selenium extension itself.
-      // Scripted expressions run in the Selenium window, separate from browser windows.
-      // Global functions are intentional features provided for use by end user's in their Selenium scripts.
+      // Scripted expressions run in the Selenium window, isolated from any web content.
       result = eval("with (storedVars) {" + expr + "}");
     } catch (e) {
       notifyFatalErr(" While evaluating Javascript expression: " + expr, e);
@@ -1445,7 +1472,7 @@ function $X(xpath, contextNode, resultType) {
     return '[' + c + ']';
   }
 
-  //================= Javascript helpers ===============
+  //================= Utils ===============
 
   // Elapsed time, optional duration provides expiration
   function IntervalTimer(msDuration) {
@@ -1455,41 +1482,13 @@ function $X(xpath, contextNode, resultType) {
     this.reset = function() { this.msStart = +new Date(); };
   }
 
-  // Return a translated version of a string
-  // given string args, translate each occurrence of characters in t1 with the corresponding character from t2
-  // given array args, if the string occurs in t1, return the corresponding string from t2, else null
-  String.prototype.translate = function(t1, t2)
-  {
-    assert(t1.constructor === t2.constructor, "translate() function requires arrays of the same type");
-    assert(t1.length === t2.length, "translate() function requires arrays of equal size");
-    var i;
-    if (t1.constructor === String) {
-      var buf = "";
-      for (i = 0; i < this.length; i++) {
-        var c = this.substr(i,1);
-        var t;
-        for (t = 0; t < t1.length; t++) {
-          if (c === t1.substr(t,1)) {
-            c = t2.substr(t,1);
-            break;
-          }
-        }
-        buf += c;
-      }
-      return buf;
-    }
-
-    if (t1.constructor === Array) {
-      for (i = 0; i < t1.length; i++) {
-        if (t1[i] == this) {
-          return t2[i];
-        }
-      }
-    }
-    else {
-      assert(false, "translate() function requires arguments of type String or Array");
-    }
-    return null;
+  // produce an iterator object for the given array
+  function arrayIterator(arrayObject) {
+    return new function(ary) {
+      var cur = 0;
+      this.hasNext = function() { return (cur < ary.length); };
+      this.next = function() { if (this.hasNext()) { return ary[cur++]; } };
+    }(arrayObject);
   };
 
   // ==================== Data Files ====================
