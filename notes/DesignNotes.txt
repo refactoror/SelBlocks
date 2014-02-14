@@ -1,3 +1,16 @@
+Removed Array.prototype.iterator()
+
+[error] Unexpected Exception: Error: Access to 'file:///C:/projects/selenium/SelBlocks/sel-blocksTests/_SelBlocks-testpage.html' from script denied. fileName -> chrome://selenium-ide/content/selenium-core/scripts/selenium-browserbot.js, lineNumber -> 687, columnNumber -> 12
+user_pref("capability.policy.policynames", "localfilelinks");
+user_pref("capability.policy.localfilelinks.sites", "https://www.xxxxx.com");
+user_pref("capability.policy.localfilelinks.checkloaduri.enabled", "allAccess");
+
+- wish list -
+chainable function intercepts, eg, catch expectedError failure
+suspend idx vs clone entire cmd
+nesting combos & extremes
+multiple catch blocks
+
 ======================================================================
 
 blockDefs : static block structures
