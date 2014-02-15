@@ -9,7 +9,7 @@ This is an extension for Selenium IDE that provides javascript-like conditionals
 ================================================================================
 About this Add-on
 
-<strong>SelBlocks 2.0</strong>
+<strong>SelBlocks 2.0.1</strong>
 <ul>
   <li>Adds the following control structures to Selenese:
     <ul>
