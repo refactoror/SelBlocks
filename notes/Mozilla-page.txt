@@ -9,31 +9,31 @@ This is an extension for Selenium IDE that provides javascript-like conditionals
 ================================================================================
 About this Add-on
 
-<strong>SelBlocks 2.0.1</strong>
+<strong>SelBlocks 2</strong>
 <ul>
   <li>Adds the following control structures to Selenese:
     <ul>
-    <blockquote><code>if</code>/<code>elseIf</code>/<code>else</code></blockquote>
-    <blockquote><code>try</code>/<code>catch</code>/<code>finally</code>/<code>throw</code></blockquote>
-    <blockquote><code>for</code>/<code>foreach</code>/<code>while</code></blockquote>
-    <blockquote><code>continue</code>/<code>break</code></blockquote>
-    <blockquote><code>call</code>/<code>function</code>/<code>return</code></blockquote>
-    <blockquote><code>loadXmlVars</code>/<code>loadJsonVars</code></blockquote>
-    <blockquote><code>forXml</code>/<code>forJson</code></blockquote>
+    <blockquote><code>if</code>, <code>elseIf</code>, <code>else</code></blockquote>
+    <blockquote><code>try</code>, <code>catch</code>, <code>finally</code>, <code>throw</code></blockquote>
+    <blockquote><code>for</code>, <code>foreach</code>, <code>while</code></blockquote>
+    <blockquote><code>continue</code>, <code>break</code></blockquote>
+    <blockquote><code>call</code>, <code>function</code>, <code>return</code></blockquote>
+    <blockquote><code>loadXmlVars</code>, <code>loadJsonVars</code></blockquote>
+    <blockquote><code>forXml</code>, <code>forJson</code></blockquote>
     <blockquote><code>exitTest</code></blockquote>
     </ul>
   </li>
+  <li>Command parameters are javascript expressions that are evaluated with Selenium variables in scope, which can therefore be referenced by their simple names, e.g.: <code>i+1</code>
+  </li>
   <li>Function and loop parameters use regular Selenium variables that are local to the block, overriding variables of the same name, and that are restored when the block exits.
   </li>
-  <li>Command parameters are javascript expressions that are evaluated with Selenium variables in scope, which can therefore be referenced by their simple names, e.g.: <code>i+1</code>
+  <li>Errors bubble upward through try/catch/finally blocks, which can be nested arbitrarily. Catching an error cancels it, but can be re-thrown.
   </li>
   <li>Variables can be configured via external XML and/or JSON files.
   </li>
   <li>A function definition can appear anywhere, (they are skipped over in normal execution flow).
   </li>
   <li>Functions can be called recursively.
-  </li>
-  <li>Errors bubble upward through try/catch/finally blocks, which can be nested arbitrarially. Catching an error cancels it, or can be re-thrown.
   </li>
 </ul>
 
@@ -42,13 +42,23 @@ Note that it take months for Mozilla to review each addon update. For compatibil
 Documentation <a href="http://refactoror.wikia.com/wiki/Selblocks_Reference">here</a>.
 
 ================================================================================
+Version 2.0.2
+Released ...
+
+Changes since 2.0.1:
+* Issue#2: Fix for cases where function or label are the first command
+
+================================================================================
 Version 2.0.1
 Released February 13, 2014 33.1 KB
 Works with Firefox 17.0 and later 
 
 Changes since 2.0:
-* Replace Array.iterator with arrayIterator()
+* Check for multiple un-terminated blocks
+* Removed Array.iterator()
+* Added detail to About dialog
 * Miscellaneous jsLint cleanups
+* Provide test script for Mozilla reviewers (smoketest.side)
 
 ================================================================================
 Version 2.0
