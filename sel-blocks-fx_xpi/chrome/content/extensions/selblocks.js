@@ -616,7 +616,7 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doGoto = function(label)
   {
     assertRunning();
-    assert(symbols[label], " Target label '" + label + "' is not found.");
+    assert(symbols[label]!==undefined, " Target label '" + label + "' is not found.");
     assertIntraBlockJumpRestriction(idxHere(), symbols[label]);
     setNextCommand(symbols[label]);
   };
@@ -1263,7 +1263,7 @@ function $X(xpath, contextNode, resultType) {
       assertCompilable("var ", argSpec, ";", "Invalid call parameter(s)");
     }
     var funcIdx = symbols[funcName];
-    assert(funcIdx, " Function does not exist: " + funcName + ".");
+    assert(funcIdx!==undefined, " Function does not exist: " + funcName + ".");
 
     var activeCallFrame = callStack.top();
     if (activeCallFrame.isReturning && activeCallFrame.returnIdx === idxHere()) {
