@@ -33,13 +33,14 @@
     <h:ul style="width: 450px; max-width: 450px; font-size: 10pt;">
       <h:li>
         Commands:
-        <span class="code">if/else/elseIf</span>,
-        <span class="code">try/catch/finally</span>,
-        <span class="code">throw</span>,
-        <span class="code">for/foreach/while</span>,
-        <span class="code">call/function/return</span>,
-        <span class="code">loadJsonVars/loadXmlVars</span>,
-        <span class="code">forJson/forXml</span>
+        <h:ul style="width: 450px; max-width: 450px; font-size: 10pt;">
+          <h:li><span class="code">if, else, elseIf</span></h:li>
+          <h:li><span class="code">try, catch, finally, throw</span></h:li>
+          <h:li><span class="code">for, foreach, while, continue, break</span></h:li>
+          <h:li><span class="code">call, function, return</span></h:li>
+          <h:li><span class="code">loadJsonVars, loadXmlVars, forJson, forXml</span></h:li>
+          <h:li><span class="code">exitTest</span></h:li>
+        </h:ul>
       </h:li>
       <h:li>
         Function and loop parameters create regular Selenium variables that are local to a block,
