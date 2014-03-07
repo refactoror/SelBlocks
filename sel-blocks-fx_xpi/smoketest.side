@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
+<title>smoketest</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">eval</td></tr>
+</thead><tbody>
+<!--== javascript extensions-->
+<!----- isOneOf()-->
+<tr>
+	<td>verifyEval</td>
+	<td>&quot;dilbert&quot;.isOneOf(&quot;dilbert&quot;,&quot;dogbert&quot;,&quot;mordac&quot;)</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>&quot;bob&quot;.isOneOf(&quot;dilbert&quot;,&quot;dogbert&quot;,&quot;mordac&quot;)</td>
+	<td>false</td>
+</tr>
+<!----- mapTo()-->
+<tr>
+	<td>verifyEval</td>
+	<td>&quot;red&quot;.mapTo(&quot;primary&quot;, [&quot;red&quot;,&quot;green&quot;,&quot;blue&quot;])</td>
+	<td>primary</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>&quot;orange&quot;.mapTo(&quot;primary&quot;, [&quot;red&quot;,&quot;green&quot;,&quot;blue&quot;])</td>
+	<td>o,r,a,n,g,e</td>
+</tr>
+<!----- translate()-->
+<tr>
+	<td>verifyEval</td>
+	<td>&quot;red&quot;.translate(&quot;e&quot;, &quot;E&quot;)</td>
+	<td>rEd</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>&quot;red&quot;.translate([&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;], [&quot;blue&quot;, &quot;red&quot;, &quot;green&quot;])</td>
+	<td>blue</td>
+</tr>
+<!--== branching-->
+<tr>
+	<td>skipNext</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>&quot;this command skpped because of skipNext&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>goto</td>
+	<td>HERE</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>&quot;this command skpped because of goto&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>HERE</td>
+	<td></td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>true</td>
+	<td>THERE</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>&quot;this command skpped because of gotoIf true&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>THERE</td>
+	<td></td>
+</tr>
+<!--== branching-->
+<tr>
+	<td>if</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>&quot;this command skpped because of if false&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>elseIf</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>&quot;this command executes because of elseIf true&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>elseIf</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>&quot;this command skpped because of previous elseIf&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--== try/catch/finally-->
+<tr>
+	<td>try</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>&quot;trying&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>throw</td>
+	<td>&quot;test error&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached because of throw&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>catch</td>
+	<td>/test error/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>&quot;CAUGHT '${_error.message}'&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>&quot;this command executes no matter how above error processing turns out&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--== while-->
+<tr>
+	<td>store</td>
+	<td>3</td>
+	<td>w</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>w &gt; 0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>&quot;iter=${w}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>${w}-1</td>
+	<td>w</td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--== for-->
+<tr>
+	<td>for</td>
+	<td>f=3; f &lt;= 9; f++</td>
+	<td></td>
+</tr>
+<tr>
+	<td>continue</td>
+	<td>f == 6</td>
+	<td></td>
+</tr>
+<tr>
+	<td>if</td>
+	<td>f &gt; 6</td>
+	<td></td>
+</tr>
+<tr>
+	<td>if</td>
+	<td>f == 7</td>
+	<td></td>
+</tr>
+<tr>
+	<td>continue</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>else</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>break</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>&quot;iter=${f}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--== function/call, foreach-->
+<tr>
+	<td>function</td>
+	<td>doSomething</td>
+	<td>sname</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>&quot;sname=${sname},srole=${srole}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endFunction</td>
+	<td>doSomething</td>
+	<td></td>
+</tr>
+<tr>
+	<td>foreach</td>
+	<td>sname</td>
+	<td>&quot;asok&quot;, &quot;alice&quot;</td>
+</tr>
+<tr>
+	<td>call</td>
+	<td>doSomething</td>
+	<td>sname = sname, srole = &quot;super=user&quot;</td>
+</tr>
+<tr>
+	<td>endForeach</td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>
