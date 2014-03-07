@@ -15,11 +15,9 @@ About this Add-on
     <ul>
     <blockquote><code>if</code>, <code>elseIf</code>, <code>else</code></blockquote>
     <blockquote><code>try</code>, <code>catch</code>, <code>finally</code>, <code>throw</code></blockquote>
-    <blockquote><code>for</code>, <code>foreach</code>, <code>while</code></blockquote>
-    <blockquote><code>continue</code>, <code>break</code></blockquote>
+    <blockquote><code>for</code>, <code>foreach</code>, <code>while</code>, <code>continue</code>, <code>break</code></blockquote>
     <blockquote><code>call</code>, <code>function</code>, <code>return</code></blockquote>
-    <blockquote><code>loadXmlVars</code>, <code>loadJsonVars</code></blockquote>
-    <blockquote><code>forXml</code>, <code>forJson</code></blockquote>
+    <blockquote><code>loadJsonVars</code>, <code>loadXmlVars</code>, forJson</code>, <code>forXml</code></blockquote>
     <blockquote><code>exitTest</code></blockquote>
     </ul>
   </li>
