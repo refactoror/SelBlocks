@@ -8,7 +8,8 @@ SETLOCAL
 ::   cygwin grep
 ::   cygwin zip
 
-set STAGING=%~dp0
+set BUILD_DIR=%~dp0
+set ROOT=%BUILD_DIR%..
 
 :: parse SelBlocks version # from its install.rdf
 call :S_GET_ADDON_VER ..\sel-blocks-fx_xpi
@@ -19,9 +20,8 @@ echo SelBlocks: %SB_VER%
 
 :: create the SelBlocks xpi
 pushd ..\sel-blocks-fx_xpi
-del "%STAGING%sel-blocks-%SB_VER%-fx.xpi"
-mkdir "%STAGING%/../../_historical-xpi"
-zip -r "%STAGING%/../sel-blocks-%SB_VER%-fx.xpi" * -x@"%STAGING%xpi-excludes.lst"
+del "%ROOT%\sel-blocks-%SB_VER%-fx.xpi"
+zip -r "%ROOT:\=/%/../sel-blocks-%SB_VER%-fx.xpi" * -x@"%BUILD_DIR%xpi-excludes.lst"
 popd
 
 ENDLOCAL
