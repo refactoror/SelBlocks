@@ -17,7 +17,7 @@ About this Add-on
     <blockquote><code>try</code>, <code>catch</code>, <code>finally</code>, <code>throw</code></blockquote>
     <blockquote><code>for</code>, <code>foreach</code>, <code>while</code>, <code>continue</code>, <code>break</code></blockquote>
     <blockquote><code>call</code>, <code>function</code>, <code>return</code></blockquote>
-    <blockquote><code>loadJsonVars</code>, <code>loadXmlVars</code>, forJson</code>, <code>forXml</code></blockquote>
+    <blockquote><code>loadJsonVars</code>, <code>loadXmlVars</code>, <code>forJson</code>, <code>forXml</code></blockquote>
     <blockquote><code>exitTest</code></blockquote>
     </ul>
   </li>
@@ -37,7 +37,7 @@ About this Add-on
 
 Note that it take months for Mozilla to review each addon update. For compatibility with Firefox versions above 17, see: https://addons.mozilla.org/en-US/firefox/addon/selenium-ide-sel-blocks/versions/
 
-Documentation <a href="http://refactoror.wikia.com/wiki/Selblocks_Reference">here</a>.
+<a href="http://refactoror.wikia.com/wiki/Selblocks_Reference">Documentation</a> / <a href="https://github.com/refactoror/SelBlocks/issues">Support</a>
 
 ================================================================================
 Version 2.0.2
