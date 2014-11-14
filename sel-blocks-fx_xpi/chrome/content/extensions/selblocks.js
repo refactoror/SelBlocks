@@ -721,7 +721,7 @@ function $X(xpath, contextNode, resultType) {
     if ($$.tcf.nestingLevel === 0) {
       // enable special command handling
       $$.fn.interceptPush(editor.selDebugger.runner.IDETestLoop.prototype, "resume",
-          $$.handleAsTryBlock, { handleError: handleCommandError });
+          $$.handleAsTryBlock, { manageError: handleCommandError });
     }
     $$.LOG.debug("++ try nesting: " + $$.tcf.nestingLevel);
     // continue into try-block
@@ -1467,13 +1467,7 @@ function $X(xpath, contextNode, resultType) {
     return fmtCmdRef(idxHere());
   }
   function fmtCmdRef(idx) {
-    return ("@" + (idx+1) + ": " + fmtCommand(testCase.commands[idx]));
-  }
-  function fmtCommand(cmd) {
-    var c = cmd.command;
-    if (cmd.target) { c += "|" + cmd.target; }
-    if (cmd.value)  { c += "|" + cmd.value; }
-    return '[' + c + ']';
+    return ("@" + (idx+1) + ": [" + $$.fmtCmd(testCase.commands[idx]) + "]");
   }
 
   //================= Utils ===============
