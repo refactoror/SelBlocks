@@ -1,7 +1,7 @@
 // selbocks name-space
 (function($$){
   /* This function replaces native Selenium command handling for the exitScript command.
-   * (See TestLoop.prototype.resume() in selenium-executionloop.js.)
+   * (See TestLoop.prototype.resume() in chrome/content/selenium-core/scripts/selenium-executionloop.js.)
    * This causes the script to simply halt rather continuing on to the next command.
    */
   $$.handleAsExitTest = function()
