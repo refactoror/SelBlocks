@@ -44,7 +44,6 @@
  *   script can be monitored using the Stored Variables Viewer addon.
  */
 
-
 // =============== global functions as script helpers ===============
 // getEval script helpers
 
@@ -80,9 +79,19 @@ function $X(xpath, contextNode, resultType) {
   return nodes;
 }
 
+var globalContext = this;
 // selbocks name-space
 (function($$){
-
+  $$.onServer = globalContext.testCase === undefined ? true : false;
+  if ($$.onServer === true) {
+    globalContext.testCase = {};
+    HtmlRunnerTestLoop.prototype.old_initialize = HtmlRunnerTestLoop.prototype.initialize;
+    HtmlRunnerTestLoop.prototype.initialize = function (htmlTestCase, metrics, seleniumCommandFactory) {
+      LOG.info("SelBlocks: wrapper to HtmlRunnerTestLoop.initialize.");
+      this.old_initialize(htmlTestCase, metrics, seleniumCommandFactory);
+      this.commands = [];
+    };
+  }
   // =============== Javascript extensions as script helpers ===============
   // EXTENSION REVIEWERS:
   // Global functions are intentional features provided for use by end user's in their Selenium scripts.
@@ -239,6 +248,12 @@ function $X(xpath, contextNode, resultType) {
   // if testCase.nextCommand() ever changes, this will need to be revisited
   // (current as of: selenium-ide-2.4.0)
   function nextCommand() {
+    if($$.onServer === true) {
+      this._advanceToNextRow();
+      if (this.currentRow == null) {
+        return null;
+      }
+    }
     if (!this.started) {
       this.started = true;
       this.debugIndex = testCase.startPoint ? testCase.commands.indexOf(testCase.startPoint) : 0;
@@ -257,6 +272,7 @@ function $X(xpath, contextNode, resultType) {
     while (this.debugIndex < testCase.commands.length) {
       var command = testCase.commands[this.debugIndex];
       if (command.type === "command") {
+        this.runTimeStamp = Date.now();
         return command;
       }
       this.debugIndex++;
@@ -267,6 +283,9 @@ function $X(xpath, contextNode, resultType) {
     assert(cmdIdx >= 0 && cmdIdx < testCase.commands.length,
       " Cannot branch to non-existent command @" + (cmdIdx+1));
     branchIdx = cmdIdx;
+    if($$.onServer === true) {
+      testCase.htmlTestCase.nextCommandRowIndex = cmdIdx; // w/o branching
+    }
   }
 
   // Selenium calls reset():
@@ -277,6 +296,42 @@ function $X(xpath, contextNode, resultType) {
   $$.fn.interceptAfter(Selenium.prototype, "reset", function()
   {
     $$.LOG.trace("In tail intercept :: Selenium.reset()");
+    if ($$.onServer === true) {
+      function map_list(list, for_func, if_func) {
+        var i,
+        x,
+        mapped_list = [];
+        LOG.info("SelBlocks: maplist to get commandrows.");
+        for (i = 0; i < list.length; ++i) {
+          x = list[i];
+          // AJS: putaquiupariu
+          if (null == if_func || if_func(i, x)) {
+            mapped_list.push(for_func(i, x));
+          }
+        }
+        return mapped_list;
+      }
+      if (htmlTestRunner == undefined
+         || htmlTestRunner == null) {
+        LOG.info("SelBlocks: Selenium reset pre htmlTestRunner instatiation ");
+      } else {
+        LOG.info("SelBlocks: Selenium reset after instatiation of htmlTestRunner.currentTest.htmlTestCase:" + htmlTestRunner.currentTest.htmlTestCase);
+        //TODO: map commands to real types instead of faking it
+        htmlTestRunner.currentTest.commands = map_list(htmlTestRunner.currentTest.htmlTestCase.getCommandRows(), function (i, x) {
+            var b = x.getCommand();
+            if (x.hasOwnProperty('trElement')) {
+              b.type = "command";
+            } else {
+              b.type = "comment";
+            }
+            return b;
+          });
+        // AJS: initializes private testCase (closure) to point to htmlTestRunner.currentTest (public testCase is not available under Core).
+        testCase = htmlTestRunner.currentTest;
+        // the debugContext isn't there, but redirecting to the testCase seems to work.
+        testCase.debugContext = testCase;
+      }
+    }
     try {
       compileSelBlocks();
     } catch (err) {
