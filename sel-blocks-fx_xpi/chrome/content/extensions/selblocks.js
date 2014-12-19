@@ -82,8 +82,7 @@ function $X(xpath, contextNode, resultType) {
 var globalContext = this;
 // selbocks name-space
 (function($$){
-  $$.onServer = globalContext.testCase === undefined ? true : false;
-  if ($$.onServer === true) {
+  if(globalContext.onServer === true) {
     globalContext.testCase = {};
     HtmlRunnerTestLoop.prototype.old_initialize = HtmlRunnerTestLoop.prototype.initialize;
     HtmlRunnerTestLoop.prototype.initialize = function (htmlTestCase, metrics, seleniumCommandFactory) {
@@ -248,7 +247,7 @@ var globalContext = this;
   // if testCase.nextCommand() ever changes, this will need to be revisited
   // (current as of: selenium-ide-2.4.0)
   function nextCommand() {
-    if($$.onServer === true) {
+    if(globalContext.onServer === true) {
       this._advanceToNextRow();
       if (this.currentRow == null) {
         return null;
@@ -283,7 +282,7 @@ var globalContext = this;
     assert(cmdIdx >= 0 && cmdIdx < testCase.commands.length,
       " Cannot branch to non-existent command @" + (cmdIdx+1));
     branchIdx = cmdIdx;
-    if($$.onServer === true) {
+    if(globalContext.onServer === true) {
       testCase.htmlTestCase.nextCommandRowIndex = cmdIdx; // w/o branching
     }
   }
@@ -296,7 +295,7 @@ var globalContext = this;
   $$.fn.interceptAfter(Selenium.prototype, "reset", function()
   {
     $$.LOG.trace("In tail intercept :: Selenium.reset()");
-    if ($$.onServer === true) {
+    if (globalContext.onServer === true) {
       function map_list(list, for_func, if_func) {
         var i,
         x,
