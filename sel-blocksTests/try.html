@@ -2175,6 +2175,74 @@
 <!-- ===============-->
 <tr>
 	<td>log</td>
+	<td>&quot;-- catch failed verify command --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr>
+	<td>try</td>
+	<td>tcv1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>1</td>
+	<td>2</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached, due to failed verify&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>catch</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;([/~caught 'Actual value '1' did not match '2''~/])&quot;</td>
+	<td></td>
+</tr>
+<!-- ===============-->
+<tr>
+	<td>log</td>
 	<td>&quot;-- exitTest w/finally processing --&quot;</td>
 	<td></td>
 </tr>

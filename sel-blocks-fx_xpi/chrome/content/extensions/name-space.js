@@ -14,4 +14,11 @@ var selblocks = { name: "SelBlocks" };
     return obj;
   };
 
+  $$.fmtCmd = function(cmd) {
+    var c = cmd.command;
+    if (cmd.target) { c += "|" + cmd.target; }
+    if (cmd.value)  { c += "|" + cmd.value; }
+    return c;
+  }
+
 }(selblocks));

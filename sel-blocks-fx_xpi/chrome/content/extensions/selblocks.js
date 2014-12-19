@@ -1,5 +1,5 @@
 /*
- * SelBlocks 2.0.1
+ * SelBlocks 2.0.2
  *
  * Provides commands for Javascript-like looping and callable functions,
  *   with scoped variables, and JSON/XML driven parameterization.
@@ -279,13 +279,14 @@ function $X(xpath, contextNode, resultType) {
     $$.LOG.trace("In tail intercept :: Selenium.reset()");
     try {
       compileSelBlocks();
-    } catch (err) {
+    }
+    catch (err) {
       notifyFatalErr("In " + err.fileName + " @" + err.lineNumber + ": " + err);
     }
     callStack = new Stack();
     callStack.push({ blockStack: new Stack() }); // top-level execution state
 
-    $$.tcf = { nestingLevel: -1 };
+    $$.tcf = { nestingLevel: -1 }; // try/catch/finally nesting
 
     // customize flow control logic
     // TBD: this should be a tail intercept rather than brute force replace
@@ -719,8 +720,8 @@ function $X(xpath, contextNode, resultType) {
 
     if ($$.tcf.nestingLevel === 0) {
       // enable special command handling
-      $$.fn.interceptPush(editor.selDebugger.runner.IDETestLoop.prototype, "resume",
-          $$.handleAsTryBlock, { handleError: handleCommandError });
+      $$.fn.interceptPush(editor.selDebugger.runner.currentTest, "resume",
+          $$.handleAsTryBlock, { manageError: handleCommandError });
     }
     $$.LOG.debug("++ try nesting: " + $$.tcf.nestingLevel);
     // continue into try-block
@@ -780,22 +781,24 @@ function $X(xpath, contextNode, resultType) {
   // --------------------------------------------------------------------------------
 
   // alter the behavior of Selenium error handling
-  //   returns true if error is being managed
+  //   returns true if catch/finally bubbling is active
   function handleCommandError(err)
   {
     var tryState = bubbleToTryBlock(Stack.isTryBlock);
     var tryDef = blkDefFor(tryState);
-    $$.LOG.debug("error encountered while: " + tryState.execPhase);
-    if (hasUnspentCatch(tryState)) {
-      if (isMatchingCatch(err, tryDef.catchIdx)) {
-        // an expected kind of error has been caught
-        $$.LOG.info("@" + (idxHere()+1) + ", error has been caught" + fmtCatching(tryState));
-        tryState.hasCaught = true;
-        tryState.execPhase = "catching";
-        storedVars._error = err;
-        $$.tcf.bubbling = null;
-        setNextCommand(tryDef.catchIdx);
-        return true;
+    if (tryState) {
+      $$.LOG.debug("error encountered while: " + tryState.execPhase);
+      if (hasUnspentCatch(tryState)) {
+        if (isMatchingCatch(err, tryDef.catchIdx)) {
+          // an expected kind of error has been caught
+          $$.LOG.info("@" + (idxHere()+1) + ", error has been caught" + fmtCatching(tryState));
+          tryState.hasCaught = true;
+          tryState.execPhase = "catching";
+          storedVars._error = err;
+          $$.tcf.bubbling = null;
+          setNextCommand(tryDef.catchIdx);
+          return true;
+        }
       }
     }
     // error not caught .. instigate bubbling
@@ -958,10 +961,10 @@ function $X(xpath, contextNode, resultType) {
   }
 
   function hasUnspentCatch(tryState) {
-    return (blkDefFor(tryState).catchIdx && !tryState.hasCaught);
+    return (tryState && blkDefFor(tryState).catchIdx && !tryState.hasCaught);
   }
   function hasUnspentFinally(tryState) {
-    return (blkDefFor(tryState).finallyIdx && !tryState.hasFinaled);
+    return (tryState && blkDefFor(tryState).finallyIdx && !tryState.hasFinaled);
   }
 
   function fmtTry(tryState)
@@ -1339,7 +1342,7 @@ function $X(xpath, contextNode, resultType) {
       return;
     }
     // intercept command processing and simply stop test execution instead of executing the next command
-    $$.fn.interceptOnce(editor.selDebugger.runner.IDETestLoop.prototype, "resume", $$.handleAsExitTest);
+    $$.fn.interceptOnce(editor.selDebugger.runner.currentTest, "resume", $$.handleAsExitTest);
   };
 
 
@@ -1351,7 +1354,8 @@ function $X(xpath, contextNode, resultType) {
       // EXTENSION REVIEWERS: Use of eval is consistent with the Selenium extension itself.
       // Scripted expressions run in the Selenium window, isolated from any web content.
       result = eval("with (storedVars) {" + expr + "}");
-    } catch (e) {
+    }
+    catch (e) {
       notifyFatalErr(" While evaluating Javascript expression: " + expr, e);
     }
     return result;
@@ -1463,13 +1467,7 @@ function $X(xpath, contextNode, resultType) {
     return fmtCmdRef(idxHere());
   }
   function fmtCmdRef(idx) {
-    return ("@" + (idx+1) + ": " + fmtCommand(testCase.commands[idx]));
-  }
-  function fmtCommand(cmd) {
-    var c = cmd.command;
-    if (cmd.target) { c += "|" + cmd.target; }
-    if (cmd.value)  { c += "|" + cmd.value; }
-    return '[' + c + ']';
+    return ("@" + (idx+1) + ": [" + $$.fmtCmd(testCase.commands[idx]) + "]");
   }
 
   //================= Utils ===============
@@ -1704,7 +1702,8 @@ function $X(xpath, contextNode, resultType) {
     if (window.location.href.indexOf("selenium-server") >= 0) {
       $$.LOG.debug("FileReader() is running in SRC mode");
       absUrl = absolutify(url, htmlTestRunner.controlPanel.getTestSuiteName());
-    } else {
+    }
+    else {
       absUrl = absolutify(url, selenium.browserbot.baseUrl);
     }
     $$.LOG.debug("FileReader() using URL to get file '" + absUrl + "'");
@@ -1720,7 +1719,8 @@ function $X(xpath, contextNode, resultType) {
     requester.open("GET", absUrl, false); // synchronous (we don't want selenium to go ahead)
     try {
       requester.send(null);
-    } catch(e) {
+    }
+    catch(e) {
       throw new Error("Error while fetching URL '" + absUrl + "':: " + e);
     }
     if (requester.status !== 200 && requester.status !== 0) {
