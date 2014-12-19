@@ -154,6 +154,11 @@ I tend to agree, in principle, with Dan Fabulich's view on keeping HTML Selenese
 
 =Revision History=
 
+* 2014-12-18: v2.0.2
+** Added ability to catch verify command faliures
+** Fixed Issue #6 Try/catch not clearing error status
+** Fixed Issue #11 Top-level try/finally leaves Selenium IDE in running mode
+** Fixed Issue #12 Unhandled try/catch in one test affects next test
 * 2013-10-28: v2.0.1
 ** Added checking for multiple un-terminated blocks
 ** Moved overview info from selblocks.js to the about dialog
