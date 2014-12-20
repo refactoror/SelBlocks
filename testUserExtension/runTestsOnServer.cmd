@@ -49,10 +49,11 @@ FOR %%I IN (%seleniumLocation%\selenium-server-standalone*.jar) DO SET seleniumS
 REM runs test suite specified by testSuite, in firefox
 SET browser=firefox
 start /wait "selenium server" /MIN java -jar "%seleniumServerJar%" -userExtensions "%userExtensions%" -log "%serverLog%" -browserSideLog -Dwebdriver.ie.driver="%seleniumLocation%\IEDriverServer.exe" -Dwebdriver.chrome.driver="%seleniumLocation%\chromedriver.exe" -htmlSuite "*%browser%" "%baseURL%" "%testSuite%" "%resultsLog%-%browser%.html"
+"%resultsLog%-%browser%.html"
+
 rem  uncomment the following lines once selbench works on the server with firefox.
 rem  we'll deal with browser inconsistencies after we get things up and running.
 
-rem "%resultsLog%-%browser%.html"
 rem SET browser=piiexplore
 rem start /wait "selenium server" /MIN java -jar "%seleniumServerJar%" -userExtensions "%userExtensions%" -log "%serverLog%" -browserSideLog -Dwebdriver.ie.driver="%seleniumLocation%\IEDriverServer.exe" -Dwebdriver.chrome.driver="%seleniumLocation%\chromedriver.exe" -htmlSuite "*%browser%" "%baseURL%" "%testSuite%" "%resultsLog%-%browser%.html"
 rem "%resultsLog%-%browser%.html"
