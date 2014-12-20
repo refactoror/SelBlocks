@@ -15,6 +15,13 @@ var selblocks = { name: "SelBlocks" };
     return obj;
   };
 
+  $$.fmtCmd = function(cmd) {
+    var c = cmd.command;
+    if (cmd.target) { c += "|" + cmd.target; }
+    if (cmd.value)  { c += "|" + cmd.value; }
+    return c;
+  }
+
 }(selblocks));
 // selbocks name-space
 (function($$){
@@ -132,9 +139,9 @@ var selblocks = { name: "SelBlocks" };
     // $$.LOG.warn("interceptPop " + (frame.attrs ? frame.attrs : ""));
     frame.targetObj[frame.targetFnName] = frame.savedFn;
   };
-  $$.fn.getInterceptAttrs = function() {
-    var topFrame = $$.fn.interceptStack[$$.fn.interceptStack.length-1];
-    return topFrame.attrs;
+
+  $$.fn.getInterceptTop = function() {
+    return $$.fn.interceptStack[$$.fn.interceptStack.length-1];
   };
 
   // replace the specified function, but then restore the original function as soon as it is call
@@ -380,7 +387,8 @@ var selblocks = { name: "SelBlocks" };
 // selbocks name-space
 (function($$){
   /* This function replaces native Selenium command handling for the exitScript command.
-   * It alters command processing such that the script simply halts rather executing the next command.
+   * (See TestLoop.prototype.resume() in chrome/content/selenium-core/scripts/selenium-executionloop.js.)
+   * This causes the script to simply halt rather continuing on to the next command.
    */
   $$.handleAsExitTest = function()
   {
@@ -389,7 +397,7 @@ var selblocks = { name: "SelBlocks" };
       this.testComplete();
     } catch (e) {
       // seems highly unlikely that there would be an error in this very simple case
-      this._handleCommandError(e); // causes command to be marked in red
+      this._handleCommandError(e); // marks command as failed (red), and overall test as failed
       this.testComplete();
     }
     $$.LOG.info("TEST HALTED");
@@ -399,28 +407,52 @@ var selblocks = { name: "SelBlocks" };
 // selbocks name-space
 (function($$){
   /* This function replaces native Selenium command handling while inside a try block.
+   * (See TestLoop.prototype.resume() in chrome/content/selenium-core/scripts/selenium-executionloop.js.)
+   * Command processing is altered so that catch and/or finally processing is initiated upon error.
    */
   $$.handleAsTryBlock = function()
   {
     try {
       selenium.browserbot.runScheduledPollers();
       this._executeCurrentCommand();
-      this.continueTestWhenConditionIsTrue();
-    } catch (e) {
-      var isHandled = this._handleCommandError(e); // causes command to be marked in red
-      var handlerAttrs = $$.fn.getInterceptAttrs();
-      var isManaged = handlerAttrs.handleError(e);
-      if (isManaged) {
+      if (this.result.failed && isManaged(this.result)) {
+        // a failed verify command has activated catch/finally bubbling
         this.continueTest();
-      } else {
-        this.testComplete();
       }
+      else {
+        // normal Selenium behavior
+        this.continueTestWhenConditionIsTrue();
+      }
+    } catch (e) {
+      if (isManaged(e)) {
+        // a caught error has activated catch/finally bubbling
+        this.continueTest();
+      }
+      else {
+        // normal Selenium behavior
+        if (!this._handleCommandError(e)) {
+          // command is marked in red, and overall test status is failed
+          this.testComplete();
+        } else {
+          // error has been otherwise handled by TestLoop.prototype._handleCommandError()
+          // (not sure what the possibilities are, other than stopping and failing the script)
+          this.continueTest();
+        }
+      }
+    }
+
+    function isManaged(e) {
+      var interceptFrame = $$.fn.getInterceptTop();
+      if (e.constructor.name == "AssertResult") {
+        e = new Error(e.failureMessage);
+      }
+      return (interceptFrame && interceptFrame.attrs.manageError(e));
     }
   };
 
 }(selblocks));
 /*
- * SelBlocks 2.0.1
+ * SelBlocks 2.0.2
  *
  * Provides commands for Javascript-like looping and callable functions,
  *   with scoped variables, and JSON/XML driven parameterization.
@@ -756,13 +788,14 @@ var globalContext = this;
     }
     try {
       compileSelBlocks();
-    } catch (err) {
+    }
+    catch (err) {
       notifyFatalErr("In " + err.fileName + " @" + err.lineNumber + ": " + err);
     }
     callStack = new Stack();
     callStack.push({ blockStack: new Stack() }); // top-level execution state
 
-    $$.tcf = { nestingLevel: -1 };
+    $$.tcf = { nestingLevel: -1 }; // try/catch/finally nesting
 
     // customize flow control logic
     // TBD: this should be a tail intercept rather than brute force replace
@@ -1196,14 +1229,13 @@ var globalContext = this;
 
     if ($$.tcf.nestingLevel === 0) {
       // enable special command handling
-        if(globalContext.onServer === true) {
-          $$.fn.interceptPush(HtmlRunnerTestLoop.prototype, "resume",
-            $$.handleAsTryBlock, { handleError: handleCommandError });
-        } else {
-          $$.fn.interceptPush(editor.selDebugger.runner.IDETestLoop.prototype, "resume",
-            $$.handleAsTryBlock, { handleError: handleCommandError });
-        }
-      
+      if(globalContext.onServer === true) {
+        $$.fn.interceptPush(htmlTestRunner.currentTest, "resume",
+          $$.handleAsTryBlock, { handleError: handleCommandError });
+      } else {
+        $$.fn.interceptPush(editor.selDebugger.runner.currentTest, "resume",
+            $$.handleAsTryBlock, { manageError: handleCommandError });
+      }
     }
     $$.LOG.debug("++ try nesting: " + $$.tcf.nestingLevel);
     // continue into try-block
@@ -1263,22 +1295,24 @@ var globalContext = this;
   // --------------------------------------------------------------------------------
 
   // alter the behavior of Selenium error handling
-  //   returns true if error is being managed
+  //   returns true if catch/finally bubbling is active
   function handleCommandError(err)
   {
     var tryState = bubbleToTryBlock(Stack.isTryBlock);
     var tryDef = blkDefFor(tryState);
-    $$.LOG.debug("error encountered while: " + tryState.execPhase);
-    if (hasUnspentCatch(tryState)) {
-      if (isMatchingCatch(err, tryDef.catchIdx)) {
-        // an expected kind of error has been caught
-        $$.LOG.info("@" + (idxHere()+1) + ", error has been caught" + fmtCatching(tryState));
-        tryState.hasCaught = true;
-        tryState.execPhase = "catching";
-        storedVars._error = err;
-        $$.tcf.bubbling = null;
-        setNextCommand(tryDef.catchIdx);
-        return true;
+    if (tryState) {
+      $$.LOG.debug("error encountered while: " + tryState.execPhase);
+      if (hasUnspentCatch(tryState)) {
+        if (isMatchingCatch(err, tryDef.catchIdx)) {
+          // an expected kind of error has been caught
+          $$.LOG.info("@" + (idxHere()+1) + ", error has been caught" + fmtCatching(tryState));
+          tryState.hasCaught = true;
+          tryState.execPhase = "catching";
+          storedVars._error = err;
+          $$.tcf.bubbling = null;
+          setNextCommand(tryDef.catchIdx);
+          return true;
+        }
       }
     }
     // error not caught .. instigate bubbling
@@ -1441,10 +1475,10 @@ var globalContext = this;
   }
 
   function hasUnspentCatch(tryState) {
-    return (blkDefFor(tryState).catchIdx && !tryState.hasCaught);
+    return (tryState && blkDefFor(tryState).catchIdx && !tryState.hasCaught);
   }
   function hasUnspentFinally(tryState) {
-    return (blkDefFor(tryState).finallyIdx && !tryState.hasFinaled);
+    return (tryState && blkDefFor(tryState).finallyIdx && !tryState.hasFinaled);
   }
 
   function fmtTry(tryState)
@@ -1822,13 +1856,12 @@ var globalContext = this;
       return;
     }
     // intercept command processing and simply stop test execution instead of executing the next command
-        if(globalContext.onServer === true) {
-          $$.fn.interceptOnce(HtmlRunnerTestLoop.prototype, "resume",
-            $$.handleAsExitTest);
-        } else {
-          $$.fn.interceptOnce(editor.selDebugger.runner.IDETestLoop.prototype, "resume",
-            $$.handleAsExitTest);
-        }
+      if(globalContext.onServer === true) {
+        $$.fn.interceptOnce(htmlTestRunner.currentTest, "resume",
+          $$.handleAsExitTest);
+      } else {
+        $$.fn.interceptOnce(editor.selDebugger.runner.currentTest, "resume", $$.handleAsExitTest);
+      }
   };
 
 
@@ -1840,7 +1873,8 @@ var globalContext = this;
       // EXTENSION REVIEWERS: Use of eval is consistent with the Selenium extension itself.
       // Scripted expressions run in the Selenium window, isolated from any web content.
       result = eval("with (storedVars) {" + expr + "}");
-    } catch (e) {
+    }
+    catch (e) {
       notifyFatalErr(" While evaluating Javascript expression: " + expr, e);
     }
     return result;
@@ -1952,13 +1986,7 @@ var globalContext = this;
     return fmtCmdRef(idxHere());
   }
   function fmtCmdRef(idx) {
-    return ("@" + (idx+1) + ": " + fmtCommand(testCase.commands[idx]));
-  }
-  function fmtCommand(cmd) {
-    var c = cmd.command;
-    if (cmd.target) { c += "|" + cmd.target; }
-    if (cmd.value)  { c += "|" + cmd.value; }
-    return '[' + c + ']';
+    return ("@" + (idx+1) + ": [" + $$.fmtCmd(testCase.commands[idx]) + "]");
   }
 
   //================= Utils ===============
@@ -2193,7 +2221,8 @@ var globalContext = this;
     if (window.location.href.indexOf("selenium-server") >= 0) {
       $$.LOG.debug("FileReader() is running in SRC mode");
       absUrl = absolutify(url, htmlTestRunner.controlPanel.getTestSuiteName());
-    } else {
+    }
+    else {
       absUrl = absolutify(url, selenium.browserbot.baseUrl);
     }
     $$.LOG.debug("FileReader() using URL to get file '" + absUrl + "'");
@@ -2209,7 +2238,8 @@ var globalContext = this;
     requester.open("GET", absUrl, false); // synchronous (we don't want selenium to go ahead)
     try {
       requester.send(null);
-    } catch(e) {
+    }
+    catch(e) {
       throw new Error("Error while fetching URL '" + absUrl + "':: " + e);
     }
     if (requester.status !== 200 && requester.status !== 0) {
