@@ -49,9 +49,9 @@
     // $$.LOG.warn("interceptPop " + (frame.attrs ? frame.attrs : ""));
     frame.targetObj[frame.targetFnName] = frame.savedFn;
   };
-  $$.fn.getInterceptAttrs = function() {
-    var topFrame = $$.fn.interceptStack[$$.fn.interceptStack.length-1];
-    return topFrame.attrs;
+
+  $$.fn.getInterceptTop = function() {
+    return $$.fn.interceptStack[$$.fn.interceptStack.length-1];
   };
 
   // replace the specified function, but then restore the original function as soon as it is call
