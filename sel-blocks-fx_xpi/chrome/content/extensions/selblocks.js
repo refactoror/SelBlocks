@@ -776,19 +776,13 @@ var globalContext = this;
 
     if ($$.tcf.nestingLevel === 0) {
       // enable special command handling
-<<<<<<< HEAD
-        if(globalContext.onServer === true) {
-          $$.fn.interceptPush(HtmlRunnerTestLoop.prototype, "resume",
-            $$.handleAsTryBlock, { handleError: handleCommandError });
-        } else {
-          $$.fn.interceptPush(editor.selDebugger.runner.IDETestLoop.prototype, "resume",
-            $$.handleAsTryBlock, { handleError: handleCommandError });
-        }
-      
-=======
-      $$.fn.interceptPush(editor.selDebugger.runner.currentTest, "resume",
-          $$.handleAsTryBlock, { manageError: handleCommandError });
->>>>>>> origin/master
+      if(globalContext.onServer === true) {
+        $$.fn.interceptPush(htmlTestRunner.currentTest, "resume",
+          $$.handleAsTryBlock, { handleError: handleCommandError });
+      } else {
+        $$.fn.interceptPush(editor.selDebugger.runner.currentTest, "resume",
+            $$.handleAsTryBlock, { manageError: handleCommandError });
+      }
     }
     $$.LOG.debug("++ try nesting: " + $$.tcf.nestingLevel);
     // continue into try-block
@@ -1409,17 +1403,12 @@ var globalContext = this;
       return;
     }
     // intercept command processing and simply stop test execution instead of executing the next command
-<<<<<<< HEAD
-        if(globalContext.onServer === true) {
-          $$.fn.interceptOnce(HtmlRunnerTestLoop.prototype, "resume",
-            $$.handleAsExitTest);
-        } else {
-          $$.fn.interceptOnce(editor.selDebugger.runner.IDETestLoop.prototype, "resume",
-            $$.handleAsExitTest);
-        }
-=======
-    $$.fn.interceptOnce(editor.selDebugger.runner.currentTest, "resume", $$.handleAsExitTest);
->>>>>>> origin/master
+      if(globalContext.onServer === true) {
+        $$.fn.interceptOnce(htmlTestRunner.currentTest, "resume",
+          $$.handleAsExitTest);
+      } else {
+        $$.fn.interceptOnce(editor.selDebugger.runner.currentTest, "resume", $$.handleAsExitTest);
+      }
   };
 
 
