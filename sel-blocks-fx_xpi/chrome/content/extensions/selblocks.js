@@ -296,8 +296,8 @@ var globalContext = this;
   $$.fn.interceptAfter(Selenium.prototype, "reset", function()
   {
     $$.LOG.trace("In tail intercept :: Selenium.reset()");
-    if (globalContext.onServer === true && globalContext.scriptInterceptsSeleniumReset !== true) {
-      globalContext.scriptInterceptsSeleniumReset = true;
+    if (globalContext.onServer === true) {
+      //globalContext.scriptInterceptsSeleniumReset = true;
       function map_list(list, for_func, if_func) {
         var i,
         x,
