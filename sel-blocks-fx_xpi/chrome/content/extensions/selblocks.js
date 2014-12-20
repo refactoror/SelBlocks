@@ -775,8 +775,14 @@ var globalContext = this;
 
     if ($$.tcf.nestingLevel === 0) {
       // enable special command handling
-      $$.fn.interceptPush(editor.selDebugger.runner.IDETestLoop.prototype, "resume",
-          $$.handleAsTryBlock, { handleError: handleCommandError });
+        if(globalContext.onServer === true) {
+          $$.fn.interceptPush(HtmlRunnerTestLoop.prototype, "resume",
+            $$.handleAsTryBlock, { handleError: handleCommandError });
+        } else {
+          $$.fn.interceptPush(editor.selDebugger.runner.IDETestLoop.prototype, "resume",
+            $$.handleAsTryBlock, { handleError: handleCommandError });
+        }
+      
     }
     $$.LOG.debug("++ try nesting: " + $$.tcf.nestingLevel);
     // continue into try-block
@@ -1395,7 +1401,13 @@ var globalContext = this;
       return;
     }
     // intercept command processing and simply stop test execution instead of executing the next command
-    $$.fn.interceptOnce(editor.selDebugger.runner.IDETestLoop.prototype, "resume", $$.handleAsExitTest);
+        if(globalContext.onServer === true) {
+          $$.fn.interceptOnce(HtmlRunnerTestLoop.prototype, "resume",
+            $$.handleAsExitTest);
+        } else {
+          $$.fn.interceptOnce(editor.selDebugger.runner.IDETestLoop.prototype, "resume",
+            $$.handleAsExitTest);
+        }
   };
 
 
