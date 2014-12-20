@@ -82,7 +82,7 @@ function $X(xpath, contextNode, resultType) {
 var globalContext = this;
 // selbocks name-space
 (function($$){
-  if(globalContext.onServer === true) {
+  if(globalContext.onServer === true && globalContext.scriptServerPatchApplied !== true) {
     globalContext.testCase = {};
     HtmlRunnerTestLoop.prototype.old_initialize = HtmlRunnerTestLoop.prototype.initialize;
     HtmlRunnerTestLoop.prototype.initialize = function (htmlTestCase, metrics, seleniumCommandFactory) {
@@ -90,6 +90,7 @@ var globalContext = this;
       this.old_initialize(htmlTestCase, metrics, seleniumCommandFactory);
       this.commands = [];
     };
+    globalContext.scriptServerPatchApplied = true;
   }
   // =============== Javascript extensions as script helpers ===============
   // EXTENSION REVIEWERS:
@@ -295,7 +296,8 @@ var globalContext = this;
   $$.fn.interceptAfter(Selenium.prototype, "reset", function()
   {
     $$.LOG.trace("In tail intercept :: Selenium.reset()");
-    if (globalContext.onServer === true) {
+    if (globalContext.onServer === true && globalContext.scriptInterceptsSeleniumReset !== true) {
+      globalContext.scriptInterceptsSeleniumReset = true;
       function map_list(list, for_func, if_func) {
         var i,
         x,
