@@ -54,11 +54,30 @@ REM %seleniumServerLocation% I think it always finds the one with the highest
 REM version number but I'm not sure.
 FOR %%I IN (%seleniumServerLocation%\selenium-server-standalone*.jar) DO SET seleniumServerJar=%%~dpnxI
 
-CALL :startAutotest "firefox"
-IF NOT %ERRORLEVEL% EQU 0 (
-  CALL :startDebug
-)
 
+
+
+IF ["%~1"]==[""] (
+  CALL :startAutotest "firefox"
+  IF NOT %ERRORLEVEL% EQU 0 (
+    CALL :startDebugTestSuite
+  )
+) ELSE IF [%~1]==[start-debug] (
+  IF NOT ["%~2"]==[""] (
+  echo x
+    CALL :startDebugTestSuite "%~2"
+  ) ELSE (
+    CALL :startDebugTestSuite
+  )
+) ELSE IF [%~1]==[open-hub] (
+  CALL :seleniumOpenHub
+) ELSE IF [%~1]==[open-selenium-server] (
+  CALL :seleniumOpenSeleniumServer
+) ELSE IF [%~1]==[open-driver] (
+  CALL :seleniumOpenSeleniumServerDriver
+) ELSE IF [%~1]==[open-core] (
+  CALL :seleniumOpenSeleniumServerCore
+)
 ENDLOCAL
 EXIT /B %ERRORLEVEL%
 
@@ -97,14 +116,14 @@ EXIT /B %ERRORLEVEL%
   SET /a max=11
   SET filename=
   
-  IF [%1]==[] (
+  IF ["%~1"]==[""] (
     ECHO ERROR: No file given to wait for.
     ENDLOCAL
     EXIT /B 1
   ) ELSE (
     SET filename=%~1
   )
-  IF [%2]==[] (
+  IF ["%~2"]==[""] (
     ECHO WARNING: No maximum count given, defaulting to %max%.
   ) ELSE (
     SET /a max=%2
@@ -130,7 +149,7 @@ EXIT /B %ERRORLEVEL%
 :openFile
   SETLOCAL
   REM opens the file in the default application.
-  IF [%1]==[] (
+  IF ["%~1"]==[""] (
     ECHO ERROR: No file specified.
     ENDLOCAL
     EXIT /B 1
@@ -145,26 +164,15 @@ EXIT /B %ERRORLEVEL%
 ENDLOCAL
 EXIT /B %ERRORLEVEL%
 
-:startAutotest
+:startAutotestServer
   SETLOCAL
-  IF [%1]==[] (
+  IF ["%~1"]==[""] (
     ECHO ERROR: No browser specified.
     ENDLOCAL
     EXIT /B 1
   )
   SET browser=%~1
   REM firefox, piiexplore, googlechrome
-  
-  CALL :cleanupLogsAndResults
-  IF NOT %ERRORLEVEL% EQU 0 (
-    ENDLOCAL
-    EXIT /B %ERRORLEVEL%
-  )
-  CALL :generateTestingUserExtension
-  IF NOT %ERRORLEVEL% EQU 0 (
-    ENDLOCAL
-    EXIT /B %ERRORLEVEL%
-  )
   
   REM  browsers currently available
 
@@ -197,11 +205,40 @@ EXIT /B %ERRORLEVEL%
  -log "%serverLog%" -browserSideLog ^
  -htmlSuite "*%browser%" "%baseURL%" "%testSuiteFile%" "%resultsLog%-%browser%.html" ^
  -timeout %autotestTimeoutInSeconds%
+ 
+ENDLOCAL
+EXIT /B %ERRORLEVEL%
+
+:startAutotest
+  SETLOCAL
+  IF ["%~1"]==[""] (
+    ECHO WARN: No browser specified. Defaults to firefox
+    SET browser=firefox
+  ) ELSE (
+    SET browser=%~1
+  )
+  REM firefox, piiexplore, googlechrome
+  
+  CALL :cleanupLogsAndResults
+  IF NOT %ERRORLEVEL% EQU 0 (
+    ENDLOCAL
+    EXIT /B %ERRORLEVEL%
+  )
+  
+  CALL :generateTestingUserExtension
+  IF NOT %ERRORLEVEL% EQU 0 (
+    ENDLOCAL
+    EXIT /B %ERRORLEVEL%
+  )
+  
+  CALL :startAutotestServer "%browser%"
   
   IF NOT %ERRORLEVEL% EQU 0 (
     ECHO ERROR: Something went wrong with the server or the tests timed out. Check the logs.
     SETLOCAL ENABLEDELAYEDEXPANSION
     SET str=%serverLog%
+    REM Collapses multiple backslashes into a single backslash, unless there are
+    REM more than 10 in a row...
     FOR /l %%i in (1,1,10) DO SET str=!str:\\=\!
     CALL :openFile "!str!"
     ENDLOCAL
@@ -218,7 +255,7 @@ EXIT /B %ERRORLEVEL%
 ENDLOCAL
 EXIT /B %ERRORLEVEL%
 
-:startDebug
+:startDebugServer
   SETLOCAL
   DEL /Q %serverDebugUserExtensions%
   
@@ -243,6 +280,17 @@ EXIT /B %ERRORLEVEL%
 
   REM we don't wait for the server because debugging might take a long time.
   REM this also means we don't listen for the server to exit with some errorlevel.
+ENDLOCAL
+EXIT /B %ERRORLEVEL%
+
+:startDebugTestSuite
+  SETLOCAL
+  REM alternate test suites may be specified
+  IF NOT ["%~1"]==[""] (
+    SET "testSuiteURL=%baseURL%/selenium-server/%testsDirName%/%~1"
+  )
+  
+  CALL :startDebugServer
   
   REM opens the default web browser to the server test runner and sets the test
   REM path to the test suite.
@@ -257,7 +305,7 @@ EXIT /B %ERRORLEVEL%
 
 :seleniumOpenTestSuite
 SETLOCAL
-  IF [%1]==[] (
+  IF ["%~1"]==[""] (
     ECHO ERROR: No test specified.
     ENDLOCAL
     EXIT /B 1
@@ -271,8 +319,8 @@ SETLOCAL
   SET "str=%str%&multiWindow=true"
   SET "str=%str%&defaultLogLevel=info"
   
-  IF NOT [%2]==[] (
-    SET str=%str%^&auto=true
+  IF NOT ["%~2"]==[""] (
+    SET "str=%str%&auto=true"
   )
   
   explorer "%str%"
@@ -282,6 +330,7 @@ EXIT /B 0
 
 :seleniumOpenHub
 SETLOCAL
+  CALL :startDebugServer
   explorer "%baseURL%/wd/hub"
 ENDLOCAL
 REM explorer sets an errorlevel if it tries to open anything that isn't a file
@@ -289,6 +338,7 @@ EXIT /B 0
 
 :seleniumOpenSeleniumServer
 SETLOCAL
+  CALL :startDebugServer
   explorer "%baseURL%/selenium-server/"
 ENDLOCAL
 REM explorer sets an errorlevel if it tries to open anything that isn't a file
@@ -296,6 +346,7 @@ EXIT /B 0
 
 :seleniumOpenSeleniumServerDriver
 SETLOCAL
+  CALL :startDebugServer
   explorer "%baseURL%/selenium-server/driver/"
 ENDLOCAL
 REM explorer sets an errorlevel if it tries to open anything that isn't a file
@@ -303,6 +354,7 @@ EXIT /B 0
 
 :seleniumOpenSeleniumServerCore
 SETLOCAL
+  CALL :startDebugServer
   explorer "%baseURL%/selenium-server/core/"
 ENDLOCAL
 REM explorer sets an errorlevel if it tries to open anything that isn't a file
