@@ -62,9 +62,20 @@ IF ["%~1"]==[""] (
   IF NOT %ERRORLEVEL% EQU 0 (
     CALL :startDebugTestSuite
   )
+) ELSE IF [%~1]==[start-autotest] (
+  IF NOT ["%~2"]==[""] (
+    CALL :startAutotest "%~2"
+    IF NOT %ERRORLEVEL% EQU 0 (
+      CALL :startDebugTestSuite
+    )
+  ) ELSE (
+    CALL :startAutotest "firefox"
+    IF NOT %ERRORLEVEL% EQU 0 (
+      CALL :startDebugTestSuite
+    )
+  )
 ) ELSE IF [%~1]==[start-debug] (
   IF NOT ["%~2"]==[""] (
-  echo x
     CALL :startDebugTestSuite "%~2"
   ) ELSE (
     CALL :startDebugTestSuite
@@ -170,6 +181,8 @@ EXIT /B %ERRORLEVEL%
     ECHO ERROR: No browser specified.
     ENDLOCAL
     EXIT /B 1
+  ) ELSE (
+    ECHO INFO: Attempting to start "%~1" browser for automated testing.
   )
   SET browser=%~1
   REM firefox, piiexplore, googlechrome
@@ -241,8 +254,7 @@ EXIT /B %ERRORLEVEL%
     REM more than 10 in a row...
     FOR /l %%i in (1,1,10) DO SET str=!str:\\=\!
     CALL :openFile "!str!"
-    ENDLOCAL
-    EXIT /B %ERRORLEVEL%
+    ENDLOCAL & EXIT /B %ERRORLEVEL%
   )
   
   REM opens the results in the default browser
