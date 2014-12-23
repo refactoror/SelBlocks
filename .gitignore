@@ -1,0 +1,4 @@
+#1.1 Do NOT ignore file pattern in  any subdirectory
+!*/user-extensions.js
+#1.2 ...only ignore it in the current directory
+/user-extensions.js
