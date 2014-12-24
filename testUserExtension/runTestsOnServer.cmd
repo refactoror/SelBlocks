@@ -4,7 +4,7 @@ SETLOCAL
 
 REM if the autotests don't complete within the given time, the server will shut
 REM down and close the browser windows.
-SET /a autotestTimeoutInSeconds=30
+SET /a autotestTimeoutInSeconds=90
 REM the root of the project
 REM C:\projects\selenium\selblocks\SelBlocks\
 SET projectRoot=%~dp0..\
@@ -178,6 +178,8 @@ EXIT /B 0
   
   IF DEFINED selbenchUserExtension (
     COPY "%selbenchUserExtension%"+"%defaultUserExtensions%" /B "%testUserExtensions%" /B
+  ) ELSE (
+    COPY "%defaultUserExtensions%" /B "%testUserExtensions%" /B
   )
 ENDLOCAL
 EXIT /B %ERRORLEVEL%
@@ -219,20 +221,24 @@ ENDLOCAL
 EXIT /B %ERRORLEVEL%
 
 :openFile
-  SETLOCAL
+  SETLOCAL ENABLEDELAYEDEXPANSION
   REM opens the file in the default application.
   IF ["%~1"]==[""] (
     ECHO ERROR: No file specified.
     ENDLOCAL
     EXIT /B 1
   )
-  CALL :waitForFile %*
+  SET "str=%~1"
+  REM Collapses multiple backslashes into a single backslash, unless there are
+  REM more than 10 in a row...
+  FOR /l %%i in (1,1,10) DO SET str=!str:\\=\!
+  CALL :waitForFile "!str!" %~2
   IF NOT %ERRORLEVEL% EQU 0 (
     ENDLOCAL
     EXIT /B %ERRORLEVEL%
   )
-  ECHO INFO: Opening %*
-  explorer %*
+  ECHO INFO: Opening "!str!"
+  explorer "!str!"
 ENDLOCAL
 EXIT /B %ERRORLEVEL%
 
@@ -330,16 +336,18 @@ EXIT /B %ERRORLEVEL%
     ) ELSE (
       CALL :openServerLog
     )
-    ENDLOCAL
-    EXIT /B 1
   )
   
-  REM opens the results in the default browser
-  CALL :openFile "%resultsLog%-%browser%.html" 3
-  IF NOT %ERRORLEVEL% EQU 0 (
-    ECHO ERROR: Could not open browser to the test results.
-    ENDLOCAL
-    EXIT /B 1
+  IF %nolog%==true (
+    ECHO INFO: Test results can be found at: "%resultsLog%-%browser%.html"
+  ) ELSE (
+    REM opens the results in the default browser
+    CALL :openFile "%resultsLog%-%browser%.html"
+    IF NOT %ERRORLEVEL% EQU 0 (
+      ECHO ERROR: Could not open browser to the test results.
+      ENDLOCAL
+      EXIT /B 1
+    )
   )
 ENDLOCAL
 EXIT /B %ERRORLEVEL%
