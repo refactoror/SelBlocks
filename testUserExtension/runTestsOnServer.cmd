@@ -115,7 +115,13 @@ SETLOCAL
   ECHO start-autotest [browser] [nolog]
   ECHO   Where browser is a valid browser for Selenium, minus the initial asterisk
   ECHO   Where supplying the second argument as "nolog" will stop the server log
-  ECHO   from opening automatically on failure.
+  ECHO   from opening automatically on failure. If you specify the browser as
+  ECHO   "all" then the second argument is ignored. It will not open the logs
+  ECHO   automatically, since they're deleted after each run with the browsers.
+  ECHO   You basically just watch "firefox", "piiexplore", and "googlechrome"
+  ECHO   go through the default test suite. It doesn't take long. If they don't
+  ECHO   crash or timeout on the tests then there will be results-[browser].html
+  ECHO   created. So really you don't have to watch, but it's fun to watch.
   ECHO.
   ECHO start-debug [test suite name]
   ECHO   Where test suite name is a test suite located in your test suites
