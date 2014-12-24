@@ -14,8 +14,15 @@ SET host=localhost
 SET port=4444
 REM the name of the test suite to load into the server
 SET testSuiteFileName=_SelBlocks-TestSuite.html
+REM the name of the directory that holds scripts for generating parts of the project
+SET buildScriptsDirName=build
+REM the script for building the release version of the user-extensions.js file
+SET userExtensionsBuildScriptFileName=createSelblocksUserExtensions.cmd
 REM directory that holds the selenese tests
 SET testsDirName=sel-blocksTests
+REM the path to selbench's user extension, for generating testing versions of
+REM this user extension (not used in selbench project, obviously)
+SET selbenchUserExtension=%projectRoot%..\..\selbench\SelBench\user extension\user-extensions.js
 REM directory that holds parts of the user extension and the generated 
 REM "release" version of the extension.
 SET userExtensionDirName=user extension
@@ -158,20 +165,20 @@ EXIT /B 0
 
 :generateTestingUserExtension
   SETLOCAL
-  REM creates the user extension with selbench and selblocks
+  REM creates the user extension with selbench
   
-  SET selbenchUserExtension=%projectRoot%..\..\selbench\SelBench\user extension\user-extensions.js
-
   DEL /Q %testUserExtensions%
   
-  START "Regenerating default user-extensions.js" /WAIT /MIN CMD /C "%projectRoot%\build\createSelblocksUserExtensions.cmd"
+  START "Regenerating default user-extensions.js" /WAIT /MIN CMD /C "%projectRoot%\%buildScriptsDirName%\%userExtensionsBuildScriptFileName%"
   IF NOT %ERRORLEVEL% EQU 0 (
     ECHO ERROR: Could not generate user-extensions.js
     ENDLOCAL
     EXIT /B %ERRORLEVEL%
   )
   
-  COPY "%selbenchUserExtension%"+"%defaultUserExtensions%" /B "%testUserExtensions%" /B
+  IF DEFINED selbenchUserExtension (
+    COPY "%selbenchUserExtension%"+"%defaultUserExtensions%" /B "%testUserExtensions%" /B
+  )
 ENDLOCAL
 EXIT /B %ERRORLEVEL%
 
@@ -342,7 +349,7 @@ EXIT /B %ERRORLEVEL%
   DEL /Q %serverDebugUserExtensions%
   
   REM copies the testing user extensions file to the debug location.
-  COPY "user-extensions.js" %serverDebugUserExtensions%
+  COPY "%testUserExtensions%" /B "%serverDebugUserExtensions%" /B
   IF NOT %ERRORLEVEL% EQU 0 (
     ECHO ERROR: Could not copy user-extensions.js to the project root.
     ENDLOCAL
