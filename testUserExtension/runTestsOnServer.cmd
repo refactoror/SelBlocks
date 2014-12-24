@@ -54,43 +54,91 @@ REM %seleniumServerLocation% I think it always finds the one with the highest
 REM version number but I'm not sure.
 FOR %%I IN (%seleniumServerLocation%\selenium-server-standalone*.jar) DO SET seleniumServerJar=%%~dpnxI
 
-
-
-
-IF ["%~1"]==[""] (
-  CALL :startAutotest "firefox"
-  IF NOT %ERRORLEVEL% EQU 0 (
-    CALL :startDebugTestSuite
-  )
-) ELSE IF [%~1]==[start-autotest] (
-  IF NOT ["%~2"]==[""] (
-    CALL :startAutotest "%~2"
-    IF NOT %ERRORLEVEL% EQU 0 (
-      CALL :startDebugTestSuite
-    )
-  ) ELSE (
-    CALL :startAutotest "firefox"
-    IF NOT %ERRORLEVEL% EQU 0 (
-      CALL :startDebugTestSuite
-    )
-  )
-) ELSE IF [%~1]==[start-debug] (
-  IF NOT ["%~2"]==[""] (
-    CALL :startDebugTestSuite "%~2"
-  ) ELSE (
-    CALL :startDebugTestSuite
-  )
-) ELSE IF [%~1]==[open-hub] (
-  CALL :seleniumOpenHub
-) ELSE IF [%~1]==[open-selenium-server] (
-  CALL :seleniumOpenSeleniumServer
-) ELSE IF [%~1]==[open-driver] (
-  CALL :seleniumOpenSeleniumServerDriver
-) ELSE IF [%~1]==[open-core] (
-  CALL :seleniumOpenSeleniumServerCore
-)
+CALL :parameterHandler %*
 ENDLOCAL
 EXIT /B %ERRORLEVEL%
+
+:parameterHandler
+  SETLOCAL ENABLEDELAYEDEXPANSION
+  IF ["%~1"]==["-h"] (
+    CALL :showHelp
+    ENDLOCAL
+    EXIT /B 0
+  ) ELSE IF ["%~1"]==["-help"] (
+    CALL :showHelp
+    ENDLOCAL
+    EXIT /B 0
+  ) ELSE IF ["%~1"]==[""] (
+    CALL :startAutotest
+    IF NOT !ERRORLEVEL! EQU 0 (
+      CALL :startDebugTestSuite
+    )
+  ) ELSE IF [%~1]==[start-autotest] (
+    IF NOT ["%~2"]==[""] (
+      IF ["%~2"]==["all"] (
+        CALL :startAutotest "firefox" "nolog"
+        CALL :startAutotest "piiexplore" "nolog"
+        CALL :startAutotest "googlechrome" "nolog"
+      ) ELSE (
+        CALL :startAutotest "%~2" "%~3"
+      )
+    ) ELSE (
+      CALL :startAutotest
+    )
+  ) ELSE IF [%~1]==[start-debug] (
+    IF NOT ["%~2"]==[""] (
+      CALL :startDebugTestSuite "%~2"
+    ) ELSE (
+      CALL :startDebugTestSuite
+    )
+  ) ELSE IF [%~1]==[open-selenium-server] (
+    CALL :seleniumOpenSeleniumServer "%~2"
+  ) ELSE IF [%~1]==[open-driver] (
+    CALL :seleniumOpenSeleniumServerDriver "%~2"
+  ) ELSE IF [%~1]==[open-core] (
+    CALL :seleniumOpenSeleniumServerCore "%~2"
+  ) ELSE (
+    ECHO ERROR: I don't know what you want to do.
+    ECHO ERROR: %*
+  )
+ENDLOCAL
+EXIT /B %ERRORLEVEL%
+
+:showHelp
+SETLOCAL
+  ECHO.
+  ECHO GLORIOUS TEST RUNNER RUNS TESTS GLORIOUSLY
+  ECHO.
+  ECHO start without arguments to run autotests in firefox and automatically
+  ECHO   show logs / start debug on failure.
+  ECHO.
+  ECHO start-autotest [browser] [nolog]
+  ECHO   Where browser is a valid browser for Selenium, minus the initial asterisk
+  ECHO   Where supplying the second argument as "nolog" will stop the server log
+  ECHO   from opening automatically on failure.
+  ECHO.
+  ECHO start-debug [test suite name]
+  ECHO   Where test suite name is a test suite located in your test suites
+  ECHO   directory.
+  ECHO.
+  ECHO open-selenium-server [subdirectory or page]
+  ECHO   Where subdirectory or page is some subdirectory of wherever the selenium
+  ECHO   server is rooted. Currently this is the project root.
+  ECHO.
+  ECHO open-driver [querystring]
+  ECHO   Where querystring is the initial query to send to the RC server. By
+  ECHO   default it gets a new firefox session. Your default browser should open
+  ECHO   to a page where you can send commands through the address bar. The
+  ECHO   browser under control will have a status window and the window under
+  ECHO   remote control.
+  ECHO.
+  ECHO open-core [subdirectory or page]
+  ECHO   Opens the /selenium-server/core/[subdirectory or page] The pages
+  ECHO   available here are the ones packed into the selenium-core directory of
+  ECHO   the selenium-server-standalone-[version].jar file
+  ECHO.
+ENDLOCAL
+EXIT /B 0
 
 :cleanupLogsAndResults
   SETLOCAL
@@ -222,6 +270,16 @@ EXIT /B %ERRORLEVEL%
 ENDLOCAL
 EXIT /B %ERRORLEVEL%
 
+:openServerLog
+  SETLOCAL ENABLEDELAYEDEXPANSION
+  SET str=%serverLog%
+  REM Collapses multiple backslashes into a single backslash, unless there are
+  REM more than 10 in a row...
+  FOR /l %%i in (1,1,10) DO SET str=!str:\\=\!
+  CALL :openFile "!str!"
+  ENDLOCAL
+EXIT /B %ERRORLEVEL%
+
 :startAutotest
   SETLOCAL
   IF ["%~1"]==[""] (
@@ -231,6 +289,13 @@ EXIT /B %ERRORLEVEL%
     SET browser=%~1
   )
   REM firefox, piiexplore, googlechrome
+  
+  IF ["%~2"]==["nolog"] (
+    ECHO WARN: Will not open Server Log on failure.
+    SET nolog=true
+  ) ELSE (
+    SET nolog=false
+  )
   
   CALL :cleanupLogsAndResults
   IF NOT %ERRORLEVEL% EQU 0 (
@@ -245,16 +310,15 @@ EXIT /B %ERRORLEVEL%
   )
   
   CALL :startAutotestServer "%browser%"
-  
   IF NOT %ERRORLEVEL% EQU 0 (
     ECHO ERROR: Something went wrong with the server or the tests timed out. Check the logs.
-    SETLOCAL ENABLEDELAYEDEXPANSION
-    SET str=%serverLog%
-    REM Collapses multiple backslashes into a single backslash, unless there are
-    REM more than 10 in a row...
-    FOR /l %%i in (1,1,10) DO SET str=!str:\\=\!
-    CALL :openFile "!str!"
-    ENDLOCAL & EXIT /B %ERRORLEVEL%
+    IF %nolog%==true (
+      ECHO INFO: Logs can be found at: %serverLog%
+    ) ELSE (
+      CALL :openServerLog
+    )
+    ENDLOCAL
+    EXIT /B 1
   )
   
   REM opens the results in the default browser
@@ -262,7 +326,7 @@ EXIT /B %ERRORLEVEL%
   IF NOT %ERRORLEVEL% EQU 0 (
     ECHO ERROR: Could not open browser to the test results.
     ENDLOCAL
-    EXIT /B %ERRORLEVEL%
+    EXIT /B 1
   )
 ENDLOCAL
 EXIT /B %ERRORLEVEL%
@@ -340,26 +404,26 @@ ENDLOCAL
 REM explorer sets an errorlevel if it tries to open anything that isn't a file
 EXIT /B 0
 
-:seleniumOpenHub
-SETLOCAL
-  CALL :startDebugServer
-  explorer "%baseURL%/wd/hub"
-ENDLOCAL
-REM explorer sets an errorlevel if it tries to open anything that isn't a file
-EXIT /B 0
-
 :seleniumOpenSeleniumServer
 SETLOCAL
   CALL :startDebugServer
-  explorer "%baseURL%/selenium-server/"
+  explorer "%baseURL%/selenium-server/%~1"
 ENDLOCAL
 REM explorer sets an errorlevel if it tries to open anything that isn't a file
 EXIT /B 0
 
 :seleniumOpenSeleniumServerDriver
 SETLOCAL
+  REM java -jar selenium-server.jar -interactive
+  REM cmd=getNewBrowserSession&1=*firefox&2=http://www.google.com
+  REM Got result: OK,260113 on session 260113
+  REM cmd=open&1=http://www.google.com&2=hello world&sessionId=<the session id on your browser window>
   CALL :startDebugServer
-  explorer "%baseURL%/selenium-server/driver/"
+  IF ["%~1"]==[""] (
+    explorer "%baseURL%/selenium-server/driver?cmd=getNewBrowserSession&1=*firefox&2=http://www.google.com"
+  ) ELSE (
+    explorer "%baseURL%/selenium-server/driver?%~1"
+  )
 ENDLOCAL
 REM explorer sets an errorlevel if it tries to open anything that isn't a file
 EXIT /B 0
@@ -367,7 +431,7 @@ EXIT /B 0
 :seleniumOpenSeleniumServerCore
 SETLOCAL
   CALL :startDebugServer
-  explorer "%baseURL%/selenium-server/core/"
+  explorer "%baseURL%/selenium-server/core/%~1"
 ENDLOCAL
 REM explorer sets an errorlevel if it tries to open anything that isn't a file
 EXIT /B 0
