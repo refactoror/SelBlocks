@@ -1271,7 +1271,7 @@ function $X(xpath, contextNode, resultType) {
       // enable special command handling
       if(globalContext.onServer === true) {
         $$.fn.interceptPush(htmlTestRunner.currentTest, "resume",
-          $$.handleAsTryBlock, { handleError: handleCommandError });
+          $$.handleAsTryBlock, { manageError: handleCommandError });
       } else {
         $$.fn.interceptPush(editor.selDebugger.runner.currentTest, "resume",
             $$.handleAsTryBlock, { manageError: handleCommandError });
