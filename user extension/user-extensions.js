@@ -4,17 +4,17 @@ maxerr:500,
 plusplus:true
  */
 /*globals
-selblocks,
-HtmlRunnerTestLoop,
-Selenium,
-htmlTestRunner
+globalContext:true,
+HtmlRunnerTestLoop:true,
+Selenium:true,
+htmlTestRunner:true
  */
-var globalContext = this;
+globalContext = this;
 globalContext.onServer = globalContext.onServer || true;
 globalContext.serverPatchApplied = globalContext.serverPatchApplied || false;
 
+
 function seleniumResetInterceptor() {
-  "use strict";
   var old_reset;
   old_reset = Selenium.prototype.reset;
 
@@ -59,7 +59,6 @@ function seleniumResetInterceptor() {
 }
 
 function patchServerEnvironment() {
-  "use strict";
 
   if (globalContext.scriptServerPatchApplied !== true) {
     globalContext.testCase = {};
@@ -528,10 +527,17 @@ globalContext = this;
 
     function isManaged(e) {
       var interceptFrame = $$.fn.getInterceptTop();
+      var out = false;
       if (e.constructor.name == "AssertResult") {
         e = new Error(e.failureMessage);
       }
-      return (interceptFrame && interceptFrame.attrs.manageError(e));
+      try {
+        out = (interceptFrame && interceptFrame.attrs.manageError(e));
+      } catch (ignore) {
+        // if there was an error trying to see if the error is managed,
+        // then it is not managed.
+      }
+      return out;
     }
   };
 
@@ -810,9 +816,6 @@ function $X(xpath, contextNode, resultType) {
     assert(cmdIdx >= 0 && cmdIdx < testCase.commands.length,
       " Cannot branch to non-existent command @" + (cmdIdx+1));
     branchIdx = cmdIdx;
-    if(globalContext.onServer === true) {
-      testCase.htmlTestCase.nextCommandRowIndex = cmdIdx; // w/o branching
-    }
   }
 
   // Selenium calls reset():
