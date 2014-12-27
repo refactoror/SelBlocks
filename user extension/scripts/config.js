@@ -4,17 +4,17 @@ maxerr:500,
 plusplus:true
  */
 /*globals
-selblocks,
-HtmlRunnerTestLoop,
-Selenium,
-htmlTestRunner
+globalContext:true,
+HtmlRunnerTestLoop:true,
+Selenium:true,
+htmlTestRunner:true
  */
-var globalContext = this;
+globalContext = this;
 globalContext.onServer = globalContext.onServer || true;
 globalContext.serverPatchApplied = globalContext.serverPatchApplied || false;
 
+
 function seleniumResetInterceptor() {
-  "use strict";
   var old_reset;
   old_reset = Selenium.prototype.reset;
 
@@ -59,7 +59,6 @@ function seleniumResetInterceptor() {
 }
 
 function patchServerEnvironment() {
-  "use strict";
 
   if (globalContext.scriptServerPatchApplied !== true) {
     globalContext.testCase = {};
