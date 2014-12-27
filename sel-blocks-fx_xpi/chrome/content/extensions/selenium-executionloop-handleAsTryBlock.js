@@ -37,10 +37,17 @@
 
     function isManaged(e) {
       var interceptFrame = $$.fn.getInterceptTop();
+      var out = false;
       if (e.constructor.name == "AssertResult") {
         e = new Error(e.failureMessage);
       }
-      return (interceptFrame && interceptFrame.attrs.manageError(e));
+      try {
+        out = (interceptFrame && interceptFrame.attrs.manageError(e));
+      } catch (ignore) {
+        // if there was an error trying to see if the error is managed,
+        // then it is not managed.
+      }
+      return out;
     }
   };
 
