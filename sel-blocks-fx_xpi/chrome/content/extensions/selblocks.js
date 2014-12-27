@@ -272,9 +272,6 @@ function $X(xpath, contextNode, resultType) {
     assert(cmdIdx >= 0 && cmdIdx < testCase.commands.length,
       " Cannot branch to non-existent command @" + (cmdIdx+1));
     branchIdx = cmdIdx;
-    if(globalContext.onServer === true) {
-      testCase.htmlTestCase.nextCommandRowIndex = cmdIdx; // w/o branching
-    }
   }
 
   // Selenium calls reset():
