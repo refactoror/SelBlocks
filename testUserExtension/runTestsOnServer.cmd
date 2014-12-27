@@ -10,8 +10,10 @@ REM C:\projects\selenium\selblocks\SelBlocks\
 SET projectRoot=%~dp0..\
 REM parts of the baseURL used when the server is started
 SET protocol=http
-SET host=localhost
-SET port=4444
+SET host=htmlpreview.github.io
+SET port=80
+REM the port that selenium server will run on
+SET seleniumServerPort=4444
 REM the name of the test suite to load into the server
 SET testSuiteFileName=_SelBlocks-TestSuite.html
 REM the name of the directory that holds scripts for generating parts of the project
@@ -47,7 +49,7 @@ REM this is the base url setting for selenium server
 SET baseURL=%protocol%://%host%:%port%
 REM the server debug path to the test suite. This is not the same as the
 REM autotesting url.
-SET testSuiteURL=%baseURL%/selenium-server/%testsDirName%/%testSuiteFileName%
+SET testSuiteURL=./../%testsDirName%/%testSuiteFileName%
 REM the release version of the user extension.
 SET defaultUserExtensions=%projectRoot%\%userExtensionDirName%\user-extensions.js
 REM the testing version of the user extension.
@@ -278,7 +280,7 @@ EXIT /B %ERRORLEVEL%
 
   REM runs test suite specified by testSuiteFile, in the given browser
   start /wait "selenium server" /MIN java -jar "%seleniumServerJar%" ^
- -port %port% ^
+ -port %seleniumServerPort% ^
  -Dwebdriver.ie.driver="%seleniumServerLocation%\IEDriverServer.exe" ^
  -Dwebdriver.chrome.driver="%seleniumServerLocation%\chromedriver.exe" ^
  -userExtensions "%testUserExtensions%" ^
@@ -369,7 +371,7 @@ EXIT /B %ERRORLEVEL%
   REM no html results file will be generated but you can listen to the
   REM HTTP POST requests made
   START "selenium server" /MAX java -jar "%seleniumServerJar%" ^
- -port %port% ^
+ -port %seleniumServerPort% ^
  -Dwebdriver.ie.driver="%seleniumServerLocation%\IEDriverServer.exe" ^
  -Dwebdriver.chrome.driver="%seleniumServerLocation%\chromedriver.exe" ^
  -userExtensions "%serverDebugUserExtensions%" ^
@@ -384,7 +386,7 @@ EXIT /B %ERRORLEVEL%
   SETLOCAL
   REM alternate test suites may be specified
   IF NOT ["%~1"]==[""] (
-    SET "testSuiteURL=%baseURL%/selenium-server/%testsDirName%/%~1"
+    SET "testSuiteURL=./../%testsDirName%/%~1"
   )
   
   CALL :startDebugServer
@@ -411,9 +413,9 @@ SETLOCAL
   SET sc=%%3A
   SET fs=%%2F
   SET "str=%baseURL%/selenium-server/core/TestRunner.html?test=%~1"
-  SET "str=%str%&resultsUrl=%protocol%%sc%%fs%%fs%%host%%sc%%port%/selenium-server/postResults"
+  SET "str=%str%&resultsUrl=./selenium-server/postResults"
   SET "str=%str%&baseUrl=%protocol%%sc%%fs%%fs%%host%%sc%%port%"
-  SET "str=%str%&multiWindow=true"
+  SET "str=%str%&multiWindow=on"
   SET "str=%str%&defaultLogLevel=info"
   
   IF NOT ["%~2"]==[""] (
