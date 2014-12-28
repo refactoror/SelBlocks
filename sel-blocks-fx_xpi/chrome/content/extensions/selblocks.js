@@ -237,12 +237,6 @@ function $X(xpath, contextNode, resultType) {
   // if testCase.nextCommand() ever changes, this will need to be revisited
   // (current as of: selenium-ide-2.4.0)
   function nextCommand() {
-    if(globalContext.onServer === true) {
-      this._advanceToNextRow();
-      if (this.currentRow == null) {
-        return null;
-      }
-    }
     if (!this.started) {
       this.started = true;
       this.debugIndex = testCase.startPoint ? testCase.commands.indexOf(testCase.startPoint) : 0;
@@ -257,8 +251,29 @@ function $X(xpath, contextNode, resultType) {
         this.debugIndex++;
       }
     }
+    
     // skip over comments
     while (this.debugIndex < testCase.commands.length) {
+      // we're just incrementing the index by 1 until we find the next command
+      // on the server, the _advanceToNextRow does that and a couple other
+      // things that are apparently necessary on the server. The debugIndex and
+      // nextCommandRowIndex mean the same thing between the IDE and server,
+      // so I turned them both into pseudo properties with getters/setters
+      // that point to a hidden property. They'll both always have the same value.
+      // only reason I'm not changing this to an intercept and using the original
+      // nextCommand when on the server is because the selblocks compile
+      // function relies on the commands array. I don't know if there's some
+      // underlying collection existing on both the server and IDE that could be
+      // used instead.
+      if(globalContext.onServer === true) {
+        this._advanceToNextRow();
+        // _advanceToNextRow could set the current row null, it only gets
+        // command rows. No point in continuing if that's the case, because
+        // we've run out of commands.
+        if (this.currentRow == null) {
+            return null;
+        }
+      }
       var command = testCase.commands[this.debugIndex];
       if (command.type === "command") {
         this.runTimeStamp = Date.now();
@@ -268,6 +283,11 @@ function $X(xpath, contextNode, resultType) {
     }
     return null;
   }
+  /**
+   * Creates a pointer to the next command to execute. This pointer is used by
+   * nextCommand when considering what to do next.
+   * @param {Number} cmdIdx The index of the next command to execute.
+   */
   function setNextCommand(cmdIdx) {
     assert(cmdIdx >= 0 && cmdIdx < testCase.commands.length,
       " Cannot branch to non-existent command @" + (cmdIdx+1));
@@ -299,13 +319,17 @@ function $X(xpath, contextNode, resultType) {
     $$.fn.interceptReplace(testCase.debugContext, "nextCommand", nextCommand);
   });
 
-  // get the blockStack for the currently active callStack
+  /**
+   * gets the blockStack for the currently active callStack
+   */
   function activeBlockStack() {
     return callStack.top().blockStack;
   }
 
   // ================================================================================
-  // Assemble block relationships and symbol locations
+  /**
+   * Assembles block relationships and symbol locations.
+   */
   function compileSelBlocks()
   {
     blockDefs = new BlockDefs();
@@ -509,7 +533,9 @@ function $X(xpath, contextNode, resultType) {
 
   // --------------------------------------------------------------------------------
 
-  // prevent jumping in-to and/or out-of loop/function/try blocks
+  /**
+   * prevents jumping in-to and/or out-of loop/function/try blocks
+   */
   function assertIntraBlockJumpRestriction(fromIdx, toIdx) {
     var fromRange = findBlockRange(fromIdx);
     var toRange   = findBlockRange(toIdx);
@@ -522,7 +548,9 @@ function $X(xpath, contextNode, resultType) {
     }
   }
 
-  // ascertain in which, if any, block that an locusIdx occurs
+  /**
+   * ascertain in which, if any, block that an locusIdx occurs
+   */
   function findBlockRange(locusIdx) {
     var idx;
     for (idx = locusIdx-1; idx >= 0; idx--) {
@@ -1518,7 +1546,16 @@ function $X(xpath, contextNode, resultType) {
     this.load = function(filepath)
     {
       var fileReader = new FileReader();
-      var fileUrl = urlFor(filepath);
+      var fileUrl;
+      // in order to not break existing tests the IDE will still use urlFor,
+      // on the server it just breaks things. Data can be anywhere on the net,
+      // accessible through proper CORS headers.
+      if(globalContext.onServer === true) {
+        fileUrl = filepath;
+      } else {
+        fileUrl = urlFor(filepath);
+      }
+      
       var xmlHttpReq = fileReader.getDocumentSynchronous(fileUrl);
       $$.LOG.info("Reading from: " + fileUrl);
 
@@ -1612,7 +1649,16 @@ function $X(xpath, contextNode, resultType) {
     this.load = function(filepath)
     {
       var fileReader = new FileReader();
-      var fileUrl = urlFor(filepath);
+      var fileUrl;
+      // in order to not break existing tests the IDE will still use urlFor,
+      // on the server it just breaks things. Data can be anywhere on the net,
+      // accessible through proper CORS headers.
+      if(globalContext.onServer === true) {
+        fileUrl = filepath;
+      } else {
+        fileUrl = urlFor(filepath);
+      }
+      
       var xmlHttpReq = fileReader.getDocumentSynchronous(fileUrl);
       $$.LOG.info("Reading from: " + fileUrl);
 
@@ -1715,7 +1761,12 @@ function $X(xpath, contextNode, resultType) {
     // htmlSuite mode of SRC? TODO is there a better way to decide whether in SRC mode?
     if (window.location.href.indexOf("selenium-server") >= 0) {
       $$.LOG.debug("FileReader() is running in SRC mode");
-      absUrl = absolutify(url, htmlTestRunner.controlPanel.getTestSuiteName());
+      // there's no need to absolutify the url, the browser will do that for you
+      // when you make the request. The data may reside anywhere on the site, or
+      // within the "virtual directory" created by the selenium server proxy.
+      // I don't want to limit the ability to parse files that actually exist on
+      // the site, like sitemaps or JSON responses to api calls.
+      absUrl = url;
     }
     else {
       absUrl = absolutify(url, selenium.browserbot.baseUrl);

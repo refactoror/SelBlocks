@@ -49,14 +49,14 @@ REM this is the base url setting for selenium server
 SET baseURL=%protocol%://%host%:%port%
 REM the server debug path to the test suite. This is not the same as the
 REM autotesting url.
-SET testSuiteURL=./../%testsDirName%/%testSuiteFileName%
+SET testSuiteURL=./../%testSuiteFileName%
 REM the release version of the user extension.
 SET defaultUserExtensions=%projectRoot%\%userExtensionDirName%\user-extensions.js
 REM the testing version of the user extension.
 SET testUserExtensions=%projectRoot%\%testUserExtensionDirName%\user-extensions.js
 REM Selenium server roots at whatever directory contains the user-extensions
 REM file. This is just a copy of the testing version of the user extension.
-SET serverDebugUserExtensions=%projectRoot%\user-extensions.js
+SET serverDebugUserExtensions=%projectRoot%\%testsDirName%\user-extensions.js
 REM Sets %seleniumServerJar% by selecting the last found
 REM selenium-server-standalone file in
 REM %seleniumServerLocation% I think it always finds the one with the highest
@@ -256,6 +256,16 @@ EXIT /B %ERRORLEVEL%
   SET browser=%~1
   REM firefox, piiexplore, googlechrome
   
+  DEL /Q %serverDebugUserExtensions%
+  
+  REM copies the testing user extensions file to the debug location.
+  COPY "%testUserExtensions%" /B "%serverDebugUserExtensions%" /B
+  IF NOT %ERRORLEVEL% EQU 0 (
+    ECHO ERROR: Could not copy user-extensions.js to the project root.
+    ENDLOCAL
+    EXIT /B %ERRORLEVEL%
+  )
+  
   REM  browsers currently available
 
   REM  *firefox
@@ -283,7 +293,7 @@ EXIT /B %ERRORLEVEL%
  -port %seleniumServerPort% ^
  -Dwebdriver.ie.driver="%seleniumServerLocation%\IEDriverServer.exe" ^
  -Dwebdriver.chrome.driver="%seleniumServerLocation%\chromedriver.exe" ^
- -userExtensions "%testUserExtensions%" ^
+ -userExtensions "%serverDebugUserExtensions%" ^
  -log "%serverLog%" -browserSideLog ^
  -htmlSuite "*%browser%" "%baseURL%" "%testSuiteFile%" "%resultsLog%-%browser%.html" ^
  -timeout %autotestTimeoutInSeconds%
