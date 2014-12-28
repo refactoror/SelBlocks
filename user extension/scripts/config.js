@@ -13,7 +13,7 @@ globalContext = this;
 globalContext.onServer = globalContext.onServer || true;
 globalContext.serverPatchApplied = globalContext.serverPatchApplied || false;
 
-
+(function () {
 function seleniumResetInterceptor() {
   var old_reset;
   old_reset = Selenium.prototype.reset;
@@ -54,6 +54,28 @@ function seleniumResetInterceptor() {
       globalContext.testCase = htmlTestRunner.currentTest;
       // the debugContext isn't there, but redirecting to the testCase seems to work.
       globalContext.testCase.debugContext = globalContext.testCase;
+      var currentDebugIndex = globalContext.testCase.debugIndex;
+      Object.defineProperties(globalContext.testCase, {
+        "_secret_nextCommandRowIndex" : {
+          configurable : false,
+          enumerable : false,
+          writable : true,
+          value : undefined
+        },
+        "debugIndex" : {
+          get : function () { return this._secret_nextCommandRowIndex; },
+          set : function (x) { this._secret_nextCommandRowIndex = x; },
+          configurable : false,
+          enumerable : true
+        },
+        "nextCommandRowIndex" : {
+          get : function () { return this._secret_nextCommandRowIndex; },
+          set : function (x) { this._secret_nextCommandRowIndex = x; },
+          configurable : false,
+          enumerable : true
+        }
+      });
+      globalContext.testCase.debugIndex = currentDebugIndex;
     }
   };
 }
@@ -78,3 +100,4 @@ function patchServerEnvironment() {
 if ((globalContext.onServer === true) && (globalContext.serverPatchApplied === false)) {
   patchServerEnvironment();
 }
+}());
