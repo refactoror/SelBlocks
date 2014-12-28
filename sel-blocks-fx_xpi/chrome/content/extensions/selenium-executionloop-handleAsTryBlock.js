@@ -1,6 +1,6 @@
 // selbocks name-space
 (function($$){
-  /* This function replaces native Selenium command handling while inside a try block.
+  /* This function replaces native Selenium command-handling while inside a try block.
    * (See TestLoop.prototype.resume() in chrome/content/selenium-core/scripts/selenium-executionloop.js.)
    * Command processing is altered so that catch and/or finally processing is initiated upon error.
    */
@@ -17,7 +17,8 @@
         // normal Selenium behavior
         this.continueTestWhenConditionIsTrue();
       }
-    } catch (e) {
+    }
+    catch (e) {
       if (isManaged(e)) {
         // a caught error has activated catch/finally bubbling
         this.continueTest();
@@ -27,7 +28,8 @@
         if (!this._handleCommandError(e)) {
           // command is marked in red, and overall test status is failed
           this.testComplete();
-        } else {
+        }
+        else {
           // error has been otherwise handled by TestLoop.prototype._handleCommandError()
           // (not sure what the possibilities are, other than stopping and failing the script)
           this.continueTest();
@@ -35,6 +37,7 @@
       }
     }
 
+    //- determine if the error is caught or otherwise being bubbled
     function isManaged(e) {
       var interceptFrame = $$.fn.getInterceptTop();
       if (e.constructor.name == "AssertResult") {

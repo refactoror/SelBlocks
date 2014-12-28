@@ -33,7 +33,6 @@
 
   // replace the specified function, saving the original function on a stack
   $$.fn.interceptPush = function(targetObj, targetFnName, _fn, frameAttrs) {
-    // $$.LOG.warn("interceptPush " + (frameAttrs ? frameAttrs : ""));
     var frame = {
        targetObj: targetObj
       ,targetFnName: targetFnName
@@ -46,7 +45,6 @@
   // restore the most recent function replacement
   $$.fn.interceptPop = function() {
     var frame = $$.fn.interceptStack.pop();
-    // $$.LOG.warn("interceptPop " + (frame.attrs ? frame.attrs : ""));
     frame.targetObj[frame.targetFnName] = frame.savedFn;
   };
 
