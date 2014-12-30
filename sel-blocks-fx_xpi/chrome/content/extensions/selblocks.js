@@ -252,34 +252,28 @@ function $X(xpath, contextNode, resultType) {
       }
     }
     
+    var command;
     // skip over comments
     while (this.debugIndex < testCase.commands.length) {
-      // we're just incrementing the index by 1 until we find the next command
-      // on the server, the _advanceToNextRow does that and a couple other
-      // things that are apparently necessary on the server. The debugIndex and
-      // nextCommandRowIndex mean the same thing between the IDE and server,
-      // so I turned them both into pseudo properties with getters/setters
-      // that point to a hidden property. They'll both always have the same value.
-      // only reason I'm not changing this to an intercept and using the original
-      // nextCommand when on the server is because the selblocks compile
-      // function relies on the commands array. I don't know if there's some
-      // underlying collection existing on both the server and IDE that could be
-      // used instead.
+      command = testCase.commands[this.debugIndex];
+      
       if(globalContext.onServer === true) {
-        this._advanceToNextRow();
-        // _advanceToNextRow could set the current row null, it only gets
-        // command rows. No point in continuing if that's the case, because
-        // we've run out of commands.
-        if (this.currentRow == null) {
-            return null;
+        this.currentRow = this.htmlTestCase.commandRows[this.debugIndex];
+        if (this.sejsElement) {
+            this.currentItem = agenda.pop();
+            this.currentRowIndex = this.debugIndex;
         }
       }
-      var command = testCase.commands[this.debugIndex];
       if (command.type === "command") {
         this.runTimeStamp = Date.now();
         return command;
       }
       this.debugIndex++;
+    }
+    
+    if(globalContext.onServer === true) {
+        this.currentRow = null;
+        this.currentItem = null;
     }
     return null;
   }
