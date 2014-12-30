@@ -328,11 +328,11 @@ EXIT /B %ERRORLEVEL%
     SET nolog=false
   )
   
-  CALL :cleanupLogsAndResults
-  IF NOT %ERRORLEVEL% EQU 0 (
-    ENDLOCAL
-    EXIT /B %ERRORLEVEL%
-  )
+REM  CALL :cleanupLogsAndResults
+REM  IF NOT %ERRORLEVEL% EQU 0 (
+REM    ENDLOCAL
+REM    EXIT /B %ERRORLEVEL%
+REM  )
   
   CALL :generateTestingUserExtension
   IF NOT %ERRORLEVEL% EQU 0 (
