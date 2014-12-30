@@ -825,6 +825,8 @@ function $X(xpath, contextNode, resultType) {
       
       if(globalContext.onServer === true) {
         this.currentRow = this.htmlTestCase.commandRows[this.debugIndex];
+        command = this.currentRow.getCommand();
+        command.type = "command";
         if (this.sejsElement) {
             this.currentItem = agenda.pop();
             this.currentRowIndex = this.debugIndex;
