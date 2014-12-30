@@ -34,6 +34,9 @@ C:\projects
         |       \---user extension
         |           \---scripts
         +---server
+                chromedriver.exe
+                IEDriverServer.exe
+                selenium-server-standalone-2.43.1.jar
 ```
 
 Then run `createSelbenchUserExtensions.cmd`
