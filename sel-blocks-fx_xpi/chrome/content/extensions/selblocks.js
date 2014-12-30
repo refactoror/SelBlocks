@@ -1680,7 +1680,7 @@ function $X(xpath, contextNode, resultType) {
         return;
       }
       varsetIdx++;
-      $$.LOG.debug(varsetIdx + ") " + serializeJson(varsets[curVars]));  // log each name & value
+      $$.LOG.debug(varsetIdx + ") " + JSON.stringify(varsets[curVars]));  // log each name & value
 
       var expected = countAttrs(varsets[0]);
       var found = countAttrs(varsets[curVars]);
@@ -1729,10 +1729,10 @@ function $X(xpath, contextNode, resultType) {
     }
 
     //- format the given JSON object for display
-    function serializeJson(obj) {
-      var json = uneval(obj);
-      return json.substring(1, json.length-1);
-    }
+    //function serializeJson(obj) {
+    //  var json = uneval(obj);
+    //  return json.substring(1, json.length-1);
+    //}
   }
 
   function urlFor(filepath) {
