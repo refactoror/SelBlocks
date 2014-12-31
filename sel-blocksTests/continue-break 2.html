@@ -4,19 +4,55 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
-<title>README</title>
+<title>continue-break 2</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">README</td></tr>
+<tr><td rowspan="1" colspan="3">continue-break 2</td></tr>
 </thead><tbody>
-<!---- SelBench is required for this testsuite -->
 <tr>
-	<td>open</td>
-	<td>http://htmlpreview.github.io/?https://github.com/refactoror/SelBlocks/blob/master/sel-blocksTests/_SelBlocks-testpage.html</td>
+	<td>resetEmitted</td>
+	<td></td>
 	<td></td>
 </tr>
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>i</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>i++ &lt; 10</td>
+	<td></td>
+</tr>
+<tr>
+	<td>continue</td>
+	<td>i==3</td>
+	<td></td>
+</tr>
+<tr>
+	<td>break</td>
+	<td>i==5</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;iter=${i}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<!----- check results-->
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;iter=1~iter=2~iter=4&quot;</td>
+	<td></td>
+</tr>
+
 </tbody></table>
 </body>
 </html>

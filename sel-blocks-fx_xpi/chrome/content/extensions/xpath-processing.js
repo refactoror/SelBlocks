@@ -6,19 +6,56 @@
 
   $$.xp =
   {
-    // Evaluate an xpathExpression against the given document object.
-    // The document is also the starting context, unless a contextNode is provided.
-    // Results are in terms of the most natural type, unless resultType specified.
+    /** 
+     * Evaluate an xpathExpression against the given document object.
+     * @param {HTMLDOMDocument|Null} doc The document to evaluate the xpath expression
+     *  against. Defaults to the document under test if it has the evaluate method,
+     *  otherwise it uses the evaluate method from the selenium test runner window
+     *  provided by the library loaded into selenium.
+     * @param {String} xpath The xpath expression to evaluate.
+     * @param {HTMLElement|Null} contextNode The effective root element for the
+     *  xpath expression. Defaults to the document under test, falling back to
+     *  the library loaded by selenium.
+     * @param {Number|Null} resultType The desired type of xpath result.
+     *  constants may be used instead of numbers. Defaults to
+     *  `XPathResult.ANY_TYPE`.
+     * @see https://developer.mozilla.org/en-US/docs/XPathResult
+     * @param {Function|Null} namespaceResolver The namespace resolver used to disambiguate
+     *  namespaced elements in xhtml and xml docs. It will receive one argument:
+     *  the (String) namespace prefix on the element and, it must return the
+     *  string identifying the namespace that the element belongs to. In HTML
+     *  this is usually null because nobody is using namespaces in HTML, no
+     *  no matter how handy they are...
+     * @param {XPathResult|Null} resultObj Previous results from evaluating
+     *  xpath expressions.
+     * @returns {XPathResult} Returns the XPathResult object containing the
+     *  nodes found by the given query and specs. Will use the given `resultObj`
+     *  if not null.
+     */
     evaluateXpath: function(doc, xpath, contextNode, resultType, namespaceResolver, resultObj)
     {
+      var windowUnderTest, evaluator, isResultObjProvided, result;
+      
+      windowUnderTest = selenium.browserbot.getCurrentWindow();
+      evaluator = doc || windowUnderTest.document;
+      contextNode = contextNode || evaluator;
+      resultType = resultType || XPathResult.ANY_TYPE;
+      isResultObjProvided = (resultObj != null);
+      
+      // The server can run tests against many different browsers. We have to
+      // feature test for document.evaluate in the context of the application
+      // under test.
+      if(typeof windowUnderTest.document.evaluate !== 'function') {
+        evaluator = document;
+      }
+      
       $$.xp.logXpathEval(doc, xpath, contextNode);
-      var isResultObjProvided = (resultObj != null);
       try {
-        var result = doc.evaluate(
+        result = evaluator.evaluate(
             xpath
-            , contextNode || doc
+            , contextNode
             , namespaceResolver
-            , resultType || XPathResult.ANY_TYPE
+            , resultType
             , resultObj);
         $$.LOG.trace("XPATH Result: " + $$.xp.fmtXpathResultType(result) + " : " + xpath);
       }
@@ -27,9 +64,9 @@
         //$$.LOG.traceback(err);
         throw err;
       }
-      if (isResultObjProvided)
+      if (isResultObjProvided) {
         result = resultObj;
-
+      }
       return result;
     }
 

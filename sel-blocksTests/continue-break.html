@@ -12,6 +12,31 @@
 <tr><td rowspan="1" colspan="3">foreach</td></tr>
 </thead><tbody>
 <tr>
+	<td>if</td>
+	<td>globalContext.onServer === true</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>../data/forxml.xml</td>
+	<td>forXmlFileName</td>
+</tr>
+<tr>
+	<td>else</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>data/forxml.xml</td>
+	<td>forXmlFileName</td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
 	<td>resetEmitted</td>
 	<td></td>
 	<td></td>
@@ -169,7 +194,7 @@
 </tr>
 <tr>
 	<td>forXml</td>
-	<td>data/forxml.xml</td>
+	<td>${forXmlFileName}</td>
 	<td></td>
 </tr>
 <tr>

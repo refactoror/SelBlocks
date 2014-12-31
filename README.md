@@ -1,7 +1,7 @@
 SelBlocks 2
 =========
 
-SelBlocks is a language extension for Selenium IDE
+SelBlocks is a language extension for Selenese that works on both the Selenium IDE and Selenium standalone server.
 
 It provides Selenium commands for javascript-like conditionals, looping, callable functions, error catching, and JSON/XML driven parameterization.
 
@@ -21,6 +21,8 @@ Features
 * Functions can be called recursively.
 
 [Firefox Installer](https://addons.mozilla.org/en-US/firefox/addon/selenium-ide-sel-blocks/) / [Documentation](http://refactoror.wikia.com/wiki/Selblocks_Reference)
+
+The Selenium server user-extensions.js file is in "/user extension/user-extensions.js". Grab a copy and follow the directions in the SeleniumHTMLRunner.cmd file.
 
 Contributors
 

@@ -12,6 +12,31 @@
 <tr><td rowspan="1" colspan="3">foreach</td></tr>
 </thead><tbody>
 <tr>
+	<td>if</td>
+	<td>globalContext.onServer === true</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>../data/forjson.json</td>
+	<td>forJsonFileName</td>
+</tr>
+<tr>
+	<td>else</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>data/forjson.json</td>
+	<td>forJsonFileName</td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
 	<td>resetEmitted</td>
 	<td></td>
 	<td></td>
@@ -29,7 +54,7 @@
 <!----- forJson-->
 <tr>
 	<td>forJson</td>
-	<td>data/forjson.json</td>
+	<td>${forJsonFileName}</td>
 	<td></td>
 </tr>
 <tr>
@@ -50,7 +75,7 @@
 <!----- load a varset-->
 <tr>
 	<td>loadJsonVars</td>
-	<td>data/forjson.json</td>
+	<td>${forJsonFileName}</td>
 	<td>jname == &quot;dogbert&quot;</td>
 </tr>
 <tr>
@@ -84,7 +109,7 @@
 </tr>
 <tr>
 	<td>loadJsonVars</td>
-	<td>data/forjson.json</td>
+	<td>${forJsonFileName}</td>
 	<td></td>
 </tr>
 <!---!- -->
@@ -95,7 +120,7 @@
 </tr>
 <tr>
 	<td>loadJsonVars</td>
-	<td>data/forjson.json</td>
+	<td>${forJsonFileName}</td>
 	<td>&quot;flubber&quot;</td>
 </tr>
 </tbody></table>

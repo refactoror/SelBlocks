@@ -44,7 +44,6 @@
  *   script can be monitored using the Stored Variables Viewer addon.
  */
 
-
 // =============== global functions as script helpers ===============
 // getEval script helpers
 
@@ -82,7 +81,6 @@ function $X(xpath, contextNode, resultType) {
 
 // selbocks name-space
 (function($$){
-
   // =============== Javascript extensions as script helpers ===============
   // EXTENSION REVIEWERS:
   // Global functions are intentional features provided for use by end user's in their Selenium scripts.
@@ -253,16 +251,39 @@ function $X(xpath, contextNode, resultType) {
         this.debugIndex++;
       }
     }
+    
+    var command;
     // skip over comments
     while (this.debugIndex < testCase.commands.length) {
-      var command = testCase.commands[this.debugIndex];
+      command = testCase.commands[this.debugIndex];
+      
+      if(globalContext.onServer === true) {
+        this.currentRow = this.htmlTestCase.commandRows[this.debugIndex];
+        command = this.currentRow.getCommand();
+        command.type = "command";
+        if (this.sejsElement) {
+            this.currentItem = agenda.pop();
+            this.currentRowIndex = this.debugIndex;
+        }
+      }
       if (command.type === "command") {
+        this.runTimeStamp = Date.now();
         return command;
       }
       this.debugIndex++;
     }
+    
+    if(globalContext.onServer === true) {
+        this.currentRow = null;
+        this.currentItem = null;
+    }
     return null;
   }
+  /**
+   * Creates a pointer to the next command to execute. This pointer is used by
+   * nextCommand when considering what to do next.
+   * @param {Number} cmdIdx The index of the next command to execute.
+   */
   function setNextCommand(cmdIdx) {
     assert(cmdIdx >= 0 && cmdIdx < testCase.commands.length,
       " Cannot branch to non-existent command @" + (cmdIdx+1));
@@ -294,13 +315,17 @@ function $X(xpath, contextNode, resultType) {
     $$.fn.interceptReplace(testCase.debugContext, "nextCommand", nextCommand);
   });
 
-  // get the blockStack for the currently active callStack
+  /**
+   * gets the blockStack for the currently active callStack
+   */
   function activeBlockStack() {
     return callStack.top().blockStack;
   }
 
   // ================================================================================
-  // Assemble block relationships and symbol locations
+  /**
+   * Assembles block relationships and symbol locations.
+   */
   function compileSelBlocks()
   {
     blockDefs = new BlockDefs();
@@ -504,7 +529,9 @@ function $X(xpath, contextNode, resultType) {
 
   // --------------------------------------------------------------------------------
 
-  // prevent jumping in-to and/or out-of loop/function/try blocks
+  /**
+   * prevents jumping in-to and/or out-of loop/function/try blocks
+   */
   function assertIntraBlockJumpRestriction(fromIdx, toIdx) {
     var fromRange = findBlockRange(fromIdx);
     var toRange   = findBlockRange(toIdx);
@@ -517,7 +544,9 @@ function $X(xpath, contextNode, resultType) {
     }
   }
 
-  // ascertain in which, if any, block that an locusIdx occurs
+  /**
+   * ascertain in which, if any, block that an locusIdx occurs
+   */
   function findBlockRange(locusIdx) {
     var idx;
     for (idx = locusIdx-1; idx >= 0; idx--) {
@@ -720,8 +749,13 @@ function $X(xpath, contextNode, resultType) {
 
     if ($$.tcf.nestingLevel === 0) {
       // enable special command handling
-      $$.fn.interceptPush(editor.selDebugger.runner.currentTest, "resume",
+      if(globalContext.onServer === true) {
+        $$.fn.interceptPush(htmlTestRunner.currentTest, "resume",
           $$.handleAsTryBlock, { manageError: handleCommandError });
+      } else {
+        $$.fn.interceptPush(editor.selDebugger.runner.currentTest, "resume",
+            $$.handleAsTryBlock, { manageError: handleCommandError });
+      }
     }
     $$.LOG.debug("++ try nesting: " + $$.tcf.nestingLevel);
     // continue into try-block
@@ -1342,7 +1376,11 @@ function $X(xpath, contextNode, resultType) {
       return;
     }
     // intercept command processing and simply stop test execution instead of executing the next command
-    $$.fn.interceptOnce(editor.selDebugger.runner.currentTest, "resume", $$.handleAsExitTest);
+      if(globalContext.onServer === true) {
+        $$.fn.interceptOnce(htmlTestRunner.currentTest, "resume", $$.handleAsExitTest);
+      } else {
+        $$.fn.interceptOnce(editor.selDebugger.runner.currentTest, "resume", $$.handleAsExitTest);
+      }
   };
 
 
@@ -1504,7 +1542,16 @@ function $X(xpath, contextNode, resultType) {
     this.load = function(filepath)
     {
       var fileReader = new FileReader();
-      var fileUrl = urlFor(filepath);
+      var fileUrl;
+      // in order to not break existing tests the IDE will still use urlFor,
+      // on the server it just breaks things. Data can be anywhere on the net,
+      // accessible through proper CORS headers.
+      if(globalContext.onServer === true) {
+        fileUrl = filepath;
+      } else {
+        fileUrl = urlFor(filepath);
+      }
+      
       var xmlHttpReq = fileReader.getDocumentSynchronous(fileUrl);
       $$.LOG.info("Reading from: " + fileUrl);
 
@@ -1598,7 +1645,16 @@ function $X(xpath, contextNode, resultType) {
     this.load = function(filepath)
     {
       var fileReader = new FileReader();
-      var fileUrl = urlFor(filepath);
+      var fileUrl;
+      // in order to not break existing tests the IDE will still use urlFor,
+      // on the server it just breaks things. Data can be anywhere on the net,
+      // accessible through proper CORS headers.
+      if(globalContext.onServer === true) {
+        fileUrl = filepath;
+      } else {
+        fileUrl = urlFor(filepath);
+      }
+      
       var xmlHttpReq = fileReader.getDocumentSynchronous(fileUrl);
       $$.LOG.info("Reading from: " + fileUrl);
 
@@ -1624,7 +1680,7 @@ function $X(xpath, contextNode, resultType) {
         return;
       }
       varsetIdx++;
-      $$.LOG.debug(varsetIdx + ") " + serializeJson(varsets[curVars]));  // log each name & value
+      $$.LOG.debug(varsetIdx + ") " + JSON.stringify(varsets[curVars]));  // log each name & value
 
       var expected = countAttrs(varsets[0]);
       var found = countAttrs(varsets[curVars]);
@@ -1673,10 +1729,10 @@ function $X(xpath, contextNode, resultType) {
     }
 
     //- format the given JSON object for display
-    function serializeJson(obj) {
-      var json = uneval(obj);
-      return json.substring(1, json.length-1);
-    }
+    //function serializeJson(obj) {
+    //  var json = uneval(obj);
+    //  return json.substring(1, json.length-1);
+    //}
   }
 
   function urlFor(filepath) {
@@ -1701,7 +1757,12 @@ function $X(xpath, contextNode, resultType) {
     // htmlSuite mode of SRC? TODO is there a better way to decide whether in SRC mode?
     if (window.location.href.indexOf("selenium-server") >= 0) {
       $$.LOG.debug("FileReader() is running in SRC mode");
-      absUrl = absolutify(url, htmlTestRunner.controlPanel.getTestSuiteName());
+      // there's no need to absolutify the url, the browser will do that for you
+      // when you make the request. The data may reside anywhere on the site, or
+      // within the "virtual directory" created by the selenium server proxy.
+      // I don't want to limit the ability to parse files that actually exist on
+      // the site, like sitemaps or JSON responses to api calls.
+      absUrl = url;
     }
     else {
       absUrl = absolutify(url, selenium.browserbot.baseUrl);
