@@ -54,7 +54,7 @@ a {
 </tr>
 <tr>
 <td>totalTime:</td>
-<td>35</td>
+<td>31</td>
 </tr>
 <tr>
 <td>numTestTotal:</td>
@@ -62,11 +62,11 @@ a {
 </tr>
 <tr>
 <td>numTestPasses:</td>
-<td>43</td>
+<td>44</td>
 </tr>
 <tr>
 <td>numTestFailures:</td>
-<td>2</td>
+<td>1</td>
 </tr>
 <tr>
 <td>numCommandPasses:</td>
@@ -78,7 +78,7 @@ a {
 </tr>
 <tr>
 <td>numCommandErrors:</td>
-<td>2</td>
+<td>1</td>
 </tr>
 <tr>
 <td>Selenium Version:</td>
@@ -91,7 +91,7 @@ a {
 <tr>
 <td>
 <table class="selenium" id="suiteTable" border="1" cellspacing="1" cellpadding="1"><tbody>
-<tr class="title  status_failed"><td><b>Test Suite</b></td></tr>
+<tr class="title status_failed"><td><b>Test Suite</b></td></tr>
 <tr class="  status_passed"><td><a href="#testresult0">README</a></td></tr>
 <tr class="  status_passed"><td><a href="#testresult1">eval</a></td></tr>
 <tr class="  status_passed"><td><a href="#testresult2">branching</a></td></tr>
@@ -123,7 +123,7 @@ a {
 <tr class="  status_passed"><td><a href="#testresult28">while</a></td></tr>
 <tr class="  status_passed"><td><a href="#testresult29">for</a></td></tr>
 <tr class="  status_passed"><td><a href="#testresult30">foreach</a></td></tr>
-<tr class="  status_failed"><td><a href="#testresult31">foreach-xpath</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult31">foreach-xpath</a></td></tr>
 <tr class="  status_passed"><td><a href="#testresult32">forjson</a></td></tr>
 <tr class="  status_passed"><td><a href="#testresult33">forxml</a></td></tr>
 <tr class="  status_passed"><td><a href="#testresult34">continue-break 1</a></td></tr>
@@ -3565,7 +3565,7 @@ a {
 <td><a name="testresult31">foreach-xpath.html</a><br/><div>
 <table border="1" cellspacing="1" cellpadding="1">
 <thead>
-<tr class="title status_failed"><td rowspan="1" colspan="3">foreachX</td></tr>
+<tr class="title status_passed"><td rowspan="1" colspan="3">foreachX</td></tr>
 </thead><tbody>
 <tr class="  status_done" style="cursor: pointer;">
 	<td>resetEmitted</td>
@@ -3592,32 +3592,32 @@ a {
 	<td>"START ${_i}) ${link}"</td>
 	<td></td>
 </tr>
-<tr class="  status_failed" style="cursor: pointer;">
+<tr class="        status_done" style="cursor: pointer;">
 	<td>foreach</td>
 	<td>link</td>
-	<td>Command&nbsp;execution&nbsp;failure.&nbsp;Please&nbsp;search&nbsp;the&nbsp;user&nbsp;group&nbsp;at&nbsp;https://groups.google.com/forum/#!forum/selenium-users&nbsp;for&nbsp;error&nbsp;details&nbsp;from&nbsp;the&nbsp;log&nbsp;window.&nbsp;&nbsp;The&nbsp;error&nbsp;message&nbsp;is:&nbsp;Object&nbsp;doesn't&nbsp;support&nbsp;property&nbsp;or&nbsp;method&nbsp;'evaluate'</td>
+	<td>$X("//input")</td>
 </tr>
-<tr style="cursor: pointer;">
+<tr class="      status_done" style="cursor: pointer;">
 	<td>emit</td>
 	<td>"${_i}) ${link}"</td>
 	<td></td>
 </tr>
-<tr style="cursor: pointer;">
+<tr class="      status_done" style="cursor: pointer;">
 	<td>echo</td>
 	<td>${link}</td>
-	<td></td>
+	<td>[object HTMLInputElement]</td>
 </tr>
-<tr style="cursor: pointer;">
+<tr class="        status_done" style="cursor: pointer;">
 	<td>endForeach</td>
 	<td></td>
 	<td></td>
 </tr>
-<tr style="cursor: pointer;">
+<tr class="  status_done" style="cursor: pointer;">
 	<td>emit</td>
 	<td>"END ${_i}) ${link}"</td>
 	<td></td>
 </tr>
-<tr style="cursor: pointer;">
+<tr class="  status_done" style="cursor: pointer;">
 	<td>assertEmitted</td>
 	<td>"START ${" + "_i}) ${" + "link}~0) [object HTMLInputElement]~1) [object HTMLInputElement]~2) [object HTMLInputElement]~END ${" + "_i}) ${" + "link}"</td>
 	<td></td>
@@ -5623,11 +5623,11 @@ info: Executing: |endTry | miss |  |
 error: [SelBlocks] Error was not caught: &apos;blamo will NOT be caught at all&apos;
 error: Unexpected Exception: blamo will NOT be caught at all
 error: Exception details: name -&gt; SelblocksError, message -&gt; blamo will NOT be caught at all, idx -&gt; 5, stack -&gt; SelblocksError: blamo will NOT be caught at all
-   at Selenium.prototype.doThrow (http://htmlpreview.github.io/selenium-server/core/scripts/user-extensions.js:1811:5)
+   at Selenium.prototype.doThrow (http://htmlpreview.github.io/selenium-server/core/scripts/user-extensions.js:1848:5)
    at retval (http://htmlpreview.github.io/selenium-server/core/scripts/htmlutils.js:60:5)
    at ActionHandler.prototype.execute (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-commandhandlers.js:314:5)
    at TestLoop.prototype._executeCurrentCommand (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-executionloop.js:112:9)
-   at $$.handleAsTryBlock (http://htmlpreview.github.io/selenium-server/core/scripts/user-extensions.js:1045:7)
+   at $$.handleAsTryBlock (http://htmlpreview.github.io/selenium-server/core/scripts/user-extensions.js:1082:7)
    at retval (http://htmlpreview.github.io/selenium-server/core/scripts/htmlutils.js:60:5)
 warn: currentTest.recordFailure: Command execution failure. Please search the user group at https://groups.google.com/forum/#!forum/selenium-users for error details from the log window.  The error message is: blamo will NOT be caught at all
 info: Starting test /selenium-server/tests/while.html
@@ -5710,22 +5710,25 @@ info: Executing: |echo | $X(&quot;//input&quot;) |  |
 info: Executing: |echo | begin |  |
 info: Executing: |emit | &quot;START ${_i}) ${link}&quot; |  |
 info: Executing: |foreach | link | $X(&quot;//input&quot;) |
-error: [SelBlocks] XPATH: //input
-error: [SelBlocks] Error  While evaluating Javascript expression: [$X(&quot;//input&quot;)]
-warn: [SelBlocks] __Stack Trace__
-error: Unexpected Exception: Object doesn&apos;t support property or method &apos;evaluate&apos;
-error: Exception details: description -&gt; Object doesn&apos;t support property or method &apos;evaluate&apos;, number -&gt; -2146827850, stack -&gt; TypeError: Object doesn&apos;t support property or method &apos;evaluate&apos;
-   at $$.xp.evaluateXpath (http://htmlpreview.github.io/selenium-server/core/scripts/user-extensions.js:800:9)
-   at $$.xp.selectNodes (http://htmlpreview.github.io/selenium-server/core/scripts/user-extensions.js:841:7)
-   at $$.xp.selectElements (http://htmlpreview.github.io/selenium-server/core/scripts/user-extensions.js:828:7)
-   at $X (http://htmlpreview.github.io/selenium-server/core/scripts/user-extensions.js:1165:5)
-   at eval code (eval code:1:21)
-   at evalWithVars (http://htmlpreview.github.io/selenium-server/core/scripts/user-extensions.js:2482:7)
-   at Anonymous function (http://htmlpreview.github.io/selenium-server/core/scripts/user-extensions.js:2182:11)
-   at enterLoop (http://htmlpreview.github.io/selenium-server/core/scripts/user-extensions.js:2312:7)
-   at Selenium.prototype.doForeach (http://htmlpreview.github.io/selenium-server/core/scripts/user-extensions.js:2177:5)
-   at retval (http://htmlpreview.github.io/selenium-server/core/scripts/htmlutils.js:60:5)
-warn: currentTest.recordFailure: Command execution failure. Please search the user group at https://groups.google.com/forum/#!forum/selenium-users for error details from the log window.  The error message is: Object doesn&apos;t support property or method &apos;evaluate&apos;
+info: Executing: |emit | &quot;${_i}) ${link}&quot; |  |
+info: Executing: |echo | ${link} |  |
+info: Executing: |endForeach |  |  |
+info: [SelBlocks] branch =&gt; @6: [foreach|link|$X(&quot;//input&quot;)]
+info: Executing: |foreach | link | $X(&quot;//input&quot;) |
+info: Executing: |emit | &quot;${_i}) ${link}&quot; |  |
+info: Executing: |echo | ${link} | [object HTMLInputElement] |
+info: Executing: |endForeach |  |  |
+info: [SelBlocks] branch =&gt; @6: [foreach|link|$X(&quot;//input&quot;)]
+info: Executing: |foreach | link | $X(&quot;//input&quot;) |
+info: Executing: |emit | &quot;${_i}) ${link}&quot; |  |
+info: Executing: |echo | ${link} | [object HTMLInputElement] |
+info: Executing: |endForeach |  |  |
+info: [SelBlocks] branch =&gt; @6: [foreach|link|$X(&quot;//input&quot;)]
+info: Executing: |foreach | link | $X(&quot;//input&quot;) |
+info: [SelBlocks] branch =&gt; @9: [endForeach]
+info: Executing: |endForeach |  |  |
+info: Executing: |emit | &quot;END ${_i}) ${link}&quot; |  |
+info: Executing: |assertEmitted | &quot;START ${&quot; + &quot;_i}) ${&quot; + &quot;link}~0) [object HTMLInputElement]~1) [object HTMLInputElement]~2) [object HTMLInputElement]~END ${&quot; + &quot;_i}) ${&quot; + &quot;link}&quot; |  |
 info: Starting test /selenium-server/tests/forjson.html
 info: Executing: |if | globalContext.onServer === true |  |
 info: Executing: |store | ../data/forjson.json | forJsonFileName |
@@ -6119,7 +6122,7 @@ info: [SelBlocks] branch =&gt; @19: [endWhile]
 info: Executing: |endWhile |  |  |
 info: Executing: |emit | &quot;END ${i}&quot; |  |
 info: Executing: |timerElapsed |  |  |
-info: [SelBench] 3.247 sec elapsed: 
+info: [SelBench] 3.211 sec elapsed: 
 info: Executing: |assertEmitted | &quot;START 2~while=2~foreach=dilbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~foreach=dogbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~while=1~foreach=dilbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~foreach=dogbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~END 0&quot; |  |
 info: Starting test /selenium-server/tests/function.html
 info: Executing: |resetEmitted |  |  |
@@ -6266,7 +6269,7 @@ info: Executing: |return | n * _result |  |
 info: [SelBlocks] branch =&gt; @5: [call|fac|n=degree]
 info: Executing: |call | fac | n=degree |
 info: Executing: |timerElapsed |  |  |
-info: [SelBench] 1.221 sec elapsed: factorial 7
+info: [SelBench] 1.181 sec elapsed: factorial 7
 info: Executing: |emit | degree + &quot;!=&quot; + _result |  |
 info: Executing: |function | fac | n |
 info: [SelBlocks] branch =&gt; @16: [endFunction]
