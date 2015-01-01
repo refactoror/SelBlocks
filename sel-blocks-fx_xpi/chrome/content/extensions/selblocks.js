@@ -303,6 +303,7 @@ function $X(xpath, contextNode, resultType) {
   // Assemble block relationships and symbol locations
   function compileSelBlocks()
   {
+    symbols = {};
     blockDefs = new BlockDefs();
     var lexStack = new Stack();
     var i;
