@@ -473,7 +473,7 @@ function $X(xpath, contextNode, resultType) {
   function setNextCommand(cmdIdx) {
     var idx= localIdx(cmdIdx);
     var localTestCase= localCase(cmdIdx);
-    assert( idx>=0 && idx< localTestCase.commands.length,
+    assert( idx >= 0 && idx < localTestCase.commands.length,
       " Cannot branch to non-existent command @" +cmdIdx );
     branchIdx = cmdIdx;
   }
@@ -857,7 +857,7 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doSkipNext = function(spec)
   {
     assertRunning();
-    var n = parseInt(evalWithVars(spec), 10);
+    var n = parseInt(this.evalWithVars(spec), 10);
     if (isNaN(n)) {
       if (spec.trim() === "") { n = 1; }
       else { notifyFatalHere(" Requires a numeric value"); }
@@ -885,7 +885,7 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doGotoIf = function(condExpr, label)
   {
     assertRunning();
-    if (evalWithVars(condExpr)) {
+    if (this.evalWithVars(condExpr)) {
       this.doGoto(label);
     }
   };
@@ -981,7 +981,7 @@ function $X(xpath, contextNode, resultType) {
     if ($$.tcf.nestingLevel === 0) {
       // enable special command handling
       $$.fn.interceptPush(editor.selDebugger.runner.currentTest, "resume",
-          $$.handleAsTryBlock, { manageError: handleCommandError });
+          $$.handleAsTryBlock, { manageError: this.handleCommandError });
     }
     $$.LOG.debug("++ try nesting: " + $$.tcf.nestingLevel);
     // continue into try-block
@@ -1048,7 +1048,7 @@ function $X(xpath, contextNode, resultType) {
     var tryDef = blkDefFor(tryState);
     if (tryState) {
       $$.LOG.debug("error encountered while: " + tryState.execPhase);
-      if (hasUnspentCatch(tryState)) {
+      if (this.hasUnspentCatch(tryState)) {
         if (this.isMatchingCatch(err, tryDef.catchIdx)) {
           // an expected kind of error has been caught
           $$.LOG.info("@" + (idxHere()+1) + ", error has been caught" + fmtCatching(tryState));
@@ -1064,7 +1064,7 @@ function $X(xpath, contextNode, resultType) {
     // error not caught .. instigate bubbling
     $$.LOG.debug("error not caught, bubbling error: '" + err.message + "'");
     $$.tcf.bubbling = { mode: "error", error: err, srcIdx: idxHere() };
-    if (hasUnspentFinally(tryState)) {
+    if (self.hasUnspentFinally(tryState)) {
       $$.LOG.info("Bubbling suspended while finally block runs");
       tryState.execPhase = "finallying";
       tryState.hasFinaled = true;
@@ -1089,19 +1089,19 @@ function $X(xpath, contextNode, resultType) {
       if (_isContextBlockType && _isContextBlockType(stackFrame)) {
         return true;
       }
-      if ($$.tcf.bubbling && $$.tcf.bubbling.mode === "error" && hasUnspentCatch(stackFrame)) {
+      if ($$.tcf.bubbling && $$.tcf.bubbling.mode === "error" && self.hasUnspentCatch(stackFrame)) {
         var tryDef = blkDefFor(stackFrame);
         if (self.isMatchingCatch($$.tcf.bubbling.error, tryDef.catchIdx)) {
           return true;
         }
       }
-      return hasUnspentFinally(stackFrame);
+      return self.hasUnspentFinally(stackFrame);
     }
     
     var tryState = bubbleToTryBlock(isTryWithMatchingOrFinally);
     var tryDef = blkDefFor(tryState);
     $$.tcf.bubbling = { mode: "command", srcIdx: cmdIdx, _isStopCriteria: _isContextBlockType };
-    if (hasUnspentFinally(tryState)) {
+    if (self.hasUnspentFinally(tryState)) {
       $$.LOG.info("Command " + fmtCmdRef(cmdIdx) + ", suspended while finally block runs");
       tryState.execPhase = "finallying";
       tryState.hasFinaled = true;
@@ -1227,10 +1227,10 @@ function $X(xpath, contextNode, resultType) {
     return canBubble;
   }
 
-  function hasUnspentCatch(tryState) {
+  Selenium.prototype.hasUnspentCatch = function hasUnspentCatch(tryState) {
     return (tryState && blkDefFor(tryState).catchIdx && !tryState.hasCaught);
   }
-  function hasUnspentFinally(tryState) {
+  Selenium.prototype.hasUnspentFinally = function hasUnspentFinally(tryState) {
     return (tryState && blkDefFor(tryState).finallyIdx && !tryState.hasFinaled);
   }
 
@@ -1841,7 +1841,7 @@ function $X(xpath, contextNode, resultType) {
         return;
       }
       varsetIdx++;
-      $$.LOG.debug(varsetIdx + ") " + XmlReader.serialize(varsets[curVars]));  // log each name & value
+      $$.LOG.debug(varsetIdx + ") " + XmlReader.serializeXml(varsets[curVars]));  // log each name & value
 
       var expected = XmlReader.countAttrs(varsets[0]);
       var found = XmlReader.countAttrs(varsets[curVars]);
