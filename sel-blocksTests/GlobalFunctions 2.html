@@ -3,41 +3,42 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>CallGlobalFunction</title>
+<link rel="selenium.base" href="https://github.com/" />
+<title>GlobalFunctions 2</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">CallGlobalFunction</td></tr>
+<tr><td rowspan="1" colspan="3">GlobalFunctions 2</td></tr>
 </thead><tbody>
 <tr>
-	<td>getEval</td>
-	<td>globalStoredVars.aGlobalVar = &quot;reset&quot;;</td>
+	<td>function</td>
+	<td>doStuff</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertNotEval</td>
-	<td>globalStoredVars.aGlobalVar;</td>
-	<td>set</td>
-</tr>
-<tr>
-	<td>assertEval</td>
-	<td>globalStoredVars.aGlobalVar;</td>
-	<td>reset</td>
-</tr>
-<tr>
-	<td>call</td>
-	<td>setGlobalVar</td>
+	<td>open</td>
+	<td>https://github.com/</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertEval</td>
-	<td>globalStoredVars.aGlobalVar;</td>
-	<td>set</td>
+	<td>open</td>
+	<td>http://en.wikipedia.org/wiki/Chili</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
 </tr>
 <tr>
 	<td>call</td>
 	<td>doStuff</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertLocation</td>
+	<td>http://en.wikipedia.org/wiki/Chili</td>
 	<td></td>
 </tr>
 </tbody></table>
