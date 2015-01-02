@@ -1280,19 +1280,20 @@ function $X(xpath, contextNode, resultType) {
   // ================================================================================
   Selenium.prototype.doCall = function(funcName, argSpec)
   {
-    var funcIdx, caseName;
+    var funcIdx, fName, caseName;
     assertRunning(); // TBD: can we do single execution, ie, run from this point then break on return?
     if (argSpec) {
       assertCompilable("var ", argSpec, ";", "Invalid call parameter(s)");
     }
     if(funcName.match(/[.]/)) {
         caseName = funcName.split(".")[0];
-        funcName = funcName.split(".")[1];
+        fName = funcName.split(".")[1];
     } else {
       caseName = cachedCommands.currentCaseTitle;
+      fName = funcName;
     }
-    funcIdx = cachedCommands[caseName].symbols[funcName];
-    assert(funcIdx!==undefined, " Function does not exist: " + funcName + ".");
+    funcIdx = cachedCommands[caseName].symbols[fName];
+    assert(funcIdx!==undefined, " Function does not exist: " + funcName);
 
     var activeCallFrame = callStack.top();
     if (activeCallFrame.isReturning && activeCallFrame.returnIdx === idxHere()) {
