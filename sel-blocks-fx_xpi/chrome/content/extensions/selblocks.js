@@ -244,6 +244,7 @@ function $X(xpath, contextNode, resultType) {
   // if testCase.nextCommand() ever changes, this will need to be revisited
   // (current as of: selenium-ide-2.4.0)
   function nextCommand() {
+    var activeCase = cachedCommands.activeCase;
     if (!this.started) {
       this.started = true;
       this.debugIndex = testCase.startPoint ? testCase.commands.indexOf(testCase.startPoint) : 0;
@@ -1286,19 +1287,21 @@ function $X(xpath, contextNode, resultType) {
       assertCompilable("var ", argSpec, ";", "Invalid call parameter(s)");
     }
     if(funcName.match(/[.]/)) {
-        caseName = funcName.split(".")[0];
-        fName = funcName.split(".")[1];
+        caseName = String(funcName.split(".")[0]);
+        fName = String(funcName.split(".")[1]);
     } else {
-      caseName = cachedCommands.currentCaseTitle;
-      fName = funcName;
+      caseName = String(cachedCommands.currentCaseTitle);
+      fName = String(funcName);
     }
     funcIdx = cachedCommands[caseName].symbols[fName];
     assert(funcIdx!==undefined, " Function does not exist: " + funcName);
+    cachedCommands.activeCase = cachedCommands[String(caseName)];
 
     var activeCallFrame = callStack.top();
     if (activeCallFrame.isReturning && activeCallFrame.returnIdx === idxHere()) {
       // returning from completed function
       restoreVarState(callStack.pop().savedVars);
+      cachedCommands.activeCase = cachedCommands.currentCaseTitle;
     }
     else {
       // save existing variable state and set args as local variables
