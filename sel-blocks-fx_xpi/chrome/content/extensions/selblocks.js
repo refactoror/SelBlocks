@@ -495,6 +495,7 @@ function $X(xpath, contextNode, resultType) {
     }
     (function cacheCommands() {
       var _mytitle = (testCase.title) ? testCase.title : "untitled";
+      cachedCommands.currentCaseTitle = _mytitle;
       cachedCommands[_mytitle] = {
         'symbols' : naiveClone(symbols),
         'commands' : naiveClone(testCase.commands),
@@ -1279,11 +1280,18 @@ function $X(xpath, contextNode, resultType) {
   // ================================================================================
   Selenium.prototype.doCall = function(funcName, argSpec)
   {
+    var funcIdx, caseName;
     assertRunning(); // TBD: can we do single execution, ie, run from this point then break on return?
     if (argSpec) {
       assertCompilable("var ", argSpec, ";", "Invalid call parameter(s)");
     }
-    var funcIdx = symbols[funcName];
+    if(funcName.match(/[.]/)) {
+        caseName = funcName.split(".")[0];
+        funcName = funcName.split(".")[1];
+    } else {
+      caseName = cachedCommands.currentCaseTitle;
+    }
+    funcIdx = cachedCommands[caseName].symbols[funcName];
     assert(funcIdx!==undefined, " Function does not exist: " + funcName + ".");
 
     var activeCallFrame = callStack.top();
