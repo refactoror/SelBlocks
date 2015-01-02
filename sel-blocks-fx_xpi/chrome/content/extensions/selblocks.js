@@ -1344,13 +1344,12 @@ function $X(xpath, contextNode, resultType) {
       restoreVarState(callStack.pop().savedVars);
     }
     else {
-      // save existing variable state and set args as local variables
+      // pass supplied args to the function call through the call stack
       var args = parseArgs(argSpec);
-      var savedVars = getVarStateFor(args);
-      setVars(args);
+      // saved vars will be populated by the function call
 
       callStack.push({ funcIdx: funcIdx, name: fName, args: args, returnIdx: idxHere(),
-        savedVars: savedVars, blockStack: new Stack() });
+        savedVars: {}, blockStack: new Stack() });
       // jump to function body
       setNextCommand(funcIdx);
     }
@@ -1358,14 +1357,18 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doFunction = function(funcName, paramString)
   {
     assertRunning();
-    var params;
+    var params, savedVars;
     var funcDef = blkDefHere();
     var activeCallFrame = callStack.top();
     if (activeCallFrame.funcIdx === idxHere()) {
       params = parseArgs(paramString, "suppress variable expansion");
+      // caching the values of all storedVars specified in function signature.
+      savedVars = getVarStateFor(params);
+      activeCallFrame.savedVars = savedVars;
       // set default values supplied in function definition
       setVars(params);
-      // overwrite local variables with the supplied values from the call
+      // overwrite local variables and defaults with the supplied values from
+      // the call
       setVars(activeCallFrame.args);
     }
     else {
