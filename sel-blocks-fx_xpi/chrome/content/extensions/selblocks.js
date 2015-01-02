@@ -1355,14 +1355,17 @@ function $X(xpath, contextNode, resultType) {
       setNextCommand(funcIdx);
     }
   };
-  Selenium.prototype.doFunction = function(funcName)
+  Selenium.prototype.doFunction = function(funcName, paramString)
   {
     assertRunning();
-
+    var params;
     var funcDef = blkDefHere();
     var activeCallFrame = callStack.top();
     if (activeCallFrame.funcIdx === idxHere()) {
-      // get parameter values
+      params = parseArgs(paramString, "suppress variable expansion");
+      // set default values supplied in function definition
+      setVars(params);
+      // overwrite local variables with the supplied values from the call
       setVars(activeCallFrame.args);
     }
     else {
@@ -1431,15 +1434,37 @@ function $X(xpath, contextNode, resultType) {
     }
     return result;
   }
-
-  function parseArgs(argSpec) { // comma-sep -> new prop-set
+  /**
+   * Parses a string of comma separated args that may contain assignments with
+   *  equal signs.
+   * @param {String} argSpec The string representing arguments.
+   * @param {Null|Any} suppressEval If this is set to any truthy value then the
+   *  values side of any arguments will not be evaluated with respect to the
+   *  stored variables.
+   * @returns {Object} Returns an object whose properties are argument names and
+   *  whose property values are the arguments values. If no value was supplied
+   *  then the property will exist but it will be set to undefined.
+   * @example
+   * // storedVariables.bat = "XXXXXXX";
+   * parseArgs('foo="bar",baz=bat');
+   * // returns {foo:"bar", baz:"XXXXXXX"}
+   * parseArgs('foo="bar",baz=bat', "suppress eval");
+   * // returns {foo:"bar", baz:"bat"}
+   */
+  function parseArgs(argSpec, suppressEval) { // comma-sep -> new prop-set
     var args = {};
     var parms = iexpr.splitList(argSpec, ",");
     var i;
     for (i = 0; i < parms.length; i++) {
       var keyValue = iexpr.splitList(parms[i], "=");
       validateName(keyValue[0], "parameter");
-      args[keyValue[0]] = evalWithVars(keyValue[1]);
+      // boolean values suck, let me put any arbitrary string as the arg
+      // like "suppress variable expansion" so I can be clear about my intent.
+      if(suppressEval) {
+        args[keyValue[0]] = keyValue[1];
+      } else {
+        args[keyValue[0]] = evalWithVars(keyValue[1]);
+      }
     }
     return args;
   }
@@ -1453,6 +1478,15 @@ function $X(xpath, contextNode, resultType) {
       }
     }
   }
+  /**
+   * Sets the values of existing `args` properties to match `storedVars`
+   * @param {Object} args A simple value store where properties represent the
+   *  the names of arguments and their values are the default values of those
+   *  properties. If those same properties exist on `storedVars` they will be
+   *  overwritten in the output object.
+   * @returns {Object} returns a simple object that can be used as `this` in
+   *  `fn.call` and `fn.apply` etc.
+   */
   function getVarStateFor(args) { // storedVars(prop-set) -> new prop-set
     var savedVars = {};
     var varname;
@@ -1461,6 +1495,13 @@ function $X(xpath, contextNode, resultType) {
     }
     return savedVars;
   }
+  /**
+   * Gets links to the storedVars specified.
+   * @param {Array} names An array of strings representing the storedVars
+   *  properties that you want to copy/link to.
+   * @returns {Object} returns a simple object that can be used as `this` in
+   *  `fn.call` and `fn.apply` etc.
+   */
   function getVarState(names) { // storedVars(names) -> new prop-set
     var savedVars = {};
     if (names) {
@@ -1471,6 +1512,14 @@ function $X(xpath, contextNode, resultType) {
     }
     return savedVars;
   }
+  /**
+   * Overwrites values in storedVars with values supplied.
+   * @param {Object} args A simple value store where properties represent the
+   *  the names of arguments and their values are the default values of those
+   *  properties. If those same properties exist on `storedVars` they will be
+   *  overwritten.
+   * @returns {Null} returns nothing.
+   */
   function setVars(args) { // prop-set -> storedVars
     var varname;
     for (varname in args) {

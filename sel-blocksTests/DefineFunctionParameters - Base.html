@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="https://github.com/" />
+<title>DefineFunctionParameters - Base</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">DefineFunctionParameters - Base</td></tr>
+</thead><tbody>
+<tr>
+	<td>store</td>
+	<td>original</td>
+	<td>x</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>original</td>
+	<td>y</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>function</td>
+	<td>bob</td>
+	<td>x,y</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;overwritten&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>storedVars.y === undefined</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>call</td>
+	<td>bob</td>
+	<td>x=&quot;overwritten&quot;</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;overwritten&quot;</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+</tr>
+<!--the bug is that, in function scope the prop is set undefined-->
+<!--then when the storedVars are restored the prop is left undefined-->
+<tr>
+	<td>assertEval</td>
+	<td>storedVars.y === undefined</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+</tr>
+</tbody></table>
+</body>
+</html>
