@@ -31,6 +31,7 @@
 	<td>&quot;${y}&quot; === &quot;original&quot;;</td>
 	<td>true</td>
 </tr>
+<!--check that x and y do not leak outside of function scope-->
 <tr>
 	<td>function</td>
 	<td>leakTest</td>
@@ -47,13 +48,55 @@
 	<td>y</td>
 </tr>
 <tr>
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--check that x and y both take default values when unspecified, but only in function scope-->
+<tr>
+	<td>function</td>
+	<td>defaultsTest</td>
+	<td>x=&quot;fn default x&quot;,y=&quot;fn default y&quot;</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>${x} === &quot;fn default x&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
 	<td>store</td>
-	<td>nonlocal</td>
-	<td>leak</td>
+	<td>&quot;overwritten&quot;</td>
+	<td>x</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>${x} === &quot;overwritten&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>${y} === &quot;fn default y&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>&quot;overwritten&quot;</td>
+	<td>y</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>${y} === &quot;overwritten&quot;</td>
+	<td>true</td>
 </tr>
 <tr>
 	<td>endFunction</td>
 	<td></td>
+	<td></td>
+</tr>
+<!--defaultsTest 00-->
+<tr>
+	<td>call</td>
+	<td>defaultsTest</td>
 	<td></td>
 </tr>
 <!--leakTest 00-->
@@ -96,7 +139,7 @@
 <tr>
 	<td>call</td>
 	<td>leakTest</td>
-	<td>y=&quot;overwritten&quot;</td>
+	<td>y = &quot;overwritten&quot;</td>
 </tr>
 <tr>
 	<td>assertEval</td>
@@ -132,7 +175,7 @@
 <tr>
 	<td>call</td>
 	<td>leakTest</td>
-	<td>x=&quot;overwritten&quot;</td>
+	<td>x = &quot;overwritten&quot;</td>
 </tr>
 <tr>
 	<td>assertEval</td>
