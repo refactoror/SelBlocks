@@ -82,6 +82,9 @@ function $X(xpath, contextNode, resultType) {
 
 // selbocks name-space
 (function($$){
+  function naiveClone(symbols) {
+    return JSON.parse(JSON.stringify(symbols));
+  }
 
   // =============== Javascript extensions as script helpers ===============
   // EXTENSION REVIEWERS:
@@ -157,21 +160,56 @@ function $X(xpath, contextNode, resultType) {
     return null;
   };
 
-
   //=============== Call/Scope Stack handling ===============
 
   var symbols = {};      // command indexes stored by name: function names
   var blockDefs = null;  // static command definitions stored by command index
   var callStack = null;  // command execution stack
   /**
-   * selblocks test case functions cache, to allow calling funcs across the
-   * entire suite.
+   * State information about the cache.
+   * currentCaseTitle is the current case displayed in the UI
+   * activeCaseTitle is the cashed case where commands are actually being pulled
+   *  from.
+   * commandIndex is the current index of the commands array in the active case
+   * suites are the cached test suites commands, symbols, and blockDefs
    */
-  var cachedCommands = Object.create(null);
+  var cachedCommandsData = {
+    initializing : true,
+    currentCaseTitle : '',
+    activeCaseTitle : '',
+    commandIndex : 0,
+    suites : Object.create(null),
+    /**
+     * Caches information about the current test case
+     */
+    cacheCommands : function cacheCacheCommands(symbols, commands, blockDefs) {
+      cachedCommandsData.initializing = false;
+      cachedCommandsData.suites[cachedCommandsData.currentCaseTitle] = {
+        'symbols' : symbols,
+        'commands' : commands,
+        'blockDefs' : blockDefs
+      }
+    },
+    /**
+     * Starts a new suite cache.
+     */
+    init : function cacheInit() {
+      cachedCommandsData.initializing = true;
+      var _mytitle = testCase.title || "untitiled";
+      // the current case displayed in the IDE
+      cachedCommandsData.currentCaseTitle = String(_mytitle);
+      // the current case for looking up functions
+      cachedCommandsData.activeCaseTitle = String(_mytitle);
+      // the index used for executing commands, this is decoupled from the
+      // testCase.debugIndex because what's being executed doesn't always
+      // move the row cursor in the UI anymore.
+      cachedCommandsData.commandIndex = 0;
+    }
+  };
 
   // the idx of the currently executing command
   function idxHere() {
-    return testCase.debugContext.debugIndex;
+    return cachedCommandsData.commandIndex;
   }
 
   // Command structure definitions, stored by command index
@@ -189,7 +227,13 @@ function $X(xpath, contextNode, resultType) {
 
   // retrieve the blockDef at the given command idx
   function blkDefAt(idx) {
-    return blockDefs[idx];
+    var where;
+    if(cachedCommandsData.initializing === true) {
+      where = blockDefs[idx];
+    } else {
+      where = cachedCommandsData.suites[String(cachedCommandsData.activeCaseTitle)].blockDefs[idx];
+    }
+    return where;
   }
   // retrieve the blockDef for the currently executing command
   function blkDefHere() {
@@ -244,34 +288,44 @@ function $X(xpath, contextNode, resultType) {
   // if testCase.nextCommand() ever changes, this will need to be revisited
   // (current as of: selenium-ide-2.4.0)
   function nextCommand() {
-    var activeCase = cachedCommands.activeCase;
     if (!this.started) {
       this.started = true;
       this.debugIndex = testCase.startPoint ? testCase.commands.indexOf(testCase.startPoint) : 0;
+      cachedCommandsData.commandIndex = 0 + this.debugIndex;
+      cachedCommandsData.activeCaseTitle = String(cachedCommandsData.currentCaseTitle);
     }
     else {
       if (branchIdx !== null) {
         $$.LOG.info("branch => " + fmtCmdRef(branchIdx));
-        this.debugIndex = branchIdx;
+        if(cachedCommandsData.activeCaseTitle === cachedCommandsData.currentCaseTitle) {
+          this.debugIndex = branchIdx;
+        }
+        cachedCommandsData.commandIndex = branchIdx;
         branchIdx = null;
       }
       else {
-        this.debugIndex++;
+        if(cachedCommandsData.activeCaseTitle === cachedCommandsData.currentCaseTitle) {
+          this.debugIndex++;
+        }
+        cachedCommandsData.commandIndex++;
       }
     }
     // skip over comments
-    while (this.debugIndex < testCase.commands.length) {
-      var command = testCase.commands[this.debugIndex];
+    while (cachedCommandsData.commandIndex < cachedCommandsData.suites[String(cachedCommandsData.activeCaseTitle)].commands.length) {
+      var command = cachedCommandsData.suites[String(cachedCommandsData.activeCaseTitle)].commands[cachedCommandsData.commandIndex];
       if (command.type === "command") {
         return command;
       }
-      this.debugIndex++;
+      if(cachedCommandsData.activeCaseTitle === cachedCommandsData.currentCaseTitle) {
+        this.debugIndex++;
+      }
+      cachedCommandsData.commandIndex++;
     }
     return null;
   }
   function setNextCommand(cmdIdx) {
-    assert(cmdIdx >= 0 && cmdIdx < testCase.commands.length,
-      " Cannot branch to non-existent command @" + (cmdIdx+1));
+    assert(cmdIdx >= 0 && cmdIdx < cachedCommandsData.suites[String(cachedCommandsData.activeCaseTitle)].commands.length,
+      " Cannot branch to non-existent command " + String(cachedCommandsData.activeCaseTitle) + " @" + (cmdIdx+1));
     branchIdx = cmdIdx;
   }
 
@@ -309,6 +363,7 @@ function $X(xpath, contextNode, resultType) {
   // Assemble block relationships and symbol locations
   function compileSelBlocks()
   {
+    cachedCommandsData.init();
     symbols = {};
     blockDefs = new BlockDefs();
     var lexStack = new Stack();
@@ -494,16 +549,7 @@ function $X(xpath, contextNode, resultType) {
       }
       throw new SyntaxError(cmdErrors.join("; "));
     }
-    (function cacheCommands() {
-      var _mytitle = (testCase.title) ? testCase.title : "untitled";
-      cachedCommands.currentCaseTitle = _mytitle;
-      cachedCommands[_mytitle] = {
-        'symbols' : naiveClone(symbols),
-        'commands' : naiveClone(testCase.commands),
-        'blockDefs' : naiveClone(blockDefs)
-      };
-    }());
-    //console.dir(cachedCommands);
+    cachedCommandsData.cacheCommands(symbols, testCase.commands, blockDefs);
     //- command validation
     function assertNotAndWaitSuffix(cmdIdx) {
       assertCmd(cmdIdx, (testCase.commands[cmdIdx].command.indexOf("AndWait") === -1),
@@ -516,9 +562,6 @@ function $X(xpath, contextNode, resultType) {
     //- command-pairing validation
     function assertMatching(curCmd, expectedCmd, cmdIdx, pendIdx) {
       assertCmd(cmdIdx, curCmd === expectedCmd, ", does not match command " + fmtCmdRef(pendIdx));
-    }
-    function naiveClone(symbols) {
-      return JSON.parse(JSON.stringify(symbols));
     }
   }
 
@@ -1290,18 +1333,18 @@ function $X(xpath, contextNode, resultType) {
         caseName = String(funcName.split(".")[0]);
         fName = String(funcName.split(".")[1]);
     } else {
-      caseName = String(cachedCommands.currentCaseTitle);
+      caseName = String(cachedCommandsData.activeCaseTitle);
       fName = String(funcName);
     }
-    funcIdx = cachedCommands[caseName].symbols[fName];
+    funcIdx = cachedCommandsData.suites[caseName].symbols[fName];
     assert(funcIdx!==undefined, " Function does not exist: " + funcName);
-    cachedCommands.activeCase = cachedCommands[String(caseName)];
+    cachedCommandsData.activeCaseTitle = String(caseName);
 
     var activeCallFrame = callStack.top();
     if (activeCallFrame.isReturning && activeCallFrame.returnIdx === idxHere()) {
       // returning from completed function
+      cachedCommandsData.activeCaseTitle = String(cachedCommandsData.currentCaseTitle);
       restoreVarState(callStack.pop().savedVars);
-      cachedCommands.activeCase = cachedCommands.currentCaseTitle;
     }
     else {
       // save existing variable state and set args as local variables
@@ -1309,7 +1352,7 @@ function $X(xpath, contextNode, resultType) {
       var savedVars = getVarStateFor(args);
       setVars(args);
 
-      callStack.push({ funcIdx: funcIdx, name: funcName, args: args, returnIdx: idxHere(),
+      callStack.push({ funcIdx: funcIdx, name: fName, args: args, returnIdx: idxHere(),
         savedVars: savedVars, blockStack: new Stack() });
       // jump to function body
       setNextCommand(funcIdx);
@@ -1361,6 +1404,7 @@ function $X(xpath, contextNode, resultType) {
       if (returnVal) { storedVars._result = evalWithVars(returnVal); }
       activeCallFrame.isReturning = true;
       // jump back to call command
+      cachedCommandsData.activeCaseTitle = String(cachedCommandsData.currentCaseTitle);
       setNextCommand(activeCallFrame.returnIdx);
     }
   }
