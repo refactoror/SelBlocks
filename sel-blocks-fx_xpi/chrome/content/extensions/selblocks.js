@@ -163,6 +163,11 @@ function $X(xpath, contextNode, resultType) {
   var symbols = {};      // command indexes stored by name: function names
   var blockDefs = null;  // static command definitions stored by command index
   var callStack = null;  // command execution stack
+  /**
+   * selblocks test case functions cache, to allow calling funcs across the
+   * entire suite.
+   */
+  var cachedCommands = Object.create(null);
 
   // the idx of the currently executing command
   function idxHere() {
@@ -488,6 +493,15 @@ function $X(xpath, contextNode, resultType) {
       }
       throw new SyntaxError(cmdErrors.join("; "));
     }
+    (function cacheCommands() {
+      var _mytitle = (testCase.title) ? testCase.title : "untitled";
+      cachedCommands[_mytitle] = {
+        'symbols' : naiveClone(symbols),
+        'commands' : naiveClone(testCase.commands),
+        'blockDefs' : naiveClone(blockDefs)
+      };
+    }());
+    //console.dir(cachedCommands);
     //- command validation
     function assertNotAndWaitSuffix(cmdIdx) {
       assertCmd(cmdIdx, (testCase.commands[cmdIdx].command.indexOf("AndWait") === -1),
@@ -500,6 +514,9 @@ function $X(xpath, contextNode, resultType) {
     //- command-pairing validation
     function assertMatching(curCmd, expectedCmd, cmdIdx, pendIdx) {
       assertCmd(cmdIdx, curCmd === expectedCmd, ", does not match command " + fmtCmdRef(pendIdx));
+    }
+    function naiveClone(symbols) {
+      return JSON.parse(JSON.stringify(symbols));
     }
   }
 
