@@ -82,9 +82,6 @@ function $X(xpath, contextNode, resultType) {
 
 // selbocks name-space
 (function($$){
-  function naiveClone(symbols) {
-    return JSON.parse(JSON.stringify(symbols));
-  }
 
   // =============== Javascript extensions as script helpers ===============
   // EXTENSION REVIEWERS:
