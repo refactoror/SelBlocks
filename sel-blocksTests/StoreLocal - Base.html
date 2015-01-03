@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
+<title>StoreLocal - Base</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">StoreLocal - Base</td></tr>
+</thead><tbody>
+<tr>
+	<td>function</td>
+	<td>blockScopeVars</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>this is stored globally</td>
+	<td>g</td>
+</tr>
+<tr>
+	<td>storeLocal</td>
+	<td>this is stored locally</td>
+	<td>l</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>storedVars.g === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>storedVars.l === &quot;this is stored locally&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>call</td>
+	<td>blockScopeVars</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>storedVars.g === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>storedVars.l === &quot;this is stored locally&quot;</td>
+	<td>false</td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
