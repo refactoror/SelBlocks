@@ -325,15 +325,6 @@ function $X(xpath, contextNode, resultType) {
       " Cannot branch to non-existent command " + String(cachedCommandsData.activeCaseTitle) + " @" + (cmdIdx+1));
     branchIdx = cmdIdx;
   }
-  function currentCommand () {
-    var theCase = cachedCommandsData.suites[String(cachedCommandsData.activeCaseTitle)];
-    var theIndex = cachedCommandsData.commandIndex;
-    var command = theCase.commands[theIndex];
-    if (!command) {
-        testCase.log.warn("currentCommand() not found: commands.length=" + theCase.commands.length + ", debugIndex=" + theIndex);
-    }
-    return command;
-  }
   // Selenium calls reset():
   //  * before each single (double-click) command execution
   //  * before a testcase is run
@@ -357,7 +348,6 @@ function $X(xpath, contextNode, resultType) {
     // TBD: this should be a tail intercept rather than brute force replace
     $$.LOG.debug("Configuring tail intercept: testCase.debugContext.nextCommand()");
     $$.fn.interceptReplace(testCase.debugContext, "nextCommand", nextCommand);
-    $$.fn.interceptReplace(testCase.debugContext, "currentCommand", currentCommand);
   });
 
   // get the blockStack for the currently active callStack
