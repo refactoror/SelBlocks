@@ -162,14 +162,17 @@ function $X(xpath, contextNode, resultType) {
   var symbols = {};      // command indexes stored by name: function names
   var blockDefs = null;  // static command definitions stored by command index
   var callStack = null;  // command execution stack
-  var _oStoredVars, blockVars, contextManager; // makes block scoped variables work
+  var contextManager; // makes block scoped variables work
   
   /**
    * Manages variable scope for functions, blocks, etc.
    * @class ContextManager
    */
   function ContextManager() {
+    // intentionally global var
     _oStoredVars = storedVars;
+    // intentionally global var
+    blockVars = Object.create(storedVars);
     this.contexts = [];
     this.enter();
   }
@@ -686,32 +689,6 @@ function $X(xpath, contextNode, resultType) {
       notifyFatal("Invalid character(s) in " + desc + " name: '" + name + "'");
     }
   }
-  
-  Selenium.prototype.doStore = function(value, varName) {
-    _oStoredVars[varName] = value;
-  };
-
-  Selenium.prototype.doStoreText = function(target, varName) {
-    var element = this.page().findElement(target);
-    _oStoredVars[varName] = getText(element);
-  };
-
-  Selenium.prototype.doStoreAttribute = function(target, varName) {
-    _oStoredVars[varName] = this.page().findAttribute(target);
-  };
-  
-  Selenium.prototype.doStoreLocal = function(value, varName) {
-    blockVars[varName] = value;
-  };
-  
-  Selenium.prototype.doStoreLocalText = function(target, varName) {
-    var element = this.page().findElement(target);
-    blockVars[varName] = getText(element);
-  };
-
-  Selenium.prototype.doStoreLocalAttribute = function(target, varName) {
-    blockVars[varName] = this.page().findAttribute(target);
-  };
   
   Selenium.prototype.doLabel = function() {
     // noop
@@ -1404,9 +1381,11 @@ function $X(xpath, contextNode, resultType) {
     if (activeCallFrame.isReturning && activeCallFrame.returnIdx === idxHere()) {
       // returning from completed function
       cachedCommandsData.activeCaseTitle = String(cachedCommandsData.currentCaseTitle);
-      restoreVarState(callStack.pop().savedVars);
+      //restoreVarState(callStack.pop().savedVars);
+      contextManager.exit();
     }
     else {
+      contextManager.enter();
       // pass supplied args to the function call through the call stack
       var args = parseArgs(argSpec);
       // saved vars will be populated by the function call
@@ -1487,7 +1466,33 @@ function $X(xpath, contextNode, resultType) {
 
 
   // ========= storedVars management =========
+  
+  Selenium.prototype.doStoreGlobal = function(value, varName) {
+    _oStoredVars[varName] = value;
+  };
 
+  Selenium.prototype.doStoreGlobalText = function(target, varName) {
+    var element = this.page().findElement(target);
+    _oStoredVars[varName] = getText(element);
+  };
+
+  Selenium.prototype.doStoreGlobalAttribute = function(target, varName) {
+    _oStoredVars[varName] = this.page().findAttribute(target);
+  };
+  
+  Selenium.prototype.doStoreLocal = function(value, varName) {
+    blockVars[varName] = value;
+  };
+  
+  Selenium.prototype.doStoreLocalText = function(target, varName) {
+    var element = this.page().findElement(target);
+    blockVars[varName] = getText(element);
+  };
+
+  Selenium.prototype.doStoreLocalAttribute = function(target, varName) {
+    blockVars[varName] = this.page().findAttribute(target);
+  };
+  
   function evalWithVars(expr) {
     var result = null;
     try {
