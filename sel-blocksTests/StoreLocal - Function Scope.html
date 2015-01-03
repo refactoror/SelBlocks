@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
+<title>StoreLocal - Base</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">StoreLocal - Base</td></tr>
+</thead><tbody>
+<!--setting a local variable from function scope-->
+<tr>
+	<td>function</td>
+	<td>blockScopeVars</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeLocal</td>
+	<td>this is stored locally</td>
+	<td>l</td>
+</tr>
+<!--local variables aren't put onto the global variable object-->
+<tr>
+	<td>assertEval</td>
+	<td>_oStoredVars.l === &quot;this is stored locally&quot;</td>
+	<td>false</td>
+</tr>
+<!--local variables will be accessible through stored vars,-->
+<!--block vars, and ${} notation as long as they're in scope.-->
+<tr>
+	<td>assertEval</td>
+	<td>storedVars.l === &quot;this is stored locally&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>blockVars.l === &quot;this is stored locally&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${l}&quot; === &quot;this is stored locally&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--local variables must not persist after exiting scope-->
+<tr>
+	<td>getEval</td>
+	<td>_oStoredVars.l = null;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars.l = null;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>storedVars.l = null;</td>
+	<td>null</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>_oStoredVars.l = null;</td>
+	<td>null</td>
+</tr>
+<tr>
+	<td>call</td>
+	<td>blockScopeVars</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>_oStoredVars.l === &quot;this is stored locally&quot;</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>storedVars.l === &quot;this is stored locally&quot;</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>blockVars.l === &quot;this is stored locally&quot;</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${l}&quot; === &quot;this is stored locally&quot;</td>
+	<td>false</td>
+</tr>
+</tbody></table>
+</body>
+</html>
