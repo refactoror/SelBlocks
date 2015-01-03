@@ -162,6 +162,44 @@ function $X(xpath, contextNode, resultType) {
   var symbols = {};      // command indexes stored by name: function names
   var blockDefs = null;  // static command definitions stored by command index
   var callStack = null;  // command execution stack
+  var _oStoredVars, blockVars, contextManager; // makes block scoped variables work
+  
+  /**
+   * Manages variable scope for functions, blocks, etc.
+   * @class ContextManager
+   */
+  function ContextManager() {
+    _oStoredVars = storedVars;
+    this.contexts = [];
+    this.enter();
+  }
+  /**
+   * Enters a new variable context.
+   * @methodOf ContextManager.
+   */
+  ContextManager.prototype.enter = function enterContext() {
+    var context = {
+      here : Object.create(storedVars),
+      back : storedVars
+    };
+    this.contexts.push(context);
+    storedVars = context.here;
+    blockVars = context.here;
+  };
+  /**
+   * Exits to the previous variable context.
+   * @methodOf ContextManager.
+   */
+  ContextManager.prototype.exit = function exitContext() {
+    if (this.contexts.length > 0) {
+      var context = this.contexts.pop();
+      storedVars = context.back;
+      blockVars = context.back;
+    } else {
+      throw new Error("No context to exit from");
+    }
+  };
+  contextManager = new ContextManager();
   /**
    * State information about the cache.
    * currentCaseTitle is the current case displayed in the UI
@@ -648,7 +686,33 @@ function $X(xpath, contextNode, resultType) {
       notifyFatal("Invalid character(s) in " + desc + " name: '" + name + "'");
     }
   }
+  
+  Selenium.prototype.doStore = function(value, varName) {
+    _oStoredVars[varName] = value;
+  };
 
+  Selenium.prototype.doStoreText = function(target, varName) {
+    var element = this.page().findElement(target);
+    _oStoredVars[varName] = getText(element);
+  };
+
+  Selenium.prototype.doStoreAttribute = function(target, varName) {
+    _oStoredVars[varName] = this.page().findAttribute(target);
+  };
+  
+  Selenium.prototype.doStoreLocal = function(value, varName) {
+    blockVars[varName] = value;
+  };
+  
+  Selenium.prototype.doStoreLocalText = function(target, varName) {
+    var element = this.page().findElement(target);
+    blockVars[varName] = getText(element);
+  };
+
+  Selenium.prototype.doStoreLocalAttribute = function(target, varName) {
+    blockVars[varName] = this.page().findAttribute(target);
+  };
+  
   Selenium.prototype.doLabel = function() {
     // noop
   };
