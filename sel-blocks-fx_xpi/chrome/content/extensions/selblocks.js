@@ -1385,11 +1385,11 @@ function $X(xpath, contextNode, resultType) {
       setNextCommand(funcDef.endIdx);
     }
   };
-  Selenium.prototype.doScript = function(scrName)
+  Selenium.prototype.doScript = function(scrName, paramString)
   {
     $$.LOG.warn("The script command has been deprecated and will be removed in future releases."
       + " Please use function instead.");
-    Selenium.prototype.doFunction(scrName);
+    Selenium.prototype.doFunction(scrName, paramString);
   };
   Selenium.prototype.doReturn = function(value) {
     returnFromFunction(null, value);
