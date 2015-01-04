@@ -163,16 +163,15 @@ function $X(xpath, contextNode, resultType) {
   var blockDefs = null;  // static command definitions stored by command index
   var callStack = null;  // command execution stack
   var contextManager; // makes block scoped variables work
-  
+  // intentionally global var
+  storedVarsGlobal = storedVars;
   /**
    * Manages variable scope for functions, blocks, etc.
    * @class ContextManager
    */
   function ContextManager() {
     // intentionally global var
-    storedVarsGlobal = storedVars;
-    // intentionally global var
-    storedVarsLocal = Object.create(storedVars);
+    storedVarsLocal = Object.create(storedVarsGlobal);
     storedVars = storedVarsLocal;
     this.contexts = [];
     this.enter();
@@ -182,9 +181,10 @@ function $X(xpath, contextNode, resultType) {
    * @methodOf ContextManager.
    */
   ContextManager.prototype.enter = function enterContext() {
+    var _o = storedVars;
     var context = {
       here : Object.create(storedVars),
-      back : storedVars
+      back : _o
     };
     this.contexts.push(context);
     storedVars = context.here;
@@ -199,6 +199,20 @@ function $X(xpath, contextNode, resultType) {
       var context = this.contexts.pop();
       storedVars = context.back;
       storedVarsLocal = context.back;
+    } else {
+      throw new Error("No context to exit from");
+    }
+  };
+  /**
+   * Resets to the top variable context.
+   * @methodOf ContextManager.
+   */
+  ContextManager.prototype.reset = function exitContext() {
+    if (this.contexts.length > 0) {
+      storedVars = storedVarsGlobal;
+      storedVarsLocal = storedVarsGlobal;
+      this.contexts = [];
+      this.enter();
     } else {
       throw new Error("No context to exit from");
     }
@@ -376,6 +390,7 @@ function $X(xpath, contextNode, resultType) {
   {
     $$.LOG.trace("In tail intercept :: Selenium.reset()");
     try {
+      contextManager.reset();
       compileSelBlocks();
     }
     catch (err) {
@@ -978,7 +993,8 @@ function $X(xpath, contextNode, resultType) {
     while (!tryState && $$.tcf.nestingLevel > -1 && callStack.length > 1) {
       var callFrame = callStack.pop();
       $$.LOG.info("function '" + callFrame.name + "' aborting due to error");
-      restoreVarState(callFrame.savedVars);
+      contextManager.exit();
+      //restoreVarState(callFrame.savedVars);
       tryState = unwindToBlock(_hasCriteria);
     }
     return tryState;
@@ -1290,6 +1306,7 @@ function $X(xpath, contextNode, resultType) {
       activeBlockStack().push(loopState);
       var localVars = _validateFunc(loopState);
       loopState.savedVars = getVarState(localVars);
+      contextManager.enter();
       initVarState(localVars); // because with-scope can reference storedVars only once they exist
       _initFunc(loopState);
     }
@@ -1312,7 +1329,8 @@ function $X(xpath, contextNode, resultType) {
     assertActiveScope(blkDefHere().beginIdx);
     var loopState = activeBlockStack().top();
     if (loopState.isComplete) {
-      restoreVarState(loopState.savedVars);
+      contextManager.exit();
+      //restoreVarState(loopState.savedVars);
       activeBlockStack().pop();
       // done, fall out of loop
     }
@@ -1547,7 +1565,7 @@ function $X(xpath, contextNode, resultType) {
       var i;
       for (i = 0; i < names.length; i++) {
         if (!storedVars[names[i]]) {
-          storedVars[names[i]] = null;
+          storedVars[names[i]] = undefined;
         }
       }
     }
