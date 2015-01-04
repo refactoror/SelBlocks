@@ -1480,10 +1480,6 @@ function $X(xpath, contextNode, resultType) {
     storedVarsGlobal[varName] = this.page().findAttribute(target);
   };
   
-  Selenium.prototype.doStore = Selenium.prototype.doStoreGlobal;
-  Selenium.prototype.doStoreText = Selenium.prototype.doStoreGlobalText;
-  Selenium.prototype.doStoreAttribute = Selenium.prototype.doStoreGlobalAttribute;
-  
   Selenium.prototype.doStoreLocal = function(value, varName) {
     storedVarsLocal[varName] = value;
   };
