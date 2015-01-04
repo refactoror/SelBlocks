@@ -990,10 +990,13 @@ function $X(xpath, contextNode, resultType) {
       $$.LOG.warn("bubbleToTryBlock() called outside of any try nesting");
     }
     var tryState = unwindToBlock(_hasCriteria);
+    var ret;
     while (!tryState && $$.tcf.nestingLevel > -1 && callStack.length > 1) {
       var callFrame = callStack.pop();
       $$.LOG.info("function '" + callFrame.name + "' aborting due to error");
+      if (storedVars._result) { ret = storedVars._result; }
       contextManager.exit();
+      storedVars._result = ret;
       //restoreVarState(callFrame.savedVars);
       tryState = unwindToBlock(_hasCriteria);
     }
@@ -1328,8 +1331,12 @@ function $X(xpath, contextNode, resultType) {
     assertRunning();
     assertActiveScope(blkDefHere().beginIdx);
     var loopState = activeBlockStack().top();
+    var ret;
     if (loopState.isComplete) {
+      if (storedVars._result) { ret = storedVars._result; }
       contextManager.exit();
+      storedVars._result = ret;
+      
       //restoreVarState(loopState.savedVars);
       activeBlockStack().pop();
       // done, fall out of loop
