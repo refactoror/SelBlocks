@@ -173,6 +173,7 @@ function $X(xpath, contextNode, resultType) {
     storedVarsGlobal = storedVars;
     // intentionally global var
     storedVarsLocal = Object.create(storedVars);
+    storedVars = storedVarsLocal;
     this.contexts = [];
     this.enter();
   }
@@ -1381,11 +1382,10 @@ function $X(xpath, contextNode, resultType) {
     if (activeCallFrame.isReturning && activeCallFrame.returnIdx === idxHere()) {
       // returning from completed function
       cachedCommandsData.activeCaseTitle = String(cachedCommandsData.currentCaseTitle);
+      callStack.pop()
       //restoreVarState(callStack.pop().savedVars);
-      contextManager.exit();
     }
     else {
-      contextManager.enter();
       // pass supplied args to the function call through the call stack
       var args = parseArgs(argSpec);
       // saved vars will be populated by the function call
@@ -1403,10 +1403,12 @@ function $X(xpath, contextNode, resultType) {
     var funcDef = blkDefHere();
     var activeCallFrame = callStack.top();
     if (activeCallFrame.funcIdx === idxHere()) {
+      contextManager.enter();
       params = parseArgs(paramString, "suppress variable expansion");
       // caching the values of all storedVars specified in function signature.
-      savedVars = getVarStateFor(params);
-      activeCallFrame.savedVars = savedVars;
+      //savedVars = getVarStateFor(params);
+      //activeCallFrame.savedVars = savedVars;
+      
       // set default values supplied in function definition
       setVars(params);
       // overwrite local variables and defaults with the supplied values from
@@ -1446,6 +1448,7 @@ function $X(xpath, contextNode, resultType) {
       // no active call, we're just skipping around a function block
     }
     else {
+      contextManager.exit();
       if (returnVal) { storedVars._result = evalWithVars(returnVal); }
       activeCallFrame.isReturning = true;
       // jump back to call command
