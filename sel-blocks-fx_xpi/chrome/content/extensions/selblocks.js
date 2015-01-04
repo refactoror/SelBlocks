@@ -1460,14 +1460,16 @@ function $X(xpath, contextNode, resultType) {
     if (transitionBubbling(Stack.isFunctionBlock)) {
       return;
     }
+    var ret;
     var endDef = blkDefHere();
     var activeCallFrame = callStack.top();
     if (activeCallFrame.funcIdx !== endDef.funcIdx) {
       // no active call, we're just skipping around a function block
     }
     else {
+      if (returnVal) { ret = evalWithVars(returnVal); }
       contextManager.exit();
-      if (returnVal) { storedVars._result = evalWithVars(returnVal); }
+      storedVars._result = ret;
       activeCallFrame.isReturning = true;
       // jump back to call command
       cachedCommandsData.activeCaseTitle = String(cachedCommandsData.currentCaseTitle);
@@ -1491,6 +1493,11 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doStoreGlobal = function(value, varName) {
     storedVarsGlobal[varName] = value;
   };
+  
+  Selenium.prototype.doStoreEvalGlobal = function(value, varName) {
+    var val = evalWithVars(String(value));
+    storedVarsGlobal[varName] = val;
+  };
 
   Selenium.prototype.doStoreGlobalText = function(target, varName) {
     var element = this.page().findElement(target);
@@ -1503,6 +1510,11 @@ function $X(xpath, contextNode, resultType) {
   
   Selenium.prototype.doStoreLocal = function(value, varName) {
     storedVarsLocal[varName] = value;
+  };
+  
+  Selenium.prototype.doStoreEvalLocal = function(value, varName) {
+    var val = evalWithVars(String(value));
+    storedVarsLocal[varName] = val;
   };
   
   Selenium.prototype.doStoreLocalText = function(target, varName) {
