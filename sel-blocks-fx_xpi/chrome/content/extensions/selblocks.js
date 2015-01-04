@@ -170,9 +170,9 @@ function $X(xpath, contextNode, resultType) {
    */
   function ContextManager() {
     // intentionally global var
-    _oStoredVars = storedVars;
+    storedVarsGlobal = storedVars;
     // intentionally global var
-    blockVars = Object.create(storedVars);
+    storedVarsLocal = Object.create(storedVars);
     this.contexts = [];
     this.enter();
   }
@@ -187,7 +187,7 @@ function $X(xpath, contextNode, resultType) {
     };
     this.contexts.push(context);
     storedVars = context.here;
-    blockVars = context.here;
+    storedVarsLocal = context.here;
   };
   /**
    * Exits to the previous variable context.
@@ -197,7 +197,7 @@ function $X(xpath, contextNode, resultType) {
     if (this.contexts.length > 0) {
       var context = this.contexts.pop();
       storedVars = context.back;
-      blockVars = context.back;
+      storedVarsLocal = context.back;
     } else {
       throw new Error("No context to exit from");
     }
@@ -1468,29 +1468,33 @@ function $X(xpath, contextNode, resultType) {
   // ========= storedVars management =========
   
   Selenium.prototype.doStoreGlobal = function(value, varName) {
-    _oStoredVars[varName] = value;
+    storedVarsGlobal[varName] = value;
   };
 
   Selenium.prototype.doStoreGlobalText = function(target, varName) {
     var element = this.page().findElement(target);
-    _oStoredVars[varName] = getText(element);
+    storedVarsGlobal[varName] = getText(element);
   };
 
   Selenium.prototype.doStoreGlobalAttribute = function(target, varName) {
-    _oStoredVars[varName] = this.page().findAttribute(target);
+    storedVarsGlobal[varName] = this.page().findAttribute(target);
   };
   
+  Selenium.prototype.doStore = Selenium.prototype.doStoreGlobal;
+  Selenium.prototype.doStoreText = Selenium.prototype.doStoreGlobalText;
+  Selenium.prototype.doStoreAttribute = Selenium.prototype.doStoreGlobalAttribute;
+  
   Selenium.prototype.doStoreLocal = function(value, varName) {
-    blockVars[varName] = value;
+    storedVarsLocal[varName] = value;
   };
   
   Selenium.prototype.doStoreLocalText = function(target, varName) {
     var element = this.page().findElement(target);
-    blockVars[varName] = getText(element);
+    storedVarsLocal[varName] = getText(element);
   };
 
   Selenium.prototype.doStoreLocalAttribute = function(target, varName) {
-    blockVars[varName] = this.page().findAttribute(target);
+    storedVarsLocal[varName] = this.page().findAttribute(target);
   };
   
   function evalWithVars(expr) {

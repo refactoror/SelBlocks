@@ -25,7 +25,7 @@
 <!--local variables aren't put onto the global variable object-->
 <tr>
 	<td>assertEval</td>
-	<td>_oStoredVars.l === &quot;this is stored locally&quot;</td>
+	<td>storedVarsGlobal.l === &quot;this is stored locally&quot;</td>
 	<td>false</td>
 </tr>
 <!--local variables will be accessible through stored vars,-->
@@ -37,7 +37,7 @@
 </tr>
 <tr>
 	<td>assertEval</td>
-	<td>blockVars.l === &quot;this is stored locally&quot;</td>
+	<td>storedVarsLocal.l === &quot;this is stored locally&quot;</td>
 	<td>true</td>
 </tr>
 <tr>
@@ -53,7 +53,7 @@
 <!--local variables must not persist after exiting scope-->
 <tr>
 	<td>getEval</td>
-	<td>_oStoredVars.l = null;</td>
+	<td>storedVarsGlobal.l = null;</td>
 	<td></td>
 </tr>
 <tr>
@@ -68,7 +68,7 @@
 </tr>
 <tr>
 	<td>assertEval</td>
-	<td>_oStoredVars.l = null;</td>
+	<td>storedVarsGlobal.l = null;</td>
 	<td>null</td>
 </tr>
 <tr>
@@ -78,7 +78,7 @@
 </tr>
 <tr>
 	<td>assertEval</td>
-	<td>_oStoredVars.l === &quot;this is stored locally&quot;</td>
+	<td>storedVarsGlobal.l === &quot;this is stored locally&quot;</td>
 	<td>false</td>
 </tr>
 <tr>
@@ -88,7 +88,7 @@
 </tr>
 <tr>
 	<td>assertEval</td>
-	<td>blockVars.l === &quot;this is stored locally&quot;</td>
+	<td>storedVarsLocal.l === &quot;this is stored locally&quot;</td>
 	<td>false</td>
 </tr>
 <tr>
