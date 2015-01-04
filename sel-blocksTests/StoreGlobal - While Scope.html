@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
+<title>StoreGlobal - While Scope</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">StoreGlobal - While Scope</td></tr>
+</thead><tbody>
+<!--clearing any values from previous tests-->
+<tr>
+	<td>getEval</td>
+	<td>storedVarsGlobal.g = null;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>storedVarsGlobal.g = null;</td>
+	<td>null</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>i</td>
+</tr>
+<!--setting a global variable from while scope-->
+<tr>
+	<td>while</td>
+	<td>i &gt; 0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>i</td>
+</tr>
+<tr>
+	<td>storeGlobal</td>
+	<td>this is stored globally</td>
+	<td>g</td>
+</tr>
+<!--global variables should exist everywhere-->
+<tr>
+	<td>assertEval</td>
+	<td>storedVarsGlobal.g === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>storedVars.g === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>storedVarsLocal.g === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${g}&quot; === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--global variables must persist after exiting scope-->
+<tr>
+	<td>assertEval</td>
+	<td>storedVarsGlobal.g === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>storedVars.g === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>storedVarsLocal.g === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${g}&quot; === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
