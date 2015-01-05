@@ -1,4 +1,4 @@
-=SelBlocks 2.0=
+=SelBlocks 2.0.2=
 
 Installer: https://addons.mozilla.org/en-US/firefox/addon/selenium-ide-sel-blocks/versions/
 
@@ -142,6 +142,16 @@ NONE
 
 ''Note that the [https://addons.mozilla.org/en-US/firefox/addon/stored-variables-viewer-seleni/ Stored Variables Viewer] addon will display the values of SelBlocks parameters, because they are implemented as regular Selenium variables. The only thing special about SelBlocks parameters is that they are activated and deactivated as execution flows into and out of blocks, eg, <tt>for</tt>, <tt>endFor</tt>, <tt>function</tt>, <tt>endFunction</tt>, etc. So this can provide a convenient way to monitor the progress of an executing test script.''
 
+=Selenium Server=
+
+SelBlocks can also be used with Selenium Server. To make it available to tests being run in the server, use command line option:
+
+  -userExtensions user-extensions.js
+
+The latest version of user-extensions.js can be downloaded here: https://github.com/refactoror/SelBlocks
+
+For more information, see: http://www.seleniumhq.org/docs/08_user_extensions.jsp#using-user-extensions-with-selenium-ide
+
 =Limitations=
 
 SelBlock is incompatible with flowControl (and derivatives), because they unilaterally modify <tt>selenium.reset()</tt>. Note however that SelBlocks provides equivalent commands, and is generally a plug-compatible replacement.
@@ -154,7 +164,8 @@ I tend to agree, in principle, with Dan Fabulich's view on keeping HTML Selenese
 
 =Revision History=
 
-* 2014-12-18: v2.0.2
+* 2015-??-??: v2.0.2
+** SelBlocks now works with Selenium Server. A big thanks to Matthew Kastor for this contribution.
 ** Added ability to catch verify command faliures
 ** Fixed Issue #6 Try/catch not clearing error status
 ** Fixed Issue #11 Top-level try/finally leaves Selenium IDE in running mode

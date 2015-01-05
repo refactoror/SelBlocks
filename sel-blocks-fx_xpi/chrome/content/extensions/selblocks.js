@@ -255,14 +255,41 @@ function $X(xpath, contextNode, resultType) {
     }
     // skip over comments
     while (this.debugIndex < testCase.commands.length) {
-      var command = testCase.commands[this.debugIndex];
+      // we're just incrementing the index by 1 until we find the next command
+      // on the server, the _advanceToNextRow does that and a couple other
+      // things that are apparently necessary on the server. The debugIndex and
+      // nextCommandRowIndex mean the same thing between the IDE and server,
+      // so I turned them both into pseudo properties with getters/setters
+      // that point to a hidden property. They'll both always have the same value.
+      // only reason I'm not changing this to an intercept and using the original
+      // nextCommand when on the server is because the selblocks compile
+      // function relies on the commands array. I don't know if there's some
+      // underlying collection existing on both the server and IDE that could be
+      // used instead.
+      if (globalContext.onServer === true) {
+        this._advanceToNextRow();
+        // _advanceToNextRow could set the current row null, it only gets
+        // command rows. No point in continuing if that's the case, because
+        // we've run out of commands.
+        if (this.currentRow == null) {
+            return null;
+        }
+      }
+        var command = testCase.commands[this.debugIndex];
       if (command.type === "command") {
+        this.runTimeStamp = Date.now();
         return command;
       }
       this.debugIndex++;
     }
     return null;
   }
+
+  /**
+   * Creates a pointer to the next command to execute. This pointer is used by
+   * nextCommand when considering what to do next.
+   * @param {Number} cmdIdx The index of the next command to execute.
+   */
   function setNextCommand(cmdIdx) {
     assert(cmdIdx >= 0 && cmdIdx < testCase.commands.length,
       " Cannot branch to non-existent command @" + (cmdIdx+1));
@@ -277,6 +304,10 @@ function $X(xpath, contextNode, resultType) {
   $$.fn.interceptAfter(Selenium.prototype, "reset", function()
   {
     $$.LOG.trace("In tail intercept :: Selenium.reset()");
+    $$.seleniumTestRunner = (globalContext.onServer)
+      ? htmlTestRunner             // Selenium Server
+      : editor.selDebugger.runner; // Selenium IDE
+
     try {
       compileSelBlocks();
     }
@@ -720,8 +751,8 @@ function $X(xpath, contextNode, resultType) {
 
     if ($$.tcf.nestingLevel === 0) {
       // enable special command handling
-      $$.fn.interceptPush(editor.selDebugger.runner.currentTest, "resume",
-          $$.handleAsTryBlock, { manageError: handleCommandError });
+      $$.fn.interceptPush($$.seleniumTestRunner.currentTest, "resume",
+        $$.handleAsTryBlock, { manageError: handleCommandError });
     }
     $$.LOG.debug("++ try nesting: " + $$.tcf.nestingLevel);
     // continue into try-block
@@ -1342,7 +1373,7 @@ function $X(xpath, contextNode, resultType) {
       return;
     }
     // intercept command processing and simply stop test execution instead of executing the next command
-    $$.fn.interceptOnce(editor.selDebugger.runner.currentTest, "resume", $$.handleAsExitTest);
+    $$.fn.interceptOnce($$.seleniumTestRunner.currentTest, "resume", $$.handleAsExitTest);
   };
 
 
@@ -1504,7 +1535,15 @@ function $X(xpath, contextNode, resultType) {
     this.load = function(filepath)
     {
       var fileReader = new FileReader();
-      var fileUrl = urlFor(filepath);
+      var fileUrl;
+      // in order to not break existing tests the IDE will still use urlFor,
+      // on the server it just breaks things. Data can be anywhere on the net,
+      // accessible through proper CORS headers.
+      if (globalContext.onServer === true) {
+        fileUrl = filepath;
+      } else {
+        fileUrl = urlFor(filepath);
+      }
       var xmlHttpReq = fileReader.getDocumentSynchronous(fileUrl);
       $$.LOG.info("Reading from: " + fileUrl);
 
@@ -1598,11 +1637,21 @@ function $X(xpath, contextNode, resultType) {
     this.load = function(filepath)
     {
       var fileReader = new FileReader();
-      var fileUrl = urlFor(filepath);
+      var fileUrl;
+      // in order to not break existing tests the IDE will still use urlFor,
+      // on the server it just breaks things. Data can be anywhere on the net,
+      // accessible through proper CORS headers.
+      if (globalContext.onServer === true) {
+        fileUrl = filepath;
+      } else {
+        fileUrl = urlFor(filepath);
+      }
       var xmlHttpReq = fileReader.getDocumentSynchronous(fileUrl);
       $$.LOG.info("Reading from: " + fileUrl);
 
       var fileObj = xmlHttpReq.responseText;
+      fileObj = fileObj.replace("/\uFFFD/g", "").replace(/\0/g, "");
+      $$.LOG.info(fileObj);
       varsets = eval(fileObj);
       if (varsets === null || varsets.length === 0) {
         throw new Error("A JSON object could not be loaded, or the file was empty.");
@@ -1680,6 +1729,9 @@ function $X(xpath, contextNode, resultType) {
   }
 
   function urlFor(filepath) {
+    if (filepath.indexOf("http") == 0) {
+      return filepath;
+    }
     var URL_PFX = "file://";
     var url = filepath;
     if (filepath.substring(0, URL_PFX.length).toLowerCase() !== URL_PFX) {
@@ -1701,7 +1753,12 @@ function $X(xpath, contextNode, resultType) {
     // htmlSuite mode of SRC? TODO is there a better way to decide whether in SRC mode?
     if (window.location.href.indexOf("selenium-server") >= 0) {
       $$.LOG.debug("FileReader() is running in SRC mode");
-      absUrl = absolutify(url, htmlTestRunner.controlPanel.getTestSuiteName());
+      // there's no need to absolutify the url, the browser will do that for you
+      // when you make the request. The data may reside anywhere on the site, or
+      // within the "virtual directory" created by the selenium server proxy.
+      // I don't want to limit the ability to parse files that actually exist on
+      // the site, like sitemaps or JSON responses to api calls.
+      absUrl = url;
     }
     else {
       absUrl = absolutify(url, selenium.browserbot.baseUrl);
