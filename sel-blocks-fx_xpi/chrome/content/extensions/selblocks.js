@@ -217,6 +217,31 @@ function $X(xpath, contextNode, resultType) {
       throw new Error("No context to exit from");
     }
   };
+  /**
+   * Stores variable into the context chain in the last parent where it was
+   *  defined. This allows values to bubble up to their relevant parent so that
+   *  you don't have to pass everything in global scope. The variable must exist
+   *  in a parent scope in order to be caught there, otherwise it will get to
+   *  the global scope and be set there.
+   * @param {String} propName The name of the variable.
+   * @param {Mixed} val Any value you could set for a variable.
+   */
+  ContextManager.prototype.storeAtClosestContextWithPropName =
+  function storeAtClosestContextWithPropName (propName, val) {
+      var out = undefined;
+      var idx = this.contexts.length - 1;
+      while (idx >= 0 && out === undefined) {
+          if(this.contexts[idx].here.hasOwnProperty(propName)) {
+              this.contexts[idx].here[String(propName)] = val;
+              out = true;
+          }
+          idx--;
+      }
+      if(out === undefined) {
+          storedVarsGlobal[String(propName)] = val;
+          $$.LOG.warn(String(propName) + " not found, setting global variable");
+      }
+  };
   contextManager = new ContextManager();
   /**
    * State information about the cache.
@@ -1531,6 +1556,26 @@ function $X(xpath, contextNode, resultType) {
 
   Selenium.prototype.doStoreLocalAttribute = function(target, varName) {
     storedVarsLocal[varName] = this.page().findAttribute(target);
+  };
+  
+  Selenium.prototype.doStoreAt = function(value, varName) {
+    contextManager.storeAtClosestContextWithPropName(varName, value);
+  };
+  
+  Selenium.prototype.doStoreEvalAt = function(value, varName) {
+    var val = evalWithVars(String(value));
+    contextManager.storeAtClosestContextWithPropName(varName, val);
+  };
+
+  Selenium.prototype.doStoreAtText = function(target, varName) {
+    var element = this.page().findElement(target);
+    var value = getText(element);
+    contextManager.storeAtClosestContextWithPropName(varName, value);
+  };
+
+  Selenium.prototype.doStoreAtAttribute = function(target, varName) {
+    var value = this.page().findAttribute(target);
+    contextManager.storeAtClosestContextWithPropName(varName, value);
   };
   
   function evalWithVars(expr) {
