@@ -2059,7 +2059,9 @@ function $X(xpath, contextNode, resultType) {
   {
     var funcIdx, fName, caseName;
     assertRunning(); // TBD: can we do single execution, ie, run from this point then break on return?
-    if (argSpec) {
+    // throws an error if given gibberish. IE considers the assertion "var;" to be invalid.
+    // parseArgs, called further below, can handle the empty string just fine.
+    if (argSpec && argSpec != '') {
       assertCompilable("var ", argSpec, ";", "Invalid call parameter(s)");
     }
     if(funcName.match(/[.]/)) {
