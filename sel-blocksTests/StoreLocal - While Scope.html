@@ -24,13 +24,13 @@
 </tr>
 <tr>
 	<td>assertEval</td>
-	<td>storedVars.l = null;</td>
-	<td>null</td>
+	<td>storedVars.l === null;</td>
+	<td>true</td>
 </tr>
 <tr>
 	<td>assertEval</td>
-	<td>storedVarsGlobal.l = null;</td>
-	<td>null</td>
+	<td>storedVarsGlobal.l === null;</td>
+	<td>true</td>
 </tr>
 <tr>
 	<td>store</td>
@@ -102,7 +102,6 @@
 	<td>&quot;${l}&quot; === &quot;this is stored locally&quot;</td>
 	<td>false</td>
 </tr>
-
 </tbody></table>
 </body>
 </html>
