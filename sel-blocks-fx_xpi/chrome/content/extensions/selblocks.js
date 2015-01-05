@@ -271,7 +271,12 @@ function $X(xpath, contextNode, resultType) {
      */
     init : function cacheInit() {
       cachedCommandsData.initializing = true;
-      var _mytitle = testCase.title || "untitiled";
+      var _mytitle;
+      if(globalContext.onServer === true) {
+        _mytitle = testCase.htmlTestCase.testDocument.title || "untitiled";
+      } else {
+        _mytitle = testCase.title || "untitiled";
+      }
       // the current case displayed in the IDE
       cachedCommandsData.currentCaseTitle = String(_mytitle);
       // the current case for looking up functions
@@ -394,8 +399,10 @@ function $X(xpath, contextNode, resultType) {
       
       if(globalContext.onServer === true) {
         this.currentRow = this.htmlTestCase.commandRows[this.debugIndex];
-        command = this.currentRow.getCommand();
-        command.type = "command";
+        if(cachedCommandsData.activeCaseTitle === cachedCommandsData.currentCaseTitle) {
+          command = this.currentRow.getCommand();
+          command.type = "command";
+        }
         if (this.sejsElement) {
             this.currentItem = agenda.pop();
             this.currentRowIndex = this.debugIndex;
