@@ -4,81 +4,81 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
-<title>while</title>
+<title>try - catch specific error</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">foreach</td></tr>
+<tr><td rowspan="1" colspan="3">try - catch specific error</td></tr>
 </thead><tbody>
+<tr>
+	<td>log</td>
+	<td>&quot;-- catch specific error --&quot;</td>
+	<td></td>
+</tr>
 <tr>
 	<td>resetEmitted</td>
 	<td></td>
 	<td></td>
 </tr>
 <tr>
-	<td>deleteVars</td>
-	<td>w</td>
-	<td></td>
-</tr>
-<tr>
-	<td>store</td>
-	<td>3</td>
-	<td>w</td>
-</tr>
-<tr>
 	<td>emit</td>
-	<td>&quot;START: ${w}&quot;</td>
-	<td></td>
-</tr>
-<!----- no iterations-->
-<tr>
-	<td>while</td>
-	<td>w == 42</td>
+	<td>&quot;([/&quot;</td>
 	<td></td>
 </tr>
 <tr>
-	<td>emit</td>
-	<td>&quot;SHOULD NEVER HAPPEN&quot;</td>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr>
+	<td>try</td>
+	<td>tc1</td>
 	<td></td>
 </tr>
 <tr>
-	<td>endWhile</td>
-	<td></td>
-	<td></td>
-</tr>
-<!----- several iterations-->
-<tr>
-	<td>while</td>
-	<td>w &gt; 0</td>
+	<td>throw</td>
+	<td>&quot;blamo catch ALL&quot;</td>
 	<td></td>
 </tr>
 <tr>
-	<td>emit</td>
-	<td>&quot;iter=${w}&quot;</td>
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached, due to thrown&quot;</td>
 	<td></td>
 </tr>
 <tr>
-	<td>storeEval</td>
-	<td>${w}-1</td>
-	<td>w</td>
-</tr>
-<tr>
-	<td>endWhile</td>
+	<td>catch</td>
 	<td></td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;END: ${w}&quot;</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
 	<td></td>
 </tr>
-<!----- check results-->
+<tr>
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+</tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START: 3~iter=3~iter=2~iter=1~END: 3&quot;</td>
+	<td>&quot;([/~caught 'blamo catch ALL'~/])&quot;</td>
 	<td></td>
 </tr>
+
 </tbody></table>
 </body>
 </html>

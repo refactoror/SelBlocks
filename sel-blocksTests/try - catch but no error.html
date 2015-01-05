@@ -4,81 +4,76 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
-<title>while</title>
+<title>try - catch but no error</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">foreach</td></tr>
+<tr><td rowspan="1" colspan="3">try - catch but no error</td></tr>
 </thead><tbody>
+<tr>
+	<td>log</td>
+	<td>&quot;-- try/catch, but no error --&quot;</td>
+	<td></td>
+</tr>
 <tr>
 	<td>resetEmitted</td>
 	<td></td>
 	<td></td>
 </tr>
 <tr>
-	<td>deleteVars</td>
-	<td>w</td>
-	<td></td>
-</tr>
-<tr>
-	<td>store</td>
-	<td>3</td>
-	<td>w</td>
-</tr>
-<tr>
 	<td>emit</td>
-	<td>&quot;START: ${w}&quot;</td>
+	<td>&quot;([/&quot;</td>
 	<td></td>
 </tr>
-<!----- no iterations-->
 <tr>
-	<td>while</td>
-	<td>w == 42</td>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr>
+	<td>try</td>
+	<td>tc0</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;SHOULD NEVER HAPPEN&quot;</td>
+	<td>&quot;trying&quot;</td>
 	<td></td>
 </tr>
 <tr>
-	<td>endWhile</td>
+	<td>catch</td>
 	<td></td>
 	<td></td>
 </tr>
-<!----- several iterations-->
 <tr>
-	<td>while</td>
-	<td>w &gt; 0</td>
+	<td>assertEval</td>
+	<td>&quot;should NEVER enter this catch block due to no error&quot;</td>
 	<td></td>
 </tr>
 <tr>
-	<td>emit</td>
-	<td>&quot;iter=${w}&quot;</td>
+	<td>endTry</td>
+	<td></td>
 	<td></td>
 </tr>
+<!--^ ^ ^ ^-->
 <tr>
-	<td>storeEval</td>
-	<td>${w}-1</td>
-	<td>w</td>
-</tr>
-<tr>
-	<td>endWhile</td>
-	<td></td>
-	<td></td>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;END: ${w}&quot;</td>
+	<td>&quot;/])&quot;</td>
 	<td></td>
 </tr>
-<!----- check results-->
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START: 3~iter=3~iter=2~iter=1~END: 3&quot;</td>
+	<td>&quot;([/~trying~/])&quot;</td>
 	<td></td>
 </tr>
+
 </tbody></table>
 </body>
 </html>

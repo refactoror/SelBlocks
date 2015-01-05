@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
+<title>try - command bubbling error replaced by return</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">try - command bubbling error replaced by return</td></tr>
+</thead><tbody>
+<tr>
+	<td>log</td>
+	<td>&quot;-- command bubbling, error replaced by return --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;calling&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>call</td>
+	<td>cmdBubA</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;returned ${_result}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>function</td>
+	<td>cmdBubA</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;in cmdBubA&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr>
+	<td>try</td>
+	<td>cmdBub-tcf</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;trying&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;returning (1)&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>return</td>
+	<td>1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;finallying&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;returning (2)&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>return</td>
+	<td>2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached, due to return/return above&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;([/~calling~in cmdBubA~trying~returning (1)~finallying~returning (2)~returned 2~/])&quot;</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

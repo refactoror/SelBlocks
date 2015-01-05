@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
+<title>StoreAt - Function Scope Nesting</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">StoreAt - Function Scope Nesting</td></tr>
+</thead><tbody>
+<!--function for setting a variable at it's location / ancestor / parent-->
+<tr>
+	<td>function</td>
+	<td>storel</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeAt</td>
+	<td>this ends up global</td>
+	<td>notDefined</td>
+</tr>
+<tr>
+	<td>storeAt</td>
+	<td>this is stored in an ancestor</td>
+	<td>l</td>
+</tr>
+<!--storeAt only makes global vars if it can't find a definition in preceeding scopes-->
+<tr>
+	<td>assertEval</td>
+	<td>storedVarsGlobal.notDefined === &quot;this ends up global&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === &quot;this is stored in an ancestor&quot;</td>
+	<td>false</td>
+</tr>
+<!--storeAt makes the variables available in parent scopes so-->
+<!--they're visible as if they were local. -->
+<!--block vars, and ${} notation work transparently.-->
+<tr>
+	<td>assertEval</td>
+	<td>storedVars.l === &quot;this is stored in an ancestor&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>storedVarsLocal.l === &quot;this is stored in an ancestor&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${l}&quot; === &quot;this is stored in an ancestor&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--storeAt will set the value of a named variable in a parent scope-->
+<tr>
+	<td>getEval</td>
+	<td>storedVarsGlobal.notDefined = null</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>storedVarsGlobal.notDefined === null</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVarsGlobal.l = null;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === null;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>storeLocal</td>
+	<td>exists in parent</td>
+	<td>l</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>storedVars.l === &quot;exists in parent&quot;;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>call</td>
+	<td>storel</td>
+	<td></td>
+</tr>
+<!--when defined in a parent scope, the variable will not bubble up to global scope-->
+<tr>
+	<td>assertEval</td>
+	<td>storedVarsGlobal.notDefined === &quot;this ends up global&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === &quot;this is stored in an ancestor&quot;</td>
+	<td>false</td>
+</tr>
+<!--when defined in a parent scope, the nearest ancestor catches the new value for the variable-->
+<tr>
+	<td>assertEval</td>
+	<td>storedVars.l === &quot;this is stored in an ancestor&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>storedVarsLocal.l === &quot;this is stored in an ancestor&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${l}&quot; === &quot;this is stored in an ancestor&quot;</td>
+	<td>true</td>
+</tr>
+</tbody></table>
+</body>
+</html>
