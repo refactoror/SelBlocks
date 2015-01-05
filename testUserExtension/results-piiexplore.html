@@ -54,31 +54,31 @@ a {
 </tr>
 <tr>
 <td>totalTime:</td>
-<td>31</td>
+<td>50</td>
 </tr>
 <tr>
 <td>numTestTotal:</td>
-<td>45</td>
-</tr>
-<tr>
-<td>numTestPasses:</td>
-<td>44</td>
-</tr>
-<tr>
-<td>numTestFailures:</td>
-<td>1</td>
-</tr>
-<tr>
-<td>numCommandPasses:</td>
 <td>59</td>
 </tr>
 <tr>
+<td>numTestPasses:</td>
+<td>54</td>
+</tr>
+<tr>
+<td>numTestFailures:</td>
+<td>5</td>
+</tr>
+<tr>
+<td>numCommandPasses:</td>
+<td>196</td>
+</tr>
+<tr>
 <td>numCommandFailures:</td>
-<td>0</td>
+<td>4</td>
 </tr>
 <tr>
 <td>numCommandErrors:</td>
-<td>1</td>
+<td>2</td>
 </tr>
 <tr>
 <td>Selenium Version:</td>
@@ -91,8 +91,8 @@ a {
 <tr>
 <td>
 <table class="selenium" id="suiteTable" border="1" cellspacing="1" cellpadding="1"><tbody>
-<tr class="title status_failed"><td><b>Test Suite</b></td></tr>
-<tr class="  status_passed"><td><a href="#testresult0">README</a></td></tr>
+<tr class="title      status_failed"><td><b>Test Suite</b></td></tr>
+<tr class="  status_failed"><td><a href="#testresult0">README</a></td></tr>
 <tr class="  status_passed"><td><a href="#testresult1">eval</a></td></tr>
 <tr class="  status_passed"><td><a href="#testresult2">branching</a></td></tr>
 <tr class="  status_passed"><td><a href="#testresult3">if-1</a></td></tr>
@@ -137,6 +137,20 @@ a {
 <tr class="  status_passed"><td><a href="#testresult42">exitTest - base case</a></td></tr>
 <tr class="  status_passed"><td><a href="#testresult43">exitTest - from within a loop</a></td></tr>
 <tr class="  status_passed"><td><a href="#testresult44">exitTest - from within a function</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult45">CreateGlobalVars</a></td></tr>
+<tr class="  status_failed"><td><a href="#testresult46">GlobalFunctions</a></td></tr>
+<tr class="  status_failed"><td><a href="#testresult47">GlobalFunctions 2</a></td></tr>
+<tr class="  status_failed"><td><a href="#testresult48">CallGlobalFunction</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult49">DefineFunctionParameters - Base</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult50">DefineFunctionParameters - With Default Values</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult51">StoreLocal - Function Scope</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult52">StoreGlobal - Function Scope</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult53">StoreGlobal - While Scope</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult54">StoreLocal - While Scope</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult55">Store - Behaves as StoreLocal</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult56">Function - Can Return Value</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult57">StoreAt - Function Scope Nesting</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult58">StoreAt - While Scope Nesting</a></td></tr>
 </tbody></table>
 
 
@@ -147,13 +161,13 @@ a {
 <td><a name="testresult0">README.html</a><br/><div>
 <table border="1" cellspacing="1" cellpadding="1">
 <thead>
-<tr class="title status_passed"><td rowspan="1" colspan="3">README</td></tr>
+<tr class="title status_failed"><td rowspan="1" colspan="3">README</td></tr>
 </thead><tbody>
 <!---- SelBench is required for this testsuite -->
-<tr class="  status_done" style="cursor: pointer;">
+<tr class="  status_failed" style="cursor: pointer;">
 	<td>open</td>
 	<td>http://htmlpreview.github.io/?https://github.com/refactoror/SelBlocks/blob/master/sel-blocksTests/_SelBlocks-testpage.html</td>
-	<td></td>
+	<td>Object&nbsp;doesn't&nbsp;support&nbsp;this&nbsp;property&nbsp;or&nbsp;method</td>
 </tr>
 </tbody></table>
 
@@ -2265,7 +2279,7 @@ a {
 <tr class="        status_done" style="cursor: pointer;">
 	<td>function</td>
 	<td>subBub</td>
-	<td></td>
+	<td>n</td>
 </tr>
 <!--v v v-->
 <tr class="      status_done" style="cursor: pointer;">
@@ -2349,7 +2363,6 @@ a {
 	<td>"([/~trying~calling~0) trying-inner~0) calling~1) trying-inner~1) calling~2) trying-inner~2) throwing~2) finally~1) finally~0) finally~caught 'blamo'~finally~/])"</td>
 	<td></td>
 </tr>
-
 </tbody></table>
 
 
@@ -3201,10 +3214,9 @@ a {
 </tr>
 <tr class="  status_done" style="cursor: pointer;">
 	<td>assertEmitted</td>
-	<td>"([/~calling~in cmdBubC~trying~returning (1)~finallying~throwing~caught 'this-error-replaces-return-1'~returned 2~/])"</td>
+	<td>"([/~calling~in cmdBubC~trying~returning (1)~finallying~throwing~caught 'this-error-replaces-return-1'~returned ${_result}~/])"</td>
 	<td></td>
 </tr>
-
 </tbody></table>
 
 
@@ -3449,7 +3461,7 @@ a {
 <!----- check results-->
 <tr class="  status_done" style="cursor: pointer;">
 	<td>assertEmitted</td>
-	<td>"START: 3~iter=3~iter=2~iter=1~END: 0"</td>
+	<td>"START: 3~iter=3~iter=2~iter=1~END: 3"</td>
 	<td></td>
 </tr>
 </tbody></table>
@@ -4247,7 +4259,7 @@ a {
 <!----- check results-->
 <tr class="  status_done" style="cursor: pointer;">
 	<td>assertEmitted</td>
-	<td>"START 2~while=2~foreach=dilbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~foreach=dogbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~while=1~foreach=dilbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~foreach=dogbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~END 0"</td>
+	<td>"START 2~while=2~foreach=dilbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~foreach=dogbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~while=1~foreach=dilbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~foreach=dogbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~END 2"</td>
 	<td></td>
 </tr>
 </tbody></table>
@@ -4262,25 +4274,30 @@ a {
 <tr class="title status_passed"><td rowspan="1" colspan="3">subtest</td></tr>
 </thead><tbody>
 <tr class="  status_done" style="cursor: pointer;">
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr class="  status_done" style="cursor: pointer;">
 	<td>deleteVars</td>
 	<td>sname, srole</td>
 	<td></td>
 </tr>
-<tr class="  status_done" style="cursor: pointer;">
-	<td>emit</td>
-	<td>"START ${sname} ${srole}"</td>
-	<td></td>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"START ${sname} ${srole}" === "START $" + "{sname} $" + "{srole}"</td>
+	<td>true</td>
 </tr>
 <!----- first line-->
 <tr class="    status_done" style="cursor: pointer;">
 	<td>call</td>
 	<td>doSomething</td>
 	<td>sname = "dilbert,Q", srole = "goof"</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${_result}" === "sname=dilbert,Q,srole=goof"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>deleteVars</td>
+	<td>sname, srole</td>
+	<td></td>
 </tr>
 <!--===-->
 <tr class="            status_done" style="cursor: pointer;">
@@ -4289,25 +4306,50 @@ a {
 	<td>sname</td>
 </tr>
 <tr class="          status_done" style="cursor: pointer;">
-	<td>emit</td>
+	<td>return</td>
 	<td>"sname=${sname},srole=${srole}"</td>
 	<td></td>
 </tr>
-<tr class="            status_done" style="cursor: pointer;">
+<tr class="  status_done" style="cursor: pointer;">
 	<td>endFunction</td>
 	<td>doSomething</td>
 	<td></td>
 </tr>
 <!--===-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>deleteVars</td>
+	<td>sname, srole</td>
+	<td></td>
+</tr>
 <tr class="    status_done" style="cursor: pointer;">
 	<td>call</td>
 	<td>doSomething</td>
 	<td>sname = "dogbert", srole = "woof"</td>
 </tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${_result}" === "sname=dogbert,srole=woof"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>deleteVars</td>
+	<td>sname, srole</td>
+	<td></td>
+</tr>
 <tr class="    status_done" style="cursor: pointer;">
 	<td>call</td>
 	<td>doSomething</td>
 	<td>sname = "ratbert", srole = "squeak"</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${_result}" === "sname=ratbert,srole=squeak"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>deleteVars</td>
+	<td>sname, srole</td>
+	<td></td>
 </tr>
 <!------->
 <tr class="      status_done" style="cursor: pointer;">
@@ -4320,21 +4362,25 @@ a {
 	<td>doSomething</td>
 	<td>sname = sname, srole = "super=user"</td>
 </tr>
+<tr class="    status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${_result}" === "sname=${sname},srole=super=user"</td>
+	<td>true</td>
+</tr>
+<tr class="    status_done" style="cursor: pointer;">
+	<td>deleteVars</td>
+	<td>sname, srole</td>
+	<td></td>
+</tr>
 <tr class="      status_done" style="cursor: pointer;">
 	<td>endForeach</td>
 	<td></td>
 	<td></td>
 </tr>
-<tr class="  status_done" style="cursor: pointer;">
-	<td>emit</td>
-	<td>"DONE ${sname} ${srole}"</td>
-	<td></td>
-</tr>
-<!----- check results-->
-<tr class="  status_done" style="cursor: pointer;">
-	<td>assertEmitted</td>
-	<td>"START $" + "{sname} $" + "{srole}~sname=dilbert,Q,srole=goof~sname=dogbert,srole=woof~sname=ratbert,srole=squeak~sname=asok,srole=super=user~sname=alice,srole=super=user~DONE $" + "{sname} $" + "{srole}"</td>
-	<td></td>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"DONE ${sname} ${srole}" === "DONE $" + "{sname} $" + "{srole}"</td>
+	<td>true</td>
 </tr>
 <!--=== Error validations-->
 <!---!- -->
@@ -4350,8 +4396,8 @@ a {
 </tr>
 <!--=== deprecated script commands-->
 <tr class="  status_done" style="cursor: pointer;">
-	<td>resetEmitted</td>
-	<td></td>
+	<td>deleteVars</td>
+	<td>sname, srole</td>
 	<td></td>
 </tr>
 <tr class="    status_done" style="cursor: pointer;">
@@ -4360,11 +4406,11 @@ a {
 	<td>sname</td>
 </tr>
 <tr class="  status_done" style="cursor: pointer;">
-	<td>emit</td>
+	<td>return</td>
 	<td>"sname=${sname},srole=${srole}"</td>
 	<td></td>
 </tr>
-<tr class="    status_done" style="cursor: pointer;">
+<tr class="  status_done" style="cursor: pointer;">
 	<td>endScript</td>
 	<td>doDeprecated</td>
 	<td></td>
@@ -4374,9 +4420,14 @@ a {
 	<td>doDeprecated</td>
 	<td>sname = "wally", srole = "lazy"</td>
 </tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${_result}" === "sname=wally,srole=lazy"</td>
+	<td>true</td>
+</tr>
 <tr class="  status_done" style="cursor: pointer;">
-	<td>assertEmitted</td>
-	<td>"sname=wally,srole=lazy"</td>
+	<td>deleteVars</td>
+	<td>sname, srole</td>
 	<td></td>
 </tr>
 </tbody></table>
@@ -4715,9 +4766,1255 @@ a {
 
 </div></td>
 <td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult45">CreateGlobalVars.html</a><br/><div>
+<table border="1" cellspacing="1" cellpadding="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">CreateGlobalVars</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>getEval</td>
+	<td>globalStoredVars = {};</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult46">GlobalFunctions.html</a><br/><div>
+<table border="1" cellspacing="1" cellpadding="1">
+<thead>
+<tr class="title status_failed"><td rowspan="1" colspan="3">functions</td></tr>
+</thead><tbody>
+<tr class="    status_done" style="cursor: pointer;">
+	<td>function</td>
+	<td>setGlobalVar</td>
+	<td></td>
+</tr>
+<tr class="  status_failed" style="cursor: pointer;">
+	<td>open</td>
+	<td>http://htmlpreview.github.io/</td>
+	<td>Function&nbsp;expected</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>getEval</td>
+	<td>globalStoredVars.aGlobalVar = "set";</td>
+	<td></td>
+</tr>
+<tr class="    status_done" style="cursor: pointer;">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>getEval</td>
+	<td>globalStoredVars.aGlobalVar = "reset";</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertNotEval</td>
+	<td>globalStoredVars.aGlobalVar;</td>
+	<td>set</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>globalStoredVars.aGlobalVar;</td>
+	<td>reset</td>
+</tr>
+<tr class="    status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>setGlobalVar</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>globalStoredVars.aGlobalVar;</td>
+	<td>set</td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult47">GlobalFunctions 2.html</a><br/><div>
+<table border="1" cellspacing="1" cellpadding="1">
+<thead>
+<tr class="title status_failed"><td rowspan="1" colspan="3">GlobalFunctions 2</td></tr>
+</thead><tbody>
+<tr class="    status_done" style="cursor: pointer;">
+	<td>function</td>
+	<td>doStuff</td>
+	<td></td>
+</tr>
+<tr class="  status_failed" style="cursor: pointer;">
+	<td>open</td>
+	<td>http://htmlpreview.github.io/</td>
+	<td></td>
+</tr>
+<tr class="    status_done" style="cursor: pointer;">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="    status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>doStuff</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertLocation</td>
+	<td>http://htmlpreview.github.io/</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult48">CallGlobalFunction.html</a><br/><div>
+<table border="1" cellspacing="1" cellpadding="1">
+<thead>
+<tr class="title status_failed"><td rowspan="1" colspan="3">CallGlobalFunction</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>getEval</td>
+	<td>globalStoredVars.aGlobalVar = "reset";</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertNotEval</td>
+	<td>globalStoredVars.aGlobalVar;</td>
+	<td>set</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>globalStoredVars.aGlobalVar;</td>
+	<td>reset</td>
+</tr>
+<tr class="            status_failed" style="cursor: pointer;">
+	<td>call</td>
+	<td>GlobalFunctions.setGlobalVar</td>
+	<td>Command&nbsp;execution&nbsp;failure.&nbsp;Please&nbsp;search&nbsp;the&nbsp;user&nbsp;group&nbsp;at&nbsp;https://groups.google.com/forum/#!forum/selenium-users&nbsp;for&nbsp;error&nbsp;details&nbsp;from&nbsp;the&nbsp;log&nbsp;window.&nbsp;&nbsp;The&nbsp;error&nbsp;message&nbsp;is:&nbsp;@4:&nbsp;[call|GlobalFunctions.setGlobalVar]&nbsp;Invalid&nbsp;call&nbsp;parameter(s)&nbsp;'Object&nbsp;doesn't&nbsp;support&nbsp;this&nbsp;property&nbsp;or&nbsp;method':&nbsp;Expected&nbsp;';'</td>
+</tr>
+<tr style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>globalStoredVars.aGlobalVar;</td>
+	<td>set</td>
+</tr>
+<tr style="cursor: pointer;">
+	<td>call</td>
+	<td>GlobalFunctions 2.doStuff</td>
+	<td></td>
+</tr>
+<tr style="cursor: pointer;">
+	<td>assertLocation</td>
+	<td>http://htmlpreview.github.io/</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult49">DefineFunctionParameters - Base.html</a><br/><div>
+<table border="1" cellspacing="1" cellpadding="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">DefineFunctionParameters - Base</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>store</td>
+	<td>original</td>
+	<td>x</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>store</td>
+	<td>original</td>
+	<td>y</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${x}" === "original";</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${y}" === "original";</td>
+	<td>true</td>
+</tr>
+<tr class="    status_done" style="cursor: pointer;">
+	<td>function</td>
+	<td>bob</td>
+	<td>x,y</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${x}" === "overwritten"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVars.y === undefined</td>
+	<td>true</td>
+</tr>
+<tr class="    status_done" style="cursor: pointer;">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="    status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>bob</td>
+	<td>x="overwritten"</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${x}" === "overwritten"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${x}" === "original";</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVars.y === undefined</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${y}" === "original";</td>
+	<td>true</td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult50">DefineFunctionParameters - With Default Values.html</a><br/><div>
+<table border="1" cellspacing="1" cellpadding="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">DefineFunctionParameters - With Default Values</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>store</td>
+	<td>original</td>
+	<td>x</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>store</td>
+	<td>original</td>
+	<td>y</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${x}" === "original";</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${y}" === "original";</td>
+	<td>true</td>
+</tr>
+<!--check that x and y do not leak outside of function scope-->
+<tr class="          status_done" style="cursor: pointer;">
+	<td>function</td>
+	<td>leakTest</td>
+	<td>x="fn default x",y="fn default y"</td>
+</tr>
+<tr class="        status_done" style="cursor: pointer;">
+	<td>store</td>
+	<td>overwritten</td>
+	<td>x</td>
+</tr>
+<tr class="        status_done" style="cursor: pointer;">
+	<td>store</td>
+	<td>overwritten</td>
+	<td>y</td>
+</tr>
+<tr class="          status_done" style="cursor: pointer;">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--check that x and y both take default values when unspecified, but only in function scope-->
+<tr class="    status_done" style="cursor: pointer;">
+	<td>function</td>
+	<td>defaultsTest</td>
+	<td>x="fn default x",y="fn default y"</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>${x} === "fn default x"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>store</td>
+	<td>"overwritten"</td>
+	<td>x</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>${x} === "overwritten"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>${y} === "fn default y"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>store</td>
+	<td>"overwritten"</td>
+	<td>y</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>${y} === "overwritten"</td>
+	<td>true</td>
+</tr>
+<tr class="    status_done" style="cursor: pointer;">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--defaultsTest 00-->
+<tr class="    status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>defaultsTest</td>
+	<td></td>
+</tr>
+<!--leakTest 00-->
+<tr class="    status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>leakTest</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${x}" === "fn default x"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${x}" === "overwritten"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${x}" === "original";</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${y}" === "fn default y"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${y}" === "overwritten"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${y}" === "original";</td>
+	<td>true</td>
+</tr>
+<!--leakTest 01-->
+<tr class="    status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>leakTest</td>
+	<td>y = "overwritten"</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${x}" === "fn default x"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${x}" === "overwritten"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${x}" === "original";</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${y}" === "fn default y"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${y}" === "overwritten"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${y}" === "original";</td>
+	<td>true</td>
+</tr>
+<!--leakTest 10-->
+<tr class="    status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>leakTest</td>
+	<td>x = "overwritten"</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${x}" === "fn default x"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${x}" === "overwritten"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${x}" === "original";</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${y}" === "fn default y"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${y}" === "overwritten"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${y}" === "original";</td>
+	<td>true</td>
+</tr>
+<!--leakTest 11-->
+<tr class="    status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>leakTest</td>
+	<td>x = "overwritten", y = "overwritten"</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${x}" === "fn default x"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${x}" === "overwritten"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${x}" === "original";</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${y}" === "fn default y"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${y}" === "overwritten"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${y}" === "original";</td>
+	<td>true</td>
+</tr>
+
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult51">StoreLocal - Function Scope.html</a><br/><div>
+<table border="1" cellspacing="1" cellpadding="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">StoreLocal - Base</td></tr>
+</thead><tbody>
+<!--setting a local variable from function scope-->
+<tr class="    status_done" style="cursor: pointer;">
+	<td>function</td>
+	<td>blockScopeVars</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>storeLocal</td>
+	<td>this is stored locally</td>
+	<td>l</td>
+</tr>
+<!--local variables aren't put onto the global variable object-->
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === "this is stored locally"</td>
+	<td>false</td>
+</tr>
+<!--local variables will be accessible through stored vars,-->
+<!--block vars, and ${} notation as long as they're in scope.-->
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVars.l === "this is stored locally"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsLocal.l === "this is stored locally"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${l}" === "this is stored locally"</td>
+	<td>true</td>
+</tr>
+<tr class="    status_done" style="cursor: pointer;">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--local variables must not persist after exiting scope-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>getEval</td>
+	<td>storedVarsGlobal.l = null;</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>getEval</td>
+	<td>storedVars.l = null;</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVars.l === null;</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === null;</td>
+	<td>true</td>
+</tr>
+<tr class="    status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>blockScopeVars</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === "this is stored locally"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVars.l === "this is stored locally"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsLocal.l === "this is stored locally"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${l}" === "this is stored locally"</td>
+	<td>false</td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult52">StoreGlobal - Function Scope.html</a><br/><div>
+<table border="1" cellspacing="1" cellpadding="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">StoreGlobal - Function Scope</td></tr>
+</thead><tbody>
+<!--setting a global variable from function scope-->
+<tr class="    status_done" style="cursor: pointer;">
+	<td>function</td>
+	<td>blockScopeVars</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>storeGlobal</td>
+	<td>this is stored globally</td>
+	<td>g</td>
+</tr>
+<!--global variables should exist everywhere-->
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.g === "this is stored globally"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVars.g === "this is stored globally"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsLocal.g === "this is stored globally"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${g}" === "this is stored globally"</td>
+	<td>true</td>
+</tr>
+<tr class="    status_done" style="cursor: pointer;">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--global variables must persist after exiting scope-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>getEval</td>
+	<td>storedVarsGlobal.g = null;</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.g === null;</td>
+	<td>true</td>
+</tr>
+<tr class="    status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>blockScopeVars</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.g === "this is stored globally"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVars.g === "this is stored globally"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsLocal.g === "this is stored globally"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${g}" === "this is stored globally"</td>
+	<td>true</td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult53">StoreGlobal - While Scope.html</a><br/><div>
+<table border="1" cellspacing="1" cellpadding="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">StoreGlobal - While Scope</td></tr>
+</thead><tbody>
+<!--clearing any values from previous tests-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>getEval</td>
+	<td>storedVarsGlobal.g = null;</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.g === null;</td>
+	<td>true</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>store</td>
+	<td>1</td>
+	<td>i</td>
+</tr>
+<!--setting a global variable from while scope-->
+<tr class="    status_done" style="cursor: pointer;">
+	<td>while</td>
+	<td>i &gt; 0</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>store</td>
+	<td>0</td>
+	<td>i</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>storeGlobal</td>
+	<td>this is stored globally</td>
+	<td>g</td>
+</tr>
+<!--global variables should exist everywhere-->
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.g === "this is stored globally"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVars.g === "this is stored globally"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsLocal.g === "this is stored globally"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${g}" === "this is stored globally"</td>
+	<td>true</td>
+</tr>
+<tr class="    status_done" style="cursor: pointer;">
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--global variables must persist after exiting scope-->
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.g === "this is stored globally"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVars.g === "this is stored globally"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsLocal.g === "this is stored globally"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${g}" === "this is stored globally"</td>
+	<td>true</td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult54">StoreLocal - While Scope.html</a><br/><div>
+<table border="1" cellspacing="1" cellpadding="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">StoreLocal - While Scope</td></tr>
+</thead><tbody>
+<!--clearing any values from previous tests-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>getEval</td>
+	<td>storedVarsGlobal.l = null;</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>getEval</td>
+	<td>storedVars.l = null;</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVars.l === null;</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === null;</td>
+	<td>true</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>store</td>
+	<td>1</td>
+	<td>i</td>
+</tr>
+<!--setting a local variable from while scope-->
+<tr class="    status_done" style="cursor: pointer;">
+	<td>while</td>
+	<td>i &gt; 0</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>store</td>
+	<td>0</td>
+	<td>i</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>storeLocal</td>
+	<td>this is stored locally</td>
+	<td>l</td>
+</tr>
+<!--local variables aren't put onto the global variable object-->
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === "this is stored locally"</td>
+	<td>false</td>
+</tr>
+<!--local variables will be accessible through stored vars,-->
+<!--block vars, and ${} notation as long as they're in scope.-->
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVars.l === "this is stored locally"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsLocal.l === "this is stored locally"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${l}" === "this is stored locally"</td>
+	<td>true</td>
+</tr>
+<tr class="    status_done" style="cursor: pointer;">
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--local variables must not persist after exiting scope-->
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === "this is stored locally"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVars.l === "this is stored locally"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsLocal.l === "this is stored locally"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${l}" === "this is stored locally"</td>
+	<td>false</td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult55">Store - Behaves as StoreLocal.html</a><br/><div>
+<table border="1" cellspacing="1" cellpadding="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">Store - Behaves as StoreLocal</td></tr>
+</thead><tbody>
+<!--setting a local variable from function scope-->
+<tr class="    status_done" style="cursor: pointer;">
+	<td>function</td>
+	<td>blockScopeVars</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>store</td>
+	<td>this is stored locally</td>
+	<td>l</td>
+</tr>
+<!--local variables aren't put onto the global variable object-->
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === "this is stored locally"</td>
+	<td>false</td>
+</tr>
+<!--local variables will be accessible through stored vars,-->
+<!--block vars, and ${} notation as long as they're in scope.-->
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVars.l === "this is stored locally"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsLocal.l === "this is stored locally"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${l}" === "this is stored locally"</td>
+	<td>true</td>
+</tr>
+<tr class="    status_done" style="cursor: pointer;">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--local variables must not persist after exiting scope-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>getEval</td>
+	<td>storedVarsGlobal.l = null;</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>getEval</td>
+	<td>storedVars.l = null;</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVars.l === null;</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === null;</td>
+	<td>true</td>
+</tr>
+<tr class="    status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>blockScopeVars</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === "this is stored locally"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVars.l === "this is stored locally"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsLocal.l === "this is stored locally"</td>
+	<td>false</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${l}" === "this is stored locally"</td>
+	<td>false</td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult56">Function - Can Return Value.html</a><br/><div>
+<table border="1" cellspacing="1" cellpadding="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">Function - Can Return Value</td></tr>
+</thead><tbody>
+<tr class="    status_done" style="cursor: pointer;">
+	<td>function</td>
+	<td>returnsValue</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>return</td>
+	<td>"banana"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="    status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>returnsValue</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${_result}" === "banana"</td>
+	<td>true</td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult57">StoreAt - Function Scope Nesting.html</a><br/><div>
+<table border="1" cellspacing="1" cellpadding="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">StoreAt - Function Scope Nesting</td></tr>
+</thead><tbody>
+<!--function for setting a variable at it's location / ancestor / parent-->
+<tr class="    status_done" style="cursor: pointer;">
+	<td>function</td>
+	<td>storel</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>storeAt</td>
+	<td>this ends up global</td>
+	<td>notDefined</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>storeAt</td>
+	<td>this is stored in an ancestor</td>
+	<td>l</td>
+</tr>
+<!--storeAt only makes global vars if it can't find a definition in preceeding scopes-->
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.notDefined === "this ends up global"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === "this is stored in an ancestor"</td>
+	<td>false</td>
+</tr>
+<!--storeAt makes the variables available in parent scopes so-->
+<!--they're visible as if they were local. -->
+<!--block vars, and ${} notation work transparently.-->
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVars.l === "this is stored in an ancestor"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsLocal.l === "this is stored in an ancestor"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${l}" === "this is stored in an ancestor"</td>
+	<td>true</td>
+</tr>
+<tr class="    status_done" style="cursor: pointer;">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--storeAt will set the value of a named variable in a parent scope-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>getEval</td>
+	<td>storedVarsGlobal.notDefined = null</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.notDefined === null</td>
+	<td>true</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>getEval</td>
+	<td>storedVarsGlobal.l = null;</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === null;</td>
+	<td>true</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>storeLocal</td>
+	<td>exists in parent</td>
+	<td>l</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVars.l === "exists in parent";</td>
+	<td>true</td>
+</tr>
+<tr class="    status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>storel</td>
+	<td></td>
+</tr>
+<!--when defined in a parent scope, the variable will not bubble up to global scope-->
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.notDefined === "this ends up global"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === "this is stored in an ancestor"</td>
+	<td>false</td>
+</tr>
+<!--when defined in a parent scope, the nearest ancestor catches the new value for the variable-->
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVars.l === "this is stored in an ancestor"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsLocal.l === "this is stored in an ancestor"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${l}" === "this is stored in an ancestor"</td>
+	<td>true</td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult58">StoreAt - While Scope Nesting.html</a><br/><div>
+<table border="1" cellspacing="1" cellpadding="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">StoreAt - While Scope Nesting</td></tr>
+</thead><tbody>
+<!--storeAt will set the value of a named variable in a parent scope-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>getEval</td>
+	<td>storedVarsGlobal.notDefined = null</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.notDefined === null</td>
+	<td>true</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>getEval</td>
+	<td>storedVarsGlobal.l = null;</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === null;</td>
+	<td>true</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>storeLocal</td>
+	<td>exists in parent</td>
+	<td>l</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVars.l === "exists in parent";</td>
+	<td>true</td>
+</tr>
+<!--while block setting a variable at it's location / ancestor / parent-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>storeLocal</td>
+	<td>3</td>
+	<td>x</td>
+</tr>
+<tr class="        status_done" style="cursor: pointer;">
+	<td>while</td>
+	<td>x !== 0</td>
+	<td></td>
+</tr>
+<tr class="      status_done" style="cursor: pointer;">
+	<td>storeAt</td>
+	<td>this ends up global</td>
+	<td>notDefined</td>
+</tr>
+<tr class="      status_done" style="cursor: pointer;">
+	<td>storeAt</td>
+	<td>this is stored in an ancestor</td>
+	<td>l</td>
+</tr>
+<!--storeAt only makes global vars if it can't find a definition in preceeding scopes-->
+<tr class="      status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.notDefined === "this ends up global"</td>
+	<td>true</td>
+</tr>
+<tr class="      status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === "this is stored in an ancestor"</td>
+	<td>false</td>
+</tr>
+<!--storeAt makes the variables available in parent scopes so-->
+<!--they're visible as if they were local. -->
+<!--block vars, and ${} notation work transparently.-->
+<tr class="      status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVars.l === "this is stored in an ancestor"</td>
+	<td>true</td>
+</tr>
+<tr class="      status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsLocal.l === "this is stored in an ancestor"</td>
+	<td>true</td>
+</tr>
+<tr class="      status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${l}" === "this is stored in an ancestor"</td>
+	<td>true</td>
+</tr>
+<tr class="      status_done" style="cursor: pointer;">
+	<td>storeEvalLocal</td>
+	<td>x -= 1</td>
+	<td></td>
+</tr>
+<tr class="        status_done" style="cursor: pointer;">
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>deleteVar</td>
+	<td>x</td>
+	<td></td>
+</tr>
+<!--when defined in a parent scope, the variable will not bubble up to global scope-->
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.notDefined === "this ends up global"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === "this is stored in an ancestor"</td>
+	<td>false</td>
+</tr>
+<!--when defined in a parent scope, the nearest ancestor catches the new value for the variable-->
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVars.l === "this is stored in an ancestor"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>storedVarsLocal.l === "this is stored in an ancestor"</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"${l}" === "this is stored in an ancestor"</td>
+	<td>true</td>
+</tr>
+
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
 </tr></table><pre>
 info: Starting test /selenium-server/tests/README.html
 info: Executing: |open | http://htmlpreview.github.io/?https://github.com/refactoror/SelBlocks/blob/master/sel-blocksTests/_SelBlocks-testpage.html |  |
+error: isNewPageLoaded found an old pageLoadError: Error: Object doesn&apos;t support this property or method
+warn: Stack is: Error: Object doesn&apos;t support this property or method
+   at BrowserBot.prototype._isSamePage (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-browserbot.js:1006:5)
+   at BrowserBot.prototype.pollForLoad (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-browserbot.js:945:9)
+   at pollerFunction (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-browserbot.js:1099:9)
+   at BrowserBot.prototype.runScheduledPollers (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-browserbot.js:1109:9)
+   at TestLoop.prototype.continueTestWhenConditionIsTrue (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-executionloop.js:138:9)
+   at retval (http://htmlpreview.github.io/selenium-server/core/scripts/htmlutils.js:60:5)
+warn: currentTest.recordFailure: Object doesn&apos;t support this property or method
 info: Starting test /selenium-server/tests/eval.html
 info: Executing: |resetEmitted |  |  |
 info: Executing: |emit | &quot;dilbert&quot;.isOneOf(&quot;dilbert&quot;,&quot;dogbert&quot;,&quot;mordac&quot;) |  |
@@ -5244,22 +6541,22 @@ info: Executing: |try | bub-invoke |  |
 info: Executing: |emit | &quot;trying&quot; |  |
 info: Executing: |emit | &quot;calling&quot; |  |
 info: Executing: |call | subBub | n = 0 |
-info: [SelBlocks] branch =&gt; @16: [function|subBub]
-info: Executing: |function | subBub |  |
+info: [SelBlocks] branch =&gt; @16: [function|subBub|n]
+info: Executing: |function | subBub | n |
 info: Executing: |try | tcf-inner |  |
 info: Executing: |emit | &quot;${n}) trying-inner&quot; |  |
 info: Executing: |if | n &lt; 2 |  |
 info: Executing: |emit | &quot;${n}) calling&quot; |  |
 info: Executing: |call | subBub | n = n+1 |
-info: [SelBlocks] branch =&gt; @16: [function|subBub]
-info: Executing: |function | subBub |  |
+info: [SelBlocks] branch =&gt; @16: [function|subBub|n]
+info: Executing: |function | subBub | n |
 info: Executing: |try | tcf-inner |  |
 info: Executing: |emit | &quot;${n}) trying-inner&quot; |  |
 info: Executing: |if | n &lt; 2 |  |
 info: Executing: |emit | &quot;${n}) calling&quot; |  |
 info: Executing: |call | subBub | n = n+1 |
-info: [SelBlocks] branch =&gt; @16: [function|subBub]
-info: Executing: |function | subBub |  |
+info: [SelBlocks] branch =&gt; @16: [function|subBub|n]
+info: Executing: |function | subBub | n |
 info: Executing: |try | tcf-inner |  |
 info: Executing: |emit | &quot;${n}) trying-inner&quot; |  |
 info: Executing: |if | n &lt; 2 |  |
@@ -5294,7 +6591,7 @@ info: Executing: |emit | &quot;finally&quot; |  |
 info: Executing: |endTry | bub-invoke |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: script is: selblocks.tcf.nestingLevel
-info: Executing: |function | subBub |  |
+info: Executing: |function | subBub | n |
 info: [SelBlocks] branch =&gt; @30: [endFunction]
 info: Executing: |endFunction |  |  |
 info: Executing: |emit | &quot;/])&quot; |  |
@@ -5581,7 +6878,7 @@ info: Executing: |function | cmdBubC |  |
 info: [SelBlocks] branch =&gt; @25: [endFunction]
 info: Executing: |endFunction |  |  |
 info: Executing: |emit | &quot;/])&quot; |  |
-info: Executing: |assertEmitted | &quot;([/~calling~in cmdBubC~trying~returning (1)~finallying~throwing~caught &apos;this-error-replaces-return-1&apos;~returned 2~/])&quot; |  |
+info: Executing: |assertEmitted | &quot;([/~calling~in cmdBubC~trying~returning (1)~finallying~throwing~caught &apos;this-error-replaces-return-1&apos;~returned ${_result}~/])&quot; |  |
 info: Starting test /selenium-server/tests/try%20-%20exitTest%20with%20finally%20processing.html
 info: Executing: |log | &quot;-- exitTest w/finally processing --&quot; |  |
 info: [SelBench] -- exitTest w/finally processing --
@@ -5623,11 +6920,11 @@ info: Executing: |endTry | miss |  |
 error: [SelBlocks] Error was not caught: &apos;blamo will NOT be caught at all&apos;
 error: Unexpected Exception: blamo will NOT be caught at all
 error: Exception details: name -&gt; SelblocksError, message -&gt; blamo will NOT be caught at all, idx -&gt; 5, stack -&gt; SelblocksError: blamo will NOT be caught at all
-   at Selenium.prototype.doThrow (http://htmlpreview.github.io/selenium-server/core/scripts/user-extensions.js:1848:5)
+   at Selenium.prototype.doThrow (http://htmlpreview.github.io/selenium-server/core/scripts/user-extensions.js:2006:5)
    at retval (http://htmlpreview.github.io/selenium-server/core/scripts/htmlutils.js:60:5)
    at ActionHandler.prototype.execute (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-commandhandlers.js:314:5)
    at TestLoop.prototype._executeCurrentCommand (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-executionloop.js:112:9)
-   at $$.handleAsTryBlock (http://htmlpreview.github.io/selenium-server/core/scripts/user-extensions.js:1082:7)
+   at $$.handleAsTryBlock (http://htmlpreview.github.io/selenium-server/core/scripts/user-extensions.js:1091:7)
    at retval (http://htmlpreview.github.io/selenium-server/core/scripts/htmlutils.js:60:5)
 warn: currentTest.recordFailure: Command execution failure. Please search the user group at https://groups.google.com/forum/#!forum/selenium-users for error details from the log window.  The error message is: blamo will NOT be caught at all
 info: Starting test /selenium-server/tests/while.html
@@ -5660,7 +6957,7 @@ info: Executing: |while | w &gt; 0 |  |
 info: [SelBlocks] branch =&gt; @11: [endWhile]
 info: Executing: |endWhile |  |  |
 info: Executing: |emit | &quot;END: ${w}&quot; |  |
-info: Executing: |assertEmitted | &quot;START: 3~iter=3~iter=2~iter=1~END: 0&quot; |  |
+info: Executing: |assertEmitted | &quot;START: 3~iter=3~iter=2~iter=1~END: 3&quot; |  |
 info: Starting test /selenium-server/tests/for.html
 info: Executing: |resetEmitted |  |  |
 info: Executing: |deleteVars | f |  |
@@ -6122,80 +7419,92 @@ info: [SelBlocks] branch =&gt; @19: [endWhile]
 info: Executing: |endWhile |  |  |
 info: Executing: |emit | &quot;END ${i}&quot; |  |
 info: Executing: |timerElapsed |  |  |
-info: [SelBench] 3.211 sec elapsed: 
-info: Executing: |assertEmitted | &quot;START 2~while=2~foreach=dilbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~foreach=dogbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~while=1~foreach=dilbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~foreach=dogbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~END 0&quot; |  |
+info: [SelBench] 3.293 sec elapsed: 
+info: Executing: |assertEmitted | &quot;START 2~while=2~foreach=dilbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~foreach=dogbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~while=1~foreach=dilbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~foreach=dogbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~END 2&quot; |  |
 info: Starting test /selenium-server/tests/function.html
-info: Executing: |resetEmitted |  |  |
 info: Executing: |deleteVars | sname, srole |  |
-info: Executing: |emit | &quot;START ${sname} ${srole}&quot; |  |
+info: Executing: |assertEval | &quot;START ${sname} ${srole}&quot; === &quot;START $&quot; + &quot;{sname} $&quot; + &quot;{srole}&quot; | true |
+info: script is: &quot;START ${sname} ${srole}&quot; === &quot;START $&quot; + &quot;{sname} $&quot; + &quot;{srole}&quot;
 info: Executing: |call | doSomething | sname = &quot;dilbert,Q&quot;, srole = &quot;goof&quot; |
-info: [SelBlocks] branch =&gt; @5: [function|doSomething|sname]
+info: [SelBlocks] branch =&gt; @6: [function|doSomething|sname]
 info: Executing: |function | doSomething | sname |
-info: Executing: |emit | &quot;sname=${sname},srole=${srole}&quot; |  |
-info: Executing: |endFunction | doSomething |  |
-info: [SelBlocks] branch =&gt; @4: [call|doSomething|sname = &quot;dilbert,Q&quot;, srole = &quot;goof&quot;]
+info: Executing: |return | &quot;sname=${sname},srole=${srole}&quot; |  |
+info: [SelBlocks] branch =&gt; @3: [call|doSomething|sname = &quot;dilbert,Q&quot;, srole = &quot;goof&quot;]
 info: Executing: |call | doSomething | sname = &quot;dilbert,Q&quot;, srole = &quot;goof&quot; |
+info: Executing: |assertEval | &quot;${_result}&quot; === &quot;sname=dilbert,Q,srole=goof&quot; | true |
+info: script is: &quot;sname=dilbert,Q,srole=goof&quot; === &quot;sname=dilbert,Q,srole=goof&quot;
+info: Executing: |deleteVars | sname, srole |  |
 info: Executing: |function | doSomething | sname |
-info: [SelBlocks] branch =&gt; @7: [endFunction|doSomething]
+info: [SelBlocks] branch =&gt; @8: [endFunction|doSomething]
 info: Executing: |endFunction | doSomething |  |
+info: Executing: |deleteVars | sname, srole |  |
 info: Executing: |call | doSomething | sname = &quot;dogbert&quot;, srole = &quot;woof&quot; |
-info: [SelBlocks] branch =&gt; @5: [function|doSomething|sname]
+info: [SelBlocks] branch =&gt; @6: [function|doSomething|sname]
 info: Executing: |function | doSomething | sname |
-info: Executing: |emit | &quot;sname=${sname},srole=${srole}&quot; |  |
-info: Executing: |endFunction | doSomething |  |
-info: [SelBlocks] branch =&gt; @8: [call|doSomething|sname = &quot;dogbert&quot;, srole = &quot;woof&quot;]
+info: Executing: |return | &quot;sname=${sname},srole=${srole}&quot; |  |
+info: [SelBlocks] branch =&gt; @10: [call|doSomething|sname = &quot;dogbert&quot;, srole = &quot;woof&quot;]
 info: Executing: |call | doSomething | sname = &quot;dogbert&quot;, srole = &quot;woof&quot; |
+info: Executing: |assertEval | &quot;${_result}&quot; === &quot;sname=dogbert,srole=woof&quot; | true |
+info: script is: &quot;sname=dogbert,srole=woof&quot; === &quot;sname=dogbert,srole=woof&quot;
+info: Executing: |deleteVars | sname, srole |  |
 info: Executing: |call | doSomething | sname = &quot;ratbert&quot;, srole = &quot;squeak&quot; |
-info: [SelBlocks] branch =&gt; @5: [function|doSomething|sname]
+info: [SelBlocks] branch =&gt; @6: [function|doSomething|sname]
 info: Executing: |function | doSomething | sname |
-info: Executing: |emit | &quot;sname=${sname},srole=${srole}&quot; |  |
-info: Executing: |endFunction | doSomething |  |
-info: [SelBlocks] branch =&gt; @9: [call|doSomething|sname = &quot;ratbert&quot;, srole = &quot;squeak&quot;]
+info: Executing: |return | &quot;sname=${sname},srole=${srole}&quot; |  |
+info: [SelBlocks] branch =&gt; @13: [call|doSomething|sname = &quot;ratbert&quot;, srole = &quot;squeak&quot;]
 info: Executing: |call | doSomething | sname = &quot;ratbert&quot;, srole = &quot;squeak&quot; |
+info: Executing: |assertEval | &quot;${_result}&quot; === &quot;sname=ratbert,srole=squeak&quot; | true |
+info: script is: &quot;sname=ratbert,srole=squeak&quot; === &quot;sname=ratbert,srole=squeak&quot;
+info: Executing: |deleteVars | sname, srole |  |
 info: Executing: |foreach | sname | &quot;asok&quot;, &quot;alice&quot; |
 info: Executing: |call | doSomething | sname = sname, srole = &quot;super=user&quot; |
-info: [SelBlocks] branch =&gt; @5: [function|doSomething|sname]
+info: [SelBlocks] branch =&gt; @6: [function|doSomething|sname]
 info: Executing: |function | doSomething | sname |
-info: Executing: |emit | &quot;sname=${sname},srole=${srole}&quot; |  |
-info: Executing: |endFunction | doSomething |  |
-info: [SelBlocks] branch =&gt; @11: [call|doSomething|sname = sname, srole = &quot;super=user&quot;]
+info: Executing: |return | &quot;sname=${sname},srole=${srole}&quot; |  |
+info: [SelBlocks] branch =&gt; @17: [call|doSomething|sname = sname, srole = &quot;super=user&quot;]
 info: Executing: |call | doSomething | sname = sname, srole = &quot;super=user&quot; |
+info: Executing: |assertEval | &quot;${_result}&quot; === &quot;sname=${sname},srole=super=user&quot; | true |
+info: script is: &quot;sname=asok,srole=super=user&quot; === &quot;sname=asok,srole=super=user&quot;
+info: Executing: |deleteVars | sname, srole |  |
 info: Executing: |endForeach |  |  |
-info: [SelBlocks] branch =&gt; @10: [foreach|sname|&quot;asok&quot;, &quot;alice&quot;]
+info: [SelBlocks] branch =&gt; @16: [foreach|sname|&quot;asok&quot;, &quot;alice&quot;]
 info: Executing: |foreach | sname | &quot;asok&quot;, &quot;alice&quot; |
 info: Executing: |call | doSomething | sname = sname, srole = &quot;super=user&quot; |
-info: [SelBlocks] branch =&gt; @5: [function|doSomething|sname]
+info: [SelBlocks] branch =&gt; @6: [function|doSomething|sname]
 info: Executing: |function | doSomething | sname |
-info: Executing: |emit | &quot;sname=${sname},srole=${srole}&quot; |  |
-info: Executing: |endFunction | doSomething |  |
-info: [SelBlocks] branch =&gt; @11: [call|doSomething|sname = sname, srole = &quot;super=user&quot;]
+info: Executing: |return | &quot;sname=${sname},srole=${srole}&quot; |  |
+info: [SelBlocks] branch =&gt; @17: [call|doSomething|sname = sname, srole = &quot;super=user&quot;]
 info: Executing: |call | doSomething | sname = sname, srole = &quot;super=user&quot; |
+info: Executing: |assertEval | &quot;${_result}&quot; === &quot;sname=${sname},srole=super=user&quot; | true |
+info: script is: &quot;sname=alice,srole=super=user&quot; === &quot;sname=alice,srole=super=user&quot;
+info: Executing: |deleteVars | sname, srole |  |
 info: Executing: |endForeach |  |  |
-info: [SelBlocks] branch =&gt; @10: [foreach|sname|&quot;asok&quot;, &quot;alice&quot;]
+info: [SelBlocks] branch =&gt; @16: [foreach|sname|&quot;asok&quot;, &quot;alice&quot;]
 info: Executing: |foreach | sname | &quot;asok&quot;, &quot;alice&quot; |
-info: [SelBlocks] branch =&gt; @12: [endForeach]
+info: [SelBlocks] branch =&gt; @20: [endForeach]
 info: Executing: |endForeach |  |  |
-info: Executing: |emit | &quot;DONE ${sname} ${srole}&quot; |  |
-info: Executing: |assertEmitted | &quot;START $&quot; + &quot;{sname} $&quot; + &quot;{srole}~sname=dilbert,Q,srole=goof~sname=dogbert,srole=woof~sname=ratbert,srole=squeak~sname=asok,srole=super=user~sname=alice,srole=super=user~DONE $&quot; + &quot;{sname} $&quot; + &quot;{srole}&quot; |  |
+info: Executing: |assertEval | &quot;DONE ${sname} ${srole}&quot; === &quot;DONE $&quot; + &quot;{sname} $&quot; + &quot;{srole}&quot; | true |
+info: script is: &quot;DONE ${sname} ${srole}&quot; === &quot;DONE $&quot; + &quot;{sname} $&quot; + &quot;{srole}&quot;
 info: Executing: |expectError | &quot;Function does not exist: NONEXISTENT&quot; |  |
 info: Executing: |call | NONEXISTENT |  |
-error: [SelBlocks] Error @16: [call|NONEXISTENT] Function does not exist: NONEXISTENT.
+error: [SelBlocks] Error @23: [call|NONEXISTENT] Function does not exist: NONEXISTENT
 warn: [SelBlocks] __Stack Trace__
 warn: [SelBlocks] @@ No stack trace, (Firefox only)
-info: Executing: |resetEmitted |  |  |
+info: Executing: |deleteVars | sname, srole |  |
 info: Executing: |script | doDeprecated | sname |
 warn: [SelBlocks] The script command has been deprecated and will be removed in future releases. Please use function instead.
-info: [SelBlocks] branch =&gt; @20: [endScript|doDeprecated]
+info: [SelBlocks] branch =&gt; @27: [endScript|doDeprecated]
 info: Executing: |endScript | doDeprecated |  |
 info: Executing: |call | doDeprecated | sname = &quot;wally&quot;, srole = &quot;lazy&quot; |
-info: [SelBlocks] branch =&gt; @18: [script|doDeprecated|sname]
+info: [SelBlocks] branch =&gt; @25: [script|doDeprecated|sname]
 info: Executing: |script | doDeprecated | sname |
 warn: [SelBlocks] The script command has been deprecated and will be removed in future releases. Please use function instead.
-info: Executing: |emit | &quot;sname=${sname},srole=${srole}&quot; |  |
-info: Executing: |endScript | doDeprecated |  |
-info: [SelBlocks] branch =&gt; @21: [call|doDeprecated|sname = &quot;wally&quot;, srole = &quot;lazy&quot;]
+info: Executing: |return | &quot;sname=${sname},srole=${srole}&quot; |  |
+info: [SelBlocks] branch =&gt; @28: [call|doDeprecated|sname = &quot;wally&quot;, srole = &quot;lazy&quot;]
 info: Executing: |call | doDeprecated | sname = &quot;wally&quot;, srole = &quot;lazy&quot; |
-info: Executing: |assertEmitted | &quot;sname=wally,srole=lazy&quot; |  |
+info: Executing: |assertEval | &quot;${_result}&quot; === &quot;sname=wally,srole=lazy&quot; | true |
+info: script is: &quot;sname=wally,srole=lazy&quot; === &quot;sname=wally,srole=lazy&quot;
+info: Executing: |deleteVars | sname, srole |  |
 info: Starting test /selenium-server/tests/function-recursive.html
 info: Executing: |resetEmitted |  |  |
 info: Executing: |deleteVars | degree, n, _result, ud |  |
@@ -6269,7 +7578,7 @@ info: Executing: |return | n * _result |  |
 info: [SelBlocks] branch =&gt; @5: [call|fac|n=degree]
 info: Executing: |call | fac | n=degree |
 info: Executing: |timerElapsed |  |  |
-info: [SelBench] 1.181 sec elapsed: factorial 7
+info: [SelBench] 1.247 sec elapsed: factorial 7
 info: Executing: |emit | degree + &quot;!=&quot; + _result |  |
 info: Executing: |function | fac | n |
 info: [SelBlocks] branch =&gt; @16: [endFunction]
@@ -6392,4 +7701,517 @@ info: [SelBlocks] branch =&gt; @3: [function|doSubExit]
 info: Executing: |function | doSubExit |  |
 info: Executing: |exitTest |  |  |
 info: [SelBlocks] TEST HALTED
+info: Starting test /selenium-server/tests/CreateGlobalVars.html
+info: Executing: |getEval | globalStoredVars = {}; |  |
+info: script is: globalStoredVars = {};
+info: Starting test /selenium-server/tests/GlobalFunctions.html
+info: Executing: |function | setGlobalVar |  |
+info: [SelBlocks] branch =&gt; @4: [endFunction]
+info: Executing: |endFunction |  |  |
+info: Executing: |getEval | globalStoredVars.aGlobalVar = &quot;reset&quot;; |  |
+info: script is: globalStoredVars.aGlobalVar = &quot;reset&quot;;
+info: Executing: |assertNotEval | globalStoredVars.aGlobalVar; | set |
+info: script is: globalStoredVars.aGlobalVar;
+info: Executing: |assertEval | globalStoredVars.aGlobalVar; | reset |
+info: script is: globalStoredVars.aGlobalVar;
+info: Executing: |call | setGlobalVar |  |
+info: [SelBlocks] branch =&gt; @1: [function|setGlobalVar]
+info: Executing: |function | setGlobalVar |  |
+info: Executing: |open | http://htmlpreview.github.io/ |  |
+error: isNewPageLoaded found an old pageLoadError: Error: Permission denied
+warn: currentTest.recordFailure: Function expected
+info: Executing: |getEval | globalStoredVars.aGlobalVar = &quot;set&quot;; |  |
+info: script is: globalStoredVars.aGlobalVar = &quot;set&quot;;
+info: Executing: |endFunction |  |  |
+info: [SelBlocks] branch =&gt; @8: [call|setGlobalVar]
+info: Executing: |call | setGlobalVar |  |
+info: Executing: |assertEval | globalStoredVars.aGlobalVar; | set |
+info: script is: globalStoredVars.aGlobalVar;
+info: Starting test /selenium-server/tests/GlobalFunctions%202.html
+info: Executing: |function | doStuff |  |
+info: [SelBlocks] branch =&gt; @3: [endFunction]
+info: Executing: |endFunction |  |  |
+info: Executing: |call | doStuff |  |
+info: [SelBlocks] branch =&gt; @1: [function|doStuff]
+info: Executing: |function | doStuff |  |
+info: Executing: |open | http://htmlpreview.github.io/ |  |
+warn: currentTest.recordFailure: 
+info: Executing: |endFunction |  |  |
+info: [SelBlocks] branch =&gt; @4: [call|doStuff]
+info: Executing: |call | doStuff |  |
+info: Executing: |assertLocation | http://htmlpreview.github.io/ |  |
+info: Starting test /selenium-server/tests/CallGlobalFunction.html
+info: Executing: |getEval | globalStoredVars.aGlobalVar = &quot;reset&quot;; |  |
+info: script is: globalStoredVars.aGlobalVar = &quot;reset&quot;;
+info: Executing: |assertNotEval | globalStoredVars.aGlobalVar; | set |
+info: script is: globalStoredVars.aGlobalVar;
+info: Executing: |assertEval | globalStoredVars.aGlobalVar; | reset |
+info: script is: globalStoredVars.aGlobalVar;
+info: Executing: |call | GlobalFunctions.setGlobalVar |  |
+info: [SelBlocks] branch =&gt; @1: [getEval|globalStoredVars.aGlobalVar = &quot;reset&quot;;]
+info: Executing: |function | setGlobalVar |  |
+info: Executing: |open | http://htmlpreview.github.io/ |  |
+error: isNewPageLoaded found an old pageLoadError: Error: Object doesn&apos;t support this property or method
+warn: Stack is: Error: Object doesn&apos;t support this property or method
+   at BrowserBot.prototype._isSamePage (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-browserbot.js:1006:5)
+   at BrowserBot.prototype.pollForLoad (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-browserbot.js:945:9)
+   at pollerFunction (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-browserbot.js:1099:9)
+   at BrowserBot.prototype.runScheduledPollers (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-browserbot.js:1109:9)
+   at TestLoop.prototype.continueTestWhenConditionIsTrue (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-executionloop.js:138:9)
+   at TestLoop.prototype.resume (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-executionloop.js:79:13)
+   at retval (http://htmlpreview.github.io/selenium-server/core/scripts/htmlutils.js:60:5)
+warn: currentTest.recordFailure: Object doesn&apos;t support this property or method
+info: Executing: |getEval | globalStoredVars.aGlobalVar = &quot;set&quot;; |  |
+info: script is: globalStoredVars.aGlobalVar = &quot;set&quot;;
+info: Executing: |endFunction |  |  |
+info: [SelBlocks] branch =&gt; @4: [call|GlobalFunctions.setGlobalVar]
+info: Executing: |call | GlobalFunctions.setGlobalVar | Object doesn&apos;t support this property or method |
+error: [SelBlocks] Error  While evaluating Javascript expression: function selblocksTemp() { var Object doesn&apos;t support this property or method; }
+warn: [SelBlocks] __Stack Trace__
+error: Unexpected Exception: @4: [call|GlobalFunctions.setGlobalVar] Invalid call parameter(s) &apos;Object doesn&apos;t support this property or method&apos;: Expected &apos;;&apos;
+error: Exception details: stack -&gt; SyntaxError: @4: [call|GlobalFunctions.setGlobalVar] Invalid call parameter(s) &apos;Object doesn&apos;t support this property or method&apos;: Expected &apos;;&apos;
+   at assertCompilable (http://htmlpreview.github.io/selenium-server/core/scripts/user-extensions.js:2918:7)
+   at Selenium.prototype.doCall (http://htmlpreview.github.io/selenium-server/core/scripts/user-extensions.js:2594:7)
+   at retval (http://htmlpreview.github.io/selenium-server/core/scripts/htmlutils.js:60:5)
+   at ActionHandler.prototype.execute (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-commandhandlers.js:314:5)
+   at TestLoop.prototype._executeCurrentCommand (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-executionloop.js:112:9)
+   at TestLoop.prototype.resume (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-executionloop.js:78:13)
+   at retval (http://htmlpreview.github.io/selenium-server/core/scripts/htmlutils.js:60:5)
+warn: currentTest.recordFailure: Command execution failure. Please search the user group at https://groups.google.com/forum/#!forum/selenium-users for error details from the log window.  The error message is: @4: [call|GlobalFunctions.setGlobalVar] Invalid call parameter(s) &apos;Object doesn&apos;t support this property or method&apos;: Expected &apos;;&apos;
+info: Starting test /selenium-server/tests/DefineFunctionParameters%20-%20Base.html
+info: Executing: |store | original | x |
+info: Executing: |store | original | y |
+info: Executing: |assertEval | &quot;${x}&quot; === &quot;original&quot;; | true |
+info: script is: &quot;original&quot; === &quot;original&quot;;
+info: Executing: |assertEval | &quot;${y}&quot; === &quot;original&quot;; | true |
+info: script is: &quot;original&quot; === &quot;original&quot;;
+info: Executing: |function | bob | x,y |
+info: [SelBlocks] branch =&gt; @8: [endFunction]
+info: Executing: |endFunction |  |  |
+info: Executing: |call | bob | x=&quot;overwritten&quot; |
+info: [SelBlocks] branch =&gt; @5: [function|bob|x,y]
+info: Executing: |function | bob | x,y |
+info: Executing: |assertEval | &quot;${x}&quot; === &quot;overwritten&quot; | true |
+info: script is: &quot;overwritten&quot; === &quot;overwritten&quot;
+info: Executing: |assertEval | storedVars.y === undefined | true |
+info: script is: storedVars.y === undefined
+info: Executing: |endFunction |  |  |
+info: [SelBlocks] branch =&gt; @9: [call|bob|x=&quot;overwritten&quot;]
+info: Executing: |call | bob | x=&quot;overwritten&quot; |
+info: Executing: |assertEval | &quot;${x}&quot; === &quot;overwritten&quot; | false |
+info: script is: &quot;original&quot; === &quot;overwritten&quot;
+info: Executing: |assertEval | &quot;${x}&quot; === &quot;original&quot;; | true |
+info: script is: &quot;original&quot; === &quot;original&quot;;
+info: Executing: |assertEval | storedVars.y === undefined | false |
+info: script is: storedVars.y === undefined
+info: Executing: |assertEval | &quot;${y}&quot; === &quot;original&quot;; | true |
+info: script is: &quot;original&quot; === &quot;original&quot;;
+info: Starting test /selenium-server/tests/DefineFunctionParameters%20-%20With%20Default%20Values.html
+info: Executing: |store | original | x |
+info: Executing: |store | original | y |
+info: Executing: |assertEval | &quot;${x}&quot; === &quot;original&quot;; | true |
+info: script is: &quot;original&quot; === &quot;original&quot;;
+info: Executing: |assertEval | &quot;${y}&quot; === &quot;original&quot;; | true |
+info: script is: &quot;original&quot; === &quot;original&quot;;
+info: Executing: |function | leakTest | x=&quot;fn default x&quot;,y=&quot;fn default y&quot; |
+info: [SelBlocks] branch =&gt; @8: [endFunction]
+info: Executing: |endFunction |  |  |
+info: Executing: |function | defaultsTest | x=&quot;fn default x&quot;,y=&quot;fn default y&quot; |
+info: [SelBlocks] branch =&gt; @16: [endFunction]
+info: Executing: |endFunction |  |  |
+info: Executing: |call | defaultsTest |  |
+info: [SelBlocks] branch =&gt; @9: [function|defaultsTest|x=&quot;fn default x&quot;,y=&quot;fn default y&quot;]
+info: Executing: |function | defaultsTest | x=&quot;fn default x&quot;,y=&quot;fn default y&quot; |
+info: Executing: |assertEval | ${x} === &quot;fn default x&quot; | true |
+info: script is: &quot;fn default x&quot; === &quot;fn default x&quot;
+info: Executing: |store | &quot;overwritten&quot; | x |
+info: Executing: |assertEval | ${x} === &quot;overwritten&quot; | true |
+info: script is: &quot;overwritten&quot; === &quot;overwritten&quot;
+info: Executing: |assertEval | ${y} === &quot;fn default y&quot; | true |
+info: script is: &quot;fn default y&quot; === &quot;fn default y&quot;
+info: Executing: |store | &quot;overwritten&quot; | y |
+info: Executing: |assertEval | ${y} === &quot;overwritten&quot; | true |
+info: script is: &quot;overwritten&quot; === &quot;overwritten&quot;
+info: Executing: |endFunction |  |  |
+info: [SelBlocks] branch =&gt; @17: [call|defaultsTest]
+info: Executing: |call | defaultsTest |  |
+info: Executing: |call | leakTest |  |
+info: [SelBlocks] branch =&gt; @5: [function|leakTest|x=&quot;fn default x&quot;,y=&quot;fn default y&quot;]
+info: Executing: |function | leakTest | x=&quot;fn default x&quot;,y=&quot;fn default y&quot; |
+info: Executing: |store | overwritten | x |
+info: Executing: |store | overwritten | y |
+info: Executing: |endFunction |  |  |
+info: [SelBlocks] branch =&gt; @18: [call|leakTest]
+info: Executing: |call | leakTest |  |
+info: Executing: |assertEval | &quot;${x}&quot; === &quot;fn default x&quot; | false |
+info: script is: &quot;original&quot; === &quot;fn default x&quot;
+info: Executing: |assertEval | &quot;${x}&quot; === &quot;overwritten&quot; | false |
+info: script is: &quot;original&quot; === &quot;overwritten&quot;
+info: Executing: |assertEval | &quot;${x}&quot; === &quot;original&quot;; | true |
+info: script is: &quot;original&quot; === &quot;original&quot;;
+info: Executing: |assertEval | &quot;${y}&quot; === &quot;fn default y&quot; | false |
+info: script is: &quot;original&quot; === &quot;fn default y&quot;
+info: Executing: |assertEval | &quot;${y}&quot; === &quot;overwritten&quot; | false |
+info: script is: &quot;original&quot; === &quot;overwritten&quot;
+info: Executing: |assertEval | &quot;${y}&quot; === &quot;original&quot;; | true |
+info: script is: &quot;original&quot; === &quot;original&quot;;
+info: Executing: |call | leakTest | y = &quot;overwritten&quot; |
+info: [SelBlocks] branch =&gt; @5: [function|leakTest|x=&quot;fn default x&quot;,y=&quot;fn default y&quot;]
+info: Executing: |function | leakTest | x=&quot;fn default x&quot;,y=&quot;fn default y&quot; |
+info: Executing: |store | overwritten | x |
+info: Executing: |store | overwritten | y |
+info: Executing: |endFunction |  |  |
+info: [SelBlocks] branch =&gt; @25: [call|leakTest|y = &quot;overwritten&quot;]
+info: Executing: |call | leakTest | y = &quot;overwritten&quot; |
+info: Executing: |assertEval | &quot;${x}&quot; === &quot;fn default x&quot; | false |
+info: script is: &quot;original&quot; === &quot;fn default x&quot;
+info: Executing: |assertEval | &quot;${x}&quot; === &quot;overwritten&quot; | false |
+info: script is: &quot;original&quot; === &quot;overwritten&quot;
+info: Executing: |assertEval | &quot;${x}&quot; === &quot;original&quot;; | true |
+info: script is: &quot;original&quot; === &quot;original&quot;;
+info: Executing: |assertEval | &quot;${y}&quot; === &quot;fn default y&quot; | false |
+info: script is: &quot;original&quot; === &quot;fn default y&quot;
+info: Executing: |assertEval | &quot;${y}&quot; === &quot;overwritten&quot; | false |
+info: script is: &quot;original&quot; === &quot;overwritten&quot;
+info: Executing: |assertEval | &quot;${y}&quot; === &quot;original&quot;; | true |
+info: script is: &quot;original&quot; === &quot;original&quot;;
+info: Executing: |call | leakTest | x = &quot;overwritten&quot; |
+info: [SelBlocks] branch =&gt; @5: [function|leakTest|x=&quot;fn default x&quot;,y=&quot;fn default y&quot;]
+info: Executing: |function | leakTest | x=&quot;fn default x&quot;,y=&quot;fn default y&quot; |
+info: Executing: |store | overwritten | x |
+info: Executing: |store | overwritten | y |
+info: Executing: |endFunction |  |  |
+info: [SelBlocks] branch =&gt; @32: [call|leakTest|x = &quot;overwritten&quot;]
+info: Executing: |call | leakTest | x = &quot;overwritten&quot; |
+info: Executing: |assertEval | &quot;${x}&quot; === &quot;fn default x&quot; | false |
+info: script is: &quot;original&quot; === &quot;fn default x&quot;
+info: Executing: |assertEval | &quot;${x}&quot; === &quot;overwritten&quot; | false |
+info: script is: &quot;original&quot; === &quot;overwritten&quot;
+info: Executing: |assertEval | &quot;${x}&quot; === &quot;original&quot;; | true |
+info: script is: &quot;original&quot; === &quot;original&quot;;
+info: Executing: |assertEval | &quot;${y}&quot; === &quot;fn default y&quot; | false |
+info: script is: &quot;original&quot; === &quot;fn default y&quot;
+info: Executing: |assertEval | &quot;${y}&quot; === &quot;overwritten&quot; | false |
+info: script is: &quot;original&quot; === &quot;overwritten&quot;
+info: Executing: |assertEval | &quot;${y}&quot; === &quot;original&quot;; | true |
+info: script is: &quot;original&quot; === &quot;original&quot;;
+info: Executing: |call | leakTest | x = &quot;overwritten&quot;, y = &quot;overwritten&quot; |
+info: [SelBlocks] branch =&gt; @5: [function|leakTest|x=&quot;fn default x&quot;,y=&quot;fn default y&quot;]
+info: Executing: |function | leakTest | x=&quot;fn default x&quot;,y=&quot;fn default y&quot; |
+info: Executing: |store | overwritten | x |
+info: Executing: |store | overwritten | y |
+info: Executing: |endFunction |  |  |
+info: [SelBlocks] branch =&gt; @39: [call|leakTest|x = &quot;overwritten&quot;, y = &quot;overwritten&quot;]
+info: Executing: |call | leakTest | x = &quot;overwritten&quot;, y = &quot;overwritten&quot; |
+info: Executing: |assertEval | &quot;${x}&quot; === &quot;fn default x&quot; | false |
+info: script is: &quot;original&quot; === &quot;fn default x&quot;
+info: Executing: |assertEval | &quot;${x}&quot; === &quot;overwritten&quot; | false |
+info: script is: &quot;original&quot; === &quot;overwritten&quot;
+info: Executing: |assertEval | &quot;${x}&quot; === &quot;original&quot;; | true |
+info: script is: &quot;original&quot; === &quot;original&quot;;
+info: Executing: |assertEval | &quot;${y}&quot; === &quot;fn default y&quot; | false |
+info: script is: &quot;original&quot; === &quot;fn default y&quot;
+info: Executing: |assertEval | &quot;${y}&quot; === &quot;overwritten&quot; | false |
+info: script is: &quot;original&quot; === &quot;overwritten&quot;
+info: Executing: |assertEval | &quot;${y}&quot; === &quot;original&quot;; | true |
+info: script is: &quot;original&quot; === &quot;original&quot;;
+info: Starting test /selenium-server/tests/StoreLocal%20-%20Function%20Scope.html
+info: Executing: |function | blockScopeVars |  |
+info: [SelBlocks] branch =&gt; @7: [endFunction]
+info: Executing: |endFunction |  |  |
+info: Executing: |getEval | storedVarsGlobal.l = null; |  |
+info: script is: storedVarsGlobal.l = null;
+info: Executing: |getEval | storedVars.l = null; |  |
+info: script is: storedVars.l = null;
+info: Executing: |assertEval | storedVars.l === null; | true |
+info: script is: storedVars.l === null;
+info: Executing: |assertEval | storedVarsGlobal.l === null; | true |
+info: script is: storedVarsGlobal.l === null;
+info: Executing: |call | blockScopeVars |  |
+info: [SelBlocks] branch =&gt; @1: [function|blockScopeVars]
+info: Executing: |function | blockScopeVars |  |
+info: Executing: |storeLocal | this is stored locally | l |
+info: Executing: |assertEval | storedVarsGlobal.l === &quot;this is stored locally&quot; | false |
+info: script is: storedVarsGlobal.l === &quot;this is stored locally&quot;
+info: Executing: |assertEval | storedVars.l === &quot;this is stored locally&quot; | true |
+info: script is: storedVars.l === &quot;this is stored locally&quot;
+info: Executing: |assertEval | storedVarsLocal.l === &quot;this is stored locally&quot; | true |
+info: script is: storedVarsLocal.l === &quot;this is stored locally&quot;
+info: Executing: |assertEval | &quot;${l}&quot; === &quot;this is stored locally&quot; | true |
+info: script is: &quot;this is stored locally&quot; === &quot;this is stored locally&quot;
+info: Executing: |endFunction |  |  |
+info: [SelBlocks] branch =&gt; @12: [call|blockScopeVars]
+info: Executing: |call | blockScopeVars |  |
+info: Executing: |assertEval | storedVarsGlobal.l === &quot;this is stored locally&quot; | false |
+info: script is: storedVarsGlobal.l === &quot;this is stored locally&quot;
+info: Executing: |assertEval | storedVars.l === &quot;this is stored locally&quot; | false |
+info: script is: storedVars.l === &quot;this is stored locally&quot;
+info: Executing: |assertEval | storedVarsLocal.l === &quot;this is stored locally&quot; | false |
+info: script is: storedVarsLocal.l === &quot;this is stored locally&quot;
+info: Executing: |assertEval | &quot;${l}&quot; === &quot;this is stored locally&quot; | false |
+info: script is: &quot;${l}&quot; === &quot;this is stored locally&quot;
+info: Starting test /selenium-server/tests/StoreGlobal%20-%20Function%20Scope.html
+info: Executing: |function | blockScopeVars |  |
+info: [SelBlocks] branch =&gt; @7: [endFunction]
+info: Executing: |endFunction |  |  |
+info: Executing: |getEval | storedVarsGlobal.g = null; |  |
+info: script is: storedVarsGlobal.g = null;
+info: Executing: |assertEval | storedVarsGlobal.g === null; | true |
+info: script is: storedVarsGlobal.g === null;
+info: Executing: |call | blockScopeVars |  |
+info: [SelBlocks] branch =&gt; @1: [function|blockScopeVars]
+info: Executing: |function | blockScopeVars |  |
+info: Executing: |storeGlobal | this is stored globally | g |
+info: Executing: |assertEval | storedVarsGlobal.g === &quot;this is stored globally&quot; | true |
+info: script is: storedVarsGlobal.g === &quot;this is stored globally&quot;
+info: Executing: |assertEval | storedVars.g === &quot;this is stored globally&quot; | true |
+info: script is: storedVars.g === &quot;this is stored globally&quot;
+info: Executing: |assertEval | storedVarsLocal.g === &quot;this is stored globally&quot; | true |
+info: script is: storedVarsLocal.g === &quot;this is stored globally&quot;
+info: Executing: |assertEval | &quot;${g}&quot; === &quot;this is stored globally&quot; | true |
+info: script is: &quot;this is stored globally&quot; === &quot;this is stored globally&quot;
+info: Executing: |endFunction |  |  |
+info: [SelBlocks] branch =&gt; @10: [call|blockScopeVars]
+info: Executing: |call | blockScopeVars |  |
+info: Executing: |assertEval | storedVarsGlobal.g === &quot;this is stored globally&quot; | true |
+info: script is: storedVarsGlobal.g === &quot;this is stored globally&quot;
+info: Executing: |assertEval | storedVars.g === &quot;this is stored globally&quot; | true |
+info: script is: storedVars.g === &quot;this is stored globally&quot;
+info: Executing: |assertEval | storedVarsLocal.g === &quot;this is stored globally&quot; | true |
+info: script is: storedVarsLocal.g === &quot;this is stored globally&quot;
+info: Executing: |assertEval | &quot;${g}&quot; === &quot;this is stored globally&quot; | true |
+info: script is: &quot;this is stored globally&quot; === &quot;this is stored globally&quot;
+info: Starting test /selenium-server/tests/StoreGlobal%20-%20While%20Scope.html
+info: Executing: |getEval | storedVarsGlobal.g = null; |  |
+info: script is: storedVarsGlobal.g = null;
+info: Executing: |assertEval | storedVarsGlobal.g === null; | true |
+info: script is: storedVarsGlobal.g === null;
+info: Executing: |store | 1 | i |
+info: Executing: |while | i &gt; 0 |  |
+info: Executing: |store | 0 | i |
+info: Executing: |storeGlobal | this is stored globally | g |
+info: Executing: |assertEval | storedVarsGlobal.g === &quot;this is stored globally&quot; | true |
+info: script is: storedVarsGlobal.g === &quot;this is stored globally&quot;
+info: Executing: |assertEval | storedVars.g === &quot;this is stored globally&quot; | true |
+info: script is: storedVars.g === &quot;this is stored globally&quot;
+info: Executing: |assertEval | storedVarsLocal.g === &quot;this is stored globally&quot; | true |
+info: script is: storedVarsLocal.g === &quot;this is stored globally&quot;
+info: Executing: |assertEval | &quot;${g}&quot; === &quot;this is stored globally&quot; | true |
+info: script is: &quot;this is stored globally&quot; === &quot;this is stored globally&quot;
+info: Executing: |endWhile |  |  |
+info: [SelBlocks] branch =&gt; @4: [while|i &gt; 0]
+info: Executing: |while | i &gt; 0 |  |
+info: [SelBlocks] branch =&gt; @11: [endWhile]
+info: Executing: |endWhile |  |  |
+info: Executing: |assertEval | storedVarsGlobal.g === &quot;this is stored globally&quot; | true |
+info: script is: storedVarsGlobal.g === &quot;this is stored globally&quot;
+info: Executing: |assertEval | storedVars.g === &quot;this is stored globally&quot; | true |
+info: script is: storedVars.g === &quot;this is stored globally&quot;
+info: Executing: |assertEval | storedVarsLocal.g === &quot;this is stored globally&quot; | true |
+info: script is: storedVarsLocal.g === &quot;this is stored globally&quot;
+info: Executing: |assertEval | &quot;${g}&quot; === &quot;this is stored globally&quot; | true |
+info: script is: &quot;this is stored globally&quot; === &quot;this is stored globally&quot;
+info: Starting test /selenium-server/tests/StoreLocal%20-%20While%20Scope.html
+info: Executing: |getEval | storedVarsGlobal.l = null; |  |
+info: script is: storedVarsGlobal.l = null;
+info: Executing: |getEval | storedVars.l = null; |  |
+info: script is: storedVars.l = null;
+info: Executing: |assertEval | storedVars.l === null; | true |
+info: script is: storedVars.l === null;
+info: Executing: |assertEval | storedVarsGlobal.l === null; | true |
+info: script is: storedVarsGlobal.l === null;
+info: Executing: |store | 1 | i |
+info: Executing: |while | i &gt; 0 |  |
+info: Executing: |store | 0 | i |
+info: Executing: |storeLocal | this is stored locally | l |
+info: Executing: |assertEval | storedVarsGlobal.l === &quot;this is stored locally&quot; | false |
+info: script is: storedVarsGlobal.l === &quot;this is stored locally&quot;
+info: Executing: |assertEval | storedVars.l === &quot;this is stored locally&quot; | true |
+info: script is: storedVars.l === &quot;this is stored locally&quot;
+info: Executing: |assertEval | storedVarsLocal.l === &quot;this is stored locally&quot; | true |
+info: script is: storedVarsLocal.l === &quot;this is stored locally&quot;
+info: Executing: |assertEval | &quot;${l}&quot; === &quot;this is stored locally&quot; | true |
+info: script is: &quot;this is stored locally&quot; === &quot;this is stored locally&quot;
+info: Executing: |endWhile |  |  |
+info: [SelBlocks] branch =&gt; @6: [while|i &gt; 0]
+info: Executing: |while | i &gt; 0 |  |
+info: [SelBlocks] branch =&gt; @13: [endWhile]
+info: Executing: |endWhile |  |  |
+info: Executing: |assertEval | storedVarsGlobal.l === &quot;this is stored locally&quot; | false |
+info: script is: storedVarsGlobal.l === &quot;this is stored locally&quot;
+info: Executing: |assertEval | storedVars.l === &quot;this is stored locally&quot; | false |
+info: script is: storedVars.l === &quot;this is stored locally&quot;
+info: Executing: |assertEval | storedVarsLocal.l === &quot;this is stored locally&quot; | false |
+info: script is: storedVarsLocal.l === &quot;this is stored locally&quot;
+info: Executing: |assertEval | &quot;${l}&quot; === &quot;this is stored locally&quot; | false |
+info: script is: &quot;${l}&quot; === &quot;this is stored locally&quot;
+info: Starting test /selenium-server/tests/Store%20-%20Behaves%20as%20StoreLocal.html
+info: Executing: |function | blockScopeVars |  |
+info: [SelBlocks] branch =&gt; @7: [endFunction]
+info: Executing: |endFunction |  |  |
+info: Executing: |getEval | storedVarsGlobal.l = null; |  |
+info: script is: storedVarsGlobal.l = null;
+info: Executing: |getEval | storedVars.l = null; |  |
+info: script is: storedVars.l = null;
+info: Executing: |assertEval | storedVars.l === null; | true |
+info: script is: storedVars.l === null;
+info: Executing: |assertEval | storedVarsGlobal.l === null; | true |
+info: script is: storedVarsGlobal.l === null;
+info: Executing: |call | blockScopeVars |  |
+info: [SelBlocks] branch =&gt; @1: [function|blockScopeVars]
+info: Executing: |function | blockScopeVars |  |
+info: Executing: |store | this is stored locally | l |
+info: Executing: |assertEval | storedVarsGlobal.l === &quot;this is stored locally&quot; | false |
+info: script is: storedVarsGlobal.l === &quot;this is stored locally&quot;
+info: Executing: |assertEval | storedVars.l === &quot;this is stored locally&quot; | true |
+info: script is: storedVars.l === &quot;this is stored locally&quot;
+info: Executing: |assertEval | storedVarsLocal.l === &quot;this is stored locally&quot; | true |
+info: script is: storedVarsLocal.l === &quot;this is stored locally&quot;
+info: Executing: |assertEval | &quot;${l}&quot; === &quot;this is stored locally&quot; | true |
+info: script is: &quot;this is stored locally&quot; === &quot;this is stored locally&quot;
+info: Executing: |endFunction |  |  |
+info: [SelBlocks] branch =&gt; @12: [call|blockScopeVars]
+info: Executing: |call | blockScopeVars |  |
+info: Executing: |assertEval | storedVarsGlobal.l === &quot;this is stored locally&quot; | false |
+info: script is: storedVarsGlobal.l === &quot;this is stored locally&quot;
+info: Executing: |assertEval | storedVars.l === &quot;this is stored locally&quot; | false |
+info: script is: storedVars.l === &quot;this is stored locally&quot;
+info: Executing: |assertEval | storedVarsLocal.l === &quot;this is stored locally&quot; | false |
+info: script is: storedVarsLocal.l === &quot;this is stored locally&quot;
+info: Executing: |assertEval | &quot;${l}&quot; === &quot;this is stored locally&quot; | false |
+info: script is: &quot;${l}&quot; === &quot;this is stored locally&quot;
+info: Starting test /selenium-server/tests/Function%20-%20Can%20Return%20Value.html
+info: Executing: |function | returnsValue |  |
+info: [SelBlocks] branch =&gt; @3: [endFunction]
+info: Executing: |endFunction |  |  |
+info: Executing: |call | returnsValue |  |
+info: [SelBlocks] branch =&gt; @1: [function|returnsValue]
+info: Executing: |function | returnsValue |  |
+info: Executing: |return | &quot;banana&quot; |  |
+info: [SelBlocks] branch =&gt; @4: [call|returnsValue]
+info: Executing: |call | returnsValue |  |
+info: Executing: |assertEval | &quot;${_result}&quot; === &quot;banana&quot; | true |
+info: script is: &quot;banana&quot; === &quot;banana&quot;
+info: Starting test /selenium-server/tests/StoreAt%20-%20Function%20Scope%20Nesting.html
+info: Executing: |function | storel |  |
+info: [SelBlocks] branch =&gt; @9: [endFunction]
+info: Executing: |endFunction |  |  |
+info: Executing: |getEval | storedVarsGlobal.notDefined = null |  |
+info: script is: storedVarsGlobal.notDefined = null
+info: Executing: |assertEval | storedVarsGlobal.notDefined === null | true |
+info: script is: storedVarsGlobal.notDefined === null
+info: Executing: |getEval | storedVarsGlobal.l = null; |  |
+info: script is: storedVarsGlobal.l = null;
+info: Executing: |assertEval | storedVarsGlobal.l === null; | true |
+info: script is: storedVarsGlobal.l === null;
+info: Executing: |storeLocal | exists in parent | l |
+info: Executing: |assertEval | storedVars.l === &quot;exists in parent&quot;; | true |
+info: script is: storedVars.l === &quot;exists in parent&quot;;
+info: Executing: |call | storel |  |
+info: [SelBlocks] branch =&gt; @1: [function|storel]
+info: Executing: |function | storel |  |
+info: Executing: |storeAt | this ends up global | notDefined |
+warn: [SelBlocks] notDefined not found, setting global variable
+info: Executing: |storeAt | this is stored in an ancestor | l |
+info: Executing: |assertEval | storedVarsGlobal.notDefined === &quot;this ends up global&quot; | true |
+info: script is: storedVarsGlobal.notDefined === &quot;this ends up global&quot;
+info: Executing: |assertEval | storedVarsGlobal.l === &quot;this is stored in an ancestor&quot; | false |
+info: script is: storedVarsGlobal.l === &quot;this is stored in an ancestor&quot;
+info: Executing: |assertEval | storedVars.l === &quot;this is stored in an ancestor&quot; | true |
+info: script is: storedVars.l === &quot;this is stored in an ancestor&quot;
+info: Executing: |assertEval | storedVarsLocal.l === &quot;this is stored in an ancestor&quot; | true |
+info: script is: storedVarsLocal.l === &quot;this is stored in an ancestor&quot;
+info: Executing: |assertEval | &quot;${l}&quot; === &quot;this is stored in an ancestor&quot; | true |
+info: script is: &quot;this is stored in an ancestor&quot; === &quot;this is stored in an ancestor&quot;
+info: Executing: |endFunction |  |  |
+info: [SelBlocks] branch =&gt; @16: [call|storel]
+info: Executing: |call | storel |  |
+info: Executing: |assertEval | storedVarsGlobal.notDefined === &quot;this ends up global&quot; | true |
+info: script is: storedVarsGlobal.notDefined === &quot;this ends up global&quot;
+info: Executing: |assertEval | storedVarsGlobal.l === &quot;this is stored in an ancestor&quot; | false |
+info: script is: storedVarsGlobal.l === &quot;this is stored in an ancestor&quot;
+info: Executing: |assertEval | storedVars.l === &quot;this is stored in an ancestor&quot; | true |
+info: script is: storedVars.l === &quot;this is stored in an ancestor&quot;
+info: Executing: |assertEval | storedVarsLocal.l === &quot;this is stored in an ancestor&quot; | true |
+info: script is: storedVarsLocal.l === &quot;this is stored in an ancestor&quot;
+info: Executing: |assertEval | &quot;${l}&quot; === &quot;this is stored in an ancestor&quot; | true |
+info: script is: &quot;this is stored in an ancestor&quot; === &quot;this is stored in an ancestor&quot;
+info: Starting test /selenium-server/tests/StoreAt%20-%20While%20Scope%20Nesting.html
+info: Executing: |getEval | storedVarsGlobal.notDefined = null |  |
+info: script is: storedVarsGlobal.notDefined = null
+info: Executing: |assertEval | storedVarsGlobal.notDefined === null | true |
+info: script is: storedVarsGlobal.notDefined === null
+info: Executing: |getEval | storedVarsGlobal.l = null; |  |
+info: script is: storedVarsGlobal.l = null;
+info: Executing: |assertEval | storedVarsGlobal.l === null; | true |
+info: script is: storedVarsGlobal.l === null;
+info: Executing: |storeLocal | exists in parent | l |
+info: Executing: |assertEval | storedVars.l === &quot;exists in parent&quot;; | true |
+info: script is: storedVars.l === &quot;exists in parent&quot;;
+info: Executing: |storeLocal | 3 | x |
+info: Executing: |while | x !== 0 |  |
+info: Executing: |storeAt | this ends up global | notDefined |
+warn: [SelBlocks] notDefined not found, setting global variable
+info: Executing: |storeAt | this is stored in an ancestor | l |
+info: Executing: |assertEval | storedVarsGlobal.notDefined === &quot;this ends up global&quot; | true |
+info: script is: storedVarsGlobal.notDefined === &quot;this ends up global&quot;
+info: Executing: |assertEval | storedVarsGlobal.l === &quot;this is stored in an ancestor&quot; | false |
+info: script is: storedVarsGlobal.l === &quot;this is stored in an ancestor&quot;
+info: Executing: |assertEval | storedVars.l === &quot;this is stored in an ancestor&quot; | true |
+info: script is: storedVars.l === &quot;this is stored in an ancestor&quot;
+info: Executing: |assertEval | storedVarsLocal.l === &quot;this is stored in an ancestor&quot; | true |
+info: script is: storedVarsLocal.l === &quot;this is stored in an ancestor&quot;
+info: Executing: |assertEval | &quot;${l}&quot; === &quot;this is stored in an ancestor&quot; | true |
+info: script is: &quot;this is stored in an ancestor&quot; === &quot;this is stored in an ancestor&quot;
+info: Executing: |storeEvalLocal | x -= 1 |  |
+info: Executing: |endWhile |  |  |
+info: [SelBlocks] branch =&gt; @8: [while|x !== 0]
+info: Executing: |while | x !== 0 |  |
+info: Executing: |storeAt | this ends up global | notDefined |
+warn: [SelBlocks] notDefined not found, setting global variable
+info: Executing: |storeAt | this is stored in an ancestor | l |
+info: Executing: |assertEval | storedVarsGlobal.notDefined === &quot;this ends up global&quot; | true |
+info: script is: storedVarsGlobal.notDefined === &quot;this ends up global&quot;
+info: Executing: |assertEval | storedVarsGlobal.l === &quot;this is stored in an ancestor&quot; | false |
+info: script is: storedVarsGlobal.l === &quot;this is stored in an ancestor&quot;
+info: Executing: |assertEval | storedVars.l === &quot;this is stored in an ancestor&quot; | true |
+info: script is: storedVars.l === &quot;this is stored in an ancestor&quot;
+info: Executing: |assertEval | storedVarsLocal.l === &quot;this is stored in an ancestor&quot; | true |
+info: script is: storedVarsLocal.l === &quot;this is stored in an ancestor&quot;
+info: Executing: |assertEval | &quot;${l}&quot; === &quot;this is stored in an ancestor&quot; | true |
+info: script is: &quot;this is stored in an ancestor&quot; === &quot;this is stored in an ancestor&quot;
+info: Executing: |storeEvalLocal | x -= 1 |  |
+info: Executing: |endWhile |  |  |
+info: [SelBlocks] branch =&gt; @8: [while|x !== 0]
+info: Executing: |while | x !== 0 |  |
+info: Executing: |storeAt | this ends up global | notDefined |
+warn: [SelBlocks] notDefined not found, setting global variable
+info: Executing: |storeAt | this is stored in an ancestor | l |
+info: Executing: |assertEval | storedVarsGlobal.notDefined === &quot;this ends up global&quot; | true |
+info: script is: storedVarsGlobal.notDefined === &quot;this ends up global&quot;
+info: Executing: |assertEval | storedVarsGlobal.l === &quot;this is stored in an ancestor&quot; | false |
+info: script is: storedVarsGlobal.l === &quot;this is stored in an ancestor&quot;
+info: Executing: |assertEval | storedVars.l === &quot;this is stored in an ancestor&quot; | true |
+info: script is: storedVars.l === &quot;this is stored in an ancestor&quot;
+info: Executing: |assertEval | storedVarsLocal.l === &quot;this is stored in an ancestor&quot; | true |
+info: script is: storedVarsLocal.l === &quot;this is stored in an ancestor&quot;
+info: Executing: |assertEval | &quot;${l}&quot; === &quot;this is stored in an ancestor&quot; | true |
+info: script is: &quot;this is stored in an ancestor&quot; === &quot;this is stored in an ancestor&quot;
+info: Executing: |storeEvalLocal | x -= 1 |  |
+info: Executing: |endWhile |  |  |
+info: [SelBlocks] branch =&gt; @8: [while|x !== 0]
+info: Executing: |while | x !== 0 |  |
+info: [SelBlocks] branch =&gt; @17: [endWhile]
+info: Executing: |endWhile |  |  |
+info: Executing: |deleteVar | x |  |
+info: Executing: |assertEval | storedVarsGlobal.notDefined === &quot;this ends up global&quot; | true |
+info: script is: storedVarsGlobal.notDefined === &quot;this ends up global&quot;
+info: Executing: |assertEval | storedVarsGlobal.l === &quot;this is stored in an ancestor&quot; | false |
+info: script is: storedVarsGlobal.l === &quot;this is stored in an ancestor&quot;
+info: Executing: |assertEval | storedVars.l === &quot;this is stored in an ancestor&quot; | true |
+info: script is: storedVars.l === &quot;this is stored in an ancestor&quot;
+info: Executing: |assertEval | storedVarsLocal.l === &quot;this is stored in an ancestor&quot; | true |
+info: script is: storedVarsLocal.l === &quot;this is stored in an ancestor&quot;
+info: Executing: |assertEval | &quot;${l}&quot; === &quot;this is stored in an ancestor&quot; | true |
+info: script is: &quot;this is stored in an ancestor&quot; === &quot;this is stored in an ancestor&quot;
 </pre></body></html>
