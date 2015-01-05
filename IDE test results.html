@@ -18,8 +18,8 @@ th, td { padding-left: 0.3em; padding-right: 0.3em; border: 1px solid #ccc; }
 <table id="suiteSummaryTable" class="selenium">
 <thead><tr class="failed"><td>Test Suite: _SelBlocks-TestSuite.html</td></tr></thead>
 <tbody>
-<tr><td>Test cases: 59 total / <span class="passed">58</span> passed / <span class="failed">1</span> failed</td></tr>
-<tr><td>Commands: 999 total / <span class="passed">915</span> passed / <span class="failed">1</span> failed / <span class="skipped">83</span> skipped</td></tr>
+<tr><td>Test cases: 57 total / <span class="passed">56</span> passed / <span class="failed">1</span> failed</td></tr>
+<tr><td>Commands: 986 total / <span class="passed">901</span> passed / <span class="failed">1</span> failed / <span class="skipped">84</span> skipped</td></tr>
 </tbody></table><br>
 <table id="suiteTable" class="selenium">
 <thead><tr><td>Index of test cases</td></tr></thead>
@@ -69,20 +69,18 @@ th, td { padding-left: 0.3em; padding-right: 0.3em; border: 1px solid #ccc; }
 <tr class="done"><td><a href="#test42">exitTest - base case</a></td></tr>
 <tr class="done"><td><a href="#test43">exitTest - from within a loop</a></td></tr>
 <tr class="done"><td><a href="#test44">exitTest - from within a function</a></td></tr>
-<tr class="done"><td><a href="#test45">CreateGlobalVars</a></td></tr>
-<tr class="passed"><td><a href="#test46">GlobalFunctions</a></td></tr>
-<tr class="passed"><td><a href="#test47">GlobalFunctions 2</a></td></tr>
-<tr class="passed"><td><a href="#test48">CallGlobalFunction</a></td></tr>
-<tr class="passed"><td><a href="#test49">DefineFunctionParameters - Base</a></td></tr>
-<tr class="passed"><td><a href="#test50">DefineFunctionParameters - With Default Values</a></td></tr>
-<tr class="passed"><td><a href="#test51">StoreLocal - Function Scope</a></td></tr>
-<tr class="passed"><td><a href="#test52">StoreGlobal - Function Scope</a></td></tr>
-<tr class="passed"><td><a href="#test53">StoreGlobal - While Scope</a></td></tr>
-<tr class="passed"><td><a href="#test54">StoreLocal - While Scope</a></td></tr>
-<tr class="passed"><td><a href="#test55">Store - Behaves as StoreLocal</a></td></tr>
-<tr class="passed"><td><a href="#test56">Function - Can Return Value</a></td></tr>
-<tr class="passed"><td><a href="#test57">StoreAt - Function Scope Nesting</a></td></tr>
-<tr class="passed"><td><a href="#test58">StoreAt - While Scope Nesting</a></td></tr>
+<tr class="done"><td><a href="#test45">GlobalFunctions</a></td></tr>
+<tr class="passed"><td><a href="#test46">CallGlobalFunction</a></td></tr>
+<tr class="passed"><td><a href="#test47">DefineFunctionParameters - Base</a></td></tr>
+<tr class="passed"><td><a href="#test48">DefineFunctionParameters - With Default Values</a></td></tr>
+<tr class="passed"><td><a href="#test49">StoreLocal - Function Scope</a></td></tr>
+<tr class="passed"><td><a href="#test50">StoreGlobal - Function Scope</a></td></tr>
+<tr class="passed"><td><a href="#test51">StoreGlobal - While Scope</a></td></tr>
+<tr class="passed"><td><a href="#test52">StoreLocal - While Scope</a></td></tr>
+<tr class="passed"><td><a href="#test53">Store - Behaves as StoreLocal</a></td></tr>
+<tr class="passed"><td><a href="#test54">Function - Can Return Value</a></td></tr>
+<tr class="passed"><td><a href="#test55">StoreAt - Function Scope Nesting</a></td></tr>
+<tr class="passed"><td><a href="#test56">StoreAt - While Scope Nesting</a></td></tr>
 
 </tbody></table>
 
@@ -5354,28 +5352,19 @@ th, td { padding-left: 0.3em; padding-right: 0.3em; border: 1px solid #ccc; }
 
 </tbody></table>
 
-<br><hr><br><a name="test45"></a><table class="test_case"><thead><tr><td colspan="4">Test case: CreateGlobalVars</td></tr></thead><tbody><tr class="done">
+<br><hr><br><a name="test45"></a><table class="test_case"><thead><tr><td colspan="4">Test case: GlobalFunctions</td></tr></thead><tbody><tr class="done">
 	<td>getEval</td>
 	<td>globalStoredVars = {};</td>
 	<td></td>
 	<td></td>
 </tr>
-
-</tbody></table>
-
-<br><hr><br><a name="test46"></a><table class="test_case"><thead><tr><td colspan="4">Test case: GlobalFunctions</td></tr></thead><tbody><tr class="done">
+<tr class="done">
 	<td>function</td>
 	<td>setGlobalVar</td>
 	<td></td>
 	<td></td>
 </tr>
-<tr class="done">
-	<td>open</td>
-	<td>http://htmlpreview.github.io/</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr class="done">
+<tr class="">
 	<td>getEval</td>
 	<td>globalStoredVars.aGlobalVar = &quot;set&quot;;</td>
 	<td></td>
@@ -5387,73 +5376,10 @@ th, td { padding-left: 0.3em; padding-right: 0.3em; border: 1px solid #ccc; }
 	<td></td>
 	<td></td>
 </tr>
-<tr class="done">
-	<td>getEval</td>
-	<td>globalStoredVars.aGlobalVar = &quot;reset&quot;;</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr class="passed">
-	<td>assertNotEval</td>
-	<td>globalStoredVars.aGlobalVar;</td>
-	<td>set</td>
-	<td></td>
-</tr>
-<tr class="passed">
-	<td>assertEval</td>
-	<td>globalStoredVars.aGlobalVar;</td>
-	<td>reset</td>
-	<td></td>
-</tr>
-<tr class="done">
-	<td>call</td>
-	<td>setGlobalVar</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr class="passed">
-	<td>assertEval</td>
-	<td>globalStoredVars.aGlobalVar;</td>
-	<td>set</td>
-	<td></td>
-</tr>
 
 </tbody></table>
 
-<br><hr><br><a name="test47"></a><table class="test_case"><thead><tr><td colspan="4">Test case: GlobalFunctions 2</td></tr></thead><tbody><tr class="done">
-	<td>function</td>
-	<td>doStuff</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr class="done">
-	<td>open</td>
-	<td>http://htmlpreview.github.io/</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr class="done">
-	<td>endFunction</td>
-	<td></td>
-	<td></td>
-	<td></td>
-</tr>
-<tr class="done">
-	<td>call</td>
-	<td>doStuff</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr class="passed">
-	<td>assertLocation</td>
-	<td>http://htmlpreview.github.io/</td>
-	<td></td>
-	<td></td>
-</tr>
-
-</tbody></table>
-
-<br><hr><br><a name="test48"></a><table class="test_case"><thead><tr><td colspan="4">Test case: CallGlobalFunction</td></tr></thead><tbody><tr class="done">
+<br><hr><br><a name="test46"></a><table class="test_case"><thead><tr><td colspan="4">Test case: CallGlobalFunction</td></tr></thead><tbody><tr class="done">
 	<td>getEval</td>
 	<td>globalStoredVars.aGlobalVar = &quot;reset&quot;;</td>
 	<td></td>
@@ -5483,22 +5409,10 @@ th, td { padding-left: 0.3em; padding-right: 0.3em; border: 1px solid #ccc; }
 	<td>set</td>
 	<td></td>
 </tr>
-<tr class="done">
-	<td>call</td>
-	<td>GlobalFunctions 2.doStuff</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr class="passed">
-	<td>assertLocation</td>
-	<td>http://htmlpreview.github.io/</td>
-	<td></td>
-	<td></td>
-</tr>
 
 </tbody></table>
 
-<br><hr><br><a name="test49"></a><table class="test_case"><thead><tr><td colspan="4">Test case: DefineFunctionParameters - Base</td></tr></thead><tbody><tr class="done">
+<br><hr><br><a name="test47"></a><table class="test_case"><thead><tr><td colspan="4">Test case: DefineFunctionParameters - Base</td></tr></thead><tbody><tr class="done">
 	<td>store</td>
 	<td>original</td>
 	<td>x</td>
@@ -5579,7 +5493,7 @@ th, td { padding-left: 0.3em; padding-right: 0.3em; border: 1px solid #ccc; }
 
 </tbody></table>
 
-<br><hr><br><a name="test50"></a><table class="test_case"><thead><tr><td colspan="4">Test case: DefineFunctionParameters - With Default Values</td></tr></thead><tbody><tr class="done">
+<br><hr><br><a name="test48"></a><table class="test_case"><thead><tr><td colspan="4">Test case: DefineFunctionParameters - With Default Values</td></tr></thead><tbody><tr class="done">
 	<td>store</td>
 	<td>original</td>
 	<td>x</td>
@@ -5873,7 +5787,7 @@ th, td { padding-left: 0.3em; padding-right: 0.3em; border: 1px solid #ccc; }
 
 </tbody></table>
 
-<br><hr><br><a name="test51"></a><table class="test_case"><thead><tr><td colspan="4">Test case: StoreLocal - Function Scope</td></tr></thead><tbody><tr class="comment">
+<br><hr><br><a name="test49"></a><table class="test_case"><thead><tr><td colspan="4">Test case: StoreLocal - Function Scope</td></tr></thead><tbody><tr class="comment">
 	<td colspan="4">setting a local variable from function scope</td>
 </tr>
 <tr class="done">
@@ -5987,7 +5901,7 @@ th, td { padding-left: 0.3em; padding-right: 0.3em; border: 1px solid #ccc; }
 
 </tbody></table>
 
-<br><hr><br><a name="test52"></a><table class="test_case"><thead><tr><td colspan="4">Test case: StoreGlobal - Function Scope</td></tr></thead><tbody><tr class="comment">
+<br><hr><br><a name="test50"></a><table class="test_case"><thead><tr><td colspan="4">Test case: StoreGlobal - Function Scope</td></tr></thead><tbody><tr class="comment">
 	<td colspan="4">setting a global variable from function scope</td>
 </tr>
 <tr class="done">
@@ -6083,7 +5997,7 @@ th, td { padding-left: 0.3em; padding-right: 0.3em; border: 1px solid #ccc; }
 
 </tbody></table>
 
-<br><hr><br><a name="test53"></a><table class="test_case"><thead><tr><td colspan="4">Test case: StoreGlobal - While Scope</td></tr></thead><tbody><tr class="comment">
+<br><hr><br><a name="test51"></a><table class="test_case"><thead><tr><td colspan="4">Test case: StoreGlobal - While Scope</td></tr></thead><tbody><tr class="comment">
 	<td colspan="4">clearing any values from previous tests</td>
 </tr>
 <tr class="done">
@@ -6188,7 +6102,7 @@ th, td { padding-left: 0.3em; padding-right: 0.3em; border: 1px solid #ccc; }
 
 </tbody></table>
 
-<br><hr><br><a name="test54"></a><table class="test_case"><thead><tr><td colspan="4">Test case: StoreLocal - While Scope</td></tr></thead><tbody><tr class="comment">
+<br><hr><br><a name="test52"></a><table class="test_case"><thead><tr><td colspan="4">Test case: StoreLocal - While Scope</td></tr></thead><tbody><tr class="comment">
 	<td colspan="4">clearing any values from previous tests</td>
 </tr>
 <tr class="done">
@@ -6311,7 +6225,7 @@ th, td { padding-left: 0.3em; padding-right: 0.3em; border: 1px solid #ccc; }
 
 </tbody></table>
 
-<br><hr><br><a name="test55"></a><table class="test_case"><thead><tr><td colspan="4">Test case: Store - Behaves as StoreLocal</td></tr></thead><tbody><tr class="comment">
+<br><hr><br><a name="test53"></a><table class="test_case"><thead><tr><td colspan="4">Test case: Store - Behaves as StoreLocal</td></tr></thead><tbody><tr class="comment">
 	<td colspan="4">setting a local variable from function scope</td>
 </tr>
 <tr class="done">
@@ -6425,7 +6339,7 @@ th, td { padding-left: 0.3em; padding-right: 0.3em; border: 1px solid #ccc; }
 
 </tbody></table>
 
-<br><hr><br><a name="test56"></a><table class="test_case"><thead><tr><td colspan="4">Test case: Function - Can Return Value</td></tr></thead><tbody><tr class="done">
+<br><hr><br><a name="test54"></a><table class="test_case"><thead><tr><td colspan="4">Test case: Function - Can Return Value</td></tr></thead><tbody><tr class="done">
 	<td>function</td>
 	<td>returnsValue</td>
 	<td></td>
@@ -6458,7 +6372,7 @@ th, td { padding-left: 0.3em; padding-right: 0.3em; border: 1px solid #ccc; }
 
 </tbody></table>
 
-<br><hr><br><a name="test57"></a><table class="test_case"><thead><tr><td colspan="4">Test case: StoreAt - Function Scope Nesting</td></tr></thead><tbody><tr class="comment">
+<br><hr><br><a name="test55"></a><table class="test_case"><thead><tr><td colspan="4">Test case: StoreAt - Function Scope Nesting</td></tr></thead><tbody><tr class="comment">
 	<td colspan="4">function for setting a variable at it's location / ancestor / parent</td>
 </tr>
 <tr class="done">
@@ -6611,7 +6525,7 @@ th, td { padding-left: 0.3em; padding-right: 0.3em; border: 1px solid #ccc; }
 
 </tbody></table>
 
-<br><hr><br><a name="test58"></a><table class="test_case"><thead><tr><td colspan="4">Test case: StoreAt - While Scope Nesting</td></tr></thead><tbody><tr class="comment">
+<br><hr><br><a name="test56"></a><table class="test_case"><thead><tr><td colspan="4">Test case: StoreAt - While Scope Nesting</td></tr></thead><tbody><tr class="comment">
 	<td colspan="4">storeAt will set the value of a named variable in a parent scope</td>
 </tr>
 <tr class="done">

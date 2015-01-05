@@ -54,15 +54,15 @@ a {
 </tr>
 <tr>
 <td>totalTime:</td>
-<td>35</td>
+<td>13</td>
 </tr>
 <tr>
 <td>numTestTotal:</td>
-<td>59</td>
+<td>57</td>
 </tr>
 <tr>
 <td>numTestPasses:</td>
-<td>58</td>
+<td>56</td>
 </tr>
 <tr>
 <td>numTestFailures:</td>
@@ -70,7 +70,7 @@ a {
 </tr>
 <tr>
 <td>numCommandPasses:</td>
-<td>198</td>
+<td>193</td>
 </tr>
 <tr>
 <td>numCommandFailures:</td>
@@ -137,20 +137,18 @@ a {
 <tr class=" status_passed"><td><a href="#testresult42">exitTest - base case</a></td></tr>
 <tr class=" status_passed"><td><a href="#testresult43">exitTest - from within a loop</a></td></tr>
 <tr class=" status_passed"><td><a href="#testresult44">exitTest - from within a function</a></td></tr>
-<tr class=" status_passed"><td><a href="#testresult45">CreateGlobalVars</a></td></tr>
-<tr class=" status_passed"><td><a href="#testresult46">GlobalFunctions</a></td></tr>
-<tr class=" status_passed"><td><a href="#testresult47">GlobalFunctions 2</a></td></tr>
-<tr class=" status_passed"><td><a href="#testresult48">CallGlobalFunction</a></td></tr>
-<tr class=" status_passed"><td><a href="#testresult49">DefineFunctionParameters - Base</a></td></tr>
-<tr class=" status_passed"><td><a href="#testresult50">DefineFunctionParameters - With Default Values</a></td></tr>
-<tr class=" status_passed"><td><a href="#testresult51">StoreLocal - Function Scope</a></td></tr>
-<tr class=" status_passed"><td><a href="#testresult52">StoreGlobal - Function Scope</a></td></tr>
-<tr class=" status_passed"><td><a href="#testresult53">StoreGlobal - While Scope</a></td></tr>
-<tr class=" status_passed"><td><a href="#testresult54">StoreLocal - While Scope</a></td></tr>
-<tr class=" status_passed"><td><a href="#testresult55">Store - Behaves as StoreLocal</a></td></tr>
-<tr class=" status_passed"><td><a href="#testresult56">Function - Can Return Value</a></td></tr>
-<tr class=" status_passed"><td><a href="#testresult57">StoreAt - Function Scope Nesting</a></td></tr>
-<tr class=" status_passed"><td><a href="#testresult58">StoreAt - While Scope Nesting</a></td></tr>
+<tr class=" status_passed"><td><a href="#testresult45">GlobalFunctions</a></td></tr>
+<tr class=" status_passed"><td><a href="#testresult46">CallGlobalFunction</a></td></tr>
+<tr class=" status_passed"><td><a href="#testresult47">DefineFunctionParameters - Base</a></td></tr>
+<tr class=" status_passed"><td><a href="#testresult48">DefineFunctionParameters - With Default Values</a></td></tr>
+<tr class=" status_passed"><td><a href="#testresult49">StoreLocal - Function Scope</a></td></tr>
+<tr class=" status_passed"><td><a href="#testresult50">StoreGlobal - Function Scope</a></td></tr>
+<tr class=" status_passed"><td><a href="#testresult51">StoreGlobal - While Scope</a></td></tr>
+<tr class=" status_passed"><td><a href="#testresult52">StoreLocal - While Scope</a></td></tr>
+<tr class=" status_passed"><td><a href="#testresult53">Store - Behaves as StoreLocal</a></td></tr>
+<tr class=" status_passed"><td><a href="#testresult54">Function - Can Return Value</a></td></tr>
+<tr class=" status_passed"><td><a href="#testresult55">StoreAt - Function Scope Nesting</a></td></tr>
+<tr class=" status_passed"><td><a href="#testresult56">StoreAt - While Scope Nesting</a></td></tr>
 </tbody></table>
 
 
@@ -4767,38 +4765,22 @@ a {
 </div></td>
 <td>&nbsp;</td>
 </tr><tr>
-<td><a name="testresult45">CreateGlobalVars.html</a><br/><div>
+<td><a name="testresult45">GlobalFunctions.html</a><br/><div>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr class="title status_passed"><td rowspan="1" colspan="3">CreateGlobalVars</td></tr>
+<tr class="title status_passed"><td rowspan="1" colspan="3">functions</td></tr>
 </thead><tbody>
 <tr class=" status_done" style="cursor: pointer;">
 	<td>getEval</td>
 	<td>globalStoredVars = {};</td>
 	<td></td>
 </tr>
-</tbody></table>
-
-
-</div></td>
-<td>&nbsp;</td>
-</tr><tr>
-<td><a name="testresult46">GlobalFunctions.html</a><br/><div>
-<table cellpadding="1" cellspacing="1" border="1">
-<thead>
-<tr class="title status_passed"><td rowspan="1" colspan="3">functions</td></tr>
-</thead><tbody>
 <tr class=" status_done" style="cursor: pointer;">
 	<td>function</td>
 	<td>setGlobalVar</td>
 	<td></td>
 </tr>
-<tr class=" status_done" style="cursor: pointer;">
-	<td>open</td>
-	<td>http://htmlpreview.github.io/</td>
-	<td></td>
-</tr>
-<tr class=" status_done" style="cursor: pointer;">
+<tr class="" style="cursor: pointer;">
 	<td>getEval</td>
 	<td>globalStoredVars.aGlobalVar = "set";</td>
 	<td></td>
@@ -4808,74 +4790,13 @@ a {
 	<td></td>
 	<td></td>
 </tr>
-<tr class=" status_done" style="cursor: pointer;">
-	<td>getEval</td>
-	<td>globalStoredVars.aGlobalVar = "reset";</td>
-	<td></td>
-</tr>
-<tr class=" status_passed" style="cursor: pointer;">
-	<td>assertNotEval</td>
-	<td>globalStoredVars.aGlobalVar;</td>
-	<td>set</td>
-</tr>
-<tr class=" status_passed" style="cursor: pointer;">
-	<td>assertEval</td>
-	<td>globalStoredVars.aGlobalVar;</td>
-	<td>reset</td>
-</tr>
-<tr class=" status_done" style="cursor: pointer;">
-	<td>call</td>
-	<td>setGlobalVar</td>
-	<td></td>
-</tr>
-<tr class=" status_passed" style="cursor: pointer;">
-	<td>assertEval</td>
-	<td>globalStoredVars.aGlobalVar;</td>
-	<td>set</td>
-</tr>
 </tbody></table>
 
 
 </div></td>
 <td>&nbsp;</td>
 </tr><tr>
-<td><a name="testresult47">GlobalFunctions 2.html</a><br/><div>
-<table cellpadding="1" cellspacing="1" border="1">
-<thead>
-<tr class="title status_passed"><td rowspan="1" colspan="3">GlobalFunctions 2</td></tr>
-</thead><tbody>
-<tr class=" status_done" style="cursor: pointer;">
-	<td>function</td>
-	<td>doStuff</td>
-	<td></td>
-</tr>
-<tr class=" status_done" style="cursor: pointer;">
-	<td>open</td>
-	<td>http://htmlpreview.github.io/</td>
-	<td></td>
-</tr>
-<tr class=" status_done" style="cursor: pointer;">
-	<td>endFunction</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr class=" status_done" style="cursor: pointer;">
-	<td>call</td>
-	<td>doStuff</td>
-	<td></td>
-</tr>
-<tr class=" status_passed" style="cursor: pointer;">
-	<td>assertLocation</td>
-	<td>http://htmlpreview.github.io/</td>
-	<td></td>
-</tr>
-</tbody></table>
-
-
-</div></td>
-<td>&nbsp;</td>
-</tr><tr>
-<td><a name="testresult48">CallGlobalFunction.html</a><br/><div>
+<td><a name="testresult46">CallGlobalFunction.html</a><br/><div>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
 <tr class="title status_passed"><td rowspan="1" colspan="3">CallGlobalFunction</td></tr>
@@ -4905,23 +4826,13 @@ a {
 	<td>globalStoredVars.aGlobalVar;</td>
 	<td>set</td>
 </tr>
-<tr class=" status_done" style="cursor: pointer;">
-	<td>call</td>
-	<td>GlobalFunctions 2.doStuff</td>
-	<td></td>
-</tr>
-<tr class=" status_passed" style="cursor: pointer;">
-	<td>assertLocation</td>
-	<td>http://htmlpreview.github.io/</td>
-	<td></td>
-</tr>
 </tbody></table>
 
 
 </div></td>
 <td>&nbsp;</td>
 </tr><tr>
-<td><a name="testresult49">DefineFunctionParameters - Base.html</a><br/><div>
+<td><a name="testresult47">DefineFunctionParameters - Base.html</a><br/><div>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
 <tr class="title status_passed"><td rowspan="1" colspan="3">DefineFunctionParameters - Base</td></tr>
@@ -4997,7 +4908,7 @@ a {
 </div></td>
 <td>&nbsp;</td>
 </tr><tr>
-<td><a name="testresult50">DefineFunctionParameters - With Default Values.html</a><br/><div>
+<td><a name="testresult48">DefineFunctionParameters - With Default Values.html</a><br/><div>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
 <tr class="title status_passed"><td rowspan="1" colspan="3">DefineFunctionParameters - With Default Values</td></tr>
@@ -5241,7 +5152,7 @@ a {
 </div></td>
 <td>&nbsp;</td>
 </tr><tr>
-<td><a name="testresult51">StoreLocal - Function Scope.html</a><br/><div>
+<td><a name="testresult49">StoreLocal - Function Scope.html</a><br/><div>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
 <tr class="title status_passed"><td rowspan="1" colspan="3">StoreLocal - Base</td></tr>
@@ -5337,7 +5248,7 @@ a {
 </div></td>
 <td>&nbsp;</td>
 </tr><tr>
-<td><a name="testresult52">StoreGlobal - Function Scope.html</a><br/><div>
+<td><a name="testresult50">StoreGlobal - Function Scope.html</a><br/><div>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
 <tr class="title status_passed"><td rowspan="1" colspan="3">StoreGlobal - Function Scope</td></tr>
@@ -5421,7 +5332,7 @@ a {
 </div></td>
 <td>&nbsp;</td>
 </tr><tr>
-<td><a name="testresult53">StoreGlobal - While Scope.html</a><br/><div>
+<td><a name="testresult51">StoreGlobal - While Scope.html</a><br/><div>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
 <tr class="title status_passed"><td rowspan="1" colspan="3">StoreGlobal - While Scope</td></tr>
@@ -5511,7 +5422,7 @@ a {
 </div></td>
 <td>&nbsp;</td>
 </tr><tr>
-<td><a name="testresult54">StoreLocal - While Scope.html</a><br/><div>
+<td><a name="testresult52">StoreLocal - While Scope.html</a><br/><div>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
 <tr class="title status_passed"><td rowspan="1" colspan="3">StoreLocal - While Scope</td></tr>
@@ -5613,7 +5524,7 @@ a {
 </div></td>
 <td>&nbsp;</td>
 </tr><tr>
-<td><a name="testresult55">Store - Behaves as StoreLocal.html</a><br/><div>
+<td><a name="testresult53">Store - Behaves as StoreLocal.html</a><br/><div>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
 <tr class="title status_passed"><td rowspan="1" colspan="3">Store - Behaves as StoreLocal</td></tr>
@@ -5709,7 +5620,7 @@ a {
 </div></td>
 <td>&nbsp;</td>
 </tr><tr>
-<td><a name="testresult56">Function - Can Return Value.html</a><br/><div>
+<td><a name="testresult54">Function - Can Return Value.html</a><br/><div>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
 <tr class="title status_passed"><td rowspan="1" colspan="3">Function - Can Return Value</td></tr>
@@ -5745,7 +5656,7 @@ a {
 </div></td>
 <td>&nbsp;</td>
 </tr><tr>
-<td><a name="testresult57">StoreAt - Function Scope Nesting.html</a><br/><div>
+<td><a name="testresult55">StoreAt - Function Scope Nesting.html</a><br/><div>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
 <tr class="title status_passed"><td rowspan="1" colspan="3">StoreAt - Function Scope Nesting</td></tr>
@@ -5869,7 +5780,7 @@ a {
 </div></td>
 <td>&nbsp;</td>
 </tr><tr>
-<td><a name="testresult58">StoreAt - While Scope Nesting.html</a><br/><div>
+<td><a name="testresult56">StoreAt - While Scope Nesting.html</a><br/><div>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
 <tr class="title status_passed"><td rowspan="1" colspan="3">StoreAt - While Scope Nesting</td></tr>
@@ -7553,7 +7464,7 @@ info: Executing: |return | n * _result |  |
 info: [SelBlocks] branch =&gt; @5: [call|fac|n=degree]
 info: Executing: |call | fac | n=degree |
 info: Executing: |timerElapsed |  |  |
-info: [SelBench] 0.255 sec elapsed: factorial 7
+info: [SelBench] 0.249 sec elapsed: factorial 7
 info: Executing: |emit | degree + &quot;!=&quot; + _result |  |
 info: Executing: |function | fac | n |
 info: [SelBlocks] branch =&gt; @16: [endFunction]
@@ -7676,42 +7587,12 @@ info: [SelBlocks] branch =&gt; @3: [function|doSubExit]
 info: Executing: |function | doSubExit |  |
 info: Executing: |exitTest |  |  |
 info: [SelBlocks] TEST HALTED
-info: Starting test /selenium-server/tests/CreateGlobalVars.html
+info: Starting test /selenium-server/tests/GlobalFunctions.html
 info: Executing: |getEval | globalStoredVars = {}; |  |
 info: script is: globalStoredVars = {};
-info: Starting test /selenium-server/tests/GlobalFunctions.html
 info: Executing: |function | setGlobalVar |  |
 info: [SelBlocks] branch =&gt; @4: [endFunction]
 info: Executing: |endFunction |  |  |
-info: Executing: |getEval | globalStoredVars.aGlobalVar = &quot;reset&quot;; |  |
-info: script is: globalStoredVars.aGlobalVar = &quot;reset&quot;;
-info: Executing: |assertNotEval | globalStoredVars.aGlobalVar; | set |
-info: script is: globalStoredVars.aGlobalVar;
-info: Executing: |assertEval | globalStoredVars.aGlobalVar; | reset |
-info: script is: globalStoredVars.aGlobalVar;
-info: Executing: |call | setGlobalVar |  |
-info: [SelBlocks] branch =&gt; @1: [function|setGlobalVar]
-info: Executing: |function | setGlobalVar |  |
-info: Executing: |open | http://htmlpreview.github.io/ |  |
-info: Executing: |getEval | globalStoredVars.aGlobalVar = &quot;set&quot;; |  |
-info: script is: globalStoredVars.aGlobalVar = &quot;set&quot;;
-info: Executing: |endFunction |  |  |
-info: [SelBlocks] branch =&gt; @8: [call|setGlobalVar]
-info: Executing: |call | setGlobalVar |  |
-info: Executing: |assertEval | globalStoredVars.aGlobalVar; | set |
-info: script is: globalStoredVars.aGlobalVar;
-info: Starting test /selenium-server/tests/GlobalFunctions%202.html
-info: Executing: |function | doStuff |  |
-info: [SelBlocks] branch =&gt; @3: [endFunction]
-info: Executing: |endFunction |  |  |
-info: Executing: |call | doStuff |  |
-info: [SelBlocks] branch =&gt; @1: [function|doStuff]
-info: Executing: |function | doStuff |  |
-info: Executing: |open | http://htmlpreview.github.io/ |  |
-info: Executing: |endFunction |  |  |
-info: [SelBlocks] branch =&gt; @4: [call|doStuff]
-info: Executing: |call | doStuff |  |
-info: Executing: |assertLocation | http://htmlpreview.github.io/ |  |
 info: Starting test /selenium-server/tests/CallGlobalFunction.html
 info: Executing: |getEval | globalStoredVars.aGlobalVar = &quot;reset&quot;; |  |
 info: script is: globalStoredVars.aGlobalVar = &quot;reset&quot;;
@@ -7720,9 +7601,8 @@ info: script is: globalStoredVars.aGlobalVar;
 info: Executing: |assertEval | globalStoredVars.aGlobalVar; | reset |
 info: script is: globalStoredVars.aGlobalVar;
 info: Executing: |call | GlobalFunctions.setGlobalVar |  |
-info: [SelBlocks] branch =&gt; @1: [getEval|globalStoredVars.aGlobalVar = &quot;reset&quot;;]
+info: [SelBlocks] branch =&gt; @2: [assertNotEval|globalStoredVars.aGlobalVar;|set]
 info: Executing: |function | setGlobalVar |  |
-info: Executing: |open | http://htmlpreview.github.io/ |  |
 info: Executing: |getEval | globalStoredVars.aGlobalVar = &quot;set&quot;; |  |
 info: script is: globalStoredVars.aGlobalVar = &quot;set&quot;;
 info: Executing: |endFunction |  |  |
@@ -7730,14 +7610,6 @@ info: [SelBlocks] branch =&gt; @4: [call|GlobalFunctions.setGlobalVar]
 info: Executing: |call | GlobalFunctions.setGlobalVar |  |
 info: Executing: |assertEval | globalStoredVars.aGlobalVar; | set |
 info: script is: globalStoredVars.aGlobalVar;
-info: Executing: |call | GlobalFunctions 2.doStuff |  |
-info: [SelBlocks] branch =&gt; @1: [getEval|globalStoredVars.aGlobalVar = &quot;reset&quot;;]
-info: Executing: |function | doStuff |  |
-info: Executing: |open | http://htmlpreview.github.io/ |  |
-info: Executing: |endFunction |  |  |
-info: [SelBlocks] branch =&gt; @6: [call|GlobalFunctions 2.doStuff]
-info: Executing: |call | GlobalFunctions 2.doStuff |  |
-info: Executing: |assertLocation | http://htmlpreview.github.io/ |  |
 info: Starting test /selenium-server/tests/DefineFunctionParameters%20-%20Base.html
 info: Executing: |store | original | x |
 info: Executing: |store | original | y |
