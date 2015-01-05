@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
-<title>foreach-xpath</title>
+<title>branching01</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">foreach-xpath</td></tr>
+<tr><td rowspan="1" colspan="3">branching01</td></tr>
 </thead><tbody>
 <tr>
 	<td>resetEmitted</td>
@@ -17,53 +17,58 @@
 	<td></td>
 </tr>
 <tr>
-	<td>echo</td>
-	<td>$x(&quot;//input&quot;)</td>
+	<td>emit</td>
+	<td>&quot;BEFORE&quot;</td>
 	<td></td>
 </tr>
 <tr>
-	<td>echo</td>
-	<td>$X(&quot;//input&quot;)</td>
-	<td></td>
-</tr>
-<tr>
-	<td>echo</td>
-	<td>begin</td>
+	<td>goto</td>
+	<td>HERE</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;START ${_i}) ${link}&quot;</td>
+	<td>&quot;A&quot;</td>
 	<td></td>
 </tr>
 <tr>
-	<td>foreach</td>
-	<td>link</td>
-	<td>$X(&quot;//input&quot;)</td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;${_i}) ${link}&quot;</td>
+	<td>label</td>
+	<td>HERE</td>
 	<td></td>
 </tr>
 <tr>
-	<td>echo</td>
-	<td>${link}</td>
-	<td></td>
-</tr>
-<tr>
-	<td>endForeach</td>
-	<td></td>
-	<td></td>
+	<td>gotoIf</td>
+	<td>true</td>
+	<td>THERE</td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;END ${_i}) ${link}&quot;</td>
+	<td>&quot;B&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>THERE</td>
+	<td></td>
+</tr>
+<tr>
+	<td>skipNext</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;C&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;AFTER&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START ${&quot; + &quot;_i}) ${&quot; + &quot;link}~0) [object HTMLInputElement]~1) [object HTMLInputElement]~2) [object HTMLInputElement]~END ${&quot; + &quot;_i}) ${&quot; + &quot;link}&quot;</td>
+	<td>&quot;BEFORE~AFTER&quot;</td>
 	<td></td>
 </tr>
 </tbody></table>

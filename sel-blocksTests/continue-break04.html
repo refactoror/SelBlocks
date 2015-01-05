@@ -4,31 +4,52 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
-<title>issue#2-function</title>
+<title>continue-break04</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">issue#2-function</td></tr>
+<tr><td rowspan="1" colspan="3">continue-break04</td></tr>
 </thead><tbody>
 <tr>
-	<td>function</td>
-	<td>xyz</td>
-	<td></td>
-</tr>
-<tr>
-	<td>log</td>
-	<td>'here'</td>
-	<td></td>
-</tr>
-<tr>
-	<td>endFunction</td>
+	<td>resetEmitted</td>
 	<td></td>
 	<td></td>
 </tr>
 <tr>
-	<td>call</td>
-	<td>xyz</td>
+	<td>forXml</td>
+	<td>http://refactoror.net/forxml.xml</td>
+	<td></td>
+</tr>
+<tr>
+	<td>continue</td>
+	<td>xname==&quot;dogbert&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>break</td>
+	<td>xname==&quot;wally&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;iter=${xname}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endForXml</td>
+	<td></td>
+	<td></td>
+</tr>
+<!----- check results-->
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;iter=dilbert&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
 	<td></td>
 </tr>
 </tbody></table>

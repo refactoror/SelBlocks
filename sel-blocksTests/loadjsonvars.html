@@ -4,32 +4,45 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
-<title>issue#2-function</title>
+<title>loadjsonvars</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">issue#2-function</td></tr>
+<tr><td rowspan="1" colspan="3">loadjsonvars</td></tr>
 </thead><tbody>
+<!--=== Error validations-->
 <tr>
-	<td>function</td>
-	<td>xyz</td>
+	<td>expectError</td>
+	<td>&quot;Requires a JSON file path or URL&quot;</td>
 	<td></td>
 </tr>
 <tr>
-	<td>log</td>
-	<td>'here'</td>
-	<td></td>
-</tr>
-<tr>
-	<td>endFunction</td>
+	<td>loadJsonVars</td>
 	<td></td>
 	<td></td>
 </tr>
+<!---!- -->
 <tr>
-	<td>call</td>
-	<td>xyz</td>
+	<td>expectError</td>
+	<td>&quot;Multiple JSON objects are not valid for this command&quot;</td>
 	<td></td>
+</tr>
+<tr>
+	<td>loadJsonVars</td>
+	<td>http://refactoror.net/forjson.json</td>
+	<td></td>
+</tr>
+<!---!- -->
+<tr>
+	<td>expectError</td>
+	<td>'&quot;flubber&quot; is not a boolean expression'</td>
+	<td></td>
+</tr>
+<tr>
+	<td>loadJsonVars</td>
+	<td>http://refactoror.net/forjson.json</td>
+	<td>&quot;flubber&quot;</td>
 </tr>
 </tbody></table>
 </body>

@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
-<title>foreach-xpath</title>
+<title>continue-break01</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">foreach-xpath</td></tr>
+<tr><td rowspan="1" colspan="3">continue-break01</td></tr>
 </thead><tbody>
 <tr>
 	<td>resetEmitted</td>
@@ -17,53 +17,69 @@
 	<td></td>
 </tr>
 <tr>
-	<td>echo</td>
-	<td>$x(&quot;//input&quot;)</td>
+	<td>deleteVars</td>
+	<td>f</td>
 	<td></td>
 </tr>
 <tr>
-	<td>echo</td>
-	<td>$X(&quot;//input&quot;)</td>
+	<td>for</td>
+	<td>f=3; f &lt;= 9; f++</td>
 	<td></td>
 </tr>
 <tr>
-	<td>echo</td>
-	<td>begin</td>
+	<td>continue</td>
+	<td>f == 6</td>
+	<td></td>
+</tr>
+<tr>
+	<td>if</td>
+	<td>f &gt; 6</td>
+	<td></td>
+</tr>
+<tr>
+	<td>if</td>
+	<td>f == 7</td>
+	<td></td>
+</tr>
+<tr>
+	<td>continue</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>else</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>break</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;START ${_i}) ${link}&quot;</td>
+	<td>&quot;iter=${f}&quot;</td>
 	<td></td>
 </tr>
 <tr>
-	<td>foreach</td>
-	<td>link</td>
-	<td>$X(&quot;//input&quot;)</td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;${_i}) ${link}&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>echo</td>
-	<td>${link}</td>
-	<td></td>
-</tr>
-<tr>
-	<td>endForeach</td>
+	<td>endFor</td>
 	<td></td>
 	<td></td>
 </tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;END ${_i}) ${link}&quot;</td>
-	<td></td>
-</tr>
+<!----- check results-->
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START ${&quot; + &quot;_i}) ${&quot; + &quot;link}~0) [object HTMLInputElement]~1) [object HTMLInputElement]~2) [object HTMLInputElement]~END ${&quot; + &quot;_i}) ${&quot; + &quot;link}&quot;</td>
+	<td>&quot;iter=3~iter=4~iter=5&quot;</td>
 	<td></td>
 </tr>
 </tbody></table>
