@@ -4,17 +4,22 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
-<title>issue#2-function</title>
+<title>label-issue#2</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">issue#2-function</td></tr>
+<tr><td rowspan="1" colspan="3">label-issue#2</td></tr>
 </thead><tbody>
 <tr>
-	<td>function</td>
-	<td>xyz</td>
+	<td>label</td>
+	<td>top</td>
 	<td></td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>&quot;${status}&quot; == &quot;done&quot;</td>
+	<td>bottom</td>
 </tr>
 <tr>
 	<td>log</td>
@@ -22,13 +27,23 @@
 	<td></td>
 </tr>
 <tr>
-	<td>endFunction</td>
-	<td></td>
+	<td>storeEval</td>
+	<td>&quot;done&quot;</td>
+	<td>status</td>
+</tr>
+<tr>
+	<td>goto</td>
+	<td>top</td>
 	<td></td>
 </tr>
 <tr>
-	<td>call</td>
-	<td>xyz</td>
+	<td>label</td>
+	<td>bottom</td>
+	<td></td>
+</tr>
+<tr>
+	<td>deleteVar</td>
+	<td>status</td>
 	<td></td>
 </tr>
 </tbody></table>
