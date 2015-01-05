@@ -12,25 +12,30 @@
 <tr><td rowspan="1" colspan="3">subtest</td></tr>
 </thead><tbody>
 <tr>
-	<td>resetEmitted</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
 	<td>deleteVars</td>
 	<td>sname, srole</td>
 	<td></td>
 </tr>
 <tr>
-	<td>emit</td>
-	<td>&quot;START ${sname} ${srole}&quot;</td>
-	<td></td>
+	<td>assertEval</td>
+	<td>&quot;START ${sname} ${srole}&quot; === &quot;START $&quot; + &quot;{sname} $&quot; + &quot;{srole}&quot;</td>
+	<td>true</td>
 </tr>
 <!----- first line-->
 <tr>
 	<td>call</td>
 	<td>doSomething</td>
 	<td>sname = &quot;dilbert,Q&quot;, srole = &quot;goof&quot;</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${_result}&quot; === &quot;sname=dilbert,Q,srole=goof&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>deleteVars</td>
+	<td>sname, srole</td>
+	<td></td>
 </tr>
 <!--===-->
 <tr>
@@ -39,7 +44,7 @@
 	<td>sname</td>
 </tr>
 <tr>
-	<td>emit</td>
+	<td>return</td>
 	<td>&quot;sname=${sname},srole=${srole}&quot;</td>
 	<td></td>
 </tr>
@@ -50,14 +55,39 @@
 </tr>
 <!--===-->
 <tr>
+	<td>deleteVars</td>
+	<td>sname, srole</td>
+	<td></td>
+</tr>
+<tr>
 	<td>call</td>
 	<td>doSomething</td>
 	<td>sname = &quot;dogbert&quot;, srole = &quot;woof&quot;</td>
 </tr>
 <tr>
+	<td>assertEval</td>
+	<td>&quot;${_result}&quot; === &quot;sname=dogbert,srole=woof&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>deleteVars</td>
+	<td>sname, srole</td>
+	<td></td>
+</tr>
+<tr>
 	<td>call</td>
 	<td>doSomething</td>
 	<td>sname = &quot;ratbert&quot;, srole = &quot;squeak&quot;</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${_result}&quot; === &quot;sname=ratbert,srole=squeak&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>deleteVars</td>
+	<td>sname, srole</td>
+	<td></td>
 </tr>
 <!------->
 <tr>
@@ -71,20 +101,24 @@
 	<td>sname = sname, srole = &quot;super=user&quot;</td>
 </tr>
 <tr>
+	<td>assertEval</td>
+	<td>&quot;${_result}&quot; === &quot;sname=${sname},srole=super=user&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>deleteVars</td>
+	<td>sname, srole</td>
+	<td></td>
+</tr>
+<tr>
 	<td>endForeach</td>
 	<td></td>
 	<td></td>
 </tr>
 <tr>
-	<td>emit</td>
-	<td>&quot;DONE ${sname} ${srole}&quot;</td>
-	<td></td>
-</tr>
-<!----- check results-->
-<tr>
-	<td>assertEmitted</td>
-	<td>&quot;START $&quot; + &quot;{sname} $&quot; + &quot;{srole}~sname=dilbert,Q,srole=goof~sname=dogbert,srole=woof~sname=ratbert,srole=squeak~sname=asok,srole=super=user~sname=alice,srole=super=user~DONE $&quot; + &quot;{sname} $&quot; + &quot;{srole}&quot;</td>
-	<td></td>
+	<td>assertEval</td>
+	<td>&quot;DONE ${sname} ${srole}&quot; === &quot;DONE $&quot; + &quot;{sname} $&quot; + &quot;{srole}&quot;</td>
+	<td>true</td>
 </tr>
 <!--=== Error validations-->
 <!---!- -->
@@ -100,8 +134,8 @@
 </tr>
 <!--=== deprecated script commands-->
 <tr>
-	<td>resetEmitted</td>
-	<td></td>
+	<td>deleteVars</td>
+	<td>sname, srole</td>
 	<td></td>
 </tr>
 <tr>
@@ -110,7 +144,7 @@
 	<td>sname</td>
 </tr>
 <tr>
-	<td>emit</td>
+	<td>return</td>
 	<td>&quot;sname=${sname},srole=${srole}&quot;</td>
 	<td></td>
 </tr>
@@ -125,8 +159,13 @@
 	<td>sname = &quot;wally&quot;, srole = &quot;lazy&quot;</td>
 </tr>
 <tr>
-	<td>assertEmitted</td>
-	<td>&quot;sname=wally,srole=lazy&quot;</td>
+	<td>assertEval</td>
+	<td>&quot;${_result}&quot; === &quot;sname=wally,srole=lazy&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>deleteVars</td>
+	<td>sname, srole</td>
 	<td></td>
 </tr>
 </tbody></table>
