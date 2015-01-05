@@ -4,7 +4,7 @@ SETLOCAL
 
 REM if the autotests don't complete within the given time, the server will shut
 REM down and close the browser windows.
-SET /a autotestTimeoutInSeconds=90
+SET /a autotestTimeoutInSeconds=180
 REM the root of the project
 REM C:\projects\selenium\selblocks\SelBlocks\
 SET projectRoot=%~dp0..\
