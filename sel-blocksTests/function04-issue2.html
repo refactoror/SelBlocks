@@ -4,36 +4,21 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
-<title>function05-scoping-issue#5</title>
+<title>function04-issue2</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">function05-scoping-issue#5</td></tr>
+<tr><td rowspan="1" colspan="3">function04-issue2</td></tr>
 </thead><tbody>
 <tr>
-	<td>store</td>
-	<td>'void'</td>
-	<td>variable</td>
-</tr>
-<tr>
-	<td>call</td>
-	<td>outer</td>
-	<td>variable='Hello'</td>
-</tr>
-<tr>
 	<td>function</td>
-	<td>outer</td>
-	<td>variable</td>
-</tr>
-<tr>
-	<td>call</td>
-	<td>inner</td>
+	<td>xyz</td>
 	<td></td>
 </tr>
 <tr>
 	<td>log</td>
-	<td>&quot;after variable=&quot; + variable</td>
+	<td>'here'</td>
 	<td></td>
 </tr>
 <tr>
@@ -41,30 +26,9 @@
 	<td></td>
 	<td></td>
 </tr>
-<!------>
 <tr>
-	<td>function</td>
-	<td>inner</td>
-	<td></td>
-</tr>
-<tr>
-	<td>log</td>
-	<td>&quot;variable=&quot; + variable</td>
-	<td></td>
-</tr>
-<tr>
-	<td>store</td>
-	<td>'bye bye'</td>
-	<td>variable</td>
-</tr>
-<tr>
-	<td>endFunction</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>log</td>
-	<td>&quot;done variable=&quot; + variable</td>
+	<td>call</td>
+	<td>xyz</td>
 	<td></td>
 </tr>
 </tbody></table>
