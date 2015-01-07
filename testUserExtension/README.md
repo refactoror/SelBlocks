@@ -44,6 +44,8 @@ Then run `createSelbenchUserExtensions.cmd`
  extension. After that is set up, you should be able to just run
  `C:\projects\selenium\selblocks\SelBlocks\testUserExtension\runTestsOnServer.cmd`
  to launch the automatic tests in firefox.
+
+*Run `runTestsOnServer.cmd --help` to see all the options available.*
  
 As soon as the automatic tests complete, the results should open in your
  browser. The server should restart in debug mode and the page to the test suite
@@ -69,3 +71,23 @@ To run the automatic tests in firefox googlechrome and internet explorer do
  to watch for the IE window and autmatically change the settings for you.
  
 See also: http://selenium.googlecode.com/git-history/rc-0.9.2/website/tutorial.html
+
+#debugging user-extensions.js
+
+Run `runTestsOnServer.cmd start-debug` and the default test suite will be loaded
+ into the selenium test runner. The test runner will open in your default web
+ browser, which must be configured to use the selenium server as a proxy
+ (localhost:4444). You can use whatever tools you like to inspect and debug
+ javascript. By editing the copy of user-extensions.js that gets copied into
+ `/sel-blocksTests` and refreshing the test runner page, you'll be able to see
+ what effect your changes will have when running this extension on the server.
+ When you're satisfied that you know what to change, go edit the source files
+ in `/sel-blocks-fx_xpi/chrome/content/extensions/` and the next time that
+ `user-extensions.js` is built it will include your edits. It's a good idea to
+ install the firefox extension from source so that you can test that your
+ changes won't break it.
+ 
+See also: https://developer.mozilla.org/en-US/Add-ons/Setting_up_extension_development_environment
+See the part about creating a firefox extension proxy file, so that you don't
+ have to copy paste the source into your extensions directory all the time.
+ 
