@@ -37,9 +37,11 @@ SelBlocks is a language extension for Selenese that works on both the Selenium I
 
 ## Installation
 
-The [Firefox installer](https://addons.mozilla.org/en-US/firefox/addon/selenium-ide-sel-blocks/) is available from the firefox addons site, or just search for it in your addons menu.
+The [Firefox installer](https://addons.mozilla.org/en-US/firefox/addon/selenium-ide-sel-blocks/) is the latest published release. It is available from the firefox addons site, or just search for it in your addons menu.
 
-The Selenium server extension file is in "/user extension/user-extensions.js". Grab a copy and follow the directions in the SeleniumHTMLRunner.cmd file.
+To install the latest development version, clone this repository and put a file in your firefox extensions directory called `sel-blocks@chris.noe`. In that file just paste the full path to the `sel-blocks-fx_xpi` directory. Now, you'll be able to get the cutting edge latest stuff by pulling it in whenever you want. As an added bonus, when you switch branches the extension will load with that branch's code.
+
+The Selenium server extension file is at "/user extension/user-extensions.js". Grab a copy and follow the directions in the SeleniumHTMLRunner.cmd file.
 
 ## Documentation
 
