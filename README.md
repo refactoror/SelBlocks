@@ -1,4 +1,5 @@
 # SelBlocks 2
+![SelBlocks Logo](https://raw.githubusercontent.com/refactorer/SelBlocks/master/sel-blocks-fx_xpi/chrome/skin/selblocksLogo.png)
 
 SelBlocks is a language extension for Selenese that works on both the Selenium IDE and Selenium standalone server. It allows intelligent, data driven, tests to be recorded and composed in Selenium IDE, then run on any browser supported by Selenium server. With SelBlocks there is no need to translate the tests into another language at all! Experience web application testing and automation that's so easy a child could do it. Seriously, we've taught kids how to use this.
 
