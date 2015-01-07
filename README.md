@@ -1,6 +1,6 @@
 # SelBlocks 2
 
-SelBlocks is a language extension for Selenese that works on both the Selenium IDE and Selenium standalone server. It allows intelligent, data driven, tests to be recorded and composed in Selenium IDE, then run on any browser supported by Selenium server. With SelBlocks there is no need to translate the tests into another language at all! Experience web application testing and automation that so easy a child could do it. Seriously, we've taught kids how to use this.
+SelBlocks is a language extension for Selenese that works on both the Selenium IDE and Selenium standalone server. It allows intelligent, data driven, tests to be recorded and composed in Selenium IDE, then run on any browser supported by Selenium server. With SelBlocks there is no need to translate the tests into another language at all! Experience web application testing and automation that's so easy a child could do it. Seriously, we've taught kids how to use this.
 
 > My eight year old nephew's eyes got huge when he said *"You mean I can click __all__ the buttons?"* and I told him yes. Then showed him how to do it.
 > -- Kastor
@@ -22,8 +22,8 @@ SelBlocks is a language extension for Selenese that works on both the Selenium I
   * <code>forJson</code>, <code>forXml</code>
   * <code>exitTest</code>
 * Adds the following variable declarators to Selenese:
-  * *Scoped Store*
-    * <code>storeLocal</code> : stores variables in the current block scope
+  * *Scoped `store` command*
+    * <code>storeLocal</code> : stores variables in the current block scope, the builtin `store` command now creates local variables as well.
     * <code>storeGlobal</code> : stores variables in global scope
     * <code>storeAt</code> : stores variable values in the parent scope where they were defined, or creates a global variable if no parent scope defined it.
     * <code>loadJsonVars</code> : creates variables in the current block scope, as defined by the given JSON file or URL.
