@@ -1,12 +1,11 @@
-SelBlocks 2
-=========
+# SelBlocks 2
 
 SelBlocks is a language extension for Selenese that works on both the Selenium IDE and Selenium standalone server. It allows intelligent, data driven, tests to be recorded and composed in Selenium IDE, then run on any browser supported by Selenium server. With SelBlocks there is no need to translate the tests into another language at all! Experience web application testing and automation that so easy a child could do it. Seriously, we've taught kids how to use this.
 
-> My eight year old nephew's eyes got huge when he said "You mean I can click *all* the buttons?" and I told him yes. Then showed him how to do it.
+> My eight year old nephew's eyes got huge when he said *"You mean I can click __all__ the buttons?"* and I told him yes. Then showed him how to do it.
 > -- Kastor
 
-# Features
+## Features
 
 * Variables can be configured via external XML and/or JSON files.
 * Functions are namespaced. They can be defined in test libraries, then called from any test case in the suite with `testCaseTitle.functionName`.
@@ -36,21 +35,21 @@ SelBlocks is a language extension for Selenese that works on both the Selenium I
   * *Scoped storeAttribute* : stores the value of the located attribute.
     * SelBlocks adds : <code>storeLocalAttribute</code>, <code>storeGlobalAttribute</code>, and <code>storeAtAttribute</code>
 
-# Installation
+## Installation
 
 The [Firefox installer](https://addons.mozilla.org/en-US/firefox/addon/selenium-ide-sel-blocks/) is available from the firefox addons site, or just search for it in your addons menu.
 
 The Selenium server extension file is in "/user extension/user-extensions.js". Grab a copy and follow the directions in the SeleniumHTMLRunner.cmd file.
 
-# Documentation
+## Documentation
 
 Find the docs at http://refactoror.wikia.com/wiki/Selblocks_Reference
 
-# Author
+## Author
 
 * [Chris Noe](https://github.com/refactoror)
 
-# Contributors
+## Contributors
 
 * [Matthew Kastor](https://github.com/matthewkastor)
 
