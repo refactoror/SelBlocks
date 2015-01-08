@@ -18,8 +18,8 @@ th, td { padding-left: 0.3em; padding-right: 0.3em; border: 1px solid #ccc; }
 <table id="suiteSummaryTable" class="selenium">
 <thead><tr class="failed"><td>Test Suite: _SelBlocks-TestSuite.html</td></tr></thead>
 <tbody>
-<tr><td>Test cases: 57 total / <span class="passed">56</span> passed / <span class="failed">1</span> failed</td></tr>
-<tr><td>Commands: 986 total / <span class="passed">901</span> passed / <span class="failed">1</span> failed / <span class="skipped">84</span> skipped</td></tr>
+<tr><td>Test cases: 58 total / <span class="passed">57</span> passed / <span class="failed">1</span> failed</td></tr>
+<tr><td>Commands: 989 total / <span class="passed">904</span> passed / <span class="failed">1</span> failed / <span class="skipped">84</span> skipped</td></tr>
 </tbody></table><br>
 <table id="suiteTable" class="selenium">
 <thead><tr><td>Index of test cases</td></tr></thead>
@@ -81,6 +81,7 @@ th, td { padding-left: 0.3em; padding-right: 0.3em; border: 1px solid #ccc; }
 <tr class="passed"><td><a href="#test54">Function - Can Return Value</a></td></tr>
 <tr class="passed"><td><a href="#test55">StoreAt - Function Scope Nesting</a></td></tr>
 <tr class="passed"><td><a href="#test56">StoreAt - While Scope Nesting</a></td></tr>
+<tr class="passed"><td><a href="#test57">sendkeys keys are preserved</a></td></tr>
 
 </tbody></table>
 
@@ -6684,6 +6685,27 @@ th, td { padding-left: 0.3em; padding-right: 0.3em; border: 1px solid #ccc; }
 <tr class="passed">
 	<td>assertEval</td>
 	<td>&quot;${l}&quot; === &quot;this is stored in an ancestor&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test57"></a><table class="test_case"><thead><tr><td colspan="4">Test case: sendkeys keys are preserved</td></tr></thead><tbody><tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;KEY_ENTER&quot; in storedVars</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;KEY_TAB&quot; in storedVars</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;KEY_BACKSPACE&quot; in storedVars</td>
 	<td>true</td>
 	<td></td>
 </tr>
