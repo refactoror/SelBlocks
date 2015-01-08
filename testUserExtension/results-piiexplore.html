@@ -54,15 +54,15 @@ a {
 </tr>
 <tr>
 <td>totalTime:</td>
-<td>36</td>
+<td>38</td>
 </tr>
 <tr>
 <td>numTestTotal:</td>
-<td>57</td>
+<td>58</td>
 </tr>
 <tr>
 <td>numTestPasses:</td>
-<td>55</td>
+<td>56</td>
 </tr>
 <tr>
 <td>numTestFailures:</td>
@@ -70,7 +70,7 @@ a {
 </tr>
 <tr>
 <td>numCommandPasses:</td>
-<td>193</td>
+<td>196</td>
 </tr>
 <tr>
 <td>numCommandFailures:</td>
@@ -149,6 +149,7 @@ a {
 <tr class="  status_passed"><td><a href="#testresult54">Function - Can Return Value</a></td></tr>
 <tr class="  status_passed"><td><a href="#testresult55">StoreAt - Function Scope Nesting</a></td></tr>
 <tr class="  status_passed"><td><a href="#testresult56">StoreAt - While Scope Nesting</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult57">sendkeys keys are preserved</a></td></tr>
 </tbody></table>
 
 
@@ -5914,17 +5915,37 @@ a {
 
 </div></td>
 <td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult57">sendkeys keys are preserved.html</a><br/><div>
+<table border="1" cellspacing="1" cellpadding="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">sendkeys keys are preserved</td></tr>
+</thead><tbody>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"KEY_ENTER" in storedVars</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"KEY_TAB" in storedVars</td>
+	<td>true</td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"KEY_BACKSPACE" in storedVars</td>
+	<td>true</td>
+</tr>
+
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
 </tr></table><pre>
 info: Starting test /selenium-server/tests/README.html
 info: Executing: |open | http://htmlpreview.github.io/?https://github.com/refactoror/SelBlocks/blob/master/sel-blocksTests/_SelBlocks-testpage.html |  |
 error: isNewPageLoaded found an old pageLoadError: Error: Permission denied
-warn: Stack is: Error: Permission denied
-   at BrowserBot.prototype._isSamePage (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-browserbot.js:987:5)
-   at BrowserBot.prototype.pollForLoad (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-browserbot.js:945:9)
-   at pollerFunction (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-browserbot.js:1099:9)
-   at BrowserBot.prototype.runScheduledPollers (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-browserbot.js:1109:9)
-   at TestLoop.prototype.continueTestWhenConditionIsTrue (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-executionloop.js:138:9)
-   at retval (http://htmlpreview.github.io/selenium-server/core/scripts/htmlutils.js:60:5)
 warn: currentTest.recordFailure: Permission denied
 info: Starting test /selenium-server/tests/eval.html
 info: Executing: |resetEmitted |  |  |
@@ -6831,7 +6852,7 @@ info: Executing: |endTry | miss |  |
 error: [SelBlocks] Error was not caught: &apos;blamo will NOT be caught at all&apos;
 error: Unexpected Exception: blamo will NOT be caught at all
 error: Exception details: name -&gt; SelblocksError, message -&gt; blamo will NOT be caught at all, idx -&gt; 5, stack -&gt; SelblocksError: blamo will NOT be caught at all
-   at Selenium.prototype.doThrow (http://htmlpreview.github.io/selenium-server/core/scripts/user-extensions.js:2006:5)
+   at Selenium.prototype.doThrow (http://htmlpreview.github.io/selenium-server/core/scripts/user-extensions.js:2003:5)
    at retval (http://htmlpreview.github.io/selenium-server/core/scripts/htmlutils.js:60:5)
    at ActionHandler.prototype.execute (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-commandhandlers.js:314:5)
    at TestLoop.prototype._executeCurrentCommand (http://htmlpreview.github.io/selenium-server/core/scripts/selenium-executionloop.js:112:9)
@@ -7330,7 +7351,7 @@ info: [SelBlocks] branch =&gt; @19: [endWhile]
 info: Executing: |endWhile |  |  |
 info: Executing: |emit | &quot;END ${i}&quot; |  |
 info: Executing: |timerElapsed |  |  |
-info: [SelBench] 3.468 sec elapsed: 
+info: [SelBench] 3.304 sec elapsed: 
 info: Executing: |assertEmitted | &quot;START 2~while=2~foreach=dilbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~foreach=dogbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~while=1~foreach=dilbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~foreach=dogbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~END 2&quot; |  |
 info: Starting test /selenium-server/tests/function.html
 info: Executing: |deleteVars | sname, srole |  |
@@ -7489,7 +7510,7 @@ info: Executing: |return | n * _result |  |
 info: [SelBlocks] branch =&gt; @5: [call|fac|n=degree]
 info: Executing: |call | fac | n=degree |
 info: Executing: |timerElapsed |  |  |
-info: [SelBench] 1.236 sec elapsed: factorial 7
+info: [SelBench] 1.226 sec elapsed: factorial 7
 info: Executing: |emit | degree + &quot;!=&quot; + _result |  |
 info: Executing: |function | fac | n |
 info: [SelBlocks] branch =&gt; @16: [endFunction]
@@ -8071,4 +8092,11 @@ info: Executing: |assertEval | storedVarsLocal.l === &quot;this is stored in an 
 info: script is: storedVarsLocal.l === &quot;this is stored in an ancestor&quot;
 info: Executing: |assertEval | &quot;${l}&quot; === &quot;this is stored in an ancestor&quot; | true |
 info: script is: &quot;this is stored in an ancestor&quot; === &quot;this is stored in an ancestor&quot;
+info: Starting test /selenium-server/tests/sendkeys%20keys%20are%20preserved.html
+info: Executing: |assertEval | &quot;KEY_ENTER&quot; in storedVars | true |
+info: script is: &quot;KEY_ENTER&quot; in storedVars
+info: Executing: |assertEval | &quot;KEY_TAB&quot; in storedVars | true |
+info: script is: &quot;KEY_TAB&quot; in storedVars
+info: Executing: |assertEval | &quot;KEY_BACKSPACE&quot; in storedVars | true |
+info: script is: &quot;KEY_BACKSPACE&quot; in storedVars
 </pre></body></html>

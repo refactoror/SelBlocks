@@ -54,15 +54,15 @@ a {
 </tr>
 <tr>
 <td>totalTime:</td>
-<td>13</td>
+<td>15</td>
 </tr>
 <tr>
 <td>numTestTotal:</td>
-<td>57</td>
+<td>58</td>
 </tr>
 <tr>
 <td>numTestPasses:</td>
-<td>56</td>
+<td>57</td>
 </tr>
 <tr>
 <td>numTestFailures:</td>
@@ -70,7 +70,7 @@ a {
 </tr>
 <tr>
 <td>numCommandPasses:</td>
-<td>193</td>
+<td>196</td>
 </tr>
 <tr>
 <td>numCommandFailures:</td>
@@ -149,6 +149,7 @@ a {
 <tr class=" status_passed"><td><a href="#testresult54">Function - Can Return Value</a></td></tr>
 <tr class=" status_passed"><td><a href="#testresult55">StoreAt - Function Scope Nesting</a></td></tr>
 <tr class=" status_passed"><td><a href="#testresult56">StoreAt - While Scope Nesting</a></td></tr>
+<tr class=" status_passed"><td><a href="#testresult57">sendkeys keys are preserved</a></td></tr>
 </tbody></table>
 
 
@@ -5914,6 +5915,33 @@ a {
 
 </div></td>
 <td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult57">sendkeys keys are preserved.html</a><br/><div>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">sendkeys keys are preserved</td></tr>
+</thead><tbody>
+<tr class=" status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"KEY_ENTER" in storedVars</td>
+	<td>true</td>
+</tr>
+<tr class=" status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"KEY_TAB" in storedVars</td>
+	<td>true</td>
+</tr>
+<tr class=" status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"KEY_BACKSPACE" in storedVars</td>
+	<td>true</td>
+</tr>
+
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
 </tr></table><pre>
 info: Starting test /selenium-server/tests/README.html
 info: Executing: |open | http://htmlpreview.github.io/?https://github.com/refactoror/SelBlocks/blob/master/sel-blocksTests/_SelBlocks-testpage.html |  |
@@ -7306,7 +7334,7 @@ info: [SelBlocks] branch =&gt; @19: [endWhile]
 info: Executing: |endWhile |  |  |
 info: Executing: |emit | &quot;END ${i}&quot; |  |
 info: Executing: |timerElapsed |  |  |
-info: [SelBench] 0.682 sec elapsed: 
+info: [SelBench] 0.799 sec elapsed: 
 info: Executing: |assertEmitted | &quot;START 2~while=2~foreach=dilbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~foreach=dogbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~while=1~foreach=dilbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~foreach=dogbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~END 2&quot; |  |
 info: Starting test /selenium-server/tests/function.html
 info: Executing: |deleteVars | sname, srole |  |
@@ -7464,7 +7492,7 @@ info: Executing: |return | n * _result |  |
 info: [SelBlocks] branch =&gt; @5: [call|fac|n=degree]
 info: Executing: |call | fac | n=degree |
 info: Executing: |timerElapsed |  |  |
-info: [SelBench] 0.249 sec elapsed: factorial 7
+info: [SelBench] 0.309 sec elapsed: factorial 7
 info: Executing: |emit | degree + &quot;!=&quot; + _result |  |
 info: Executing: |function | fac | n |
 info: [SelBlocks] branch =&gt; @16: [endFunction]
@@ -8046,4 +8074,11 @@ info: Executing: |assertEval | storedVarsLocal.l === &quot;this is stored in an 
 info: script is: storedVarsLocal.l === &quot;this is stored in an ancestor&quot;
 info: Executing: |assertEval | &quot;${l}&quot; === &quot;this is stored in an ancestor&quot; | true |
 info: script is: &quot;this is stored in an ancestor&quot; === &quot;this is stored in an ancestor&quot;
+info: Starting test /selenium-server/tests/sendkeys%20keys%20are%20preserved.html
+info: Executing: |assertEval | &quot;KEY_ENTER&quot; in storedVars | true |
+info: script is: &quot;KEY_ENTER&quot; in storedVars
+info: Executing: |assertEval | &quot;KEY_TAB&quot; in storedVars | true |
+info: script is: &quot;KEY_TAB&quot; in storedVars
+info: Executing: |assertEval | &quot;KEY_BACKSPACE&quot; in storedVars | true |
+info: script is: &quot;KEY_BACKSPACE&quot; in storedVars
 </pre></body></html>
