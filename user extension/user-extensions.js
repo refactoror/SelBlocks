@@ -809,14 +809,11 @@ function $X(xpath, contextNode, resultType) {
    * @methodOf ContextManager.
    */
   ContextManager.prototype.reset = function exitContext() {
-    if (this.contexts.length > 0) {
-      storedVars = storedVarsGlobal;
-      storedVarsLocal = storedVarsGlobal;
-      this.contexts = [];
-      this.enter();
-    } else {
-      throw new Error("No context to exit from");
-    }
+    storedVars = storedVarsGlobal;
+    build_sendkeys_maps();
+    storedVarsLocal = storedVarsGlobal;
+    this.contexts = [];
+    this.enter();
   };
   /**
    * Stores variable into the context chain in the last parent where it was
