@@ -12,17 +12,19 @@ set BUILD_DIR=%~dp0
 set ROOT=%BUILD_DIR%..
 
 :: parse SelBlocks version # from its install.rdf
-call :S_GET_ADDON_VER ..\sel-blocks-fx_xpi
+call :S_GET_ADDON_VER %BUILD_DIR%\..\sel-blocks-fx_xpi
 set SB_VER=%_ver%
 
 echo SelBlocks: %SB_VER%
 
 
 :: create the SelBlocks xpi
-pushd %BUILD_DIR%\..\sel-blocks-fx_xpi
+pushd "%BUILD_DIR%\..\sel-blocks-fx_xpi"
 del "%ROOT%\sel-blocks-%SB_VER%-fx.xpi"
 zip -r "%ROOT:\=/%/../sel-blocks-%SB_VER%-fx.xpi" * -x@"%BUILD_DIR%xpi-excludes.lst"
 popd
+
+pushd "%BUILD_DIR%"
 
 :: assemble user-extensions.js file
 CALL createSelblocksUserExtensions.cmd
@@ -31,6 +33,8 @@ CALL createSelblocksUserExtensions.cmd
 "%JAVA_HOME%\bin\java" -jar "yuicompressor-2.4.8.jar" ^
    ../user-extensions.js ^
 -o ../user-extensions-min.js
+
+popd
 
 ENDLOCAL
 

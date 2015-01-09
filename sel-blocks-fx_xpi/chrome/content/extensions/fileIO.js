@@ -21,7 +21,7 @@
       // in order to not break existing tests the IDE will still use urlFor,
       // on the server it just breaks things. Data can be anywhere on the net,
       // accessible through proper CORS headers.
-      if (globalContext.onServer === true) {
+      if ($$.onServer) {
         fileUrl = filepath;
       } else {
         fileUrl = urlFor(filepath);
@@ -124,7 +124,7 @@
       // in order to not break existing tests the IDE will still use urlFor,
       // on the server it just breaks things. Data can be anywhere on the net,
       // accessible through proper CORS headers.
-      if (globalContext.onServer === true) {
+      if ($$.onServer) {
         fileUrl = filepath;
       } else {
         fileUrl = urlFor(filepath);

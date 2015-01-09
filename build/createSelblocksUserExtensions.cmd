@@ -5,22 +5,22 @@ SETLOCAL
 
 ::@echo off
 
-psuhd "%~dp0"
+pushd "%~dp0"
+del ..\user-extensions.js
+
 SET SRC_DIR=..\sel-blocks-fx_xpi\chrome\content\extensions
-copy user-extensions-base.js ..\user-extensions.js
 
-:: get .js file names from extension-loader.xul
-sed -n "/addPluginProvidedUserExtension/p" "%SRC_DIR%/extension-loader.xul" | sed -e "s~[^\x22]*\x22/~~" -e "s/\x22.*//" > jsFilenames.txt
-
-:: concatenate .js files
-FOR /F %%L IN (jsFilenames.txt) DO (
-  echo.>> ..\user-extensions.js
-  echo // ================================================================================>> ..\user-extensions.js
-  echo // from: %%L>> ..\user-extensions.js
-  type %SRC_DIR%\%%L >> ..\user-extensions.js
-)
-
-del jsFilenames.txt
+type ^
+ %SRC_DIR%\name-space.js ^
+ %SRC_DIR%\logger.js ^
+ %SRC_DIR%\function-intercepting.js ^
+ user-extensions-base.js ^
+ %SRC_DIR%\xpath-processing.js ^
+ %SRC_DIR%\fileIO.js ^
+ %SRC_DIR%\expression-parser.js ^
+ %SRC_DIR%\selenium-executionloop-handleAsExitTest.js ^
+ %SRC_DIR%\selenium-executionloop-handleAsTryBlock.js ^
+ %SRC_DIR%\selblocks.js > ..\user-extensions.js
 
 popd
 
