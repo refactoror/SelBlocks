@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<style>
+.failed {color: red; background-color: #ffcccc;}
+.passed {color: green; background-color: #ccffcc;}
+.done {color: #404040; background-color: #ccffcc;}
+.comment {color: #404040; background-color: #d0d0d0;}
+body, table { font-family: Verdana, Arial, sans-serif; font-size: 12pt; }
+table { border-collapse: collapse; border: 1px solid #ccc; }
+th, td { padding-left: 0.3em; padding-right: 0.3em; border: 1px solid #ccc; }
+#suiteSummaryTable thead { font-size: 14pt; font-weight: 800; }
+.test_case thead { font-size: 14pt; font-weight: 400; }
+</style>
+</head>
+<body>
+<table id="suiteSummaryTable" class="selenium">
+<thead><tr class="failed"><td>Test Suite: _SelBlocks-TestSuite-negative.html</td></tr></thead>
+<tbody>
+<tr><td>Test cases: 2 total / <span class="passed">1</span> passed / <span class="failed">1</span> failed</td></tr>
+<tr><td>Commands: 15 total / <span class="passed">8</span> passed / <span class="failed">1</span> failed / <span class="skipped">6</span> skipped</td></tr>
+</tbody></table><br>
+<table id="suiteTable" class="selenium">
+<thead><tr><td>Index of test cases</td></tr></thead>
+<tbody>
+<tr class="done"><td><a href="#test0">README</a></td></tr>
+<tr class="failed"><td><a href="#test1">try01 - try without matching catch</a></td></tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test0"></a><table class="test_case"><thead><tr><td colspan="4">Test case: README</td></tr></thead><tbody><tr class="comment">
+	<td colspan="4">-- all tests in this suite fail</td>
+</tr>
+<tr class="comment">
+	<td colspan="4">-- compare to _results.log for expected error messages</td>
+</tr>
+<tr class="done">
+	<td>open</td>
+	<td>http://htmlpreview.github.io/?https://github.com/refactoror/SelBlocks/blob/master/sel-blocksTests/_SelBlocks-testpage.html</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test1"></a><table class="test_case"><thead><tr><td colspan="4">Test case: try01 - try without matching catch</td></tr></thead><tbody><tr class="done">
+	<td>log</td>
+	<td>&quot;-- try without matching catch --&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>miss</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>true</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>throw</td>
+	<td>&quot;blamo will NOT be caught at all&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>catch</td>
+	<td>/will NOT catch it/</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>log</td>
+	<td>&quot;caught miss '&quot; + _error.message + &quot;'&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>log</td>
+	<td>&quot;finally&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="failed">
+	<td>endTry</td>
+	<td>miss</td>
+	<td></td>
+	<td>Command execution failure. Please search the user group at https://groups.google.com/forum/#!forum/selenium-users for error details from the log window.  The error message is: blamo will NOT be caught at all</td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>emit</td>
+	<td>&quot;trying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+</body></html>
