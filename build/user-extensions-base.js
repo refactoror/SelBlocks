@@ -1,13 +1,17 @@
-// To use Selblocks commands in Selenium Server, provide this file on the command line.
-// Eg: -userExtensions "C:\somewhere\user-extensions.js"
-
 /*jslint
-indent:2,
-maxerr:500,
-plusplus:true
+ indent:2
+,maxerr:500
+,plusplus:true
+,white:true
+,nomen:true
+ */
+/*globals
+HtmlRunnerTestLoop:true,
+Selenium:true,
+htmlTestRunner:true
  */
 (function($$){
-  $$.onServer = $$.onServer || true;
+  $$.seleniumEnv = "server";
   $$.globalContext.serverPatchApplied = $$.globalContext.serverPatchApplied || false;
 
   if (!$$.globalContext.serverPatchApplied) {
@@ -27,22 +31,17 @@ plusplus:true
       $$.globalContext.testCase.debugContext = htmlTestRunner.currentTest;
       Object.defineProperties($$.globalContext.testCase, {
         "_nextCommandRowIndex" : {
-          configurable : false,
-          enumerable : false,
-          writable : true,
-          value : undefined
-        },
-        "debugIndex" : {
-          get : function () { return this._nextCommandRowIndex; },
-          set : function (x) { this._nextCommandRowIndex = x; },
-          configurable : false,
+          writable : true
+        }
+        ,"debugIndex" : {
           enumerable : true
-        },
-        "nextCommandRowIndex" : {
-          get : function () { return this._nextCommandRowIndex; },
-          set : function (x) { this._nextCommandRowIndex = x; },
-          configurable : false,
+          ,get : function () { return this._nextCommandRowIndex; }
+          ,set : function (idx) { this._nextCommandRowIndex = idx; }
+        }
+        ,"nextCommandRowIndex" : {
           enumerable : true
+          ,get : function () { return this._nextCommandRowIndex; }
+          ,set : function (idx) { this._nextCommandRowIndex = idx; }
         }
       });
     }
@@ -57,7 +56,7 @@ plusplus:true
 
     function importCommand(cmdRow) {
       var cmd = cmdRow.getCommand();
-      if (cmdRow.hasOwnProperty('trElement')) {
+      if (cmdRow.hasOwnProperty("trElement")) {
         cmd.type = "command";
       } else {
         cmd.type = "comment";

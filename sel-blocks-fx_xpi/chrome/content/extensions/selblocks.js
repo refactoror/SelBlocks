@@ -266,7 +266,7 @@ function $X(xpath, contextNode, resultType) {
       // function relies on the commands array. I don't know if there's some
       // underlying collection existing on both the server and IDE that could be
       // used instead.
-      if ($$.onServer) {
+      if ($$.seleniumEnv == "server") {
         this._advanceToNextRow();
         // _advanceToNextRow could set the current row null, it only gets
         // command rows. No point in continuing if that's the case, because
@@ -304,7 +304,7 @@ function $X(xpath, contextNode, resultType) {
   $$.fn.interceptAfter(Selenium.prototype, "reset", function()
   {
     $$.LOG.trace("In tail intercept :: Selenium.reset()");
-    $$.seleniumTestRunner = ($$.onServer)
+    $$.seleniumTestRunner = ($$.seleniumEnv == "server")
       ? htmlTestRunner             // Selenium Server
       : editor.selDebugger.runner; // Selenium IDE
 

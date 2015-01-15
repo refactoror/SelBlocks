@@ -29,11 +29,6 @@ pushd "%BUILD_DIR%"
 :: assemble user-extensions.js file
 CALL createSelblocksUserExtensions.cmd
 
-:: create minified version of user-extensions.js
-"%JAVA_HOME%\bin\java" -jar "yuicompressor-2.4.8.jar" ^
-   ../user-extensions.js ^
--o ../user-extensions-min.js
-
 popd
 
 ENDLOCAL

@@ -4,6 +4,7 @@ var selblocks = { name: "SelBlocks" };
 (function($$){
   // global scope alias
   $$.globalContext = this;
+  $$.seleniumEnv = "ide";
 
   /* Starting with FF4 lots of objects are in an XPCNativeWrapper,
    * and we need the underlying object for == and for..in operations.

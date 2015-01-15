@@ -1,5 +1,4 @@
 SETLOCAL
-
 :: Assumptions:
 ::   cygwin sed
 
@@ -10,21 +9,37 @@ del ..\user-extensions.js
 
 SET SRC_DIR=..\sel-blocks-fx_xpi\chrome\content\extensions
 
-type ^
- %SRC_DIR%\name-space.js ^
- %SRC_DIR%\logger.js ^
- %SRC_DIR%\function-intercepting.js ^
- user-extensions-base.js ^
- %SRC_DIR%\xpath-processing.js ^
- %SRC_DIR%\fileIO.js ^
- %SRC_DIR%\expression-parser.js ^
- %SRC_DIR%\selenium-executionloop-handleAsExitTest.js ^
- %SRC_DIR%\selenium-executionloop-handleAsTryBlock.js ^
- %SRC_DIR%\selblocks.js > ..\user-extensions.js
+:: get .js file names from extension-loader.xul
+sed -n "/addPluginProvidedUserExtension/p" "%SRC_DIR%/extension-loader.xul" | sed -e "s~[^\x22]*\x22/~~" -e "s/\x22.*//" > jsFilenames.txt
+
+:: concatenate .js files
+echo // To use Selblocks commands in Selenium Server, provide this file on the command line.>> ..\user-extensions.js
+echo // Eg: -userExtensions "C:\somewhere\user-extensions.js">> ..\user-extensions.js
+FOR /F %%L IN (jsFilenames.txt) DO (
+  CALL :s_concat %SRC_DIR% %%L
+)
+del jsFilenames.txt
+
+:: create minified version of user-extensions.js
+"%JAVA_HOME%\bin\java" -jar "yuicompressor-*.jar" ^
+   ../user-extensions.js ^
+-o ../user-extensions-min.js
 
 popd
 
 ENDLOCAL
+goto :done
+
+:s_concat
+  echo.>> ..\user-extensions.js
+  echo // ================================================================================>> ..\user-extensions.js
+  echo // from: %2>> ..\user-extensions.js
+  echo.>> ..\user-extensions.js
+  type %1\%2 >> ..\user-extensions.js
+  IF "%2" == "function-intercepting.js" (
+    CALL :s_concat . user-extensions-base.js
+  )
+  goto :eof
 
 :done
 ::pause
