@@ -17,7 +17,6 @@ set SB_VER=%_ver%
 
 echo SelBlocks: %SB_VER%
 
-
 :: create the SelBlocks xpi
 pushd "%BUILD_DIR%\..\sel-blocks-fx_xpi"
 del "%ROOT%\sel-blocks-%SB_VER%-fx.xpi"

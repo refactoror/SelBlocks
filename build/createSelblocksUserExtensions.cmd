@@ -21,9 +21,9 @@ FOR /F %%L IN (jsFilenames.txt) DO (
 del jsFilenames.txt
 
 :: create minified version of user-extensions.js
-"%JAVA_HOME%\bin\java" -jar "yuicompressor-*.jar" ^
-   ../user-extensions.js ^
--o ../user-extensions-min.js
+"%JAVA_HOME%\bin\java" -jar "yuicompressor-2.4.8.jar" ^
+     ../user-extensions.js ^
+  -o ../user-extensions-min.js
 
 popd
 
