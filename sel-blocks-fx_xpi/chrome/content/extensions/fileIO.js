@@ -16,19 +16,7 @@
     // load XML file and return the list of var names found in the first <VARS> element
     this.load = function(filepath)
     {
-      var fileReader = new FileReader();
-      var fileUrl;
-      // in order to not break existing tests the IDE will still use urlFor,
-      // on the server it just breaks things. Data can be anywhere on the net,
-      // accessible through proper CORS headers.
-      if ($$.seleniumEnv == "server") {
-        fileUrl = filepath;
-      } else {
-        fileUrl = urlFor(filepath);
-      }
-      var xmlHttpReq = fileReader.getDocumentSynchronous(fileUrl);
-      $$.LOG.info("Reading from: " + fileUrl);
-
+      var xmlHttpReq = doAjaxRequest(filepath);
       var fileObj = xmlHttpReq.responseXML; // XML DOM
       varsets = fileObj.getElementsByTagName("vars"); // HTMLCollection
       if (varsets === null || varsets.length === 0) {
@@ -119,19 +107,7 @@
     // load JSON file and return the list of var names found in the first object
     this.load = function(filepath)
     {
-      var fileReader = new FileReader();
-      var fileUrl;
-      // in order to not break existing tests the IDE will still use urlFor,
-      // on the server it just breaks things. Data can be anywhere on the net,
-      // accessible through proper CORS headers.
-      if ($$.seleniumEnv == "server") {
-        fileUrl = filepath;
-      } else {
-        fileUrl = urlFor(filepath);
-      }
-      var xmlHttpReq = fileReader.getDocumentSynchronous(fileUrl);
-      $$.LOG.info("Reading from: " + fileUrl);
-
+      var xmlHttpReq = doAjaxRequest(filepath);
       var fileObj = xmlHttpReq.responseText;
       fileObj = fileObj.replace("/\uFFFD/g", "").replace(/\0/g, "");
       $$.LOG.info(fileObj);
@@ -209,6 +185,22 @@
       var json = uneval(obj);
       return json.substring(1, json.length-1);
     }
+  }
+
+  function doAjaxRequest(filepath)
+  {
+      var fileReader = new FileReader();
+      var fileUrl;
+      // in order to not break existing tests, the IDE will still use urlFor,
+      // on the server, accessible with proper CORS headers.
+      if ($$.seleniumEnv == "ide") {
+        fileUrl = urlFor(filepath);
+      } else {
+        fileUrl = filepath;
+      }
+      var xmlHttpReq = fileReader.getDocumentSynchronous(fileUrl);
+      $$.LOG.info("Reading from: " + fileUrl);
+      return xmlHttpReq;
   }
 
   function urlFor(filepath) {
