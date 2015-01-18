@@ -182,8 +182,17 @@
 
     //- format the given JSON object for display
     function serializeJson(obj) {
-      var json = uneval(obj);
-      return json.substring(1, json.length-1);
+      // firefox provides uneval()
+      if (typeof uneval === "function") {
+        var json = uneval(obj);
+        return json.substring(1, json.length-1);
+      }
+      // others
+      var buf = "";
+      for (var attr in obj) {
+        buf += " " + attr + ": " + obj[attr];
+      }
+      return "{" + buf + " }";
     }
   }
 
