@@ -91,7 +91,7 @@ a {
 <tr>
 <td>
 <table id="suiteTable" class="selenium" border="1" cellpadding="1" cellspacing="1"><tbody>
-<tr class="title status_passed"><td><b>Test Suite smoketests</b></td></tr>
+<tr class="title status_passed"><td><b>Test Suite - smoketests</b></td></tr>
 <tr class="  status_passed"><td><a href="#testresult0">README</a></td></tr>
 <tr class="  status_passed"><td><a href="#testresult1">for</a></td></tr>
 <tr class="  status_passed"><td><a href="#testresult2">foreach</a></td></tr>
@@ -380,33 +380,31 @@ info: Starting test /selenium-server/tests/README.html
 info: Executing: |open | http://htmlpreview.github.io/?https://github.com/refactoror/SelBlocks/blob/master/sel-blocksTests/_SelBlocks-testpage.html |  |
 info: Starting test /selenium-server/tests/for.html
 info: Executing: |for | s=0,f=3; f &lt;= 5; f++ |  |
-info: Executing: |getEval | LOG.info(&apos;f: ${f}&apos;) |  |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
+info: Executing: |getEval | LOG.info(&apos;f: ${f}&apos;) |  |
 info: script is: LOG.info(&apos;f: 3&apos;)
 info: f: 3
 info: Executing: |endFor |  |  |
-info: [undefined] branch =&gt; @1: [for|s=0,f=3; f &lt;= 5; f++]
+info: [selblocks] branch =&gt; @1: [for|s=0,f=3; f &lt;= 5; f++]
 info: Starting test /selenium-server/tests/foreach.html
 info: Executing: |foreach | fe | &quot;dilbert&quot;, &quot;dogbert&quot;, &quot;wally&quot; |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |getEval | LOG.info(&apos;${_i}) fe: ${fe}&apos;) |  |
 info: script is: LOG.info(&apos;0) fe: dilbert&apos;)
 info: 0) fe: dilbert
 info: Executing: |endForeach |  |  |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
-info: [undefined] branch =&gt; @1: [foreach|fe|&quot;dilbert&quot;, &quot;dogbert&quot;, &quot;wally&quot;]
+info: [selblocks] branch =&gt; @1: [foreach|fe|&quot;dilbert&quot;, &quot;dogbert&quot;, &quot;wally&quot;]
 info: Starting test /selenium-server/tests/foreach-xpath.html
 info: Executing: |foreach | link | $X(&quot;//input&quot;) |
 info: Executing: |getEval | LOG.info(&apos;link: ${link}&apos;) |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: LOG.info(&apos;link: [object HTMLInputElement]&apos;)
 info: link: [object HTMLInputElement]
 info: Executing: |endForeach |  |  |
-info: [undefined] branch =&gt; @1: [foreach|link|$X(&quot;//input&quot;)]
+info: [selblocks] branch =&gt; @1: [foreach|link|$X(&quot;//input&quot;)]
 info: Starting test /selenium-server/tests/forjson.html
 info: Executing: |forJson | http://refactoror.net/forjson.json |  |
-info: [undefined] Reading from: http://refactoror.net/forjson.json
-info: [undefined] [
+info: [selblocks] Reading from: http://refactoror.net/forjson.json
+info: [selblocks] [
   { jname: &quot;dilbert&quot; }
  ,{ jname: &quot;dogbert&quot; }
  ,{ jname: &quot;wally&quot; }
@@ -416,40 +414,40 @@ info: Executing: |getEval | LOG.info(&apos;jname: ${jname}&apos;) |  |
 info: script is: LOG.info(&apos;jname: dilbert&apos;)
 info: jname: dilbert
 info: Executing: |endForJson |  |  |
-info: [undefined] branch =&gt; @1: [forJson|http://refactoror.net/forjson.json]
+info: [selblocks] branch =&gt; @1: [forJson|http://refactoror.net/forjson.json]
 info: Starting test /selenium-server/tests/forxml.html
 info: Executing: |forXml | http://refactoror.net/forxml.xml |  |
-info: [undefined] Reading from: http://refactoror.net/forxml.xml
+info: [selblocks] Reading from: http://refactoror.net/forxml.xml
 info: Executing: |getEval | LOG.info(&apos;xname: ${xname}&apos;) |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: LOG.info(&apos;xname: dilbert&apos;)
 info: xname: dilbert
 info: Executing: |endForXml |  |  |
-info: [undefined] branch =&gt; @1: [forXml|http://refactoror.net/forxml.xml]
+info: [selblocks] branch =&gt; @1: [forXml|http://refactoror.net/forxml.xml]
 info: Starting test /selenium-server/tests/function01.html
 info: Executing: |call | doSomething | sname = &quot;dilbert,Q&quot;, srole = &quot;goof&quot; |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
-info: [undefined] branch =&gt; @2: [function|doSomething|sname]
+info: [selblocks] branch =&gt; @2: [function|doSomething|sname]
 info: Executing: |function | doSomething | sname |
 info: Executing: |getEval | LOG.info(&apos;sname: ${sname}, srole: ${srole}&apos;) |  |
 info: script is: LOG.info(&apos;sname: dilbert,Q, srole: goof&apos;)
 info: sname: dilbert,Q, srole: goof
 info: Executing: |endFunction | doSomething |  |
-info: [undefined] branch =&gt; @1: [call|doSomething|sname = &quot;dilbert,Q&quot;, srole = &quot;goof&quot;]
+info: [selblocks] branch =&gt; @1: [call|doSomething|sname = &quot;dilbert,Q&quot;, srole = &quot;goof&quot;]
 info: Executing: |call | doSomething | sname = &quot;dilbert,Q&quot;, srole = &quot;goof&quot; |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |function | doSomething | sname |
-info: [undefined] branch =&gt; @4: [endFunction|doSomething]
+info: [selblocks] branch =&gt; @4: [endFunction|doSomething]
 info: Executing: |endFunction | doSomething |  |
 info: Executing: |call | doSomething | sname = &quot;dogbert&quot;, srole = &quot;woof&quot; |
-info: [undefined] branch =&gt; @2: [function|doSomething|sname]
+info: [selblocks] branch =&gt; @2: [function|doSomething|sname]
 info: Executing: |function | doSomething | sname |
 info: Starting test /selenium-server/tests/try05%20-%20catch%20specific%20error,%20then%20finally.html
 info: Executing: |try | t-spec-outer |  |
-warn: [undefined] @1: [try|t-spec-outer] does not have a catch-block nor a finally-block, and therefore serves no purpose
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
+warn: [selblocks] @1: [try|t-spec-outer] does not have a catch-block nor a finally-block, and therefore serves no purpose
 info: Executing: |try | t-spec-inner |  |
 info: Executing: |throw | &quot;blamo inner&quot; |  |
-info: [undefined] @3, error has been caught :: /blamo inner/
-info: [undefined] branch =&gt; @5: [catch|/blamo inner/]
+info: [selblocks] @3, error has been caught :: /blamo inner/
+info: [selblocks] branch =&gt; @5: [catch|/blamo inner/]
 info: Executing: |catch | /blamo inner/ |  |
 info: Executing: |getEval | LOG.info(&apos;_error: ${_error}&apos;) |  |
 info: script is: LOG.info(&apos;_error: SelblocksError: blamo inner&apos;)
