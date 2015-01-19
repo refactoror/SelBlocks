@@ -3,12 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>CallGlobalFunction</title>
+<link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
+<title>CallGlobalFunctionNesting</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">CallGlobalFunction</td></tr>
+<tr><td rowspan="1" colspan="3">CallGlobalFunctionNesting</td></tr>
 </thead><tbody>
 <tr>
 	<td>getEval</td>
@@ -26,8 +27,13 @@
 	<td>reset</td>
 </tr>
 <tr>
+	<td>assertEval</td>
+	<td>globalStoredVars.aGlobalVar;</td>
+	<td>reset</td>
+</tr>
+<tr>
 	<td>call</td>
-	<td>GlobalFunctions.setGlobalVar</td>
+	<td>GlobalFunctions2.setGlobalVar2</td>
 	<td></td>
 </tr>
 <tr>
@@ -35,6 +41,7 @@
 	<td>globalStoredVars.aGlobalVar;</td>
 	<td>not set</td>
 </tr>
+<!--the index gets screwed up when global funcs call other global funcs-->
 </tbody></table>
 </body>
 </html>
