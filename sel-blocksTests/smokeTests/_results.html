@@ -54,7 +54,7 @@ a {
 </tr>
 <tr>
 <td>totalTime:</td>
-<td>1</td>
+<td>7</td>
 </tr>
 <tr>
 <td>numTestTotal:</td>
@@ -194,7 +194,7 @@ a {
 	<td>LOG.info('link: ${link}')</td>
 	<td></td>
 </tr>
-<tr class="  status_done" style="cursor: pointer;">
+<tr class="" style="cursor: pointer;">
 	<td>endForeach</td>
 	<td></td>
 	<td></td>
@@ -380,7 +380,6 @@ info: Starting test /selenium-server/tests/README.html
 info: Executing: |open | http://htmlpreview.github.io/?https://github.com/refactoror/SelBlocks/blob/master/sel-blocksTests/_SelBlocks-testpage.html |  |
 info: Starting test /selenium-server/tests/for.html
 info: Executing: |for | s=0,f=3; f &lt;= 5; f++ |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |getEval | LOG.info(&apos;f: ${f}&apos;) |  |
 info: script is: LOG.info(&apos;f: 3&apos;)
 info: f: 3
@@ -396,11 +395,9 @@ info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please
 info: [selblocks] branch =&gt; @1: [foreach|fe|&quot;dilbert&quot;, &quot;dogbert&quot;, &quot;wally&quot;]
 info: Starting test /selenium-server/tests/foreach-xpath.html
 info: Executing: |foreach | link | $X(&quot;//input&quot;) |
-info: Executing: |getEval | LOG.info(&apos;link: ${link}&apos;) |  |
-info: script is: LOG.info(&apos;link: [object HTMLInputElement]&apos;)
-info: link: [object HTMLInputElement]
+info: [selblocks] branch =&gt; @3: [endForeach]
 info: Executing: |endForeach |  |  |
-info: [selblocks] branch =&gt; @1: [foreach|link|$X(&quot;//input&quot;)]
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Starting test /selenium-server/tests/forjson.html
 info: Executing: |forJson | http://refactoror.net/forjson.json |  |
 info: [selblocks] Reading from: http://refactoror.net/forjson.json
@@ -411,6 +408,7 @@ info: [selblocks] [
 ]
 
 info: Executing: |getEval | LOG.info(&apos;jname: ${jname}&apos;) |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: LOG.info(&apos;jname: dilbert&apos;)
 info: jname: dilbert
 info: Executing: |endForJson |  |  |
@@ -419,7 +417,6 @@ info: Starting test /selenium-server/tests/forxml.html
 info: Executing: |forXml | http://refactoror.net/forxml.xml |  |
 info: [selblocks] Reading from: http://refactoror.net/forxml.xml
 info: Executing: |getEval | LOG.info(&apos;xname: ${xname}&apos;) |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: LOG.info(&apos;xname: dilbert&apos;)
 info: xname: dilbert
 info: Executing: |endForXml |  |  |
@@ -442,7 +439,6 @@ info: [selblocks] branch =&gt; @2: [function|doSomething|sname]
 info: Executing: |function | doSomething | sname |
 info: Starting test /selenium-server/tests/try05%20-%20catch%20specific%20error,%20then%20finally.html
 info: Executing: |try | t-spec-outer |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 warn: [selblocks] @1: [try|t-spec-outer] does not have a catch-block nor a finally-block, and therefore serves no purpose
 info: Executing: |try | t-spec-inner |  |
 info: Executing: |throw | &quot;blamo inner&quot; |  |
@@ -454,5 +450,7 @@ info: script is: LOG.info(&apos;_error: SelblocksError: blamo inner&apos;)
 info: _error: SelblocksError: blamo inner
 info: Executing: |finally |  |  |
 info: Executing: |endTry | t-spec-inner |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |endTry | t-spec-outer |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 </pre></body></html>

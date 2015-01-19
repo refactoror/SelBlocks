@@ -164,8 +164,8 @@ I tend to agree, in principle, with Dan Fabulich's view on keeping HTML Selenese
 
 =Revision History=
 
-* 2015-??-??: v2.0.2
-** SelBlocks now works with Selenium Server. A big thanks to Matthew Kastor for this contribution.
+* 2015-??-??: v2.1
+** SelBlocks now works with Selenium Server. (A big thanks to Matthew Kastor for this contribution.)
 ** Added ability to catch verify command faliures
 ** Fixed Issue #6 Try/catch not clearing error status
 ** Fixed Issue #11 Top-level try/finally leaves Selenium IDE in running mode

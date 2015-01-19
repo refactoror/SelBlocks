@@ -1122,8 +1122,8 @@ function $X(xpath, contextNode, resultType) {
   };
   Selenium.prototype.doLoadVars = function(filepath, selector)
   {
-    $$.LOG.warn("The loadVars command has been deprecated and will be removed in future releases."
-      + " Please use doLoadXmlVars instead.");
+    $$.LOG.warn("The loadVars command has been deprecated as of SelBlocks 2.0.2 and will be removed in future releases."
+      + " Please use loadXmlVars instead.");
     Selenium.prototype.doLoadXmlVars(filepath, selector);
   };
 
@@ -1333,7 +1333,7 @@ function $X(xpath, contextNode, resultType) {
   };
   Selenium.prototype.doScript = function(scrName)
   {
-    $$.LOG.warn("The script command has been deprecated and will be removed in future releases."
+    $$.LOG.warn("The script command has been deprecated as of SelBlocks 2.0 and will be removed in future releases."
       + " Please use function instead.");
     Selenium.prototype.doFunction(scrName);
   };
