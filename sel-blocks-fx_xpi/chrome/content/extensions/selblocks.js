@@ -44,7 +44,6 @@
  *   script can be monitored using the Stored Variables Viewer addon.
  */
 
-
 // =============== global functions as script helpers ===============
 // getEval script helpers
 
@@ -82,7 +81,6 @@ function $X(xpath, contextNode, resultType) {
 
 // selbocks name-space
 (function($$){
-
   // =============== Javascript extensions as script helpers ===============
   // EXTENSION REVIEWERS:
   // Global functions are intentional features provided for use by end user's in their Selenium scripts.
@@ -157,16 +155,139 @@ function $X(xpath, contextNode, resultType) {
     return null;
   };
 
-
   //=============== Call/Scope Stack handling ===============
 
   var symbols = {};      // command indexes stored by name: function names
   var blockDefs = null;  // static command definitions stored by command index
   var callStack = null;  // command execution stack
+  var contextManager; // makes block scoped variables work
+  // intentionally global var
+  storedVarsGlobal = storedVars;
+  /**
+   * Manages variable scope for functions, blocks, etc.
+   * @class ContextManager
+   */
+  function ContextManager() {
+    // intentionally global var
+    storedVarsLocal = Object.create(storedVarsGlobal);
+    storedVars = storedVarsLocal;
+    this.contexts = [];
+    this.enter();
+  }
+  /**
+   * Enters a new variable context.
+   * @methodOf ContextManager.
+   */
+  ContextManager.prototype.enter = function enterContext() {
+    var _o = storedVars;
+    var context = {
+      here : Object.create(storedVars),
+      back : _o
+    };
+    this.contexts.push(context);
+    storedVars = context.here;
+    storedVarsLocal = context.here;
+  };
+  /**
+   * Exits to the previous variable context.
+   * @methodOf ContextManager.
+   */
+  ContextManager.prototype.exit = function exitContext() {
+    if (this.contexts.length > 0) {
+      var context = this.contexts.pop();
+      storedVars = context.back;
+      storedVarsLocal = context.back;
+    } else {
+      throw new Error("No context to exit from");
+    }
+  };
+  /**
+   * Resets to the top variable context.
+   * @methodOf ContextManager.
+   */
+  ContextManager.prototype.reset = function exitContext() {
+    storedVars = storedVarsGlobal;
+    build_sendkeys_maps();
+    storedVarsLocal = storedVarsGlobal;
+    this.contexts = [];
+    this.enter();
+  };
+  /**
+   * Stores variable into the context chain in the last parent where it was
+   *  defined. This allows values to bubble up to their relevant parent so that
+   *  you don't have to pass everything in global scope. The variable must exist
+   *  in a parent scope in order to be caught there, otherwise it will get to
+   *  the global scope and be set there.
+   * @param {String} propName The name of the variable.
+   * @param {Mixed} val Any value you could set for a variable.
+   */
+  ContextManager.prototype.storeAtClosestContextWithPropName =
+  function storeAtClosestContextWithPropName (propName, val) {
+      var out = undefined;
+      var idx = this.contexts.length - 1;
+      while (idx >= 0 && out === undefined) {
+          if(this.contexts[idx].here.hasOwnProperty(propName)) {
+              this.contexts[idx].here[String(propName)] = val;
+              out = true;
+          }
+          idx--;
+      }
+      if(out === undefined) {
+          storedVarsGlobal[String(propName)] = val;
+          $$.LOG.warn(String(propName) + " not found, setting global variable");
+      }
+  };
+  contextManager = new ContextManager();
+  /**
+   * State information about the cache.
+   * currentCaseTitle is the current case displayed in the UI
+   * activeCaseTitle is the cashed case where commands are actually being pulled
+   *  from.
+   * commandIndex is the current index of the commands array in the active case
+   * suites are the cached test suites commands, symbols, and blockDefs
+   */
+  var cachedCommandsData = {
+    initializing : true,
+    currentCaseTitle : '',
+    activeCaseTitle : '',
+    commandIndex : 0,
+    suites : Object.create(null),
+    /**
+     * Caches information about the current test case
+     */
+    cacheCommands : function cacheCacheCommands(symbols, commands, blockDefs) {
+      cachedCommandsData.initializing = false;
+      cachedCommandsData.suites[cachedCommandsData.currentCaseTitle] = {
+        'symbols' : symbols,
+        'commands' : commands,
+        'blockDefs' : blockDefs
+      }
+    },
+    /**
+     * Starts a new suite cache.
+     */
+    init : function cacheInit() {
+      cachedCommandsData.initializing = true;
+      var _mytitle;
+      if(globalContext.onServer === true) {
+        _mytitle = testCase.htmlTestCase.testDocument.title || "untitiled";
+      } else {
+        _mytitle = testCase.title || "untitiled";
+      }
+      // the current case displayed in the IDE
+      cachedCommandsData.currentCaseTitle = String(_mytitle);
+      // the current case for looking up functions
+      cachedCommandsData.activeCaseTitle = String(_mytitle);
+      // the index used for executing commands, this is decoupled from the
+      // testCase.debugIndex because what's being executed doesn't always
+      // move the row cursor in the UI anymore.
+      cachedCommandsData.commandIndex = 0;
+    }
+  };
 
   // the idx of the currently executing command
   function idxHere() {
-    return testCase.debugContext.debugIndex;
+    return cachedCommandsData.commandIndex;
   }
 
   // Command structure definitions, stored by command index
@@ -184,7 +305,13 @@ function $X(xpath, contextNode, resultType) {
 
   // retrieve the blockDef at the given command idx
   function blkDefAt(idx) {
-    return blockDefs[idx];
+    var where;
+    if(cachedCommandsData.initializing === true) {
+      where = blockDefs[idx];
+    } else {
+      where = cachedCommandsData.suites[String(cachedCommandsData.activeCaseTitle)].blockDefs[idx];
+    }
+    return where;
   }
   // retrieve the blockDef for the currently executing command
   function blkDefHere() {
@@ -242,33 +369,69 @@ function $X(xpath, contextNode, resultType) {
     if (!this.started) {
       this.started = true;
       this.debugIndex = testCase.startPoint ? testCase.commands.indexOf(testCase.startPoint) : 0;
+      cachedCommandsData.commandIndex = 0 + this.debugIndex;
+      cachedCommandsData.activeCaseTitle = String(cachedCommandsData.currentCaseTitle);
     }
     else {
       if (branchIdx !== null) {
         $$.LOG.info("branch => " + fmtCmdRef(branchIdx));
-        this.debugIndex = branchIdx;
+        if(cachedCommandsData.activeCaseTitle === cachedCommandsData.currentCaseTitle) {
+          this.debugIndex = branchIdx;
+        }
+        cachedCommandsData.commandIndex = branchIdx;
         branchIdx = null;
       }
       else {
-        this.debugIndex++;
+        if(cachedCommandsData.activeCaseTitle === cachedCommandsData.currentCaseTitle) {
+          this.debugIndex++;
+        }
+        cachedCommandsData.commandIndex++;
       }
     }
+    
+    var command;
     // skip over comments
-    while (this.debugIndex < testCase.commands.length) {
-      var command = testCase.commands[this.debugIndex];
+    while (cachedCommandsData.commandIndex < cachedCommandsData.suites[String(cachedCommandsData.activeCaseTitle)].commands.length) {
+      command = cachedCommandsData.suites[String(cachedCommandsData.activeCaseTitle)].commands[cachedCommandsData.commandIndex];
+      
+      if(globalContext.onServer === true) {
+        this.currentRow = this.htmlTestCase.commandRows[this.debugIndex];
+        if(cachedCommandsData.activeCaseTitle === cachedCommandsData.currentCaseTitle) {
+          command = this.currentRow.getCommand();
+          command.type = "command";
+        }
+        if (this.sejsElement) {
+            this.currentItem = agenda.pop();
+            this.currentRowIndex = this.debugIndex;
+        }
+      }
+      
       if (command.type === "command") {
+        this.runTimeStamp = Date.now();
         return command;
       }
-      this.debugIndex++;
+      if(cachedCommandsData.activeCaseTitle === cachedCommandsData.currentCaseTitle) {
+        this.debugIndex++;
+      }
+      cachedCommandsData.commandIndex++;
+    }
+    
+    if(globalContext.onServer === true) {
+        this.currentRow = null;
+        this.currentItem = null;
     }
     return null;
   }
+  /**
+   * Creates a pointer to the next command to execute. This pointer is used by
+   * nextCommand when considering what to do next.
+   * @param {Number} cmdIdx The index of the next command to execute.
+   */
   function setNextCommand(cmdIdx) {
-    assert(cmdIdx >= 0 && cmdIdx < testCase.commands.length,
-      " Cannot branch to non-existent command @" + (cmdIdx+1));
+    assert(cmdIdx >= 0 && cmdIdx < cachedCommandsData.suites[String(cachedCommandsData.activeCaseTitle)].commands.length,
+      " Cannot branch to non-existent command " + String(cachedCommandsData.activeCaseTitle) + " @" + (cmdIdx+1));
     branchIdx = cmdIdx;
   }
-
   // Selenium calls reset():
   //  * before each single (double-click) command execution
   //  * before a testcase is run
@@ -278,6 +441,7 @@ function $X(xpath, contextNode, resultType) {
   {
     $$.LOG.trace("In tail intercept :: Selenium.reset()");
     try {
+      contextManager.reset();
       compileSelBlocks();
     }
     catch (err) {
@@ -294,15 +458,21 @@ function $X(xpath, contextNode, resultType) {
     $$.fn.interceptReplace(testCase.debugContext, "nextCommand", nextCommand);
   });
 
-  // get the blockStack for the currently active callStack
+  /**
+   * gets the blockStack for the currently active callStack
+   */
   function activeBlockStack() {
     return callStack.top().blockStack;
   }
 
   // ================================================================================
-  // Assemble block relationships and symbol locations
+  /**
+   * Assembles block relationships and symbol locations.
+   */
   function compileSelBlocks()
   {
+    cachedCommandsData.init();
+    symbols = {};
     blockDefs = new BlockDefs();
     var lexStack = new Stack();
     var i;
@@ -487,6 +657,7 @@ function $X(xpath, contextNode, resultType) {
       }
       throw new SyntaxError(cmdErrors.join("; "));
     }
+    cachedCommandsData.cacheCommands(symbols, testCase.commands, blockDefs);
     //- command validation
     function assertNotAndWaitSuffix(cmdIdx) {
       assertCmd(cmdIdx, (testCase.commands[cmdIdx].command.indexOf("AndWait") === -1),
@@ -504,7 +675,9 @@ function $X(xpath, contextNode, resultType) {
 
   // --------------------------------------------------------------------------------
 
-  // prevent jumping in-to and/or out-of loop/function/try blocks
+  /**
+   * prevents jumping in-to and/or out-of loop/function/try blocks
+   */
   function assertIntraBlockJumpRestriction(fromIdx, toIdx) {
     var fromRange = findBlockRange(fromIdx);
     var toRange   = findBlockRange(toIdx);
@@ -517,7 +690,9 @@ function $X(xpath, contextNode, resultType) {
     }
   }
 
-  // ascertain in which, if any, block that an locusIdx occurs
+  /**
+   * ascertain in which, if any, block that an locusIdx occurs
+   */
   function findBlockRange(locusIdx) {
     var idx;
     for (idx = locusIdx-1; idx >= 0; idx--) {
@@ -589,7 +764,7 @@ function $X(xpath, contextNode, resultType) {
       notifyFatal("Invalid character(s) in " + desc + " name: '" + name + "'");
     }
   }
-
+  
   Selenium.prototype.doLabel = function() {
     // noop
   };
@@ -720,8 +895,13 @@ function $X(xpath, contextNode, resultType) {
 
     if ($$.tcf.nestingLevel === 0) {
       // enable special command handling
-      $$.fn.interceptPush(editor.selDebugger.runner.currentTest, "resume",
+      if(globalContext.onServer === true) {
+        $$.fn.interceptPush(htmlTestRunner.currentTest, "resume",
           $$.handleAsTryBlock, { manageError: handleCommandError });
+      } else {
+        $$.fn.interceptPush(editor.selDebugger.runner.currentTest, "resume",
+            $$.handleAsTryBlock, { manageError: handleCommandError });
+      }
     }
     $$.LOG.debug("++ try nesting: " + $$.tcf.nestingLevel);
     // continue into try-block
@@ -874,10 +1054,14 @@ function $X(xpath, contextNode, resultType) {
       $$.LOG.warn("bubbleToTryBlock() called outside of any try nesting");
     }
     var tryState = unwindToBlock(_hasCriteria);
+    var ret;
     while (!tryState && $$.tcf.nestingLevel > -1 && callStack.length > 1) {
       var callFrame = callStack.pop();
       $$.LOG.info("function '" + callFrame.name + "' aborting due to error");
-      restoreVarState(callFrame.savedVars);
+      if (storedVars._result) { ret = storedVars._result; }
+      contextManager.exit();
+      storedVars._result = ret;
+      //restoreVarState(callFrame.savedVars);
       tryState = unwindToBlock(_hasCriteria);
     }
     return tryState;
@@ -1189,6 +1373,7 @@ function $X(xpath, contextNode, resultType) {
       activeBlockStack().push(loopState);
       var localVars = _validateFunc(loopState);
       loopState.savedVars = getVarState(localVars);
+      contextManager.enter();
       initVarState(localVars); // because with-scope can reference storedVars only once they exist
       _initFunc(loopState);
     }
@@ -1210,8 +1395,13 @@ function $X(xpath, contextNode, resultType) {
     assertRunning();
     assertActiveScope(blkDefHere().beginIdx);
     var loopState = activeBlockStack().top();
+    var ret;
     if (loopState.isComplete) {
-      restoreVarState(loopState.savedVars);
+      if (storedVars._result) { ret = storedVars._result; }
+      contextManager.exit();
+      storedVars._result = ret;
+      
+      //restoreVarState(loopState.savedVars);
       activeBlockStack().pop();
       // done, fall out of loop
     }
@@ -1261,38 +1451,59 @@ function $X(xpath, contextNode, resultType) {
   // ================================================================================
   Selenium.prototype.doCall = function(funcName, argSpec)
   {
+    var funcIdx, fName, caseName;
     assertRunning(); // TBD: can we do single execution, ie, run from this point then break on return?
-    if (argSpec) {
+    // throws an error if given gibberish. IE considers the assertion "var;" to be invalid.
+    // parseArgs, called further below, can handle the empty string just fine.
+    if (argSpec && argSpec != '') {
       assertCompilable("var ", argSpec, ";", "Invalid call parameter(s)");
     }
-    var funcIdx = symbols[funcName];
-    assert(funcIdx!==undefined, " Function does not exist: " + funcName + ".");
+    if(funcName.match(/[.]/)) {
+        caseName = String(funcName.split(".")[0]);
+        fName = String(funcName.split(".")[1]);
+    } else {
+      caseName = String(cachedCommandsData.activeCaseTitle);
+      fName = String(funcName);
+    }
+    funcIdx = cachedCommandsData.suites[caseName].symbols[fName];
+    assert(funcIdx!==undefined, " Function does not exist: " + funcName);
+    cachedCommandsData.activeCaseTitle = String(caseName);
 
     var activeCallFrame = callStack.top();
     if (activeCallFrame.isReturning && activeCallFrame.returnIdx === idxHere()) {
       // returning from completed function
-      restoreVarState(callStack.pop().savedVars);
+      cachedCommandsData.activeCaseTitle = String(cachedCommandsData.currentCaseTitle);
+      callStack.pop()
+      //restoreVarState(callStack.pop().savedVars);
     }
     else {
-      // save existing variable state and set args as local variables
+      // pass supplied args to the function call through the call stack
       var args = parseArgs(argSpec);
-      var savedVars = getVarStateFor(args);
-      setVars(args);
+      // saved vars will be populated by the function call
 
-      callStack.push({ funcIdx: funcIdx, name: funcName, args: args, returnIdx: idxHere(),
-        savedVars: savedVars, blockStack: new Stack() });
+      callStack.push({ funcIdx: funcIdx, name: fName, args: args, returnIdx: idxHere(),
+        savedVars: {}, blockStack: new Stack() });
       // jump to function body
       setNextCommand(funcIdx);
     }
   };
-  Selenium.prototype.doFunction = function(funcName)
+  Selenium.prototype.doFunction = function(funcName, paramString)
   {
     assertRunning();
-
+    var params, savedVars;
     var funcDef = blkDefHere();
     var activeCallFrame = callStack.top();
     if (activeCallFrame.funcIdx === idxHere()) {
-      // get parameter values
+      contextManager.enter();
+      params = parseArgs(paramString, "suppress variable expansion");
+      // caching the values of all storedVars specified in function signature.
+      //savedVars = getVarStateFor(params);
+      //activeCallFrame.savedVars = savedVars;
+      
+      // set default values supplied in function definition
+      setVars(params);
+      // overwrite local variables and defaults with the supplied values from
+      // the call
       setVars(activeCallFrame.args);
     }
     else {
@@ -1300,11 +1511,11 @@ function $X(xpath, contextNode, resultType) {
       setNextCommand(funcDef.endIdx);
     }
   };
-  Selenium.prototype.doScript = function(scrName)
+  Selenium.prototype.doScript = function(scrName, paramString)
   {
     $$.LOG.warn("The script command has been deprecated and will be removed in future releases."
       + " Please use function instead.");
-    Selenium.prototype.doFunction(scrName);
+    Selenium.prototype.doFunction(scrName, paramString);
   };
   Selenium.prototype.doReturn = function(value) {
     returnFromFunction(null, value);
@@ -1322,15 +1533,19 @@ function $X(xpath, contextNode, resultType) {
     if (transitionBubbling(Stack.isFunctionBlock)) {
       return;
     }
+    var ret;
     var endDef = blkDefHere();
     var activeCallFrame = callStack.top();
     if (activeCallFrame.funcIdx !== endDef.funcIdx) {
       // no active call, we're just skipping around a function block
     }
     else {
-      if (returnVal) { storedVars._result = evalWithVars(returnVal); }
+      if (returnVal) { ret = evalWithVars(returnVal); }
+      contextManager.exit();
+      storedVars._result = ret;
       activeCallFrame.isReturning = true;
       // jump back to call command
+      cachedCommandsData.activeCaseTitle = String(cachedCommandsData.currentCaseTitle);
       setNextCommand(activeCallFrame.returnIdx);
     }
   }
@@ -1342,12 +1557,72 @@ function $X(xpath, contextNode, resultType) {
       return;
     }
     // intercept command processing and simply stop test execution instead of executing the next command
-    $$.fn.interceptOnce(editor.selDebugger.runner.currentTest, "resume", $$.handleAsExitTest);
+      if(globalContext.onServer === true) {
+        $$.fn.interceptOnce(htmlTestRunner.currentTest, "resume", $$.handleAsExitTest);
+      } else {
+        $$.fn.interceptOnce(editor.selDebugger.runner.currentTest, "resume", $$.handleAsExitTest);
+      }
   };
 
 
   // ========= storedVars management =========
+  
+  Selenium.prototype.doStoreGlobal = function(value, varName) {
+    storedVarsGlobal[varName] = value;
+  };
+  
+  Selenium.prototype.doStoreEvalGlobal = function(value, varName) {
+    var val = evalWithVars(String(value));
+    storedVarsGlobal[varName] = val;
+  };
 
+  Selenium.prototype.doStoreGlobalText = function(target, varName) {
+    var element = this.page().findElement(target);
+    storedVarsGlobal[varName] = getText(element);
+  };
+
+  Selenium.prototype.doStoreGlobalAttribute = function(target, varName) {
+    storedVarsGlobal[varName] = this.page().findAttribute(target);
+  };
+  
+  Selenium.prototype.doStoreLocal = function(value, varName) {
+    storedVarsLocal[varName] = value;
+  };
+  
+  Selenium.prototype.doStoreEvalLocal = function(value, varName) {
+    var val = evalWithVars(String(value));
+    storedVarsLocal[varName] = val;
+  };
+  
+  Selenium.prototype.doStoreLocalText = function(target, varName) {
+    var element = this.page().findElement(target);
+    storedVarsLocal[varName] = getText(element);
+  };
+
+  Selenium.prototype.doStoreLocalAttribute = function(target, varName) {
+    storedVarsLocal[varName] = this.page().findAttribute(target);
+  };
+  
+  Selenium.prototype.doStoreAt = function(value, varName) {
+    contextManager.storeAtClosestContextWithPropName(varName, value);
+  };
+  
+  Selenium.prototype.doStoreEvalAt = function(value, varName) {
+    var val = evalWithVars(String(value));
+    contextManager.storeAtClosestContextWithPropName(varName, val);
+  };
+
+  Selenium.prototype.doStoreAtText = function(target, varName) {
+    var element = this.page().findElement(target);
+    var value = getText(element);
+    contextManager.storeAtClosestContextWithPropName(varName, value);
+  };
+
+  Selenium.prototype.doStoreAtAttribute = function(target, varName) {
+    var value = this.page().findAttribute(target);
+    contextManager.storeAtClosestContextWithPropName(varName, value);
+  };
+  
   function evalWithVars(expr) {
     var result = null;
     try {
@@ -1360,15 +1635,37 @@ function $X(xpath, contextNode, resultType) {
     }
     return result;
   }
-
-  function parseArgs(argSpec) { // comma-sep -> new prop-set
+  /**
+   * Parses a string of comma separated args that may contain assignments with
+   *  equal signs.
+   * @param {String} argSpec The string representing arguments.
+   * @param {Null|Any} suppressEval If this is set to any truthy value then the
+   *  values side of any arguments will not be evaluated with respect to the
+   *  stored variables.
+   * @returns {Object} Returns an object whose properties are argument names and
+   *  whose property values are the arguments values. If no value was supplied
+   *  then the property will exist but it will be set to undefined.
+   * @example
+   * // storedVariables.bat = "XXXXXXX";
+   * parseArgs('foo="bar",baz=bat');
+   * // returns {foo:"bar", baz:"XXXXXXX"}
+   * parseArgs('foo="bar",baz=bat', "suppress eval");
+   * // returns {foo:"bar", baz:"bat"}
+   */
+  function parseArgs(argSpec, suppressEval) { // comma-sep -> new prop-set
     var args = {};
     var parms = iexpr.splitList(argSpec, ",");
     var i;
     for (i = 0; i < parms.length; i++) {
       var keyValue = iexpr.splitList(parms[i], "=");
       validateName(keyValue[0], "parameter");
-      args[keyValue[0]] = evalWithVars(keyValue[1]);
+      // boolean values suck, let me put any arbitrary string as the arg
+      // like "suppress variable expansion" so I can be clear about my intent.
+      if(suppressEval) {
+        args[keyValue[0]] = keyValue[1];
+      } else {
+        args[keyValue[0]] = evalWithVars(keyValue[1]);
+      }
     }
     return args;
   }
@@ -1377,11 +1674,20 @@ function $X(xpath, contextNode, resultType) {
       var i;
       for (i = 0; i < names.length; i++) {
         if (!storedVars[names[i]]) {
-          storedVars[names[i]] = null;
+          storedVars[names[i]] = undefined;
         }
       }
     }
   }
+  /**
+   * Sets the values of existing `args` properties to match `storedVars`
+   * @param {Object} args A simple value store where properties represent the
+   *  the names of arguments and their values are the default values of those
+   *  properties. If those same properties exist on `storedVars` they will be
+   *  overwritten in the output object.
+   * @returns {Object} returns a simple object that can be used as `this` in
+   *  `fn.call` and `fn.apply` etc.
+   */
   function getVarStateFor(args) { // storedVars(prop-set) -> new prop-set
     var savedVars = {};
     var varname;
@@ -1390,6 +1696,13 @@ function $X(xpath, contextNode, resultType) {
     }
     return savedVars;
   }
+  /**
+   * Gets links to the storedVars specified.
+   * @param {Array} names An array of strings representing the storedVars
+   *  properties that you want to copy/link to.
+   * @returns {Object} returns a simple object that can be used as `this` in
+   *  `fn.call` and `fn.apply` etc.
+   */
   function getVarState(names) { // storedVars(names) -> new prop-set
     var savedVars = {};
     if (names) {
@@ -1400,6 +1713,14 @@ function $X(xpath, contextNode, resultType) {
     }
     return savedVars;
   }
+  /**
+   * Overwrites values in storedVars with values supplied.
+   * @param {Object} args A simple value store where properties represent the
+   *  the names of arguments and their values are the default values of those
+   *  properties. If those same properties exist on `storedVars` they will be
+   *  overwritten.
+   * @returns {Null} returns nothing.
+   */
   function setVars(args) { // prop-set -> storedVars
     var varname;
     for (varname in args) {
@@ -1504,7 +1825,16 @@ function $X(xpath, contextNode, resultType) {
     this.load = function(filepath)
     {
       var fileReader = new FileReader();
-      var fileUrl = urlFor(filepath);
+      var fileUrl;
+      // in order to not break existing tests the IDE will still use urlFor,
+      // on the server it just breaks things. Data can be anywhere on the net,
+      // accessible through proper CORS headers.
+      if(globalContext.onServer === true) {
+        fileUrl = filepath;
+      } else {
+        fileUrl = urlFor(filepath);
+      }
+      
       var xmlHttpReq = fileReader.getDocumentSynchronous(fileUrl);
       $$.LOG.info("Reading from: " + fileUrl);
 
@@ -1598,7 +1928,16 @@ function $X(xpath, contextNode, resultType) {
     this.load = function(filepath)
     {
       var fileReader = new FileReader();
-      var fileUrl = urlFor(filepath);
+      var fileUrl;
+      // in order to not break existing tests the IDE will still use urlFor,
+      // on the server it just breaks things. Data can be anywhere on the net,
+      // accessible through proper CORS headers.
+      if(globalContext.onServer === true) {
+        fileUrl = filepath;
+      } else {
+        fileUrl = urlFor(filepath);
+      }
+      
       var xmlHttpReq = fileReader.getDocumentSynchronous(fileUrl);
       $$.LOG.info("Reading from: " + fileUrl);
 
@@ -1624,7 +1963,7 @@ function $X(xpath, contextNode, resultType) {
         return;
       }
       varsetIdx++;
-      $$.LOG.debug(varsetIdx + ") " + serializeJson(varsets[curVars]));  // log each name & value
+      $$.LOG.debug(varsetIdx + ") " + JSON.stringify(varsets[curVars]));  // log each name & value
 
       var expected = countAttrs(varsets[0]);
       var found = countAttrs(varsets[curVars]);
@@ -1673,10 +2012,10 @@ function $X(xpath, contextNode, resultType) {
     }
 
     //- format the given JSON object for display
-    function serializeJson(obj) {
-      var json = uneval(obj);
-      return json.substring(1, json.length-1);
-    }
+    //function serializeJson(obj) {
+    //  var json = uneval(obj);
+    //  return json.substring(1, json.length-1);
+    //}
   }
 
   function urlFor(filepath) {
@@ -1701,7 +2040,12 @@ function $X(xpath, contextNode, resultType) {
     // htmlSuite mode of SRC? TODO is there a better way to decide whether in SRC mode?
     if (window.location.href.indexOf("selenium-server") >= 0) {
       $$.LOG.debug("FileReader() is running in SRC mode");
-      absUrl = absolutify(url, htmlTestRunner.controlPanel.getTestSuiteName());
+      // there's no need to absolutify the url, the browser will do that for you
+      // when you make the request. The data may reside anywhere on the site, or
+      // within the "virtual directory" created by the selenium server proxy.
+      // I don't want to limit the ability to parse files that actually exist on
+      // the site, like sitemaps or JSON responses to api calls.
+      absUrl = url;
     }
     else {
       absUrl = absolutify(url, selenium.browserbot.baseUrl);

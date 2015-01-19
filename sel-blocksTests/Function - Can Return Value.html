@@ -4,18 +4,37 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
-<title>README</title>
+<title>Function - Can Return Value</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">README</td></tr>
+<tr><td rowspan="1" colspan="3">Function - Can Return Value</td></tr>
 </thead><tbody>
-<!---- SelBench is required for this testsuite -->
 <tr>
-	<td>open</td>
-	<td>http://htmlpreview.github.io/?https://github.com/refactoror/SelBlocks/blob/master/sel-blocksTests/_SelBlocks-testpage.html</td>
+	<td>function</td>
+	<td>returnsValue</td>
 	<td></td>
+</tr>
+<tr>
+	<td>return</td>
+	<td>&quot;banana&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>call</td>
+	<td>returnsValue</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${_result}&quot; === &quot;banana&quot;</td>
+	<td>true</td>
 </tr>
 </tbody></table>
 </body>

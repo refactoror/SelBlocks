@@ -1,0 +1,6715 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<style>
+.failed {color: red; background-color: #ffcccc;}
+.passed {color: green; background-color: #ccffcc;}
+.done {color: #404040; background-color: #ccffcc;}
+.comment {color: #404040; background-color: #d0d0d0;}
+body, table { font-family: Verdana, Arial, sans-serif; font-size: 12pt; }
+table { border-collapse: collapse; border: 1px solid #ccc; }
+th, td { padding-left: 0.3em; padding-right: 0.3em; border: 1px solid #ccc; }
+#suiteSummaryTable thead { font-size: 14pt; font-weight: 800; }
+.test_case thead { font-size: 14pt; font-weight: 400; }
+</style>
+</head>
+<body>
+<table id="suiteSummaryTable" class="selenium">
+<thead><tr class="failed"><td>Test Suite: _SelBlocks-TestSuite.html</td></tr></thead>
+<tbody>
+<tr><td>Test cases: 58 total / <span class="passed">57</span> passed / <span class="failed">1</span> failed</td></tr>
+<tr><td>Commands: 989 total / <span class="passed">904</span> passed / <span class="failed">1</span> failed / <span class="skipped">84</span> skipped</td></tr>
+</tbody></table><br>
+<table id="suiteTable" class="selenium">
+<thead><tr><td>Index of test cases</td></tr></thead>
+<tbody>
+<tr class="done"><td><a href="#test0">README</a></td></tr>
+<tr class="done"><td><a href="#test1">eval</a></td></tr>
+<tr class="done"><td><a href="#test2">branching</a></td></tr>
+<tr class="done"><td><a href="#test3">if-1</a></td></tr>
+<tr class="done"><td><a href="#test4">if-2</a></td></tr>
+<tr class="done"><td><a href="#test5">if-3</a></td></tr>
+<tr class="passed"><td><a href="#test6">try - noop</a></td></tr>
+<tr class="passed"><td><a href="#test7">try - finally with no error</a></td></tr>
+<tr class="passed"><td><a href="#test8">try - catch but no error</a></td></tr>
+<tr class="passed"><td><a href="#test9">try - catch specific error</a></td></tr>
+<tr class="passed"><td><a href="#test10">try - catch specific error then finally</a></td></tr>
+<tr class="passed"><td><a href="#test11">try - catch throw finally throw</a></td></tr>
+<tr class="passed"><td><a href="#test12">try - bubble up to catch ALL</a></td></tr>
+<tr class="passed"><td><a href="#test13">try - bubble up to catch ALL via finally</a></td></tr>
+<tr class="passed"><td><a href="#test14">try - bubble up out of noop try to catch specific error</a></td></tr>
+<tr class="passed"><td><a href="#test15">try - bubble up to catch specific error</a></td></tr>
+<tr class="passed"><td><a href="#test16">try - bubble up to catch specific error via finally</a></td></tr>
+<tr class="passed"><td><a href="#test17">try - throw catch rethrow</a></td></tr>
+<tr class="passed"><td><a href="#test18">try - bubble out of nested function calls</a></td></tr>
+<tr class="passed"><td><a href="#test19">try - command bubbling break with finally</a></td></tr>
+<tr class="passed"><td><a href="#test20">try - command bubbling intra try break</a></td></tr>
+<tr class="passed"><td><a href="#test21">try - command bubbling continue with finally</a></td></tr>
+<tr class="passed"><td><a href="#test22">try - command bubbling intra try continue</a></td></tr>
+<tr class="passed"><td><a href="#test23">try - command bubbling error replaced by return</a></td></tr>
+<tr class="passed"><td><a href="#test24">try - command bubbling error replaced by return 2</a></td></tr>
+<tr class="passed"><td><a href="#test25">try - command bubbling return replaced by error</a></td></tr>
+<tr class="passed"><td><a href="#test26">try - exitTest with finally processing</a></td></tr>
+<tr class="failed"><td><a href="#test27">try - try without matching catch</a></td></tr>
+<tr class="done"><td><a href="#test28">while</a></td></tr>
+<tr class="done"><td><a href="#test29">for</a></td></tr>
+<tr class="done"><td><a href="#test30">foreach</a></td></tr>
+<tr class="done"><td><a href="#test31">foreach-xpath</a></td></tr>
+<tr class="done"><td><a href="#test32">forjson</a></td></tr>
+<tr class="done"><td><a href="#test33">forxml</a></td></tr>
+<tr class="done"><td><a href="#test34">continue-break 1</a></td></tr>
+<tr class="done"><td><a href="#test35">continue-break 2</a></td></tr>
+<tr class="done"><td><a href="#test36">continue-break 3</a></td></tr>
+<tr class="done"><td><a href="#test37">continue-break 4</a></td></tr>
+<tr class="done"><td><a href="#test38">nested-loops</a></td></tr>
+<tr class="passed"><td><a href="#test39">function</a></td></tr>
+<tr class="done"><td><a href="#test40">function-recursive</a></td></tr>
+<tr class="done"><td><a href="#test41">issue-2-function</a></td></tr>
+<tr class="done"><td><a href="#test42">exitTest - base case</a></td></tr>
+<tr class="done"><td><a href="#test43">exitTest - from within a loop</a></td></tr>
+<tr class="done"><td><a href="#test44">exitTest - from within a function</a></td></tr>
+<tr class="done"><td><a href="#test45">GlobalFunctions</a></td></tr>
+<tr class="passed"><td><a href="#test46">CallGlobalFunction</a></td></tr>
+<tr class="passed"><td><a href="#test47">DefineFunctionParameters - Base</a></td></tr>
+<tr class="passed"><td><a href="#test48">DefineFunctionParameters - With Default Values</a></td></tr>
+<tr class="passed"><td><a href="#test49">StoreLocal - Function Scope</a></td></tr>
+<tr class="passed"><td><a href="#test50">StoreGlobal - Function Scope</a></td></tr>
+<tr class="passed"><td><a href="#test51">StoreGlobal - While Scope</a></td></tr>
+<tr class="passed"><td><a href="#test52">StoreLocal - While Scope</a></td></tr>
+<tr class="passed"><td><a href="#test53">Store - Behaves as StoreLocal</a></td></tr>
+<tr class="passed"><td><a href="#test54">Function - Can Return Value</a></td></tr>
+<tr class="passed"><td><a href="#test55">StoreAt - Function Scope Nesting</a></td></tr>
+<tr class="passed"><td><a href="#test56">StoreAt - While Scope Nesting</a></td></tr>
+<tr class="passed"><td><a href="#test57">sendkeys keys are preserved</a></td></tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test0"></a><table class="test_case"><thead><tr><td colspan="4">Test case: README</td></tr></thead><tbody><tr class="comment">
+	<td colspan="4">-- SelBench is required for this testsuite </td>
+</tr>
+<tr class="done">
+	<td>open</td>
+	<td>http://htmlpreview.github.io/?https://github.com/refactoror/SelBlocks/blob/master/sel-blocksTests/_SelBlocks-testpage.html</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test1"></a><table class="test_case"><thead><tr><td colspan="4">Test case: eval</td></tr></thead><tbody><tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--- isOneOf()</td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;dilbert&quot;.isOneOf(&quot;dilbert&quot;,&quot;dogbert&quot;,&quot;mordac&quot;)</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;bob&quot;.isOneOf(&quot;dilbert&quot;,&quot;dogbert&quot;,&quot;mordac&quot;)</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--- mapTo()</td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;red&quot;.mapTo(&quot;primary&quot;, [&quot;red&quot;,&quot;green&quot;,&quot;blue&quot;])</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;orange&quot;.mapTo(&quot;primary&quot;, [&quot;red&quot;,&quot;green&quot;,&quot;blue&quot;])</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--- translate()</td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;red&quot;.translate(&quot;e&quot;, &quot;E&quot;)</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;red&quot;.translate([&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;], [&quot;blue&quot;, &quot;red&quot;, &quot;green&quot;])</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--- check results</td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;true~false~primary~orange~rEd~blue&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test2"></a><table class="test_case"><thead><tr><td colspan="4">Test case: branching</td></tr></thead><tbody><tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;BEFORE&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>goto</td>
+	<td>HERE</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>emit</td>
+	<td>&quot;A&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>label</td>
+	<td>HERE</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>gotoIf</td>
+	<td>true</td>
+	<td>THERE</td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>emit</td>
+	<td>&quot;B&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>label</td>
+	<td>THERE</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>skipNext</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>emit</td>
+	<td>&quot;C&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;AFTER&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;BEFORE~AFTER&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">=== Error validations</td>
+</tr>
+<tr class="comment">
+	<td colspan="4">-!- </td>
+</tr>
+<tr class="done">
+	<td>expectError</td>
+	<td>&quot;Target label 'NOWHERE' is not found&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>goto</td>
+	<td>NOWHERE</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">-!- </td>
+</tr>
+<tr class="done">
+	<td>expectError</td>
+	<td>&quot;Target label 'NOWHERE' is not found&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>gotoIf</td>
+	<td>true</td>
+	<td>NOWHERE</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">-!- </td>
+</tr>
+<tr class="done">
+	<td>expectError</td>
+	<td>&quot;Requires a number &gt; 1&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>skipNext</td>
+	<td>-1</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">-!- </td>
+</tr>
+<tr class="done">
+	<td>expectError</td>
+	<td>/.*random.* (is not |is un)defined/</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>skipNext</td>
+	<td>random</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test3"></a><table class="test_case"><thead><tr><td colspan="4">Test case: if-1</td></tr></thead><tbody><tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;BEFORE&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--</td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>true</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;truthy&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--</td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>false</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>emit</td>
+	<td>&quot;falsey&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--</td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>true</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;A&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>else</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>emit</td>
+	<td>&quot;B&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--</td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>false</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>emit</td>
+	<td>&quot;X&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>else</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;Y&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--</td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>false</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>emit</td>
+	<td>&quot;false teeth&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>else</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>true</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;truthF&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>else</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>emit</td>
+	<td>&quot;false false&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--</td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>&quot;dilbert&quot;.isOneOf(&quot;dogbert&quot;,&quot;dilbert&quot;,&quot;wally&quot;)</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;office mate&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>&quot;dilbert&quot;.isOneOf(&quot;ratbert&quot;,&quot;alice&quot;,&quot;asok&quot;)</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>emit</td>
+	<td>&quot;mate&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>else</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;coffee mate&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>&quot;mordac&quot;.isOneOf(&quot;bob the dinosaur&quot;,&quot;garbage man&quot;,&quot;mordac&quot;)</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;cell mate&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>else</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>emit</td>
+	<td>&quot;don't wait&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;AFTER&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--- check results</td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;BEFORE~truthy~A~Y~truthF~office mate~coffee mate~cell mate~AFTER&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test4"></a><table class="test_case"><thead><tr><td colspan="4">Test case: if-2</td></tr></thead><tbody><tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">==</td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>true</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;if-y&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>elseIf</td>
+	<td>true</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>emit</td>
+	<td>&quot;elseIf-y&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--</td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>false</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>emit</td>
+	<td>&quot;if-y&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>elseIf</td>
+	<td>true</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;elseIf-y&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--</td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>false</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>emit</td>
+	<td>&quot;if-y&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>elseIf</td>
+	<td>true</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;elseIf-a1y&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>elseIf</td>
+	<td>true</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>emit</td>
+	<td>&quot;else-a2y&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--</td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>false</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>emit</td>
+	<td>&quot;if-y&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>elseIf</td>
+	<td>false</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>emit</td>
+	<td>&quot;elseIf-b1y&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>elseIf</td>
+	<td>true</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;elseIf-b2y&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--</td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>false</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>emit</td>
+	<td>&quot;if-y&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>elseIf</td>
+	<td>false</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>emit</td>
+	<td>&quot;elseIf-y&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>else</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;else-y&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;if-y~elseIf-y~elseIf-a1y~elseIf-b2y~else-y&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test5"></a><table class="test_case"><thead><tr><td colspan="4">Test case: if-3</td></tr></thead><tbody><tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--</td>
+</tr>
+<tr class="done">
+	<td>foreach</td>
+	<td>i</td>
+	<td>2, 0, 1, 4, 3, 5</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>i == 0</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;if-${i}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>elseIf</td>
+	<td>i == 1</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;elseIf-${i}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>elseIf</td>
+	<td>i == 2</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;elseIf-${i}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>elseIf</td>
+	<td>i == 3</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;elseIf-${i}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>else</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;else-${i}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endForeach</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;elseIf-2~if-0~elseIf-1~else-4~elseIf-3~else-5&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test6"></a><table class="test_case"><thead><tr><td colspan="4">Test case: try - noop</td></tr></thead><tbody><tr class="done">
+	<td>log</td>
+	<td>&quot;-- no-op try --&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>t-noop</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td>t-noop</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;([/~trying~/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test7"></a><table class="test_case"><thead><tr><td colspan="4">Test case: try - finally with no error</td></tr></thead><tbody><tr class="done">
+	<td>log</td>
+	<td>&quot;-- try/finally, w/no error --&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>t-fin</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;finally&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;([/~trying~finally~/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test8"></a><table class="test_case"><thead><tr><td colspan="4">Test case: try - catch but no error</td></tr></thead><tbody><tr class="done">
+	<td>log</td>
+	<td>&quot;-- try/catch, but no error --&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>tc0</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>catch</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>assertEval</td>
+	<td>&quot;should NEVER enter this catch block due to no error&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;([/~trying~/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test9"></a><table class="test_case"><thead><tr><td colspan="4">Test case: try - catch specific error</td></tr></thead><tbody><tr class="done">
+	<td>log</td>
+	<td>&quot;-- catch specific error --&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>tc1</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>throw</td>
+	<td>&quot;blamo catch ALL&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached, due to thrown&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>catch</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;([/~caught 'blamo catch ALL'~/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test10"></a><table class="test_case"><thead><tr><td colspan="4">Test case: try - catch specific error then finally</td></tr></thead><tbody><tr class="done">
+	<td>log</td>
+	<td>&quot;-- catch specific error, then finally --&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>t-spec-outer</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying outer&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>t-spec-inner</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying inner&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>throw</td>
+	<td>&quot;blamo inner&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached, due to throw&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>catch</td>
+	<td>/blamo inner/</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;finally&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td>t-spec-inner</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td>t-spec-outer</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;([/~trying outer~([/~trying inner~caught 'blamo inner'~finally~/])~/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test11"></a><table class="test_case"><thead><tr><td colspan="4">Test case: try - catch throw finally throw</td></tr></thead><tbody><tr class="done">
+	<td>log</td>
+	<td>&quot;-- catch/throw, finally/throw --&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>tcf-trap</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>tcf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;throwing A&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>throw</td>
+	<td>&quot;blamoA&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached, due to thrown&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>catch</td>
+	<td>/blamoA/</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;throwing B&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>throw</td>
+	<td>&quot;blamoB&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;finally&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;throwing C&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>throw</td>
+	<td>&quot;blamoC&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>catch</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;([/~trying~throwing A~caught 'blamoA'~throwing B~finally~throwing C~caught 'blamoC'~/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test12"></a><table class="test_case"><thead><tr><td colspan="4">Test case: try - bubble up to catch ALL</td></tr></thead><tbody><tr class="done">
+	<td>log</td>
+	<td>&quot;-- bubble up to catch ALL --&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>t-all-outer</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying-outer&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>t-all-inner</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>throw</td>
+	<td>&quot;blamo try-catch-finally&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached, due to throw&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>catch</td>
+	<td>/will NOT catch it/</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>emit</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td>t-all-inner</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>catch</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;caught-outer '&quot; + _error.message + &quot;'&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td>t-all-outer</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;([/~trying-outer~trying~caught-outer 'blamo try-catch-finally'~/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test13"></a><table class="test_case"><thead><tr><td colspan="4">Test case: try - bubble up to catch ALL via finally</td></tr></thead><tbody><tr class="done">
+	<td>log</td>
+	<td>&quot;-- bubble up to catch ALL via finally --&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>t-allfin-outer</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying-outer&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>t-allfin-inner</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>throw</td>
+	<td>&quot;blamo try-catch-finally&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached, due to throw&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>catch</td>
+	<td>/will NOT catch it/</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>emit</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;finally&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td>t-allfin-inner</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>catch</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;caught-outer '&quot; + _error.message + &quot;'&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td>t-allfin-outer</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;([/~trying-outer~trying~finally~caught-outer 'blamo try-catch-finally'~/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test14"></a><table class="test_case"><thead><tr><td colspan="4">Test case: try - bubble up out of noop try to catch specific error</td></tr></thead><tbody><tr class="done">
+	<td>log</td>
+	<td>&quot;-- bubble out of no-op try to catch specific error --&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>noop-outer</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying outer&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>op-inner</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying inner&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>1</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;throwing inner&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>throw</td>
+	<td>&quot;blamo&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached, due to throw&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td>op-inner</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="done">
+	<td>catch</td>
+	<td>/blamo/</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;finally&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td>noop-outer</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;([/~trying outer~trying inner~throwing inner~caught 'blamo'~finally~/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test15"></a><table class="test_case"><thead><tr><td colspan="4">Test case: try - bubble up to catch specific error</td></tr></thead><tbody><tr class="done">
+	<td>log</td>
+	<td>&quot;-- bubble up to catch specific error --&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>bub-spec-outer</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying outer&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>bub-spec-inner</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying inner&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>1</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;throwing inner&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>throw</td>
+	<td>&quot;blamo&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached, due to throw&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;finally&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td>bub-spec-inner</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="done">
+	<td>catch</td>
+	<td>/blamo/</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td>bub-spec-outer</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;([/~trying outer~trying inner~throwing inner~finally~caught 'blamo'~/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test16"></a><table class="test_case"><thead><tr><td colspan="4">Test case: try - bubble up to catch specific error via finally</td></tr></thead><tbody><tr class="done">
+	<td>log</td>
+	<td>&quot;-- bubble up to catch specific error via finally --&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>bub-spec-outer</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying outer&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>bub-spec-inner</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying inner&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>1</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;throwing inner&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>throw</td>
+	<td>&quot;blamo&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached, due to throw&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;finally&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td>bub-spec-inner</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="done">
+	<td>catch</td>
+	<td>/blamo/</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;finally&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td>bub-spec-outer</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;([/~trying outer~trying inner~throwing inner~finally~caught 'blamo'~finally~/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test17"></a><table class="test_case"><thead><tr><td colspan="4">Test case: try - throw catch rethrow</td></tr></thead><tbody><tr class="done">
+	<td>log</td>
+	<td>&quot;-- throw, catch, rethrow --&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>outer</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying outer&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>inner</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying inner&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>1</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;throwing blamo1&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>throw</td>
+	<td>&quot;blamo1&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached, due to throw&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>catch</td>
+	<td>/blamo1/</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;throwing blamo2&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>throw</td>
+	<td>&quot;blamo2&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td>inner</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="done">
+	<td>catch</td>
+	<td>/blamo2/</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td>outer</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;([/~trying outer~trying inner~throwing blamo1~caught 'blamo1'~throwing blamo2~caught 'blamo2'~/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test18"></a><table class="test_case"><thead><tr><td colspan="4">Test case: try - bubble out of nested function calls</td></tr></thead><tbody><tr class="done">
+	<td>log</td>
+	<td>&quot;-- bubble out of nested function calls --&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>bub-invoke</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;calling&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>subBub</td>
+	<td>n = 0</td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached, due error thrown in function&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>catch</td>
+	<td>/blamo/</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;finally&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td>bub-invoke</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="done">
+	<td>function</td>
+	<td>subBub</td>
+	<td>n</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>tcf-inner</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;${n}) trying-inner&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>n &lt; 2</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;${n}) calling&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>subBub</td>
+	<td>n = n+1</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>else</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;${n}) throwing&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>throw</td>
+	<td>&quot;blamo&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;${n}) finally&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td>tcf-inner</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;([/~trying~calling~0) trying-inner~0) calling~1) trying-inner~1) calling~2) trying-inner~2) throwing~2) finally~1) finally~0) finally~caught 'blamo'~finally~/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test19"></a><table class="test_case"><thead><tr><td colspan="4">Test case: try - command bubbling break with finally</td></tr></thead><tbody><tr class="done">
+	<td>log</td>
+	<td>&quot;-- command bubbling, break w/finally --&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;while'g&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>for</td>
+	<td>w=3; w &gt; 0; w--</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>breaker</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;${w}) trying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>w==2</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;${w}) BREAK&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>break</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;${w}) finallying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td>breaker</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;${w}) iterating&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;([/~while'g~3) trying~3) finallying~3) iterating~2) trying~2) BREAK~2) finallying~/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test20"></a><table class="test_case"><thead><tr><td colspan="4">Test case: try - command bubbling intra try break</td></tr></thead><tbody><tr class="done">
+	<td>log</td>
+	<td>&quot;-- command bubbling, intra-try break --&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>breaker</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;while'g&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>for</td>
+	<td>w=3; w &gt; 0; w--</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>w==2</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;${w}) BREAK&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>break</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;${w}) iterating&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;finallying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td>breaker</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;([/~trying~while'g~3) iterating~2) BREAK~finallying~/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test21"></a><table class="test_case"><thead><tr><td colspan="4">Test case: try - command bubbling continue with finally</td></tr></thead><tbody><tr class="done">
+	<td>log</td>
+	<td>&quot;-- command bubbling, continue w/finally --&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;while'g&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>for</td>
+	<td>w=3; w &gt; 0; w--</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>continuer</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;${w}) trying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>w==2</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;${w}) CONTINUE&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>continue</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;${w}) finallying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td>continuer</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;${w}) iterating&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;([/~while'g~3) trying~3) finallying~3) iterating~2) trying~2) CONTINUE~2) finallying~1) trying~1) finallying~1) iterating~/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test22"></a><table class="test_case"><thead><tr><td colspan="4">Test case: try - command bubbling intra try continue</td></tr></thead><tbody><tr class="done">
+	<td>log</td>
+	<td>&quot;-- command bubbling, intra-try continue --&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>continuer</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;while'g&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>for</td>
+	<td>w=3; w &gt; 0; w--</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>w==2</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;${w}) CONTINUE&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>continue</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;${w}) iterating&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;finallying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td>continuer</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;([/~trying~while'g~3) iterating~2) CONTINUE~1) iterating~finallying~/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test23"></a><table class="test_case"><thead><tr><td colspan="4">Test case: try - command bubbling error replaced by return</td></tr></thead><tbody><tr class="done">
+	<td>log</td>
+	<td>&quot;-- command bubbling, error replaced by return --&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;calling&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>cmdBubA</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;returned ${_result}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>function</td>
+	<td>cmdBubA</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;in cmdBubA&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>cmdBub-tcf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;returning (1)&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>return</td>
+	<td>1</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;finallying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;returning (2)&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>return</td>
+	<td>2</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="">
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached, due to return/return above&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;([/~calling~in cmdBubA~trying~returning (1)~finallying~returning (2)~returned 2~/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test24"></a><table class="test_case"><thead><tr><td colspan="4">Test case: try - command bubbling error replaced by return 2</td></tr></thead><tbody><tr class="done">
+	<td>log</td>
+	<td>&quot;-- command bubbling, error replaced by return --&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;calling&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>cmdBubB</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;returned ${_result}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>function</td>
+	<td>cmdBubB</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;in cmdBubB&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>cmdBub-tcf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;throwing&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>throw</td>
+	<td>&quot;short-lived error&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;finallying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;returning (2)&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>return</td>
+	<td>2</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="">
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached, due to throw/return above&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;([/~calling~in cmdBubB~trying~throwing~finallying~returning (2)~returned 2~/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test25"></a><table class="test_case"><thead><tr><td colspan="4">Test case: try - command bubbling return replaced by error</td></tr></thead><tbody><tr class="done">
+	<td>log</td>
+	<td>&quot;-- command bubbling, return replaced by error --&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;calling&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>cmdBubC</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;returned ${_result}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>function</td>
+	<td>cmdBubC</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;in cmdBubC&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>cmdBub-tcf-guardrail</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>cmdBub-tcf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;returning (1)&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>return</td>
+	<td>1</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;finallying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;throwing&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>throw</td>
+	<td>&quot;this-error-replaces-return-1&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="done">
+	<td>catch</td>
+	<td>/this-error-replaces-return-1/</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;caught '&quot; + _error.message + &quot;'&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="done">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;([/~calling~in cmdBubC~trying~returning (1)~finallying~throwing~caught 'this-error-replaces-return-1'~returned ${_result}~/])&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test26"></a><table class="test_case"><thead><tr><td colspan="4">Test case: try - exitTest with finally processing</td></tr></thead><tbody><tr class="done">
+	<td>log</td>
+	<td>&quot;-- exitTest w/finally processing --&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>abort</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;trying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;exitTest ...&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>exitTest</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;finallying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;([/~trying~exitTest ...~finallying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endTry</td>
+	<td>abort</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="">
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached, due to exitTest above&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test27"></a><table class="test_case"><thead><tr><td colspan="4">Test case: try - try without matching catch</td></tr></thead><tbody><tr class="done">
+	<td>log</td>
+	<td>&quot;-- try without matching catch --&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">v v v</td>
+</tr>
+<tr class="done">
+	<td>try</td>
+	<td>miss</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>true</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>throw</td>
+	<td>&quot;blamo will NOT be caught at all&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>assertEval</td>
+	<td>&quot;this command should not be reached&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>catch</td>
+	<td>/will NOT catch it/</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>log</td>
+	<td>&quot;caught miss '&quot; + _error.message + &quot;'&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>log</td>
+	<td>&quot;finally&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="failed">
+	<td>endTry</td>
+	<td>miss</td>
+	<td></td>
+	<td>Command execution failure. Please search the user group at https://groups.google.com/forum/#!forum/selenium-users for error details from the log window.  The error message is: blamo will NOT be caught at all</td>
+</tr>
+<tr class="comment">
+	<td colspan="4">^ ^ ^ ^</td>
+</tr>
+<tr class="">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>emit</td>
+	<td>&quot;trying&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test28"></a><table class="test_case"><thead><tr><td colspan="4">Test case: while</td></tr></thead><tbody><tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>deleteVars</td>
+	<td>w</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>store</td>
+	<td>3</td>
+	<td>w</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;START: ${w}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--- no iterations</td>
+</tr>
+<tr class="done">
+	<td>while</td>
+	<td>w == 42</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>emit</td>
+	<td>&quot;SHOULD NEVER HAPPEN&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--- several iterations</td>
+</tr>
+<tr class="done">
+	<td>while</td>
+	<td>w &gt; 0</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;iter=${w}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>storeEval</td>
+	<td>${w}-1</td>
+	<td>w</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;END: ${w}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--- check results</td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;START: 3~iter=3~iter=2~iter=1~END: 3&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test29"></a><table class="test_case"><thead><tr><td colspan="4">Test case: for</td></tr></thead><tbody><tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>deleteVars</td>
+	<td>f</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;START ${f}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>for</td>
+	<td>s=0,f=3; f &lt;= 5; f++</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;iter=${f}.${s}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;END ${f}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--- check results</td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;START ${commands}quot; + &quot;{f}~iter=3.0~iter=4.0~iter=5.0~END ${commands}quot; + &quot;{f}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test30"></a><table class="test_case"><thead><tr><td colspan="4">Test case: foreach</td></tr></thead><tbody><tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>deleteVars</td>
+	<td>_i, fe</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;START ${_i}-${fe}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>foreach</td>
+	<td>fe</td>
+	<td>&quot;dilbert&quot;, &quot;dogbert&quot;, &quot;wally&quot;</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;${_i}) ${fe}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endForeach</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;END ${_i}-${fe}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--- check results</td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;START ${commands}quot; + &quot;{_i}-${commands}quot; + &quot;{fe}~0) dilbert~1) dogbert~2) wally~END ${commands}quot; + &quot;{_i}-${commands}quot; + &quot;{fe}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test31"></a><table class="test_case"><thead><tr><td colspan="4">Test case: foreach-xpath</td></tr></thead><tbody><tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>echo</td>
+	<td>$x(&quot;//input&quot;)</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>echo</td>
+	<td>$X(&quot;//input&quot;)</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>echo</td>
+	<td>begin</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;START ${_i}) ${link}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>foreach</td>
+	<td>link</td>
+	<td>$X(&quot;//input&quot;)</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;${_i}) ${link}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>echo</td>
+	<td>${link}</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endForeach</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;END ${_i}) ${link}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;START ${&quot; + &quot;_i}) ${&quot; + &quot;link}~0) [object HTMLInputElement]~1) [object HTMLInputElement]~2) [object HTMLInputElement]~END ${&quot; + &quot;_i}) ${&quot; + &quot;link}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test32"></a><table class="test_case"><thead><tr><td colspan="4">Test case: forjson</td></tr></thead><tbody><tr class="done">
+	<td>if</td>
+	<td>globalContext.onServer === true</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>store</td>
+	<td>../data/forjson.json</td>
+	<td>forJsonFileName</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>else</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>store</td>
+	<td>data/forjson.json</td>
+	<td>forJsonFileName</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>deleteVars</td>
+	<td>jname</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;START ${jname}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--- forJson</td>
+</tr>
+<tr class="done">
+	<td>forJson</td>
+	<td>${forJsonFileName}</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>jname</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endForJson</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;INTERMISSION ${jname}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--- load a varset</td>
+</tr>
+<tr class="done">
+	<td>loadJsonVars</td>
+	<td>${forJsonFileName}</td>
+	<td>jname == &quot;dogbert&quot;</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;END ${jname}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--- check results</td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;START ${commands}quot; + &quot;{jname}~dilbert~dogbert~wally~INTERMISSION ${commands}quot; + &quot;{jname}~END dogbert&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">=== Error validations</td>
+</tr>
+<tr class="comment">
+	<td colspan="4">-!- </td>
+</tr>
+<tr class="done">
+	<td>expectError</td>
+	<td>&quot;Requires a JSON file path or URL&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>loadJsonVars</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">-!- </td>
+</tr>
+<tr class="done">
+	<td>expectError</td>
+	<td>&quot;Multiple JSON objects are not valid for this command&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>loadJsonVars</td>
+	<td>${forJsonFileName}</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">-!- </td>
+</tr>
+<tr class="done">
+	<td>expectError</td>
+	<td>'&quot;flubber&quot; is not a boolean expression'</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>loadJsonVars</td>
+	<td>${forJsonFileName}</td>
+	<td>&quot;flubber&quot;</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test33"></a><table class="test_case"><thead><tr><td colspan="4">Test case: forxml</td></tr></thead><tbody><tr class="done">
+	<td>if</td>
+	<td>globalContext.onServer === true</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>store</td>
+	<td>../data/forxml.xml</td>
+	<td>forXmlFileName</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>else</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>store</td>
+	<td>data/forxml.xml</td>
+	<td>forXmlFileName</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>deleteVars</td>
+	<td>xname</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;START ${xname}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--- forXml</td>
+</tr>
+<tr class="done">
+	<td>forXml</td>
+	<td>${forXmlFileName}</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>xname</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endForXml</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;INTERMISSION ${xname}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--- load a varset</td>
+</tr>
+<tr class="done">
+	<td>loadXmlVars</td>
+	<td>${forXmlFileName}</td>
+	<td>xname == &quot;dogbert&quot;</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;END ${xname}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--- check results</td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;START ${commands}quot; + &quot;{xname}~dilbert~dogbert~wally~INTERMISSION ${commands}quot; + &quot;{xname}~END dogbert&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>loadXmlVars</td>
+	<td>${forXmlFileName}</td>
+	<td>xname == &quot;dogbert&quot;</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">=== Error validations</td>
+</tr>
+<tr class="comment">
+	<td colspan="4">-!- </td>
+</tr>
+<tr class="done">
+	<td>expectError</td>
+	<td>&quot;Requires an XML file path or URL&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>loadXmlVars</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">-!- </td>
+</tr>
+<tr class="done">
+	<td>expectError</td>
+	<td>&quot;Multiple XML elements are not valid for this command&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>loadXmlVars</td>
+	<td>${forXmlFileName}</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">-!- </td>
+</tr>
+<tr class="done">
+	<td>expectError</td>
+	<td>'&quot;flubber&quot; is not a boolean expression'</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>loadXmlVars</td>
+	<td>${forXmlFileName}</td>
+	<td>&quot;flubber&quot;</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test34"></a><table class="test_case"><thead><tr><td colspan="4">Test case: continue-break 1</td></tr></thead><tbody><tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>deleteVars</td>
+	<td>f</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>for</td>
+	<td>f=3; f &lt;= 9; f++</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>continue</td>
+	<td>f == 6</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>f &gt; 6</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>f == 7</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>continue</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>else</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>break</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;iter=${f}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--- check results</td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;iter=3~iter=4~iter=5&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test35"></a><table class="test_case"><thead><tr><td colspan="4">Test case: continue-break 2</td></tr></thead><tbody><tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>store</td>
+	<td>0</td>
+	<td>i</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>while</td>
+	<td>i++ &lt; 10</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>continue</td>
+	<td>i==3</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>break</td>
+	<td>i==5</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;iter=${i}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--- check results</td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;iter=1~iter=2~iter=4&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test36"></a><table class="test_case"><thead><tr><td colspan="4">Test case: continue-break 3</td></tr></thead><tbody><tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>foreach</td>
+	<td>fe</td>
+	<td>&quot;dilbert&quot;,&quot;dogbert&quot;,&quot;wally&quot;</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>continue</td>
+	<td>fe==&quot;dogbert&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>break</td>
+	<td>fe==&quot;wally&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;iter=${fe}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endForeach</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--- check results</td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;iter=dilbert&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test37"></a><table class="test_case"><thead><tr><td colspan="4">Test case: continue-break 4</td></tr></thead><tbody><tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>globalContext.onServer === true</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>store</td>
+	<td>../data/forxml.xml</td>
+	<td>forXmlFileName</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>else</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>store</td>
+	<td>data/forxml.xml</td>
+	<td>forXmlFileName</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>forXml</td>
+	<td>${forXmlFileName}</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>continue</td>
+	<td>xname==&quot;dogbert&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>break</td>
+	<td>xname==&quot;wally&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;iter=${xname}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endForXml</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--- check results</td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;iter=dilbert&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test38"></a><table class="test_case"><thead><tr><td colspan="4">Test case: nested-loops</td></tr></thead><tbody><tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>deleteVars</td>
+	<td>i, n, uname</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>startTimer</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>store</td>
+	<td>2</td>
+	<td>i</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;START ${i}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>while</td>
+	<td>i &gt; 0</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;while=${i}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>foreach</td>
+	<td>uname</td>
+	<td>&quot;dilbert&quot;, &quot;dogbert&quot;</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;foreach=${uname}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>for</td>
+	<td>n = 2; n &lt;=3; n++</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;FOR=${n}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>for</td>
+	<td>n = 7; n &lt;= 8; n++</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;for=${n}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;endFor ${n}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endForeach</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>storeEval</td>
+	<td>${i}-1</td>
+	<td>i</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;END ${i}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>timerElapsed</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--- check results</td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;START 2~while=2~foreach=dilbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~foreach=dogbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~while=1~foreach=dilbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~foreach=dogbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~END 2&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test39"></a><table class="test_case"><thead><tr><td colspan="4">Test case: function</td></tr></thead><tbody><tr class="done">
+	<td>deleteVars</td>
+	<td>sname, srole</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;START ${sname} ${srole}&quot; === &quot;START ${commands}quot; + &quot;{sname} ${commands}quot; + &quot;{srole}&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--- first line</td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>doSomething</td>
+	<td>sname = &quot;dilbert,Q&quot;, srole = &quot;goof&quot;</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${_result}&quot; === &quot;sname=dilbert,Q,srole=goof&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>deleteVars</td>
+	<td>sname, srole</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">===</td>
+</tr>
+<tr class="done">
+	<td>function</td>
+	<td>doSomething</td>
+	<td>sname</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>return</td>
+	<td>&quot;sname=${sname},srole=${srole}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFunction</td>
+	<td>doSomething</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">===</td>
+</tr>
+<tr class="done">
+	<td>deleteVars</td>
+	<td>sname, srole</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>doSomething</td>
+	<td>sname = &quot;dogbert&quot;, srole = &quot;woof&quot;</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${_result}&quot; === &quot;sname=dogbert,srole=woof&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>deleteVars</td>
+	<td>sname, srole</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>doSomething</td>
+	<td>sname = &quot;ratbert&quot;, srole = &quot;squeak&quot;</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${_result}&quot; === &quot;sname=ratbert,srole=squeak&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>deleteVars</td>
+	<td>sname, srole</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">---</td>
+</tr>
+<tr class="done">
+	<td>foreach</td>
+	<td>sname</td>
+	<td>&quot;asok&quot;, &quot;alice&quot;</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>doSomething</td>
+	<td>sname = sname, srole = &quot;super=user&quot;</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${_result}&quot; === &quot;sname=${sname},srole=super=user&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>deleteVars</td>
+	<td>sname, srole</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endForeach</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;DONE ${sname} ${srole}&quot; === &quot;DONE ${commands}quot; + &quot;{sname} ${commands}quot; + &quot;{srole}&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">=== Error validations</td>
+</tr>
+<tr class="comment">
+	<td colspan="4">-!- </td>
+</tr>
+<tr class="done">
+	<td>expectError</td>
+	<td>&quot;Function does not exist: NONEXISTENT&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>call</td>
+	<td>NONEXISTENT</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">=== deprecated script commands</td>
+</tr>
+<tr class="done">
+	<td>deleteVars</td>
+	<td>sname, srole</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>script</td>
+	<td>doDeprecated</td>
+	<td>sname</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>return</td>
+	<td>&quot;sname=${sname},srole=${srole}&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endScript</td>
+	<td>doDeprecated</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>doDeprecated</td>
+	<td>sname = &quot;wally&quot;, srole = &quot;lazy&quot;</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${_result}&quot; === &quot;sname=wally,srole=lazy&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>deleteVars</td>
+	<td>sname, srole</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test40"></a><table class="test_case"><thead><tr><td colspan="4">Test case: function-recursive</td></tr></thead><tbody><tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>deleteVars</td>
+	<td>degree, n, _result, ud</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>store</td>
+	<td>7</td>
+	<td>degree</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>startTimer</td>
+	<td></td>
+	<td>factorial ${degree}</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>fac</td>
+	<td>n=degree</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>timerElapsed</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>degree + &quot;!=&quot; + _result</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">===</td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--- recursive factorial</td>
+</tr>
+<tr class="done">
+	<td>function</td>
+	<td>fac</td>
+	<td>n</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>n &lt;= 1</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>return</td>
+	<td>1</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>else</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>fac</td>
+	<td>n = n-1</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>_result</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>return</td>
+	<td>n * _result</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">===</td>
+</tr>
+<tr class="comment">
+	<td colspan="4">--- mutual recursive</td>
+</tr>
+<tr class="done">
+	<td>function</td>
+	<td>uno</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;UNO&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>storeEval</td>
+	<td>${ud}-1</td>
+	<td>ud</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>ud &gt; 0</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>due</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFunction</td>
+	<td>uno</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">---</td>
+</tr>
+<tr class="done">
+	<td>function</td>
+	<td>due</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>emit</td>
+	<td>&quot;DUE&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>storeEval</td>
+	<td>${ud}-1</td>
+	<td>ud</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>ud &gt; 0</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>uno</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFunction</td>
+	<td>due</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">---</td>
+</tr>
+<tr class="done">
+	<td>store</td>
+	<td>5</td>
+	<td>ud</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>uno</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">===</td>
+</tr>
+<tr class="done">
+	<td>assertEmitted</td>
+	<td>&quot;1~2~6~24~120~720~7!=5040~UNO~DUE~UNO~DUE~UNO&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test41"></a><table class="test_case"><thead><tr><td colspan="4">Test case: issue-2-function</td></tr></thead><tbody><tr class="done">
+	<td>function</td>
+	<td>xyz</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>log</td>
+	<td>'here'</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>xyz</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test42"></a><table class="test_case"><thead><tr><td colspan="4">Test case: exitTest - base case</td></tr></thead><tbody><tr class="done">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>exitTest</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>throw</td>
+	<td>&quot;shouldn't happen&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test43"></a><table class="test_case"><thead><tr><td colspan="4">Test case: exitTest - from within a loop</td></tr></thead><tbody><tr class="comment">
+	<td colspan="4">-- from within a loop</td>
+</tr>
+<tr class="done">
+	<td>for</td>
+	<td>i=0; i &lt; 5; i++</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>i == 3</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>exitTest</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>if</td>
+	<td>i === 3</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>throw</td>
+	<td>&quot;This test should exit when the increment gets to 3, and this should never be thrown.&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test44"></a><table class="test_case"><thead><tr><td colspan="4">Test case: exitTest - from within a function</td></tr></thead><tbody><tr class="comment">
+	<td colspan="4">-- from within a function</td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>doSubExit</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>throw</td>
+	<td>&quot;shouldn't happen&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>function</td>
+	<td>doSubExit</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>exitTest</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>endFunction</td>
+	<td>doSubExit</td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test45"></a><table class="test_case"><thead><tr><td colspan="4">Test case: GlobalFunctions</td></tr></thead><tbody><tr class="done">
+	<td>getEval</td>
+	<td>globalStoredVars = {};</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>function</td>
+	<td>setGlobalVar</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="">
+	<td>getEval</td>
+	<td>globalStoredVars.aGlobalVar = &quot;set&quot;;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test46"></a><table class="test_case"><thead><tr><td colspan="4">Test case: CallGlobalFunction</td></tr></thead><tbody><tr class="done">
+	<td>getEval</td>
+	<td>globalStoredVars.aGlobalVar = &quot;reset&quot;;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertNotEval</td>
+	<td>globalStoredVars.aGlobalVar;</td>
+	<td>set</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>globalStoredVars.aGlobalVar;</td>
+	<td>reset</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>GlobalFunctions.setGlobalVar</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>globalStoredVars.aGlobalVar;</td>
+	<td>set</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test47"></a><table class="test_case"><thead><tr><td colspan="4">Test case: DefineFunctionParameters - Base</td></tr></thead><tbody><tr class="done">
+	<td>store</td>
+	<td>original</td>
+	<td>x</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>store</td>
+	<td>original</td>
+	<td>y</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>function</td>
+	<td>bob</td>
+	<td>x,y</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;overwritten&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVars.y === undefined</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>bob</td>
+	<td>x=&quot;overwritten&quot;</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;overwritten&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVars.y === undefined</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test48"></a><table class="test_case"><thead><tr><td colspan="4">Test case: DefineFunctionParameters - With Default Values</td></tr></thead><tbody><tr class="done">
+	<td>store</td>
+	<td>original</td>
+	<td>x</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>store</td>
+	<td>original</td>
+	<td>y</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">check that x and y do not leak outside of function scope</td>
+</tr>
+<tr class="done">
+	<td>function</td>
+	<td>leakTest</td>
+	<td>x=&quot;fn default x&quot;,y=&quot;fn default y&quot;</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>store</td>
+	<td>overwritten</td>
+	<td>x</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>store</td>
+	<td>overwritten</td>
+	<td>y</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">check that x and y both take default values when unspecified, but only in function scope</td>
+</tr>
+<tr class="done">
+	<td>function</td>
+	<td>defaultsTest</td>
+	<td>x=&quot;fn default x&quot;,y=&quot;fn default y&quot;</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>${x} === &quot;fn default x&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>store</td>
+	<td>&quot;overwritten&quot;</td>
+	<td>x</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>${x} === &quot;overwritten&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>${y} === &quot;fn default y&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>store</td>
+	<td>&quot;overwritten&quot;</td>
+	<td>y</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>${y} === &quot;overwritten&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">defaultsTest 00</td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>defaultsTest</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">leakTest 00</td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>leakTest</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;fn default x&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;overwritten&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;fn default y&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;overwritten&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">leakTest 01</td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>leakTest</td>
+	<td>y = &quot;overwritten&quot;</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;fn default x&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;overwritten&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;fn default y&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;overwritten&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">leakTest 10</td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>leakTest</td>
+	<td>x = &quot;overwritten&quot;</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;fn default x&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;overwritten&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;fn default y&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;overwritten&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">leakTest 11</td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>leakTest</td>
+	<td>x = &quot;overwritten&quot;, y = &quot;overwritten&quot;</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;fn default x&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;overwritten&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;fn default y&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;overwritten&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test49"></a><table class="test_case"><thead><tr><td colspan="4">Test case: StoreLocal - Function Scope</td></tr></thead><tbody><tr class="comment">
+	<td colspan="4">setting a local variable from function scope</td>
+</tr>
+<tr class="done">
+	<td>function</td>
+	<td>blockScopeVars</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>storeLocal</td>
+	<td>this is stored locally</td>
+	<td>l</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">local variables aren't put onto the global variable object</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === &quot;this is stored locally&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">local variables will be accessible through stored vars,</td>
+</tr>
+<tr class="comment">
+	<td colspan="4">block vars, and ${} notation as long as they're in scope.</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVars.l === &quot;this is stored locally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsLocal.l === &quot;this is stored locally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${l}&quot; === &quot;this is stored locally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">local variables must not persist after exiting scope</td>
+</tr>
+<tr class="done">
+	<td>getEval</td>
+	<td>storedVarsGlobal.l = null;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>getEval</td>
+	<td>storedVars.l = null;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVars.l === null;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === null;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>blockScopeVars</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === &quot;this is stored locally&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVars.l === &quot;this is stored locally&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsLocal.l === &quot;this is stored locally&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${l}&quot; === &quot;this is stored locally&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test50"></a><table class="test_case"><thead><tr><td colspan="4">Test case: StoreGlobal - Function Scope</td></tr></thead><tbody><tr class="comment">
+	<td colspan="4">setting a global variable from function scope</td>
+</tr>
+<tr class="done">
+	<td>function</td>
+	<td>blockScopeVars</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>storeGlobal</td>
+	<td>this is stored globally</td>
+	<td>g</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">global variables should exist everywhere</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.g === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVars.g === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsLocal.g === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${g}&quot; === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">global variables must persist after exiting scope</td>
+</tr>
+<tr class="done">
+	<td>getEval</td>
+	<td>storedVarsGlobal.g = null;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.g === null;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>blockScopeVars</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.g === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVars.g === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsLocal.g === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${g}&quot; === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test51"></a><table class="test_case"><thead><tr><td colspan="4">Test case: StoreGlobal - While Scope</td></tr></thead><tbody><tr class="comment">
+	<td colspan="4">clearing any values from previous tests</td>
+</tr>
+<tr class="done">
+	<td>getEval</td>
+	<td>storedVarsGlobal.g = null;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.g === null;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>store</td>
+	<td>1</td>
+	<td>i</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">setting a global variable from while scope</td>
+</tr>
+<tr class="done">
+	<td>while</td>
+	<td>i &gt; 0</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>store</td>
+	<td>0</td>
+	<td>i</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>storeGlobal</td>
+	<td>this is stored globally</td>
+	<td>g</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">global variables should exist everywhere</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.g === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVars.g === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsLocal.g === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${g}&quot; === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">global variables must persist after exiting scope</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.g === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVars.g === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsLocal.g === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${g}&quot; === &quot;this is stored globally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test52"></a><table class="test_case"><thead><tr><td colspan="4">Test case: StoreLocal - While Scope</td></tr></thead><tbody><tr class="comment">
+	<td colspan="4">clearing any values from previous tests</td>
+</tr>
+<tr class="done">
+	<td>getEval</td>
+	<td>storedVarsGlobal.l = null;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>getEval</td>
+	<td>storedVars.l = null;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVars.l === null;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === null;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>store</td>
+	<td>1</td>
+	<td>i</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">setting a local variable from while scope</td>
+</tr>
+<tr class="done">
+	<td>while</td>
+	<td>i &gt; 0</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>store</td>
+	<td>0</td>
+	<td>i</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>storeLocal</td>
+	<td>this is stored locally</td>
+	<td>l</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">local variables aren't put onto the global variable object</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === &quot;this is stored locally&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">local variables will be accessible through stored vars,</td>
+</tr>
+<tr class="comment">
+	<td colspan="4">block vars, and ${} notation as long as they're in scope.</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVars.l === &quot;this is stored locally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsLocal.l === &quot;this is stored locally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${l}&quot; === &quot;this is stored locally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">local variables must not persist after exiting scope</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === &quot;this is stored locally&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVars.l === &quot;this is stored locally&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsLocal.l === &quot;this is stored locally&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${l}&quot; === &quot;this is stored locally&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test53"></a><table class="test_case"><thead><tr><td colspan="4">Test case: Store - Behaves as StoreLocal</td></tr></thead><tbody><tr class="comment">
+	<td colspan="4">setting a local variable from function scope</td>
+</tr>
+<tr class="done">
+	<td>function</td>
+	<td>blockScopeVars</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>store</td>
+	<td>this is stored locally</td>
+	<td>l</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">local variables aren't put onto the global variable object</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === &quot;this is stored locally&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">local variables will be accessible through stored vars,</td>
+</tr>
+<tr class="comment">
+	<td colspan="4">block vars, and ${} notation as long as they're in scope.</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVars.l === &quot;this is stored locally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsLocal.l === &quot;this is stored locally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${l}&quot; === &quot;this is stored locally&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">local variables must not persist after exiting scope</td>
+</tr>
+<tr class="done">
+	<td>getEval</td>
+	<td>storedVarsGlobal.l = null;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>getEval</td>
+	<td>storedVars.l = null;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVars.l === null;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === null;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>blockScopeVars</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === &quot;this is stored locally&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVars.l === &quot;this is stored locally&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsLocal.l === &quot;this is stored locally&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${l}&quot; === &quot;this is stored locally&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test54"></a><table class="test_case"><thead><tr><td colspan="4">Test case: Function - Can Return Value</td></tr></thead><tbody><tr class="done">
+	<td>function</td>
+	<td>returnsValue</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>return</td>
+	<td>&quot;banana&quot;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>returnsValue</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${_result}&quot; === &quot;banana&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test55"></a><table class="test_case"><thead><tr><td colspan="4">Test case: StoreAt - Function Scope Nesting</td></tr></thead><tbody><tr class="comment">
+	<td colspan="4">function for setting a variable at it's location / ancestor / parent</td>
+</tr>
+<tr class="done">
+	<td>function</td>
+	<td>storel</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>storeAt</td>
+	<td>this ends up global</td>
+	<td>notDefined</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>storeAt</td>
+	<td>this is stored in an ancestor</td>
+	<td>l</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">storeAt only makes global vars if it can't find a definition in preceeding scopes</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.notDefined === &quot;this ends up global&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === &quot;this is stored in an ancestor&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">storeAt makes the variables available in parent scopes so</td>
+</tr>
+<tr class="comment">
+	<td colspan="4">they're visible as if they were local. </td>
+</tr>
+<tr class="comment">
+	<td colspan="4">block vars, and ${} notation work transparently.</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVars.l === &quot;this is stored in an ancestor&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsLocal.l === &quot;this is stored in an ancestor&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${l}&quot; === &quot;this is stored in an ancestor&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">storeAt will set the value of a named variable in a parent scope</td>
+</tr>
+<tr class="done">
+	<td>getEval</td>
+	<td>storedVarsGlobal.notDefined = null</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.notDefined === null</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>getEval</td>
+	<td>storedVarsGlobal.l = null;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === null;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>storeLocal</td>
+	<td>exists in parent</td>
+	<td>l</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVars.l === &quot;exists in parent&quot;;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>call</td>
+	<td>storel</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">when defined in a parent scope, the variable will not bubble up to global scope</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.notDefined === &quot;this ends up global&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === &quot;this is stored in an ancestor&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">when defined in a parent scope, the nearest ancestor catches the new value for the variable</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVars.l === &quot;this is stored in an ancestor&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsLocal.l === &quot;this is stored in an ancestor&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${l}&quot; === &quot;this is stored in an ancestor&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test56"></a><table class="test_case"><thead><tr><td colspan="4">Test case: StoreAt - While Scope Nesting</td></tr></thead><tbody><tr class="comment">
+	<td colspan="4">storeAt will set the value of a named variable in a parent scope</td>
+</tr>
+<tr class="done">
+	<td>getEval</td>
+	<td>storedVarsGlobal.notDefined = null</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.notDefined === null</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>getEval</td>
+	<td>storedVarsGlobal.l = null;</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === null;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>storeLocal</td>
+	<td>exists in parent</td>
+	<td>l</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVars.l === &quot;exists in parent&quot;;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">while block setting a variable at it's location / ancestor / parent</td>
+</tr>
+<tr class="done">
+	<td>storeLocal</td>
+	<td>3</td>
+	<td>x</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>while</td>
+	<td>x !== 0</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>storeAt</td>
+	<td>this ends up global</td>
+	<td>notDefined</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>storeAt</td>
+	<td>this is stored in an ancestor</td>
+	<td>l</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">storeAt only makes global vars if it can't find a definition in preceeding scopes</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.notDefined === &quot;this ends up global&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === &quot;this is stored in an ancestor&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">storeAt makes the variables available in parent scopes so</td>
+</tr>
+<tr class="comment">
+	<td colspan="4">they're visible as if they were local. </td>
+</tr>
+<tr class="comment">
+	<td colspan="4">block vars, and ${} notation work transparently.</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVars.l === &quot;this is stored in an ancestor&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsLocal.l === &quot;this is stored in an ancestor&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${l}&quot; === &quot;this is stored in an ancestor&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>storeEvalLocal</td>
+	<td>x -= 1</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="done">
+	<td>deleteVar</td>
+	<td>x</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">when defined in a parent scope, the variable will not bubble up to global scope</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.notDefined === &quot;this ends up global&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsGlobal.l === &quot;this is stored in an ancestor&quot;</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="comment">
+	<td colspan="4">when defined in a parent scope, the nearest ancestor catches the new value for the variable</td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVars.l === &quot;this is stored in an ancestor&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>storedVarsLocal.l === &quot;this is stored in an ancestor&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;${l}&quot; === &quot;this is stored in an ancestor&quot;</td>
+	<td>true</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+<br><hr><br><a name="test57"></a><table class="test_case"><thead><tr><td colspan="4">Test case: sendkeys keys are preserved</td></tr></thead><tbody><tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;KEY_ENTER&quot; in storedVars</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;KEY_TAB&quot; in storedVars</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="passed">
+	<td>assertEval</td>
+	<td>&quot;KEY_BACKSPACE&quot; in storedVars</td>
+	<td>true</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+
+</body></html>

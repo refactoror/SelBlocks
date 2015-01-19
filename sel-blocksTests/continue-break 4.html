@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
-<title>while</title>
+<title>continue-break 4</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">foreach</td></tr>
+<tr><td rowspan="1" colspan="3">continue-break 4</td></tr>
 </thead><tbody>
 <tr>
 	<td>resetEmitted</td>
@@ -17,66 +17,59 @@
 	<td></td>
 </tr>
 <tr>
-	<td>deleteVars</td>
-	<td>w</td>
+	<td>if</td>
+	<td>globalContext.onServer === true</td>
 	<td></td>
 </tr>
 <tr>
 	<td>store</td>
-	<td>3</td>
-	<td>w</td>
+	<td>../data/forxml.xml</td>
+	<td>forXmlFileName</td>
 </tr>
 <tr>
-	<td>emit</td>
-	<td>&quot;START: ${w}&quot;</td>
-	<td></td>
-</tr>
-<!----- no iterations-->
-<tr>
-	<td>while</td>
-	<td>w == 42</td>
-	<td></td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;SHOULD NEVER HAPPEN&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>endWhile</td>
+	<td>else</td>
 	<td></td>
 	<td></td>
 </tr>
-<!----- several iterations-->
 <tr>
-	<td>while</td>
-	<td>w &gt; 0</td>
+	<td>store</td>
+	<td>data/forxml.xml</td>
+	<td>forXmlFileName</td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
 	<td></td>
 </tr>
 <tr>
-	<td>emit</td>
-	<td>&quot;iter=${w}&quot;</td>
+	<td>forXml</td>
+	<td>${forXmlFileName}</td>
 	<td></td>
 </tr>
 <tr>
-	<td>storeEval</td>
-	<td>${w}-1</td>
-	<td>w</td>
+	<td>continue</td>
+	<td>xname==&quot;dogbert&quot;</td>
+	<td></td>
 </tr>
 <tr>
-	<td>endWhile</td>
-	<td></td>
+	<td>break</td>
+	<td>xname==&quot;wally&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;END: ${w}&quot;</td>
+	<td>&quot;iter=${xname}&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endForXml</td>
+	<td></td>
 	<td></td>
 </tr>
 <!----- check results-->
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;START: 3~iter=3~iter=2~iter=1~END: 3&quot;</td>
+	<td>&quot;iter=dilbert&quot;</td>
 	<td></td>
 </tr>
 </tbody></table>

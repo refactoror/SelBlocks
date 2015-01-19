@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="https://github.com/" />
+<title>DefineFunctionParameters - With Default Values</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">DefineFunctionParameters - With Default Values</td></tr>
+</thead><tbody>
+<tr>
+	<td>store</td>
+	<td>original</td>
+	<td>x</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>original</td>
+	<td>y</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+</tr>
+<!--check that x and y do not leak outside of function scope-->
+<tr>
+	<td>function</td>
+	<td>leakTest</td>
+	<td>x=&quot;fn default x&quot;,y=&quot;fn default y&quot;</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>overwritten</td>
+	<td>x</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>overwritten</td>
+	<td>y</td>
+</tr>
+<tr>
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--check that x and y both take default values when unspecified, but only in function scope-->
+<tr>
+	<td>function</td>
+	<td>defaultsTest</td>
+	<td>x=&quot;fn default x&quot;,y=&quot;fn default y&quot;</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>${x} === &quot;fn default x&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>&quot;overwritten&quot;</td>
+	<td>x</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>${x} === &quot;overwritten&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>${y} === &quot;fn default y&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>&quot;overwritten&quot;</td>
+	<td>y</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>${y} === &quot;overwritten&quot;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--defaultsTest 00-->
+<tr>
+	<td>call</td>
+	<td>defaultsTest</td>
+	<td></td>
+</tr>
+<!--leakTest 00-->
+<tr>
+	<td>call</td>
+	<td>leakTest</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;fn default x&quot;</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;overwritten&quot;</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;fn default y&quot;</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;overwritten&quot;</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+</tr>
+<!--leakTest 01-->
+<tr>
+	<td>call</td>
+	<td>leakTest</td>
+	<td>y = &quot;overwritten&quot;</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;fn default x&quot;</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;overwritten&quot;</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;fn default y&quot;</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;overwritten&quot;</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+</tr>
+<!--leakTest 10-->
+<tr>
+	<td>call</td>
+	<td>leakTest</td>
+	<td>x = &quot;overwritten&quot;</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;fn default x&quot;</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;overwritten&quot;</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;fn default y&quot;</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;overwritten&quot;</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+</tr>
+<!--leakTest 11-->
+<tr>
+	<td>call</td>
+	<td>leakTest</td>
+	<td>x = &quot;overwritten&quot;, y = &quot;overwritten&quot;</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;fn default x&quot;</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;overwritten&quot;</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${x}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;fn default y&quot;</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;overwritten&quot;</td>
+	<td>false</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>&quot;${y}&quot; === &quot;original&quot;;</td>
+	<td>true</td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

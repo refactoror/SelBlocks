@@ -4,13 +4,18 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
-<title>branching</title>
+<title>try - command bubbling intra try break</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">branching</td></tr>
+<tr><td rowspan="1" colspan="3">try - command bubbling intra try break</td></tr>
 </thead><tbody>
+<tr>
+	<td>log</td>
+	<td>&quot;-- command bubbling, intra-try break --&quot;</td>
+	<td></td>
+</tr>
 <tr>
 	<td>resetEmitted</td>
 	<td></td>
@@ -18,104 +23,97 @@
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;BEFORE&quot;</td>
+	<td>&quot;([/&quot;</td>
 	<td></td>
 </tr>
 <tr>
-	<td>goto</td>
-	<td>HERE</td>
-	<td></td>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
 </tr>
+<!--v v v-->
 <tr>
-	<td>emit</td>
-	<td>&quot;A&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>label</td>
-	<td>HERE</td>
-	<td></td>
-</tr>
-<tr>
-	<td>gotoIf</td>
-	<td>true</td>
-	<td>THERE</td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;B&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>label</td>
-	<td>THERE</td>
-	<td></td>
-</tr>
-<tr>
-	<td>skipNext</td>
-	<td></td>
+	<td>try</td>
+	<td>breaker</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;C&quot;</td>
+	<td>&quot;trying&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>emit</td>
-	<td>&quot;AFTER&quot;</td>
+	<td>&quot;while'g&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>for</td>
+	<td>w=3; w &gt; 0; w--</td>
+	<td></td>
+</tr>
+<tr>
+	<td>if</td>
+	<td>w==2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;${w}) BREAK&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>break</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;${w}) iterating&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;finallying&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td>breaker</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
 	<td></td>
 </tr>
 <tr>
 	<td>assertEmitted</td>
-	<td>&quot;BEFORE~AFTER&quot;</td>
+	<td>&quot;([/~trying~while'g~3) iterating~2) BREAK~finallying~/])&quot;</td>
 	<td></td>
 </tr>
-<!--=== Error validations-->
-<!---!- -->
-<tr>
-	<td>expectError</td>
-	<td>&quot;Target label 'NOWHERE' is not found&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>goto</td>
-	<td>NOWHERE</td>
-	<td></td>
-</tr>
-<!---!- -->
-<tr>
-	<td>expectError</td>
-	<td>&quot;Target label 'NOWHERE' is not found&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>gotoIf</td>
-	<td>true</td>
-	<td>NOWHERE</td>
-</tr>
-<!---!- -->
-<tr>
-	<td>expectError</td>
-	<td>&quot;Requires a number &gt; 1&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>skipNext</td>
-	<td>-1</td>
-	<td></td>
-</tr>
-<!---!- -->
-<tr>
-	<td>expectError</td>
-	<td>/.*random.* (is not |is un)defined/</td>
-	<td></td>
-</tr>
-<tr>
-	<td>skipNext</td>
-	<td>random</td>
-	<td></td>
-</tr>
+
 </tbody></table>
 </body>
 </html>
