@@ -31,14 +31,14 @@ ENDLOCAL
 goto :done
 
 :s_concat
+  IF "%2" == "selblocks.js" (
+    CALL :s_concat . user-extensions-base.js
+  )
   echo.>> ..\user-extensions.js
   echo // ================================================================================>> ..\user-extensions.js
   echo // from: %2>> ..\user-extensions.js
   echo.>> ..\user-extensions.js
   type %1\%2 >> ..\user-extensions.js
-  IF "%2" == "function-intercepting.js" (
-    CALL :s_concat . user-extensions-base.js
-  )
   goto :eof
 
 :done
