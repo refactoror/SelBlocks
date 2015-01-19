@@ -1,0 +1,17 @@
+Like the Selenium IDE addon itself,
+`sel-blocks-fx.xpi` is a zip archive containing various .js files.
+The SelBlocks `user-extensions.js` file
+is a combination of .js files drawn from the .xpi file.
+See: https://github.com/refactoror/SelBlocks/tree/master/sel-blocks-fx_xpi/chrome/content/extensions
+The .js files are concatenated in the order specified by extension-loader.xul,
+plus the user-extensions-base.js file:
+https://github.com/refactoror/SelBlocks/tree/master/build/user-extensions-base.js,
+(which is inserted just before selblocks.js).
+
+When Selenium Server loads user-extensions.js, `$$.seleniumEnv` is set to `"server"`,
+and a `testCase` object is created that simulates the object by the same name in Selenium IDE.
+SelBlocks then operates just like it does in Selenium IDE.
+
+One major exception is local file access, which is not supported by Selenium Server.
+This might be a problem for commands like loadJsonVars, loadXmlVars, forJson and forXml.
+However, files can also be accessed via http.
