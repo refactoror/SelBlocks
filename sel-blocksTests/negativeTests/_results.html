@@ -1,140 +1,236 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<style>
-.failed {color: red; background-color: #ffcccc;}
-.passed {color: green; background-color: #ccffcc;}
-.done {color: #404040; background-color: #ccffcc;}
-.comment {color: #404040; background-color: #d0d0d0;}
-body, table { font-family: Verdana, Arial, sans-serif; font-size: 12pt; }
-table { border-collapse: collapse; border: 1px solid #ccc; }
-th, td { padding-left: 0.3em; padding-right: 0.3em; border: 1px solid #ccc; }
-#suiteSummaryTable thead { font-size: 14pt; font-weight: 800; }
-.test_case thead { font-size: 14pt; font-weight: 400; }
-</style>
-</head>
-<body>
-<table id="suiteSummaryTable" class="selenium">
-<thead><tr class="failed"><td>Test Suite: _SelBlocks-TestSuite-negative.html</td></tr></thead>
-<tbody>
-<tr><td>Test cases: 2 total / <span class="passed">1</span> passed / <span class="failed">1</span> failed</td></tr>
-<tr><td>Commands: 15 total / <span class="passed">8</span> passed / <span class="failed">1</span> failed / <span class="skipped">6</span> skipped</td></tr>
-</tbody></table><br>
-<table id="suiteTable" class="selenium">
-<thead><tr><td>Index of test cases</td></tr></thead>
-<tbody>
-<tr class="done"><td><a href="#test0">README</a></td></tr>
-<tr class="failed"><td><a href="#test1">try01 - try without matching catch</a></td></tr>
+<html>
+<head><style type='text/css'>
+body, table {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 12;
+}
 
+table {
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding-left: 0.3em;
+    padding-right: 0.3em;
+}
+
+a {
+    text-decoration: none;
+}
+
+.title {
+    font-style: italic;
+}
+
+.selected {
+    background-color: #ffffcc;
+}
+
+.status_done {
+    background-color: #eeffee;
+}
+
+.status_passed {
+    background-color: #ccffcc;
+}
+
+.status_failed {
+    background-color: #ffcccc;
+}
+
+.breakpoint {
+    background-color: #cccccc;
+    border: 1px solid black;
+}
+</style><title>Test suite results</title></head>
+<body>
+<h1>Test suite results </h1>
+
+<table>
+<tr>
+<td>result:</td>
+<td>failed</td>
+</tr>
+<tr>
+<td>totalTime:</td>
+<td>0</td>
+</tr>
+<tr>
+<td>numTestTotal:</td>
+<td>2</td>
+</tr>
+<tr>
+<td>numTestPasses:</td>
+<td>1</td>
+</tr>
+<tr>
+<td>numTestFailures:</td>
+<td>1</td>
+</tr>
+<tr>
+<td>numCommandPasses:</td>
+<td>2</td>
+</tr>
+<tr>
+<td>numCommandFailures:</td>
+<td>0</td>
+</tr>
+<tr>
+<td>numCommandErrors:</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Selenium Version:</td>
+<td>2.44</td>
+</tr>
+<tr>
+<td>Selenium Revision:</td>
+<td>.0</td>
+</tr>
+<tr>
+<td>
+<table id="suiteTable" class="selenium" border="1" cellpadding="1" cellspacing="1"><tbody>
+<tr class="title status_failed"><td><b>Test Suite - negative</b></td></tr>
+<tr class="  status_passed"><td><a href="#testresult0">README</a></td></tr>
+<tr class="  status_failed"><td><a href="#testresult1">try01 - try without matching catch</a></td></tr>
 </tbody></table>
 
-<br><hr><br><a name="test0"></a><table class="test_case"><thead><tr><td colspan="4">Test case: README</td></tr></thead><tbody><tr class="comment">
-	<td colspan="4">-- all tests in this suite fail</td>
+
+</td>
+<td>&nbsp;</td>
 </tr>
-<tr class="comment">
-	<td colspan="4">-- compare to _results.log for expected error messages</td>
+</table><table><tr>
+<td><a name="testresult0">README.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">README</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>clearLog</td>
+	<td></td>
+	<td></td>
 </tr>
-<tr class="done">
+<!---- all tests in this suite fail-->
+<!---- compare to _results.log for expected error messages-->
+<tr class="  status_done" style="cursor: pointer;">
 	<td>open</td>
 	<td>http://htmlpreview.github.io/?https://github.com/refactoror/SelBlocks/blob/master/sel-blocksTests/_SelBlocks-testpage.html</td>
 	<td></td>
-	<td></td>
 </tr>
-
 </tbody></table>
 
-<br><hr><br><a name="test1"></a><table class="test_case"><thead><tr><td colspan="4">Test case: try01 - try without matching catch</td></tr></thead><tbody><tr class="done">
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult1">try01 - try without matching catch.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_failed"><td rowspan="1" colspan="3">try</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
 	<td>log</td>
-	<td>&quot;-- try without matching catch --&quot;</td>
-	<td></td>
+	<td>"-- try without matching catch --"</td>
 	<td></td>
 </tr>
-<tr class="done">
+<tr class="  status_done" style="cursor: pointer;">
 	<td>resetEmitted</td>
 	<td></td>
 	<td></td>
-	<td></td>
 </tr>
-<tr class="passed">
+<tr class="  status_passed" style="cursor: pointer;">
 	<td>assertEval</td>
 	<td>selblocks.tcf.nestingLevel</td>
 	<td>-1</td>
-	<td></td>
 </tr>
-<tr class="comment">
-	<td colspan="4">v v v</td>
-</tr>
-<tr class="done">
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
 	<td>try</td>
 	<td>miss</td>
 	<td></td>
-	<td></td>
 </tr>
-<tr class="passed">
+<tr class="  status_passed" style="cursor: pointer;">
 	<td>assertEval</td>
 	<td>true</td>
 	<td>true</td>
-	<td></td>
 </tr>
-<tr class="">
+<tr class=" selected" style="cursor: pointer;">
 	<td>throw</td>
-	<td>&quot;blamo will NOT be caught at all&quot;</td>
-	<td></td>
+	<td>"blamo will NOT be caught at all"</td>
 	<td></td>
 </tr>
-<tr class="">
+<tr class="  status_done" style="cursor: pointer;">
 	<td>assertEval</td>
-	<td>&quot;this command should not be reached&quot;</td>
-	<td></td>
+	<td>"this command should not be reached"</td>
 	<td></td>
 </tr>
-<tr class="">
+<tr class="  status_done" style="cursor: pointer;">
 	<td>catch</td>
 	<td>/will NOT catch it/</td>
 	<td></td>
-	<td></td>
 </tr>
-<tr class="">
+<tr class="  status_failed" style="cursor: pointer;">
 	<td>log</td>
-	<td>&quot;caught miss '&quot; + _error.message + &quot;'&quot;</td>
-	<td></td>
-	<td></td>
+	<td>"caught miss '" + _error.message + "'"</td>
+	<td>Command&nbsp;execution&nbsp;failure.&nbsp;Please&nbsp;search&nbsp;the&nbsp;user&nbsp;group&nbsp;at&nbsp;https://groups.google.com/forum/#!forum/selenium-users&nbsp;for&nbsp;error&nbsp;details&nbsp;from&nbsp;the&nbsp;log&nbsp;window.&nbsp;&nbsp;The&nbsp;error&nbsp;message&nbsp;is:&nbsp;blamo&nbsp;will&nbsp;NOT&nbsp;be&nbsp;caught&nbsp;at&nbsp;all</td>
 </tr>
-<tr class="done">
+<tr class="" style="cursor: pointer;">
 	<td>finally</td>
 	<td></td>
 	<td></td>
-	<td></td>
 </tr>
-<tr class="done">
+<tr class="" style="cursor: pointer;">
 	<td>log</td>
-	<td>&quot;finally&quot;</td>
-	<td></td>
+	<td>"finally"</td>
 	<td></td>
 </tr>
-<tr class="failed">
+<tr class="" style="cursor: pointer;">
 	<td>endTry</td>
 	<td>miss</td>
 	<td></td>
-	<td>Command execution failure. Please search the user group at https://groups.google.com/forum/#!forum/selenium-users for error details from the log window.  The error message is: blamo will NOT be caught at all</td>
 </tr>
-<tr class="comment">
-	<td colspan="4">^ ^ ^ ^</td>
-</tr>
-<tr class="">
+<!--^ ^ ^ ^-->
+<tr class="" style="cursor: pointer;">
 	<td>assertEval</td>
 	<td>selblocks.tcf.nestingLevel</td>
 	<td>-1</td>
-	<td></td>
 </tr>
-<tr class="">
+<tr class="" style="cursor: pointer;">
 	<td>emit</td>
-	<td>&quot;trying&quot;</td>
-	<td></td>
+	<td>"trying"</td>
 	<td></td>
 </tr>
-
 </tbody></table>
 
-</body></html>
+
+</div></td>
+<td>&nbsp;</td>
+</tr></table><pre>
+info: Starting test /selenium-server/tests/README.html
+info: Executing: |clearLog |  |  |
+info: Executing: |open | http://htmlpreview.github.io/?https://github.com/refactoror/SelBlocks/blob/master/sel-blocksTests/_SelBlocks-testpage.html |  |
+info: Starting test /selenium-server/tests/try01%20-%20try%20without%20matching%20catch.html
+info: Executing: |log | &quot;-- try without matching catch --&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
+info: [selbench] -- try without matching catch --
+info: Executing: |resetEmitted |  |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | miss |  |
+info: Executing: |assertEval | true | true |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
+info: script is: true
+info: Executing: |throw | &quot;blamo will NOT be caught at all&quot; |  |
+info: [selblocks] Bubbling suspended while finally block runs
+info: [selblocks] branch =&gt; @10: [finally]
+info: Executing: |finally |  |  |
+info: Executing: |log | &quot;finally&quot; |  |
+info: [selbench] finally
+info: Executing: |endTry | miss |  |
+error: [selblocks] Error was not caught: &apos;blamo will NOT be caught at all&apos;
+error: Unexpected Exception: blamo will NOT be caught at all
+error: Exception details: name -&gt; SelblocksError, message -&gt; blamo will NOT be caught at all, idx -&gt; 5
+warn: currentTest.recordFailure: Command execution failure. Please search the user group at https://groups.google.com/forum/#!forum/selenium-users for error details from the log window.  The error message is: blamo will NOT be caught at all
+</pre></body></html>
