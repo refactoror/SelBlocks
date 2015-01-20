@@ -1,34 +1,103 @@
-blockDefs : static block structures
-  cmdName
-  idx (command line)
-  nature (if/try/loop/function)
-  [if]         ifIdx, elseIfIdxs, elseIdx,  endIdx
-  [try] name, tryIdx, catchIdx, finallyIdx, endIdx
-  [loop]    beginIdx,                       endIdx
-  [function] funcIdx,                       endIdx
+Command Categories
 
-callStack : call/return execution context
-  name (of function)
-  args
-  savedArgs
-  funcIdx
-  returnIdx
-  isReturning
-  blockStack : block scope execution context
-    [ifState]
-      idx
-      skipElseBlocks
-    [loopState] (while/for/foreach/forJson/forXml)
-      idx
-      savedVars
-      isComplete
-    [tryState]
-      idx
-      execPhase
-      hasCaught
-      hasFinaled
+  branching
+    skipNext                : skip around some commands
+    goto                    : jump to target label
+    if                   x2 : skip around if-block, or into else-block
+    cascadeElseIf()      X3 : skip around else and/or elseIf blocks
+    enterLoop()             : jump out of loop if complete
+    iterateLoop()           : jump back to top of loop if not complete
+    continue                : jump back to top of loop
+    break                   : jump out of loop
+    call                    : jump into function body
+    function                : skip around function body
+    returnFromFunction()    : jump back to call command
+    catch                x2 : skip around unused cach-block, into finally-block or out of tcf
+    handleCommandError() x2 : jump into catch-block or finally-block
 
-----------------------------------------------------------------------
+  execute enclosing finally-blocks during command bubbling:
+    continue/break (loop)
+    return (call)
+    exitTest
+
+  jump in-to/out-of restrictions
+    goto/skipNext
+    to/from:
+      loop
+      function
+      try/catch/finally
+
+======================================================================
+
+Name Space and Major Functions
+
+  selblocks ($$) object
+    .LOG
+    .unwrapObject()
+    .InfixExpressionParser()
+    .handleAsTryBlock()
+    .handleAsExitTest()
+    .tcf
+      .nestingLevel
+      .bubbling
+        .mode (error/command)
+        .error
+        .srcIdx
+        ._isStopCriteria
+    .fn
+      .fnStack[]
+      .interceptBefore()
+      .interceptAfter()
+      .interceptReplace()
+      .interceptPush()
+      .interceptPop()
+      .getInterceptAttrs()
+      .interceptOnce()
+    .xp
+      .evaluateXpath()
+      .foreachNode()
+      .logXpathEval()
+      .selectElements()
+      .selectNodes()
+      .selectNodeSnapshot()
+
+======================================================================
+
+Object Structures for Block Controls
+
+  blockDefs : static block structures
+    cmdName
+    idx (command line)
+    nature (if/try/loop/function)
+    [if]         ifIdx, elseIfIdxs, elseIdx,  endIdx
+    [try] name, tryIdx, catchIdx, finallyIdx, endIdx
+    [loop]    beginIdx,                       endIdx
+    [function] funcIdx,                       endIdx
+
+  callStack : call/return execution context
+    name (of function)
+    args
+    savedArgs
+    funcIdx
+    returnIdx
+    isReturning
+    blockStack : block scope execution context
+      [ifState]
+        idx
+        skipElseBlocks
+      [loopState] (while/for/foreach/forJson/forXml)
+        idx
+        savedVars
+        isComplete
+      [tryState]
+        idx
+        execPhase
+        hasCaught
+        hasFinaled
+
+======================================================================
+
+try/catch/finally
 
 At first glance, try/catch/finally seems to be a mechanism for handling errors. But errors are only one of several "bubbling" actions that '''try''' is intended to handle. Probably the best way to understand this is to consider what '''finally''' provides. It guarantees that the code inside the finally block will be executed after the code inside the try block, even if a bubbling event occurs in the try block. An error is one example of that, but there is also '''continue''', '''break''', and '''return''', each of which involves a kind of bubbling. For example, if you return from a function from inside of a try block, then the return will be delayed until the finally block can be executed.
 
@@ -38,67 +107,6 @@ t r1 f r2
 t * c r0
 t * c r1 f r2
 t { t * f * c r1 | f r2
-
-======================================================================
-
-branching
-  skipNext                : skip around some commands
-  goto                    : jump to target label
-  if                   x2 : skip around if-block, or into else-block
-  cascadeElseIf()      X3 : skip around else and/or elseIf blocks
-  enterLoop()             : jump out of loop if complete
-  iterateLoop()           : jump back to top of loop if not complete
-  continue                : jump back to top of loop
-  break                   : jump out of loop
-  call                    : jump into function body
-  function                : skip around function body
-  returnFromFunction()    : jump back to call command
-  catch                x2 : skip around unused cach-block, into finally-block or out of tcf
-  handleCommandError() x2 : jump into catch-block or finally-block
-
-execute enclosing finally-blocks during (command bubbling):
-  continue/break (loop)
-  return (call)
-  exitTest
-
-jump in-to/out-of restrictions
-  goto/skipNext
-  to/from:
-    loop
-    function
-    try/catch/finally
-
-======================================================================
-
-selblocks ($$) object
-  LOG
-  unwrapObject()
-  InfixExpressionParser()
-  handleAsTryBlock()
-  handleAsExitTest()
-  tcf
-    nestingLevel
-    bubbling
-      mode (error/command)
-      error
-      srcIdx
-      _isStopCriteria
-  fn
-    fnStack[]
-    interceptBefore()
-    interceptAfter()
-    interceptReplace()
-    interceptPush()
-    interceptPop()
-    getInterceptAttrs()
-    interceptOnce()
-  xp
-    evaluateXpath()
-    foreachNode()
-    logXpathEval()
-    selectElements()
-    selectNodes()
-    selectNodeSnapshot()
 
 ======================================================================
 
