@@ -13,13 +13,8 @@
 <tr><td rowspan="1" colspan="3">try</td></tr>
 </thead><tbody>
 <tr>
-	<td>log</td>
-	<td>&quot;-- try without matching catch --&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>resetEmitted</td>
-	<td></td>
+	<td>getEval</td>
+	<td>LOG.info(&quot;-- try without matching catch --&quot;)</td>
 	<td></td>
 </tr>
 <tr>
@@ -54,8 +49,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>log</td>
-	<td>&quot;caught miss '&quot; + _error.message + &quot;'&quot;</td>
+	<td>getEval</td>
+	<td>LOG.info(&quot;caught miss '&quot; + _error.message + &quot;'&quot;)</td>
 	<td></td>
 </tr>
 <tr>
@@ -64,8 +59,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>log</td>
-	<td>&quot;finally&quot;</td>
+	<td>getEval</td>
+	<td>LOG.info(&quot;finally&quot;)</td>
 	<td></td>
 </tr>
 <tr>
@@ -74,16 +69,6 @@
 	<td></td>
 </tr>
 <!--^ ^ ^ ^-->
-<tr>
-	<td>assertEval</td>
-	<td>selblocks.tcf.nestingLevel</td>
-	<td>-1</td>
-</tr>
-<tr>
-	<td>emit</td>
-	<td>&quot;trying&quot;</td>
-	<td></td>
-</tr>
 </tbody></table>
 </body>
 </html>
