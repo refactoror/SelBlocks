@@ -54,7 +54,7 @@ a {
 </tr>
 <tr>
 <td>totalTime:</td>
-<td>3</td>
+<td>1</td>
 </tr>
 <tr>
 <td>numTestTotal:</td>
@@ -91,7 +91,7 @@ a {
 <tr>
 <td>
 <table id="suiteTable" class="selenium" border="1" cellpadding="1" cellspacing="1"><tbody>
-<tr class="title status_passed"><td><b>Test Suite - SelBlocks - smoketests</b></td></tr>
+<tr class="title status_passed"><td><b>SelBlocks - smoketests</b></td></tr>
 <tr class="  status_passed"><td><a href="#testresult0">README</a></td></tr>
 <tr class="  status_passed"><td><a href="#testresult1">for</a></td></tr>
 <tr class="  status_passed"><td><a href="#testresult2">foreach</a></td></tr>
@@ -114,8 +114,7 @@ a {
 <td rowspan="1" colspan="3">README</td>
 </tr>
 </thead>
-<tbody><!--== SelBench is required for this testsuite -->
-<tr class="  status_done" style="cursor: pointer;">
+<tbody><tr class="  status_done" style="cursor: pointer;">
 	<td>open</td>
 	<td>http://htmlpreview.github.io/?https://github.com/refactoror/SelBlocks/blob/master/sel-blocksTests/_SelBlocks-testpage.html</td>
 	<td></td>
@@ -380,18 +379,14 @@ info: Starting test /selenium-server/tests/README.html
 info: Executing: |open | http://htmlpreview.github.io/?https://github.com/refactoror/SelBlocks/blob/master/sel-blocksTests/_SelBlocks-testpage.html |  |
 info: Starting test /selenium-server/tests/for.html
 info: Executing: |for | s=0,f=3; f &lt;= 5; f++ |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |getEval | LOG.info(&apos;f: ${f}&apos;) |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: LOG.info(&apos;f: 3&apos;)
 info: f: 3
 info: Executing: |endFor |  |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @1: [for|s=0,f=3; f &lt;= 5; f++]
 info: Starting test /selenium-server/tests/foreach.html
 info: Executing: |foreach | fe | &quot;dilbert&quot;, &quot;dogbert&quot;, &quot;wally&quot; |
 info: Executing: |getEval | LOG.info(&apos;${_i}) fe: ${fe}&apos;) |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: LOG.info(&apos;0) fe: dilbert&apos;)
 info: 0) fe: dilbert
 info: Executing: |endForeach |  |  |
@@ -399,7 +394,6 @@ info: [selblocks] branch =&gt; @1: [foreach|fe|&quot;dilbert&quot;, &quot;dogber
 info: Starting test /selenium-server/tests/foreach-xpath.html
 info: Executing: |foreach | link | $X(&quot;//input&quot;) |
 info: Executing: |getEval | LOG.info(&apos;link: ${link}&apos;) |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: LOG.info(&apos;link: [object HTMLInputElement]&apos;)
 info: link: [object HTMLInputElement]
 info: Executing: |endForeach |  |  |
@@ -414,13 +408,13 @@ info: [selblocks] [
 ]
 
 info: Executing: |getEval | LOG.info(&apos;jname: ${jname}&apos;) |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: LOG.info(&apos;jname: dilbert&apos;)
 info: jname: dilbert
 info: Executing: |endForJson |  |  |
 info: [selblocks] branch =&gt; @1: [forJson|http://refactoror.net/forjson.json]
 info: Starting test /selenium-server/tests/forxml.html
 info: Executing: |forXml | http://refactoror.net/forxml.xml |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] Reading from: http://refactoror.net/forxml.xml
 info: Executing: |getEval | LOG.info(&apos;xname: ${xname}&apos;) |  |
 info: script is: LOG.info(&apos;xname: dilbert&apos;)
@@ -429,7 +423,6 @@ info: Executing: |endForXml |  |  |
 info: [selblocks] branch =&gt; @1: [forXml|http://refactoror.net/forxml.xml]
 info: Starting test /selenium-server/tests/function01.html
 info: Executing: |call | doSomething | sname = &quot;dilbert,Q&quot;, srole = &quot;goof&quot; |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @2: [function|doSomething|sname]
 info: Executing: |function | doSomething | sname |
 info: Executing: |getEval | LOG.info(&apos;sname: ${sname}, srole: ${srole}&apos;) |  |
@@ -437,8 +430,10 @@ info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please
 info: script is: LOG.info(&apos;sname: dilbert,Q, srole: goof&apos;)
 info: sname: dilbert,Q, srole: goof
 info: Executing: |endFunction | doSomething |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @1: [call|doSomething|sname = &quot;dilbert,Q&quot;, srole = &quot;goof&quot;]
 info: Executing: |call | doSomething | sname = &quot;dilbert,Q&quot;, srole = &quot;goof&quot; |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |function | doSomething | sname |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @4: [endFunction|doSomething]
@@ -448,6 +443,7 @@ info: [selblocks] branch =&gt; @2: [function|doSomething|sname]
 info: Executing: |function | doSomething | sname |
 info: Starting test /selenium-server/tests/try05%20-%20catch%20specific%20error,%20then%20finally.html
 info: Executing: |try | t-spec-outer |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 warn: [selblocks] @1: [try|t-spec-outer] does not have a catch-block nor a finally-block, and therefore serves no purpose
 info: Executing: |try | t-spec-inner |  |
 info: Executing: |throw | &quot;blamo inner&quot; |  |
@@ -459,6 +455,6 @@ info: script is: LOG.info(&apos;_error: SelblocksError: blamo inner&apos;)
 info: _error: SelblocksError: blamo inner
 info: Executing: |finally |  |  |
 info: Executing: |endTry | t-spec-inner |  |
-info: Executing: |endTry | t-spec-outer |  |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
+info: Executing: |endTry | t-spec-outer |  |
 </pre></body></html>

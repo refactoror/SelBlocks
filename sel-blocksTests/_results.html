@@ -54,7 +54,7 @@ a {
 </tr>
 <tr>
 <td>totalTime:</td>
-<td>17</td>
+<td>16</td>
 </tr>
 <tr>
 <td>numTestTotal:</td>
@@ -91,7 +91,7 @@ a {
 <tr>
 <td>
 <table id="suiteTable" class="selenium" border="1" cellpadding="1" cellspacing="1"><tbody>
-<tr class="title status_passed"><td><b>Test Suite - SelBlocks</b></td></tr>
+<tr class="title status_passed"><td><b>SelBlocks - regression</b></td></tr>
 <tr class="  status_passed"><td><a href="#testresult0">README</a></td></tr>
 <tr class="  status_passed"><td><a href="#testresult1">eval</a></td></tr>
 <tr class="  status_passed"><td><a href="#testresult2">label-issue2</a></td></tr>
@@ -4680,7 +4680,6 @@ a {
 info: Starting test /selenium-server/tests/README.html
 info: Executing: |clearLog |  |  |
 info: Executing: |open | http://htmlpreview.github.io/?https://github.com/refactoror/SelBlocks/blob/master/sel-blocksTests/_SelBlocks-testpage.html |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Starting test /selenium-server/tests/eval.html
 info: Executing: |resetEmitted |  |  |
 info: Executing: |emit | &quot;dilbert&quot;.isOneOf(&quot;dilbert&quot;,&quot;dogbert&quot;,&quot;mordac&quot;) |  |
@@ -4689,18 +4688,19 @@ info: Executing: |emit | &quot;red&quot;.mapTo(&quot;primary&quot;, [&quot;red&q
 info: Executing: |emit | &quot;orange&quot;.mapTo(&quot;primary&quot;, [&quot;red&quot;,&quot;green&quot;,&quot;blue&quot;]) |  |
 info: Executing: |emit | &quot;red&quot;.translate(&quot;e&quot;, &quot;E&quot;) |  |
 info: Executing: |emit | &quot;red&quot;.translate([&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;], [&quot;blue&quot;, &quot;red&quot;, &quot;green&quot;]) |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEmitted | &quot;true~false~primary~orange~rEd~blue&quot; |  |
 info: Starting test /selenium-server/tests/label-issue2.html
 info: Executing: |label | top |  |
 info: Executing: |gotoIf | &quot;${status}&quot; == &quot;done&quot; | bottom |
 info: Executing: |log | &apos;here&apos; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selbench] here
 info: Executing: |storeEval | &quot;done&quot; | status |
 info: script is: &quot;done&quot;
 info: Executing: |goto | top |  |
 info: [selblocks] branch =&gt; @1: [label|top]
 info: Executing: |label | top |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |gotoIf | &quot;${status}&quot; == &quot;done&quot; | bottom |
 info: [selblocks] branch =&gt; @6: [label|bottom]
 info: Starting test /selenium-server/tests/branching01.html
@@ -4723,8 +4723,8 @@ error: [selblocks] Error @2: [goto|NOWHERE] Target label &apos;NOWHERE&apos; is 
 warn: [selblocks] __Stack Trace__
 info: [selbench] The expected error is confirmed : @2: [goto|NOWHERE] Target label &apos;NOWHERE&apos; is not found.
 info: Executing: |expectError | &quot;Target label &apos;NOWHERE&apos; is not found&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |gotoIf | true | NOWHERE |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 error: [selblocks] Error @4: [gotoIf|true|NOWHERE] Target label &apos;NOWHERE&apos; is not found.
 warn: [selblocks] __Stack Trace__
 info: [selbench] The expected error is confirmed : @4: [gotoIf|true|NOWHERE] Target label &apos;NOWHERE&apos; is not found.
@@ -4734,6 +4734,7 @@ error: [selblocks] Error @6: [skipNext|-1] Requires a number &gt; 1
 warn: [selblocks] __Stack Trace__
 info: [selbench] The expected error is confirmed : @6: [skipNext|-1] Requires a number &gt; 1
 info: Executing: |expectError | &quot;random is not defined&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |skipNext | random |  |
 error: [selblocks] Error  While evaluating Javascript expression: random
 warn: [selblocks] __Stack Trace__
@@ -4742,7 +4743,9 @@ info: Starting test /selenium-server/tests/if01.html
 info: Executing: |resetEmitted |  |  |
 info: Executing: |emit | &quot;BEFORE&quot; |  |
 info: Executing: |if | true |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;truthy&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |endIf |  |  |
 info: Executing: |if | false |  |
 info: [selblocks] branch =&gt; @8: [endIf]
@@ -4765,9 +4768,9 @@ info: Executing: |else |  |  |
 info: Executing: |if | true |  |
 info: Executing: |emit | &quot;truthF&quot; |  |
 info: Executing: |else |  |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @26: [endIf]
 info: Executing: |endIf |  |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |endIf |  |  |
 info: Executing: |if | &quot;dilbert&quot;.isOneOf(&quot;dogbert&quot;,&quot;dilbert&quot;,&quot;wally&quot;) |  |
 info: Executing: |emit | &quot;office mate&quot; |  |
@@ -4776,7 +4779,6 @@ info: Executing: |endIf |  |  |
 info: Executing: |if | &quot;dilbert&quot;.isOneOf(&quot;ratbert&quot;,&quot;alice&quot;,&quot;asok&quot;) |  |
 info: [selblocks] branch =&gt; @33: [else]
 info: Executing: |else |  |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;coffee mate&quot; |  |
 info: Executing: |endIf |  |  |
 info: Executing: |if | &quot;mordac&quot;.isOneOf(&quot;bob the dinosaur&quot;,&quot;garbage man&quot;,&quot;mordac&quot;) |  |
@@ -4796,14 +4798,16 @@ info: Executing: |endIf |  |  |
 info: Executing: |if | false |  |
 info: [selblocks] branch =&gt; @9: [elseIf|true]
 info: Executing: |elseIf | true |  |
-info: Executing: |emit | &quot;elseIf-y&quot; |  |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
+info: Executing: |emit | &quot;elseIf-y&quot; |  |
 info: Executing: |endIf |  |  |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |if | false |  |
 info: [selblocks] branch =&gt; @14: [elseIf|true]
 info: Executing: |elseIf | true |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;elseIf-a1y&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |elseIf | true |  |
 info: [selblocks] branch =&gt; @18: [endIf]
 info: Executing: |endIf |  |  |
@@ -4814,6 +4818,7 @@ info: [selblocks] branch =&gt; @23: [elseIf|true]
 info: Executing: |elseIf | true |  |
 info: Executing: |emit | &quot;elseIf-b2y&quot; |  |
 info: Executing: |endIf |  |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |if | false |  |
 info: [selblocks] branch =&gt; @28: [elseIf|false]
 info: Executing: |elseIf | false |  |
@@ -4822,11 +4827,12 @@ info: Executing: |else |  |  |
 info: Executing: |emit | &quot;else-y&quot; |  |
 info: Executing: |endIf |  |  |
 info: Executing: |assertEmitted | &quot;if-y~elseIf-y~elseIf-a1y~elseIf-b2y~else-y&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Starting test /selenium-server/tests/if03.html
 info: Executing: |resetEmitted |  |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |foreach | i | 2, 0, 1, 4, 3, 5 |
 info: Executing: |if | i == 0 |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @5: [elseIf|i == 1]
 info: Executing: |elseIf | i == 1 |  |
 info: [selblocks] branch =&gt; @7: [elseIf|i == 2]
@@ -4835,14 +4841,13 @@ info: Executing: |emit | &quot;elseIf-${i}&quot; |  |
 info: Executing: |elseIf | i == 3 |  |
 info: [selblocks] branch =&gt; @13: [endIf]
 info: Executing: |endIf |  |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |endForeach |  |  |
 info: [selblocks] branch =&gt; @2: [foreach|i|2, 0, 1, 4, 3, 5]
 info: Executing: |foreach | i | 2, 0, 1, 4, 3, 5 |
 info: Executing: |if | i == 0 |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;if-${i}&quot; |  |
 info: Executing: |elseIf | i == 1 |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @13: [endIf]
 info: Executing: |endIf |  |  |
 info: Executing: |endForeach |  |  |
@@ -4858,29 +4863,31 @@ info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please
 info: [selblocks] branch =&gt; @4: [for|s=0,f=3; f &lt;= 5; f++]
 info: Executing: |for | s=0,f=3; f &lt;= 5; f++ |  |
 info: Executing: |emit | &quot;iter=3.0&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Starting test /selenium-server/tests/foreach.html
 info: Executing: |resetEmitted |  |  |
 info: Executing: |deleteVars | _i, fe |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;START ${_i}-${fe}&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |foreach | fe | &quot;dilbert&quot;, &quot;dogbert&quot;, &quot;wally&quot; |
 info: Executing: |emit | &quot;${_i}) ${fe}&quot; |  |
 info: Executing: |endForeach |  |  |
 info: [selblocks] branch =&gt; @4: [foreach|fe|&quot;dilbert&quot;, &quot;dogbert&quot;, &quot;wally&quot;]
 info: Executing: |foreach | fe | &quot;dilbert&quot;, &quot;dogbert&quot;, &quot;wally&quot; |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;0) dilbert&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Starting test /selenium-server/tests/foreach-xpath.html
 info: Executing: |resetEmitted |  |  |
 info: Executing: |echo | $x(&quot;//input&quot;) |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |echo | $X(&quot;//input&quot;) |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |echo | begin |  |
 info: Executing: |emit | &quot;START ${_i}) ${link}&quot; |  |
 info: Executing: |foreach | link | $X(&quot;//input&quot;) |
 info: Executing: |emit | &quot;${_i}) ${link}&quot; |  |
 info: Executing: |echo | ${link} |  |
 info: Executing: |endForeach |  |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @6: [foreach|link|$X(&quot;//input&quot;)]
 info: Executing: |foreach | link | $X(&quot;//input&quot;) |
 info: Executing: |emit | &quot;0) [object HTMLInputElement]&quot; |  |
@@ -4888,7 +4895,6 @@ info: Starting test /selenium-server/tests/forjson.html
 info: Executing: |resetEmitted |  |  |
 info: Executing: |deleteVars | jname |  |
 info: Executing: |emit | &quot;START ${jname}&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |forJson | http://refactoror.net/forjson.json |  |
 info: [selblocks] Reading from: http://refactoror.net/forjson.json
 info: [selblocks] [
@@ -4907,12 +4913,13 @@ info: [selblocks] branch =&gt; @4: [forJson|http://refactoror.net/forjson.json]
 info: Executing: |forJson | http://refactoror.net/forjson.json |  |
 info: Starting test /selenium-server/tests/loadjsonvars.html
 info: Executing: |expectError | &quot;Requires a JSON file path or URL&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |loadJsonVars |  |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 error: [selblocks] Error @2: [loadJsonVars] Requires a JSON file path or URL.
 warn: [selblocks] __Stack Trace__
 info: [selbench] The expected error is confirmed : @2: [loadJsonVars] Requires a JSON file path or URL.
 info: Executing: |expectError | &quot;Multiple JSON objects are not valid for this command&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |loadJsonVars | http://refactoror.net/forjson.json |  |
 info: [selblocks] Reading from: http://refactoror.net/forjson.json
 info: [selblocks] [
@@ -4926,7 +4933,6 @@ warn: [selblocks] __Stack Trace__
 info: [selbench] The expected error is confirmed : @4: [loadJsonVars|http://refactoror.net/forjson.json] Multiple JSON objects are not valid for this command. (A specific JSON object can be selected by specifying: name=&quot;value&quot;.)
 info: Executing: |expectError | &apos;&quot;flubber&quot; is not a boolean expression&apos; |  |
 info: Executing: |loadJsonVars | http://refactoror.net/forjson.json | &quot;flubber&quot; |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] Reading from: http://refactoror.net/forjson.json
 info: [selblocks] [
   { jname: &quot;dilbert&quot; }
@@ -4940,9 +4946,10 @@ info: [selbench] The expected error is confirmed : @6: [loadJsonVars|http://refa
 info: Starting test /selenium-server/tests/forxml.html
 info: Executing: |resetEmitted |  |  |
 info: Executing: |deleteVars | xname |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;START ${xname}&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |forXml | http://refactoror.net/forxml.xml |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] Reading from: http://refactoror.net/forxml.xml
 info: Executing: |emit | xname |  |
 info: Executing: |endForXml |  |  |
@@ -4950,9 +4957,9 @@ info: [selblocks] branch =&gt; @4: [forXml|http://refactoror.net/forxml.xml]
 info: Executing: |forXml | http://refactoror.net/forxml.xml |  |
 info: Executing: |emit | xname |  |
 info: Executing: |endForXml |  |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @4: [forXml|http://refactoror.net/forxml.xml]
 info: Executing: |forXml | http://refactoror.net/forxml.xml |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Starting test /selenium-server/tests/loadxmlvars.html
 info: Executing: |expectError | &quot;Requires an XML file path or URL&quot; |  |
 info: Executing: |loadXmlVars |  |  |
@@ -4982,9 +4989,7 @@ info: [selblocks] branch =&gt; @11: [endIf]
 info: Executing: |endIf |  |  |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;iter=${f}&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |endFor |  |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @3: [for|f=3; f &lt;= 9; f++]
 info: Executing: |for | f=3; f &lt;= 9; f++ |  |
 info: Executing: |continue | f == 6 |  |
@@ -4993,20 +4998,22 @@ info: [selblocks] branch =&gt; @11: [endIf]
 info: Executing: |endIf |  |  |
 info: Executing: |emit | &quot;iter=3&quot; |  |
 info: Executing: |endFor |  |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @3: [for|f=3; f &lt;= 9; f++]
 info: Starting test /selenium-server/tests/continue-break02.html
 info: Executing: |resetEmitted |  |  |
 info: Executing: |store | 0 | i |
 info: Executing: |while | i++ &lt; 10 |  |
 info: Executing: |continue | i==3 |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |break | i==5 |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;iter=${i}&quot; |  |
 info: Executing: |endWhile |  |  |
 info: [selblocks] branch =&gt; @3: [while|i++ &lt; 10]
 info: Executing: |while | i++ &lt; 10 |  |
 info: Starting test /selenium-server/tests/continue-break03.html
 info: Executing: |resetEmitted |  |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |foreach | fe | &quot;dilbert&quot;,&quot;dogbert&quot;,&quot;wally&quot; |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |continue | fe==&quot;dogbert&quot; |  |
@@ -5014,9 +5021,9 @@ info: Executing: |break | fe==&quot;wally&quot; |  |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;iter=${fe}&quot; |  |
 info: Executing: |endForeach |  |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @2: [foreach|fe|&quot;dilbert&quot;,&quot;dogbert&quot;,&quot;wally&quot;]
 info: Executing: |foreach | fe | &quot;dilbert&quot;,&quot;dogbert&quot;,&quot;wally&quot; |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Starting test /selenium-server/tests/continue-break04.html
 info: Executing: |resetEmitted |  |  |
 info: Executing: |forXml | http://refactoror.net/forxml.xml |  |
@@ -5024,54 +5031,46 @@ info: [selblocks] Reading from: http://refactoror.net/forxml.xml
 info: Executing: |continue | xname==&quot;dogbert&quot; |  |
 info: Executing: |break | xname==&quot;wally&quot; |  |
 info: Executing: |emit | &quot;iter=${xname}&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |endForXml |  |  |
 info: [selblocks] branch =&gt; @2: [forXml|http://refactoror.net/forxml.xml]
 info: Executing: |forXml | http://refactoror.net/forxml.xml |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |continue | xname==&quot;dogbert&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @2: [forXml|http://refactoror.net/forxml.xml]
 info: Starting test /selenium-server/tests/nested-loops.html
 info: Executing: |resetEmitted |  |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |deleteVars | i, n, uname |  |
 info: Executing: |startTimer |  |  |
 info: Executing: |store | 2 | i |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;START ${i}&quot; |  |
 info: Executing: |while | i &gt; 0 |  |
 info: Executing: |emit | &quot;while=${i}&quot; |  |
-info: Executing: |foreach | uname | &quot;dilbert&quot;, &quot;dogbert&quot; |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
+info: Executing: |foreach | uname | &quot;dilbert&quot;, &quot;dogbert&quot; |
 info: Executing: |emit | &quot;foreach=${uname}&quot; |  |
 info: Executing: |for | n = 2; n &lt;=3; n++ |  |
 info: Executing: |emit | &quot;FOR=${n}&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |for | n = 7; n &lt;= 8; n++ |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;for=${n}&quot; |  |
 info: Executing: |endFor |  |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @12: [for|n = 7; n &lt;= 8; n++]
 info: Executing: |for | n = 7; n &lt;= 8; n++ |  |
 info: Executing: |emit | &quot;for=7&quot; |  |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |endFor |  |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @12: [for|n = 7; n &lt;= 8; n++]
 info: Executing: |for | n = 7; n &lt;= 8; n++ |  |
 info: [selblocks] branch =&gt; @14: [endFor]
 info: Executing: |endFor |  |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |endFor |  |  |
 info: [selblocks] branch =&gt; @10: [for|n = 2; n &lt;=3; n++]
 info: Executing: |for | n = 2; n &lt;=3; n++ |  |
 info: Executing: |emit | &quot;FOR=2&quot; |  |
 info: Starting test /selenium-server/tests/function01.html
 info: Executing: |resetEmitted |  |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |deleteVars | sname, srole |  |
 info: Executing: |emit | &quot;START ${sname} ${srole}&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |call | doSomething | sname = &quot;dilbert,Q&quot;, srole = &quot;goof&quot; |
 info: [selblocks] branch =&gt; @5: [function|doSomething|sname]
 info: Executing: |function | doSomething | sname |
@@ -5083,7 +5082,6 @@ info: Executing: |function | doSomething | sname |
 info: [selblocks] branch =&gt; @7: [endFunction|doSomething]
 info: Executing: |endFunction | doSomething |  |
 info: Executing: |call | doSomething | sname = &quot;dogbert&quot;, srole = &quot;woof&quot; |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @5: [function|doSomething|sname]
 info: Executing: |function | doSomething | sname |
 info: Executing: |emit | &quot;sname=dilbert,Q,srole=goof&quot; |  |
@@ -5121,40 +5119,42 @@ info: Executing: |call | fac | n = n-1 |
 info: [selblocks] branch =&gt; @8: [function|fac|n]
 info: Executing: |function | fac | n |
 info: Executing: |if | n &lt;= 1 |  |
-info: [selblocks] branch =&gt; @11: [else]
-info: Executing: |else |  |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
-info: Executing: |call | fac | n = n-1 |
-info: [selblocks] branch =&gt; @8: [function|fac|n]
-info: Executing: |function | fac | n |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
-info: Executing: |if | n &lt;= 1 |  |
-info: [selblocks] branch =&gt; @11: [else]
-info: Executing: |else |  |  |
-info: Executing: |call | fac | n = n-1 |
-info: [selblocks] branch =&gt; @8: [function|fac|n]
-info: Executing: |function | fac | n |
-info: Executing: |if | n &lt;= 1 |  |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @11: [else]
 info: Executing: |else |  |  |
 info: Executing: |call | fac | n = n-1 |
+info: [selblocks] branch =&gt; @8: [function|fac|n]
+info: Executing: |function | fac | n |
+info: Executing: |if | n &lt;= 1 |  |
+info: [selblocks] branch =&gt; @11: [else]
+info: Executing: |else |  |  |
+info: Executing: |call | fac | n = n-1 |
+info: [selblocks] branch =&gt; @8: [function|fac|n]
+info: Executing: |function | fac | n |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
+info: Executing: |if | n &lt;= 1 |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
+info: [selblocks] branch =&gt; @11: [else]
+info: Executing: |else |  |  |
+info: Executing: |call | fac | n = n-1 |
+info: [selblocks] branch =&gt; @8: [function|fac|n]
+info: Executing: |function | fac | n |
+info: Executing: |if | n &lt;= 1 |  |
+info: [selblocks] branch =&gt; @11: [else]
+info: Executing: |else |  |  |
+info: Executing: |call | fac | n = n-1 |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @8: [function|fac|n]
 info: Executing: |function | fac | n |
 info: Executing: |if | n &lt;= 1 |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @11: [else]
 info: Executing: |else |  |  |
 info: Executing: |call | fac | n = n-1 |
 info: [selblocks] branch =&gt; @8: [function|fac|n]
 info: Executing: |function | fac | n |
 info: Executing: |if | n &lt;= 1 |  |
-info: [selblocks] branch =&gt; @11: [else]
-info: Executing: |else |  |  |
-info: Executing: |call | fac | n = n-1 |
-info: [selblocks] branch =&gt; @8: [function|fac|n]
-info: Executing: |function | fac | n |
-info: Executing: |if | n &lt;= 1 |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |return | 1 |  |
 info: [selblocks] branch =&gt; @12: [call|fac|n = n-1]
 info: Executing: |call | fac | n = n-1 |
@@ -5174,17 +5174,14 @@ info: Executing: |function | outer | variable |
 info: Executing: |call | inner |  |
 info: [selblocks] branch =&gt; @7: [function|inner]
 info: Executing: |function | inner |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |log | &quot;variable=&quot; + variable |  |
 info: [selbench] variable=Hello
 info: Executing: |store | &apos;bye bye&apos; | variable |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |endFunction |  |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @4: [call|inner]
 info: Executing: |call | inner |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |log | &quot;after variable=&quot; + variable |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selbench] after variable=&apos;bye bye&apos;
 info: Executing: |endFunction |  |  |
 info: [selblocks] branch =&gt; @2: [call|outer|variable=&apos;Hello&apos;]
@@ -5195,18 +5192,17 @@ info: [selblocks] TEST HALTED
 info: Starting test /selenium-server/tests/exitTest02%20-%20from%20within%20a%20loop.html
 info: Executing: |for | i=0; i &lt; 5; i++ |  |
 info: Executing: |if | i == 3 |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @4: [endIf]
 info: Executing: |endIf |  |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |endFor |  |  |
 info: [selblocks] branch =&gt; @1: [for|i=0; i &lt; 5; i++]
 info: Executing: |for | i=0; i &lt; 5; i++ |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Starting test /selenium-server/tests/exitTest03%20-%20from%20within%20a%20function.html
 info: Executing: |call | doSubExit |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @3: [function|doSubExit]
 info: Executing: |function | doSubExit |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |exitTest |  |  |
 info: [selblocks] TEST HALTED
 info: Starting test /selenium-server/tests/try01%20-%20no-op%20try.html
@@ -5219,15 +5215,17 @@ info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | t-noop |  |
 warn: [selblocks] @5: [try|t-noop] does not have a catch-block nor a finally-block, and therefore serves no purpose
 info: Executing: |emit | &quot;trying&quot; |  |
-info: Executing: |endTry | t-noop |  |
-info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
+info: Executing: |endTry | t-noop |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |emit | &quot;/])&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEmitted | &quot;([/~trying~/])&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Starting test /selenium-server/tests/try02%20-%20try-finally,%20w-no%20error.html
 info: Executing: |log | &quot;-- try/finally, w/no error --&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selbench] -- try/finally, w/no error --
 info: Executing: |resetEmitted |  |  |
 info: Executing: |emit | &quot;([/&quot; |  |
@@ -5239,22 +5237,19 @@ info: Executing: |finally |  |  |
 info: Executing: |emit | &quot;finally&quot; |  |
 info: Executing: |endTry |  |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |emit | &quot;/])&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEmitted | &quot;([/~trying~finally~/])&quot; |  |
 info: Starting test /selenium-server/tests/try03%20-%20try-catch,%20but%20no%20error.html
 info: Executing: |log | &quot;-- try/catch, but no error --&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selbench] -- try/catch, but no error --
 info: Executing: |resetEmitted |  |  |
 info: Executing: |emit | &quot;([/&quot; |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | tc0 |  |
 info: Executing: |emit | &quot;trying&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |catch |  |  |
 info: [selblocks] branch =&gt; @9: [endTry]
 info: Executing: |endTry |  |  |
@@ -5262,9 +5257,7 @@ info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |emit | &quot;/])&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEmitted | &quot;([/~trying~/])&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Starting test /selenium-server/tests/try04%20-%20catch%20specific%20error.html
 info: Executing: |log | &quot;-- catch specific error --&quot; |  |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
@@ -5281,7 +5274,9 @@ info: [selblocks] branch =&gt; @8: [catch]
 info: Executing: |catch |  |  |
 info: Executing: |emit | &quot;caught &apos;&quot; + _error.message + &quot;&apos;&quot; |  |
 info: Executing: |endTry |  |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |emit | &quot;/])&quot; |  |
 info: Executing: |assertEmitted | &quot;([/~caught &apos;blamo catch ALL&apos;~/])&quot; |  |
@@ -5290,65 +5285,65 @@ info: Executing: |log | &quot;-- catch specific error, then finally --&quot; |  
 info: [selbench] -- catch specific error, then finally --
 info: Executing: |resetEmitted |  |  |
 info: Executing: |emit | &quot;([/&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | t-spec-outer |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 warn: [selblocks] @5: [try|t-spec-outer] does not have a catch-block nor a finally-block, and therefore serves no purpose
 info: Executing: |emit | &quot;trying outer&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |emit | &quot;([/&quot; |  |
 info: Executing: |try | t-spec-inner |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;trying inner&quot; |  |
 info: Executing: |throw | &quot;blamo inner&quot; |  |
 info: [selblocks] @11, error has been caught :: /blamo inner/
 info: [selblocks] branch =&gt; @13: [catch|/blamo inner/]
 info: Executing: |catch | /blamo inner/ |  |
 info: Executing: |emit | &quot;caught &apos;&quot; + _error.message + &quot;&apos;&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |finally |  |  |
 info: Executing: |emit | &quot;finally&quot; |  |
 info: Executing: |endTry | t-spec-inner |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |emit | &quot;/])&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |endTry | t-spec-outer |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |emit | &quot;/])&quot; |  |
 info: Executing: |assertEmitted | &quot;([/~trying outer~([/~trying inner~caught &apos;blamo inner&apos;~finally~/])~/])&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Starting test /selenium-server/tests/try06%20-%20catch-throw,%20finally-throw.html
 info: Executing: |log | &quot;-- catch/throw, finally/throw --&quot; |  |
 info: [selbench] -- catch/throw, finally/throw --
 info: Executing: |resetEmitted |  |  |
 info: Executing: |emit | &quot;([/&quot; |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | tcf-trap |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | 0 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | tcf |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;trying&quot; |  |
 info: Executing: |emit | &quot;throwing A&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |throw | &quot;blamoA&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] @10, error has been caught :: /blamoA/
 info: [selblocks] branch =&gt; @12: [catch|/blamoA/]
 info: Executing: |catch | /blamoA/ |  |
 info: Executing: |emit | &quot;caught &apos;&quot; + _error.message + &quot;&apos;&quot; |  |
 info: Executing: |emit | &quot;throwing B&quot; |  |
 info: Executing: |throw | &quot;blamoB&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] Bubbling suspended while finally block runs
 info: [selblocks] branch =&gt; @16: [finally]
 info: Executing: |finally |  |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;finally&quot; |  |
 info: Executing: |emit | &quot;throwing C&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |throw | &quot;blamoC&quot; |  |
 info: [selblocks] No further handling, error bubbling will continue outside of this try.
 info: [selblocks] branch =&gt; @20: [endTry]
@@ -5361,28 +5356,28 @@ info: Executing: |endTry |  |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |emit | &quot;/])&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEmitted | &quot;([/~trying~throwing A~caught &apos;blamoA&apos;~throwing B~finally~throwing C~caught &apos;blamoC&apos;~/])&quot; |  |
 info: Starting test /selenium-server/tests/try07%20-%20bubble%20up%20to%20catch%20ALL.html
 info: Executing: |log | &quot;-- bubble up to catch ALL --&quot; |  |
 info: [selbench] -- bubble up to catch ALL --
 info: Executing: |resetEmitted |  |  |
 info: Executing: |emit | &quot;([/&quot; |  |
-info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | t-all-outer |  |
-info: Executing: |emit | &quot;trying-outer&quot; |  |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
+info: Executing: |emit | &quot;trying-outer&quot; |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | 0 |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | t-all-inner |  |
 info: Executing: |emit | &quot;trying&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |throw | &quot;blamo try-catch-finally&quot; |  |
 info: [selblocks] No further handling, error bubbling will continue outside of this try.
 info: [selblocks] branch =&gt; @14: [endTry|t-all-inner]
 info: Executing: |endTry | t-all-inner |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] @14, error has been caught :: @10 
 info: [selblocks] branch =&gt; @16: [catch]
 info: Executing: |catch |  |  |
@@ -5394,25 +5389,24 @@ info: Executing: |emit | &quot;/])&quot; |  |
 info: Executing: |assertEmitted | &quot;([/~trying-outer~trying~caught-outer &apos;blamo try-catch-finally&apos;~/])&quot; |  |
 info: Starting test /selenium-server/tests/try08%20-%20bubble%20up%20to%20catch%20ALL%20via%20finally.html
 info: Executing: |log | &quot;-- bubble up to catch ALL via finally --&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selbench] -- bubble up to catch ALL via finally --
 info: Executing: |resetEmitted |  |  |
 info: Executing: |emit | &quot;([/&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | t-allfin-outer |  |
 info: Executing: |emit | &quot;trying-outer&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | 0 |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | t-allfin-inner |  |
 info: Executing: |emit | &quot;trying&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |throw | &quot;blamo try-catch-finally&quot; |  |
 info: [selblocks] Bubbling suspended while finally block runs
 info: [selblocks] branch =&gt; @14: [finally]
 info: Executing: |finally |  |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;finally&quot; |  |
 info: Executing: |endTry | t-allfin-inner |  |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
@@ -5426,34 +5420,40 @@ info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |emit | &quot;/])&quot; |  |
 info: Executing: |assertEmitted | &quot;([/~trying-outer~trying~finally~caught-outer &apos;blamo try-catch-finally&apos;~/])&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Starting test /selenium-server/tests/try09%20-%20bubble%20out%20of%20no-op%20try%20to%20catch%20specific%20error.html
 info: Executing: |log | &quot;-- bubble out of no-op try to catch specific error --&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selbench] -- bubble out of no-op try to catch specific error --
 info: Executing: |resetEmitted |  |  |
 info: Executing: |emit | &quot;([/&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | noop-outer |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;trying outer&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | 0 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | op-inner |  |
 warn: [selblocks] @8: [try|op-inner] does not have a catch-block nor a finally-block, and therefore serves no purpose
 info: Executing: |emit | &quot;trying inner&quot; |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | 1 |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |emit | &quot;throwing inner&quot; |  |
 info: Executing: |throw | &quot;blamo&quot; |  |
 info: [selblocks] No further handling, error bubbling will continue outside of this try.
 info: [selblocks] branch =&gt; @14: [endTry|op-inner]
 info: Executing: |endTry | op-inner |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] @14, error has been caught :: @12 /blamo/
 info: [selblocks] branch =&gt; @15: [catch|/blamo/]
 info: Executing: |catch | /blamo/ |  |
 info: Executing: |emit | &quot;caught &apos;&quot; + _error.message + &quot;&apos;&quot; |  |
 info: Executing: |finally |  |  |
 info: Executing: |emit | &quot;finally&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |endTry | noop-outer |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: script is: selblocks.tcf.nestingLevel
@@ -5461,11 +5461,11 @@ info: Executing: |emit | &quot;/])&quot; |  |
 info: Executing: |assertEmitted | &quot;([/~trying outer~trying inner~throwing inner~caught &apos;blamo&apos;~finally~/])&quot; |  |
 info: Starting test /selenium-server/tests/try10%20-%20bubble%20up%20to%20catch%20specific%20error.html
 info: Executing: |log | &quot;-- bubble up to catch specific error --&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selbench] -- bubble up to catch specific error --
 info: Executing: |resetEmitted |  |  |
 info: Executing: |emit | &quot;([/&quot; |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | bub-spec-outer |  |
 info: Executing: |emit | &quot;trying outer&quot; |  |
@@ -5476,21 +5476,19 @@ info: Executing: |emit | &quot;trying inner&quot; |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | 1 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |emit | &quot;throwing inner&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |throw | &quot;blamo&quot; |  |
 info: [selblocks] Bubbling suspended while finally block runs
 info: [selblocks] branch =&gt; @14: [finally]
 info: Executing: |finally |  |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;finally&quot; |  |
 info: Executing: |endTry | bub-spec-inner |  |
 info: [selblocks] @16, error has been caught :: @12 /blamo/
 info: [selblocks] branch =&gt; @17: [catch|/blamo/]
 info: Executing: |catch | /blamo/ |  |
 info: Executing: |emit | &quot;caught &apos;&quot; + _error.message + &quot;&apos;&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |endTry | bub-spec-outer |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |emit | &quot;/])&quot; |  |
 info: Executing: |assertEmitted | &quot;([/~trying outer~trying inner~throwing inner~finally~caught &apos;blamo&apos;~/])&quot; |  |
@@ -5504,17 +5502,15 @@ info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | bub-spec-outer |  |
 info: Executing: |emit | &quot;trying outer&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | 0 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | bub-spec-inner |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;trying inner&quot; |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | 1 |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |emit | &quot;throwing inner&quot; |  |
 info: Executing: |throw | &quot;blamo&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] Bubbling suspended while finally block runs
 info: [selblocks] branch =&gt; @14: [finally]
 info: Executing: |finally |  |  |
@@ -5525,8 +5521,8 @@ info: [selblocks] branch =&gt; @17: [catch|/blamo/]
 info: Executing: |catch | /blamo/ |  |
 info: Executing: |emit | &quot;caught &apos;&quot; + _error.message + &quot;&apos;&quot; |  |
 info: Executing: |finally |  |  |
-info: Executing: |emit | &quot;finally&quot; |  |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
+info: Executing: |emit | &quot;finally&quot; |  |
 info: Executing: |endTry | bub-spec-outer |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: script is: selblocks.tcf.nestingLevel
@@ -5537,7 +5533,6 @@ info: Executing: |log | &quot;-- throw, catch, rethrow --&quot; |  |
 info: [selbench] -- throw, catch, rethrow --
 info: Executing: |resetEmitted |  |  |
 info: Executing: |emit | &quot;([/&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: selblocks.tcf.nestingLevel
@@ -5545,7 +5540,6 @@ info: Executing: |try | outer |  |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;trying outer&quot; |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | 0 |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | inner |  |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
@@ -5558,7 +5552,6 @@ info: [selblocks] @12, error has been caught :: /blamo1/
 info: [selblocks] branch =&gt; @14: [catch|/blamo1/]
 info: Executing: |catch | /blamo1/ |  |
 info: Executing: |emit | &quot;caught &apos;&quot; + _error.message + &quot;&apos;&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;throwing blamo2&quot; |  |
 info: Executing: |throw | &quot;blamo2&quot; |  |
 info: [selblocks] No further handling, error bubbling will continue outside of this try.
@@ -5567,56 +5560,52 @@ info: Executing: |endTry | inner |  |
 info: [selblocks] @18, error has been caught :: @17 /blamo2/
 info: [selblocks] branch =&gt; @19: [catch|/blamo2/]
 info: Executing: |catch | /blamo2/ |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;caught &apos;&quot; + _error.message + &quot;&apos;&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |endTry | outer |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |emit | &quot;/])&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEmitted | &quot;([/~trying outer~trying inner~throwing blamo1~caught &apos;blamo1&apos;~throwing blamo2~caught &apos;blamo2&apos;~/])&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Starting test /selenium-server/tests/try13%20-%20bubble%20out%20of%20nested%20function%20calls.html
 info: Executing: |log | &quot;-- bubble out of nested function calls --&quot; |  |
 info: [selbench] -- bubble out of nested function calls --
 info: Executing: |resetEmitted |  |  |
 info: Executing: |emit | &quot;([/&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | bub-invoke |  |
 info: Executing: |emit | &quot;trying&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;calling&quot; |  |
 info: Executing: |call | subBub | n = 0 |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @16: [function|subBub]
 info: Executing: |function | subBub |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |try | tcf-inner |  |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;${n}) trying-inner&quot; |  |
 info: Executing: |if | n &lt; 2 |  |
 info: Executing: |emit | &quot;${n}) calling&quot; |  |
 info: Executing: |call | subBub | n = n+1 |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @16: [function|subBub]
 info: Executing: |function | subBub |  |
 info: Executing: |try | tcf-inner |  |
 info: Executing: |emit | &quot;0) trying-inner&quot; |  |
 info: Executing: |if | n &lt; 2 |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;0) calling&quot; |  |
 info: Executing: |call | subBub | n = n+1 |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @16: [function|subBub]
 info: Executing: |function | subBub |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |try | tcf-inner |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;0) trying-inner&quot; |  |
 info: Executing: |if | n &lt; 2 |  |
 info: [selblocks] branch =&gt; @22: [else]
 info: Executing: |else |  |  |
 info: Executing: |emit | &quot;${n}) throwing&quot; |  |
 info: Executing: |throw | &quot;blamo&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] Bubbling suspended while finally block runs
 info: [selblocks] branch =&gt; @26: [finally]
 info: Executing: |finally |  |  |
@@ -5626,46 +5615,48 @@ info: [selblocks] function &apos;subBub&apos; aborting due to error
 info: [selblocks] Bubbling suspended while finally block runs
 info: [selblocks] branch =&gt; @26: [finally]
 info: Executing: |finally |  |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;2) finally&quot; |  |
 info: Starting test /selenium-server/tests/try14%20-%20command%20bubbling,%20break%20wfinally.html
 info: Executing: |log | &quot;-- command bubbling, break w/finally --&quot; |  |
 info: [selbench] -- command bubbling, break w/finally --
 info: Executing: |resetEmitted |  |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;([/&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;while&apos;g&quot; |  |
 info: Executing: |for | w=3; w &gt; 0; w-- |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | breaker |  |
 info: Executing: |emit | &quot;${w}) trying&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |if | w==2 |  |
 info: [selblocks] branch =&gt; @12: [endIf]
 info: Executing: |endIf |  |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |finally |  |  |
 info: Executing: |emit | &quot;${w}) finallying&quot; |  |
 info: Executing: |endTry | breaker |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |emit | &quot;${w}) iterating&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |endFor |  |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @5: [for|w=3; w &gt; 0; w--]
 info: Executing: |for | w=3; w &gt; 0; w-- |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | breaker |  |
 info: Executing: |emit | &quot;3) trying&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Starting test /selenium-server/tests/try15%20-%20command%20bubbling,%20intra-try%20break.html
 info: Executing: |log | &quot;-- command bubbling, intra-try break --&quot; |  |
 info: [selbench] -- command bubbling, intra-try break --
 info: Executing: |resetEmitted |  |  |
-info: Executing: |emit | &quot;([/&quot; |  |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
+info: Executing: |emit | &quot;([/&quot; |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | breaker |  |
@@ -5673,30 +5664,32 @@ info: Executing: |emit | &quot;trying&quot; |  |
 info: Executing: |emit | &quot;while&apos;g&quot; |  |
 info: Executing: |for | w=3; w &gt; 0; w-- |  |
 info: Executing: |if | w==2 |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @12: [endIf]
 info: Executing: |endIf |  |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;${w}) iterating&quot; |  |
 info: Executing: |endFor |  |  |
 info: [selblocks] branch =&gt; @8: [for|w=3; w &gt; 0; w--]
 info: Executing: |for | w=3; w &gt; 0; w-- |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |if | w==2 |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;${w}) BREAK&quot; |  |
 info: Executing: |break |  |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @14: [endFor]
 info: Executing: |endFor |  |  |
 info: Executing: |finally |  |  |
 info: Executing: |emit | &quot;finallying&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |endTry | breaker |  |
 info: Starting test /selenium-server/tests/try16%20-%20command%20bubbling,%20continue%20w-finally.html
 info: Executing: |log | &quot;-- command bubbling, continue w/finally --&quot; |  |
 info: [selbench] -- command bubbling, continue w/finally --
 info: Executing: |resetEmitted |  |  |
 info: Executing: |emit | &quot;([/&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;while&apos;g&quot; |  |
 info: Executing: |for | w=3; w &gt; 0; w-- |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | continuer |  |
@@ -5710,11 +5703,12 @@ info: Executing: |endTry | continuer |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |emit | &quot;${w}) iterating&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |endFor |  |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @5: [for|w=3; w &gt; 0; w--]
 info: Executing: |for | w=3; w &gt; 0; w-- |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | continuer |  |
 info: Executing: |emit | &quot;3) trying&quot; |  |
@@ -5724,11 +5718,9 @@ info: [selbench] -- command bubbling, intra-try continue --
 info: Executing: |resetEmitted |  |  |
 info: Executing: |emit | &quot;([/&quot; |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | continuer |  |
 info: Executing: |emit | &quot;trying&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;while&apos;g&quot; |  |
 info: Executing: |for | w=3; w &gt; 0; w-- |  |
 info: Executing: |if | w==2 |  |
@@ -5738,17 +5730,14 @@ info: Executing: |emit | &quot;${w}) iterating&quot; |  |
 info: Executing: |endFor |  |  |
 info: [selblocks] branch =&gt; @8: [for|w=3; w &gt; 0; w--]
 info: Executing: |for | w=3; w &gt; 0; w-- |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |if | w==2 |  |
 info: Executing: |emit | &quot;${w}) CONTINUE&quot; |  |
 info: Executing: |continue |  |  |
 info: [selblocks] branch =&gt; @8: [for|w=3; w &gt; 0; w--]
 info: Executing: |for | w=3; w &gt; 0; w-- |  |
 info: Executing: |if | w==2 |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @12: [endIf]
 info: Executing: |endIf |  |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;3) iterating&quot; |  |
 info: Starting test /selenium-server/tests/try18%20-%20command%20bubbling,%20error%20replaced%20by%20return.html
 info: Executing: |log | &quot;-- command bubbling, error replaced by return --&quot; |  |
@@ -5756,7 +5745,6 @@ info: [selbench] -- command bubbling, error replaced by return --
 info: Executing: |resetEmitted |  |  |
 info: Executing: |emit | &quot;([/&quot; |  |
 info: Executing: |emit | &quot;calling&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |call | cmdBubA |  |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @7: [function|cmdBubA]
@@ -5773,16 +5761,18 @@ info: Executing: |return | 1 |  |
 info: [selblocks] Command @13: [return|1], suspended while finally block runs
 info: [selblocks] branch =&gt; @14: [finally]
 info: Executing: |finally |  |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;finallying&quot; |  |
 info: Executing: |emit | &quot;returning (2)&quot; |  |
 info: Executing: |return | 2 |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |endTry |  |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] command-bubbling complete - suspended command executing now @17: [return|2]
 info: [selblocks] branch =&gt; @17: [return|2]
 info: Executing: |return | 2 |  |
 info: [selblocks] branch =&gt; @5: [call|cmdBubA]
 info: Executing: |call | cmdBubA |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;returned ${_result}&quot; |  |
 info: Executing: |function | cmdBubA |  |
 info: [selblocks] branch =&gt; @20: [endFunction]
@@ -5794,63 +5784,59 @@ info: Executing: |resetEmitted |  |  |
 info: Executing: |emit | &quot;([/&quot; |  |
 info: Executing: |emit | &quot;calling&quot; |  |
 info: Executing: |call | cmdBubB |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @7: [function|cmdBubB]
 info: Executing: |function | cmdBubB |  |
 info: Executing: |emit | &quot;in cmdBubB&quot; |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | cmdBub-tcf |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;trying&quot; |  |
 info: Executing: |emit | &quot;throwing&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |throw | &quot;short-lived error&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] Bubbling suspended while finally block runs
 info: [selblocks] branch =&gt; @14: [finally]
 info: Executing: |finally |  |  |
 info: Executing: |emit | &quot;finallying&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;returning (2)&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |return | 2 |  |
 info: Executing: |endTry |  |  |
 info: [selblocks] command-bubbling complete - suspended command executing now @17: [return|2]
 info: [selblocks] branch =&gt; @17: [return|2]
 info: Executing: |return | 2 |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @5: [call|cmdBubB]
 info: Executing: |call | cmdBubB |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;returned ${_result}&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |function | cmdBubB |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @20: [endFunction]
 info: Executing: |endFunction |  |  |
 info: Starting test /selenium-server/tests/try20%20-%20command%20bubbling,%20return%20replaced%20by%20error.html
 info: Executing: |log | &quot;-- command bubbling, return replaced by error --&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selbench] -- command bubbling, return replaced by error --
 info: Executing: |resetEmitted |  |  |
 info: Executing: |emit | &quot;([/&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;calling&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |call | cmdBubC |  |
 info: [selblocks] branch =&gt; @7: [function|cmdBubC]
 info: Executing: |function | cmdBubC |  |
 info: Executing: |emit | &quot;in cmdBubC&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | cmdBub-tcf-guardrail |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | 0 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | cmdBub-tcf |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;trying&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;returning (1)&quot; |  |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |return | 1 |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] Command @15: [return|1], suspended while finally block runs
 info: [selblocks] branch =&gt; @16: [finally]
 info: Executing: |finally |  |  |
@@ -5863,7 +5849,9 @@ info: Executing: |endTry |  |  |
 info: [selblocks] @20, error has been caught :: @19 /this-error-replaces-return-1/
 info: [selblocks] branch =&gt; @21: [catch|/this-error-replaces-return-1/]
 info: Executing: |catch | /this-error-replaces-return-1/ |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;caught &apos;&quot; + _error.message + &quot;&apos;&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | 0 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |endTry |  |  |
@@ -5872,36 +5860,36 @@ info: [selblocks] branch =&gt; @5: [call|cmdBubC]
 info: Executing: |call | cmdBubC |  |
 info: Executing: |emit | &quot;returned ${_result}&quot; |  |
 info: Executing: |function | cmdBubC |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] branch =&gt; @25: [endFunction]
 info: Starting test /selenium-server/tests/try21%20-%20catch%20failed%20verify%20command.html
 info: Executing: |log | &quot;-- catch failed verify command --&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selbench] -- catch failed verify command --
 info: Executing: |resetEmitted |  |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |emit | &quot;([/&quot; |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | tcv1 |  |
 info: Executing: |verifyEval | 1 | 2 |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: script is: 1
 info: [selblocks] @6, error has been caught :: 
 info: [selblocks] branch =&gt; @8: [catch]
 info: Executing: |catch |  |  |
 info: Executing: |emit | &quot;caught &apos;&quot; + _error.message + &quot;&apos;&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |endTry |  |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |emit | &quot;/])&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEmitted | &quot;([/~caught &apos;Actual value &apos;1&apos; did not match &apos;2&apos;&apos;~/])&quot; |  |
 info: Starting test /selenium-server/tests/try22%20-%20exitTest%20w-finally%20processing.html
 info: Executing: |log | &quot;-- exitTest w/finally processing --&quot; |  |
 info: [selbench] -- exitTest w/finally processing --
 info: Executing: |resetEmitted |  |  |
 info: Executing: |emit | &quot;([/&quot; |  |
-info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | abort |  |
 info: Executing: |emit | &quot;trying&quot; |  |
@@ -5912,8 +5900,10 @@ info: [selblocks] branch =&gt; @9: [finally]
 info: Executing: |finally |  |  |
 info: Executing: |emit | &quot;finallying&quot; |  |
 info: Executing: |assertEmitted | &quot;([/~trying~exitTest ...~finallying&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |resetEmitted |  |  |
 info: Executing: |endTry | abort |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] command-bubbling complete - suspended command executing now @8: [exitTest]
 info: [selblocks] branch =&gt; @8: [exitTest]
 info: Executing: |exitTest |  |  |

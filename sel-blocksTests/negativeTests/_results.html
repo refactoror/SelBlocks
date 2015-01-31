@@ -91,7 +91,7 @@ a {
 <tr>
 <td>
 <table id="suiteTable" class="selenium" border="1" cellpadding="1" cellspacing="1"><tbody>
-<tr class="title status_failed"><td><b>Test Suite - SelBlocks - negative</b></td></tr>
+<tr class="title status_failed"><td><b>SelBlocks - regression - negative</b></td></tr>
 <tr class="  status_passed"><td><a href="#testresult0">README</a></td></tr>
 <tr class="  status_failed"><td><a href="#testresult1">try01 - try without matching catch</a></td></tr>
 </tbody></table>
@@ -209,27 +209,25 @@ a {
 </tr></table><pre>
 info: Starting test /selenium-server/tests/README.html
 info: Executing: |clearLog |  |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |open | http://htmlpreview.github.io/?https://github.com/refactoror/SelBlocks/blob/master/sel-blocksTests/_SelBlocks-testpage.html |  |
 info: Starting test /selenium-server/tests/try01%20-%20try%20without%20matching%20catch.html
 info: Executing: |log | &quot;-- try without matching catch --&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selbench] -- try without matching catch --
 info: Executing: |resetEmitted |  |  |
 info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
 info: script is: selblocks.tcf.nestingLevel
 info: Executing: |try | miss |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: Executing: |assertEval | true | true |
 info: script is: true
 info: Executing: |throw | &quot;blamo will NOT be caught at all&quot; |  |
+info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selblocks] Bubbling suspended while finally block runs
 info: [selblocks] branch =&gt; @10: [finally]
 info: Executing: |finally |  |  |
 info: Executing: |log | &quot;finally&quot; |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 info: [selbench] finally
 info: Executing: |endTry | miss |  |
-info: Selenium 1.0 (Core, RC, etc) is no longer under active development. Please update to WebDriver ASAP
 error: [selblocks] Error was not caught: &apos;blamo will NOT be caught at all&apos;
 error: Unexpected Exception: blamo will NOT be caught at all
 error: Exception details: name -&gt; SelblocksError, message -&gt; blamo will NOT be caught at all, idx -&gt; 5
