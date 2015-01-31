@@ -4,12 +4,11 @@
 ,plusplus:true
 ,white:true
 ,nomen:true
- */
+*/
 /*globals
-HtmlRunnerTestLoop:true,
 Selenium:true,
 htmlTestRunner:true
- */
+*/
 (function($$){
   $$.seleniumEnv = "server";
   $$.globalContext.serverPatchApplied = $$.globalContext.serverPatchApplied || false;
@@ -23,22 +22,24 @@ htmlTestRunner:true
   // but the currentTest object can be extended for our purposes
   function initTestCase()
   {
-    if (!!htmlTestRunner) {
+    if (!(typeof htmlTestRunner === "undefined" || htmlTestRunner === null)) {
       // TBD: map commands to real types instead of faking it
       htmlTestRunner.currentTest.commands = mapCommands(htmlTestRunner.currentTest.htmlTestCase.getCommandRows());
       $$.globalContext.testCase = htmlTestRunner.currentTest;
       // debugContext isn't on this object, but redirecting to the currentTest seems to work
       $$.globalContext.testCase.debugContext = htmlTestRunner.currentTest;
+      // define pseudo properties with getters/setters on a hidden property,
+      // so that they both maintain the same value.
       Object.defineProperties($$.globalContext.testCase, {
         "_nextCommandRowIndex" : {
           writable : true
         }
-        ,"debugIndex" : {
+        ,"debugIndex" : { // for IDE
           enumerable : true
           ,get : function () { return this._nextCommandRowIndex; }
           ,set : function (idx) { this._nextCommandRowIndex = idx; }
         }
-        ,"nextCommandRowIndex" : {
+        ,"nextCommandRowIndex" : { // for Selenium Server
           enumerable : true
           ,get : function () { return this._nextCommandRowIndex; }
           ,set : function (idx) { this._nextCommandRowIndex = idx; }

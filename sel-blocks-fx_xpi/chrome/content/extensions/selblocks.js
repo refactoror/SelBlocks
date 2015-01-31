@@ -237,7 +237,7 @@ function $X(xpath, contextNode, resultType) {
   // preceding the destination would falsely get marked as successfully executed
   var branchIdx = null;
   // if testCase.nextCommand() ever changes, this will need to be revisited
-  // (current as of: selenium-ide-2.4.0)
+  // (current as of: selenium-ide-2.8.0)
   function nextCommand() {
     if (!this.started) {
       this.started = true;
@@ -253,28 +253,20 @@ function $X(xpath, contextNode, resultType) {
         this.debugIndex++;
       }
     }
-    // skip over comments
-    while (this.debugIndex < testCase.commands.length) {
-      // we're just incrementing the index by 1 until we find the next command
-      // on the server, the _advanceToNextRow does that and a couple other
-      // things that are apparently necessary on the server. The debugIndex and
-      // nextCommandRowIndex mean the same thing between the IDE and server,
-      // so I turned them both into pseudo properties with getters/setters
-      // that point to a hidden property. They'll both always have the same value.
-      // only reason I'm not changing this to an intercept and using the original
-      // nextCommand when on the server is because the selblocks compile
-      // function relies on the commands array. I don't know if there's some
-      // underlying collection existing on both the server and IDE that could be
-      // used instead.
+
+    // skip over comments, if any
+    while (this.debugIndex < testCase.commands.length)
+    {
       if ($$.seleniumEnv == "server") {
+        // increment nextCommandRowIndex, which is the IDE equivalent of debugIndex
+        // (see pseudo properties in user-extensions-base.js)
+        // TBD: find a server equivalent of the IDE commands array
         this._advanceToNextRow();
-        // _advanceToNextRow could set the current row null, it only gets
-        // command rows. No point in continuing if that's the case, because
-        // we've run out of commands.
         if (this.currentRow == null) {
-            return null;
+            return null; // no more commands
         }
       }
+
       var command = testCase.commands[this.debugIndex];
       if (command.type === "command") {
         this.runTimeStamp = Date.now();
@@ -285,11 +277,7 @@ function $X(xpath, contextNode, resultType) {
     return null;
   }
 
-  /**
-   * Creates a pointer to the next command to execute. This pointer is used by
-   * nextCommand when considering what to do next.
-   * @param {Number} cmdIdx The index of the next command to execute.
-   */
+  // Set index of the next command to execute via nextCommand().
   function setNextCommand(cmdIdx) {
     assert(cmdIdx >= 0 && cmdIdx < testCase.commands.length,
       " Cannot branch to non-existent command @" + (cmdIdx+1));
@@ -344,7 +332,7 @@ function $X(xpath, contextNode, resultType) {
         var curCmd = testCase.commands[i].command;
         var aw = curCmd.indexOf("AndWait");
         if (aw !== -1) {
-          // just ignore the suffix for now, this may or may not be a SelBlocks commands
+          // just ignore the suffix for now, this may or may not be a SelBlocks command
           curCmd = curCmd.substring(0, aw);
         }
         var cmdTarget = testCase.commands[i].target;
@@ -1379,19 +1367,6 @@ function $X(xpath, contextNode, resultType) {
 
   // ========= storedVars management =========
 
-  function evalWithVars(expr) {
-    var result = null;
-    try {
-      // EXTENSION REVIEWERS: Use of eval is consistent with the Selenium extension itself.
-      // Scripted expressions run in the Selenium window, isolated from any web content.
-      result = eval("with (storedVars) {" + expr + "}");
-    }
-    catch (e) {
-      notifyFatalErr(" While evaluating Javascript expression: " + expr, e);
-    }
-    return result;
-  }
-
   function parseArgs(argSpec) { // comma-sep -> new prop-set
     var args = {};
     var parms = iexpr.splitList(argSpec, ",");
@@ -1501,7 +1476,20 @@ function $X(xpath, contextNode, resultType) {
     return ("@" + (idx+1) + ": [" + $$.fmtCmd(testCase.commands[idx]) + "]");
   }
 
-  //================= Utils ===============
+  //================= utils ===============
+
+  function evalWithVars(expr) {
+    var result = null;
+    try {
+      // EXTENSION REVIEWERS: Use of eval is consistent with the Selenium extension itself.
+      // Scripted expressions run in the Selenium window, isolated from any web content.
+      result = eval("with (storedVars) {" + expr + "}");
+    }
+    catch (e) {
+      notifyFatalErr(" While evaluating Javascript expression: " + expr, e);
+    }
+    return result;
+  }
 
   // Elapsed time, optional duration provides expiration
   function IntervalTimer(msDuration) {
