@@ -2,6 +2,7 @@ SETLOCAL
 @echo off
 
 pushd "%~dp0"
+md logs 2>nul
 
 :: we assume SelBench has already been built
 set SELBENCH_HOME=..\..\..\selbench\SelBench
@@ -10,12 +11,8 @@ set UE=user-extensions-min
 CALL createSelblocksUserExtensions.cmd
 
 :: for each browser, run each test suite
-> browsers.heredoc (
-  @echo firefox
-)
-FOR /F %%B IN (browsers.heredoc) do (
-  CALL :s_run_suites %%B
-)
+CALL :s_run_suites firefox
+CALL :s_run_suites googlechrome
 del *.heredoc
 
 popd
@@ -53,8 +50,9 @@ goto :eof
     -jar "lib\selenium-server-standalone-2.44.0.jar" ^
     -debug ^
     -singleWindow ^
-    -log server.log ^
+    -log logs\server.log ^
     -logLongForm ^
+    -browserSideLog ^
     -userExtensions lib/user-extensions.js ^
     -htmlSuite "*%1" ^
     "http://www.google.com" ^
@@ -64,7 +62,9 @@ goto :eof
 goto :eof
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-  @echo googlechrome
-  @echo piiexplore
-  @echo opera
-  @echo safari
+TBD browsers
+CALL :s_run_suites iexplore
+CALL :s_run_suites opera
+CALL :s_run_suites safari
+
+    -browserSideLog ^

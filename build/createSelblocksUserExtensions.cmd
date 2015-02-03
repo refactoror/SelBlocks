@@ -1,5 +1,5 @@
 SETLOCAL
-:: Assumptions:
+:: Dependencies:
 ::   cygwin sed
 
 ::@echo off
