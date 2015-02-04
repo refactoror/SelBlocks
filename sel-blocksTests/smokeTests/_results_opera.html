@@ -1,0 +1,453 @@
+<html>
+<head><style type='text/css'>
+body, table {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 12;
+}
+
+table {
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding-left: 0.3em;
+    padding-right: 0.3em;
+}
+
+a {
+    text-decoration: none;
+}
+
+.title {
+    font-style: italic;
+}
+
+.selected {
+    background-color: #ffffcc;
+}
+
+.status_done {
+    background-color: #eeffee;
+}
+
+.status_passed {
+    background-color: #ccffcc;
+}
+
+.status_failed {
+    background-color: #ffcccc;
+}
+
+.breakpoint {
+    background-color: #cccccc;
+    border: 1px solid black;
+}
+</style><title>Test suite results</title></head>
+<body>
+<h1>Test suite results </h1>
+
+<table>
+<tr>
+<td>result:</td>
+<td>passed</td>
+</tr>
+<tr>
+<td>totalTime:</td>
+<td>1</td>
+</tr>
+<tr>
+<td>numTestTotal:</td>
+<td>8</td>
+</tr>
+<tr>
+<td>numTestPasses:</td>
+<td>8</td>
+</tr>
+<tr>
+<td>numTestFailures:</td>
+<td>0</td>
+</tr>
+<tr>
+<td>numCommandPasses:</td>
+<td>0</td>
+</tr>
+<tr>
+<td>numCommandFailures:</td>
+<td>0</td>
+</tr>
+<tr>
+<td>numCommandErrors:</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Selenium Version:</td>
+<td>2.44</td>
+</tr>
+<tr>
+<td>Selenium Revision:</td>
+<td>.0</td>
+</tr>
+<tr>
+<td>
+<table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
+<tr class="title status_passed"><td><b>SelBlocks - smoketests</b></td></tr>
+<tr class=" status_passed"><td><a href="#testresult0">README</a></td></tr>
+<tr class=" status_passed"><td><a href="#testresult1">for</a></td></tr>
+<tr class=" status_passed"><td><a href="#testresult2">foreach</a></td></tr>
+<tr class=" status_passed"><td><a href="#testresult3">foreach-xpath</a></td></tr>
+<tr class=" status_passed"><td><a href="#testresult4">forjson</a></td></tr>
+<tr class=" status_passed"><td><a href="#testresult5">forxml</a></td></tr>
+<tr class=" status_passed"><td><a href="#testresult6">function01</a></td></tr>
+<tr class=" status_passed"><td><a href="#testresult7">try05 - catch specific error, then finally</a></td></tr>
+</tbody></table>
+
+
+</td>
+<td>&nbsp;</td>
+</tr>
+</table><table><tr>
+<td><a name="testresult0">README.html</a><br/><div>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr class="title status_passed">
+<td rowspan="1" colspan="3">README</td>
+</tr>
+</thead>
+<tbody><tr class=" status_done" style="cursor: pointer;">
+	<td>open</td>
+	<td>http://refactoror.net/_SelBlocks-testpage.html</td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult1">for.html</a><br/><div>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">for</td></tr>
+</thead><tbody>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>for</td>
+	<td>s=0,f=3; f &lt;= 5; f++</td>
+	<td></td>
+</tr>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>getEval</td>
+	<td>LOG.info('f: ${f}')</td>
+	<td></td>
+</tr>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult2">foreach.html</a><br/><div>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">foreach</td></tr>
+</thead><tbody>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>foreach</td>
+	<td>fe</td>
+	<td>"dilbert", "dogbert", "wally"</td>
+</tr>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>getEval</td>
+	<td>LOG.info('${_i}) fe: ${fe}')</td>
+	<td></td>
+</tr>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>endForeach</td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult3">foreach-xpath.html</a><br/><div>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">foreach-xpath</td></tr>
+</thead><tbody>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>foreach</td>
+	<td>link</td>
+	<td>$X("//input")</td>
+</tr>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>getEval</td>
+	<td>LOG.info('link: ${link}')</td>
+	<td></td>
+</tr>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>endForeach</td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult4">forjson.html</a><br/><div>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">forjson</td></tr>
+</thead><tbody>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>forJson</td>
+	<td>http://refactoror.net/forjson.json</td>
+	<td></td>
+</tr>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>getEval</td>
+	<td>LOG.info('jname: ${jname}')</td>
+	<td></td>
+</tr>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>endForJson</td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult5">forxml.html</a><br/><div>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">forxml</td></tr>
+</thead><tbody>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>forXml</td>
+	<td>http://refactoror.net/forxml.xml</td>
+	<td></td>
+</tr>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>getEval</td>
+	<td>LOG.info('xname: ${xname}')</td>
+	<td></td>
+</tr>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>endForXml</td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult6">function01.html</a><br/><div>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr class="title status_passed">
+<td rowspan="1" colspan="3">function01</td>
+</tr>
+</thead>
+<tbody>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>doSomething</td>
+	<td>sname = "dilbert,Q", srole = "goof"</td>
+</tr>
+<!--===-->
+<tr class=" status_done" style="cursor: pointer;">
+	<td>function</td>
+	<td>doSomething</td>
+	<td>sname</td>
+</tr>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>getEval</td>
+	<td>LOG.info('sname: ${sname}, srole: ${srole}')</td>
+	<td></td>
+</tr>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>endFunction</td>
+	<td>doSomething</td>
+	<td></td>
+</tr>
+<!--===-->
+<tr class=" status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>doSomething</td>
+	<td>sname = "dogbert", srole = "woof"</td>
+</tr>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>doSomething</td>
+	<td>sname = "ratbert", srole = "squeak"</td>
+</tr>
+<!--===-->
+<tr class=" status_done" style="cursor: pointer;">
+	<td>foreach</td>
+	<td>sname</td>
+	<td>"asok", "alice"</td>
+</tr>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>doSomething</td>
+	<td>sname = sname, srole = "super=user"</td>
+</tr>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>endForeach</td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult7">try05 - catch specific error, then finally.html</a><br/><div>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">try05</td></tr>
+</thead><tbody>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>t-spec-outer</td>
+	<td></td>
+</tr>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>t-spec-inner</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>throw</td>
+	<td>"blamo inner"</td>
+	<td></td>
+</tr>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"this command should not be reached, due to throw"</td>
+	<td></td>
+</tr>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>catch</td>
+	<td>/blamo inner/</td>
+	<td></td>
+</tr>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>getEval</td>
+	<td>LOG.info('_error: ${_error}')</td>
+	<td></td>
+</tr>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class=" status_done" style="cursor: pointer;">
+	<td>endTry</td>
+	<td>t-spec-inner</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>endTry</td>
+	<td>t-spec-outer</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr></table><pre>
+info: Starting test /selenium-server/tests/README.html
+info: Executing: |open | http://refactoror.net/_SelBlocks-testpage.html |  |
+info: Starting test /selenium-server/tests/for.html
+info: Executing: |for | s=0,f=3; f &lt;= 5; f++ |  |
+info: Executing: |getEval | LOG.info(&apos;f: ${f}&apos;) |  |
+info: script is: LOG.info(&apos;f: 3&apos;)
+info: f: 3
+info: Executing: |endFor |  |  |
+info: [selblocks] branch =&gt; @1: [for|s=0,f=3; f &lt;= 5; f++]
+info: Starting test /selenium-server/tests/foreach.html
+info: Executing: |foreach | fe | &quot;dilbert&quot;, &quot;dogbert&quot;, &quot;wally&quot; |
+info: Executing: |getEval | LOG.info(&apos;${_i}) fe: ${fe}&apos;) |  |
+info: script is: LOG.info(&apos;0) fe: dilbert&apos;)
+info: 0) fe: dilbert
+info: Executing: |endForeach |  |  |
+info: [selblocks] branch =&gt; @1: [foreach|fe|&quot;dilbert&quot;, &quot;dogbert&quot;, &quot;wally&quot;]
+info: Starting test /selenium-server/tests/foreach-xpath.html
+info: Executing: |foreach | link | $X(&quot;//input&quot;) |
+info: Executing: |getEval | LOG.info(&apos;link: ${link}&apos;) |  |
+info: script is: LOG.info(&apos;link: [object HTMLInputElement]&apos;)
+info: link: [object HTMLInputElement]
+info: Executing: |endForeach |  |  |
+info: [selblocks] branch =&gt; @1: [foreach|link|$X(&quot;//input&quot;)]
+info: Starting test /selenium-server/tests/forjson.html
+info: Executing: |forJson | http://refactoror.net/forjson.json |  |
+info: [selblocks] Reading from: http://refactoror.net/forjson.json
+info: [selblocks] [
+  { jname: &quot;dilbert&quot; }
+ ,{ jname: &quot;dogbert&quot; }
+ ,{ jname: &quot;wally&quot; }
+]
+
+info: Executing: |getEval | LOG.info(&apos;jname: ${jname}&apos;) |  |
+info: script is: LOG.info(&apos;jname: dilbert&apos;)
+info: jname: dilbert
+info: Executing: |endForJson |  |  |
+info: [selblocks] branch =&gt; @1: [forJson|http://refactoror.net/forjson.json]
+info: Starting test /selenium-server/tests/forxml.html
+info: Executing: |forXml | http://refactoror.net/forxml.xml |  |
+info: [selblocks] Reading from: http://refactoror.net/forxml.xml
+info: Executing: |getEval | LOG.info(&apos;xname: ${xname}&apos;) |  |
+info: script is: LOG.info(&apos;xname: dilbert&apos;)
+info: xname: dilbert
+info: Executing: |endForXml |  |  |
+info: [selblocks] branch =&gt; @1: [forXml|http://refactoror.net/forxml.xml]
+info: Starting test /selenium-server/tests/function01.html
+info: Executing: |call | doSomething | sname = &quot;dilbert,Q&quot;, srole = &quot;goof&quot; |
+info: [selblocks] branch =&gt; @2: [function|doSomething|sname]
+info: Executing: |function | doSomething | sname |
+info: Executing: |getEval | LOG.info(&apos;sname: ${sname}, srole: ${srole}&apos;) |  |
+info: script is: LOG.info(&apos;sname: dilbert,Q, srole: goof&apos;)
+info: sname: dilbert,Q, srole: goof
+info: Executing: |endFunction | doSomething |  |
+info: [selblocks] branch =&gt; @1: [call|doSomething|sname = &quot;dilbert,Q&quot;, srole = &quot;goof&quot;]
+info: Executing: |call | doSomething | sname = &quot;dilbert,Q&quot;, srole = &quot;goof&quot; |
+info: Executing: |function | doSomething | sname |
+info: [selblocks] branch =&gt; @4: [endFunction|doSomething]
+info: Executing: |endFunction | doSomething |  |
+info: Executing: |call | doSomething | sname = &quot;dogbert&quot;, srole = &quot;woof&quot; |
+info: [selblocks] branch =&gt; @2: [function|doSomething|sname]
+info: Executing: |function | doSomething | sname |
+info: Starting test /selenium-server/tests/try05%20-%20catch%20specific%20error,%20then%20finally.html
+info: Executing: |try | t-spec-outer |  |
+warn: [selblocks] @1: [try|t-spec-outer] does not have a catch-block nor a finally-block, and therefore serves no purpose
+info: Executing: |try | t-spec-inner |  |
+info: Executing: |throw | &quot;blamo inner&quot; |  |
+info: [selblocks] @3, error has been caught :: /blamo inner/
+info: [selblocks] branch =&gt; @5: [catch|/blamo inner/]
+info: Executing: |catch | /blamo inner/ |  |
+info: Executing: |getEval | LOG.info(&apos;_error: ${_error}&apos;) |  |
+info: script is: LOG.info(&apos;_error: SelblocksError: blamo inner&apos;)
+info: _error: SelblocksError: blamo inner
+info: Executing: |finally |  |  |
+info: Executing: |endTry | t-spec-inner |  |
+info: Executing: |endTry | t-spec-outer |  |
+</pre></body></html>

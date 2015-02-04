@@ -11,6 +11,7 @@ htmlTestRunner:true
 */
 (function($$){
   $$.seleniumEnv = "server";
+  // this flag is global so that SelBlocks and SelBench can be used together
   $$.globalContext.serverPatchApplied = $$.globalContext.serverPatchApplied || false;
 
   if (!$$.globalContext.serverPatchApplied) {

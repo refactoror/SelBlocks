@@ -1,5 +1,4 @@
 SETLOCAL
-
 :: Pre-requisites:
 ::   Hand-edit install.rdf: <em:version>x.y.z
 ::             about.xul: text box
