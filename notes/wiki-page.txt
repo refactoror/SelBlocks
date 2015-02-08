@@ -132,6 +132,7 @@ These can be used in SelBlocks expressions:
 
  String.isOneOf : Example: if|employee.isOneOf("dilbert","wally","ratbert")
  String.mapTo : Example: if|employee.mapTo("peon", ["dilbert","wally"]) == "peon"
+ String.translate : Example: if|employee.translate("e", "3"]) == "p3on"
 
  $e(locator) : Example: $e("link=SelBlocks review")
  $x(xpath) : Example: $x("//input[@id=(//label[.='User ID']/@for)]")
@@ -152,23 +153,28 @@ https://github.com/refactoror/SelBlocks/user-extensions.js
 For more information on running Selenium Server,
 see: http://www.seleniumhq.org/docs/08_user_extensions.jsp#using-user-extensions-with-selenium-ide
 
-Note that prior to version 2.1,
-SelBlocks has been a Firefox extension only,
+Note that prior to version 2.1 SelBlocks has been a Firefox extension only,
 whereas Selenium Server can target a wide range of browsers.
-So to be useful,
-SelBlocks will need to become compatible with the full set of browsers that Selenium Server supports.
-This should not be a difficult goal.
-SelBlocks currently passes its full regression test suite when run against
-<tt>firefox</tt> and <tt>googlechrome</tt>, (on Windows).
-Community help is welcome in expanding this list to include:
-<tt>iexplore</tt>, <tt>safari</tt>, <tt>opera</tt>.
+SelBlocks currently passes its full regression test suite when run against:
+* <tt>firefox</tt> (31.4)
+* <tt>googlechrome</tt> (40.0)
+* <tt>opera</tt> (27.0)
+Community help is welcome and encouraged in expanding this list.
+There are currently known issues with:
+* <tt>iexplorer</tt> (11.0): <tt>Object.defineProperties</tt> fails - test-startup hangs
+* <tt>safari</tt> (5.1.7): <tt>htmlTestRunner</tt> is not defined - test-startup hangs
 
-Be aware that browser-compatibility has a relatively low support priority.
+Running scripts in Selenium Server introduces the possibilty of browser compatibility issues,
+especially when running IDE-produced scripts against non-Firefox browsers.
+Potential pain points include differences in
+JavaScript error messaging, (e.g., <tt>expectError</tt>),
+and XPath capabilities, (<tt>$x()</tt> and <tt>$X()</tt>).
+
 When reporting an issue, be sure to provide very specific browser/OS info,
 as well as the faling test case, test html, and error log.
 Better yet, if you can fix the problem, submit a github pull request
 -- which is how server support came about in the first place.
-A big thanks to Matthew Kastor!
+A big thanks to Matthew Kastor for this contribution!
 
 For an overview of how the SelBlocks user extension works, see:
 https://github.com/refactoror/SelBlocks/blob/master/notes/SeleniumServer-notes.txt
@@ -177,20 +183,36 @@ https://github.com/refactoror/SelBlocks/blob/master/notes/SeleniumServer-notes.t
 
 SelBlocks is incompatible with flowControl (and derivatives), because they unilaterally modify <tt>selenium.reset()</tt>. Note however that SelBlocks provides equivalent commands, and is generally a plug-compatible replacement.
 
-You cannot use Set Start Point to begin execution in the middle of an if, for, try, or function. This is because each kind of block maintains context during its execution which is initialized when that block is entered from the top. Jumping into the middle of a block would have undefined behavior.
+You cannot use Set Start Point in the IDE to begin execution in the middle of an if, for, try, or function.
+This is because each kind of block maintains context during its execution
+that is initialized when that block is entered from the top.
+Jumping into the middle of a block would have undefined behavior.
 
 Local file access is not supported by Selenium Server.
-which might be a problem for commands like loadJsonVars, loadXmlVars, forJson and forXml.
-However, files can be accessed via http.
+This might be problematic for commands like loadJsonVars, loadXmlVars, forJson and forXml.
+Although files can be accessed via http.
+
+Never use the ...<tt>AndWait</tt> counterpart of a SelBlocks command, e.g., <tt>ifAndWait</tt>.
+''Selenium automatically registers with every defined command, even though it does not always make sense.''
+If you use one of these, (usually via inadvertent auto-completion),
+SelBlocks will throw an error when you try to start the script in the IDE.
+This is a bit more difficult to diagnose in Selenium Server,
+which cannot currently detect the situation,
+and therefore simply hangs without an error when such a command executes.
 
 =Philosophical Note=
 
-I tend to agree, in principle, with Dan Fabulich's view on keeping HTML Selenese simple. But in practice I am able to maintain MUCH simpler scripts by using some if/else and looping. Note that there is no language translation for SelBlocks commands, so they're commented-out in exported test scripts. Although hand-translation in the target language ought to be pretty straightforward. I would just say, use these constructs judiciously.
+I tend to agree, in principle, with Dan Fabulich's view on keeping HTML Selenese simple.
+But in practice you're able to maintain MUCH simpler scripts by using some if/else and looping.
+Note that there is no language translation for SelBlocks commands,
+so they're commented-out in exported test scripts.
+Although hand-translation in the target language ought to be pretty straightforward.
+I would just say, use these constructs judiciously.
 
 =Revision History=
 
-* 2015-??-??: v2.1
-** SelBlocks now works with Selenium Server. (A big thanks to Matthew Kastor for this contribution.)
+* 2015-02-??: v2.1
+** Enhancement #10 Added support for Selenium Server. (A big thanks to Matthew Kastor for this contribution)
 ** Added ability to catch verify command faliures
 ** Fixed Issue #6 Try/catch not clearing error status
 ** Fixed Issue #11 Top-level try/finally leaves Selenium IDE in running mode

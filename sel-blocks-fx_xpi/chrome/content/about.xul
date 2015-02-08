@@ -15,7 +15,7 @@
       <hbox>
         <image src="/skin/leftbracket.png" />
         <vbox>
-          <text value="SelBlocks 2.0.2" style="font-weight: bold; font-size: medium;" />
+          <text value="SelBlocks 2.1" style="font-weight: bold; font-size: medium;" />
           <text value="for Selenium IDE" style="font-weight: bold; font-size: small;" />
         </vbox>
         <image src="/skin/rightbracket.png" />

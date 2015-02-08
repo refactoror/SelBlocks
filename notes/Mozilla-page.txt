@@ -1,9 +1,10 @@
 ================================================================================
-SelBlocks (for Selenium IDE) 2.0.1
+SelBlocks (for Selenium IDE) 2.1
 by refactoror
 
-Latest version 2.0.1
+Latest version 2.1
 
+-limit 250 characters-
 This is an extension for Selenium IDE that provides javascript-like conditionals, looping, callable functions, error catching, and JSON/XML driven parameterization.
 
 ================================================================================
@@ -11,7 +12,7 @@ About this Add-on
 
 <strong>SelBlocks 2</strong>
 <ul>
-  <li>Adds the following control structures to Selenese:
+  <li>Adds the following "block" structures to Selenese:
     <ul>
     <blockquote><code>if</code>, <code>elseIf</code>, <code>else</code></blockquote>
     <blockquote><code>try</code>, <code>catch</code>, <code>finally</code>, <code>throw</code></blockquote>
@@ -38,6 +39,17 @@ About this Add-on
 Note that it take months for Mozilla to review each addon update. For compatibility with Firefox versions above 17, see: https://addons.mozilla.org/en-US/firefox/addon/selenium-ide-sel-blocks/versions/
 
 <a href="http://refactoror.wikia.com/wiki/Selblocks_Reference">Documentation</a> / <a href="https://github.com/refactoror/SelBlocks/issues">Support</a>
+
+================================================================================
+Version 2.1
+Released ...
+
+Changes since 2.0.2:
+** Added support for Selenium Server. (A big thanks to Matthew Kastor)
+** Added ability to catch verify command faliures
+** Issue #6:  Fix for try/catch not clearing error status
+** Issue #11: Fix for top-level try/finally leaves Selenium IDE in running mode
+** Issue #12: Fix for unhandled try/catch in one test affects next test
 
 ================================================================================
 Version 2.0.2

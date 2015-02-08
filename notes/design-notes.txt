@@ -1,7 +1,7 @@
 Command Categories
 
   branching
-    skipNext                : skip around some commands
+    skipNext                : skip over some commands
     goto                    : jump to target label
     if                   x2 : skip around if-block, or into else-block
     cascadeElseIf()      X3 : skip around else and/or elseIf blocks
