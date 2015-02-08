@@ -111,7 +111,7 @@
       var fileObj = xmlHttpReq.responseText;
       fileObj = fileObj.replace("/\uFFFD/g", "").replace(/\0/g, "");
       $$.LOG.info(fileObj);
-      varsets = eval(fileObj);
+      varsets = $$.evalWithVars(fileObj);
       if (varsets === null || varsets.length === 0) {
         throw new Error("A JSON object could not be loaded, or the file was empty.");
       }
@@ -219,7 +219,7 @@
     var URL_PFX = "file://";
     var url = filepath;
     if (filepath.substring(0, URL_PFX.length).toLowerCase() !== URL_PFX) {
-      testCasePath = testCase.file.path.replace("\\", "/", "g");
+      var testCasePath = testCase.file.path.replace("\\", "/", "g");
       var i = testCasePath.lastIndexOf("/");
       url = URL_PFX + testCasePath.substr(0, i) + "/" + filepath;
     }

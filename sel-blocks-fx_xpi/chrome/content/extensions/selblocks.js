@@ -1,5 +1,5 @@
 /*
- * SelBlocks 2.0.2
+ * SelBlocks 2.1
  *
  * Provides commands for Javascript-like looping and callable functions,
  *   with scoped variables, and JSON/XML driven parameterization.
@@ -617,7 +617,7 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doSkipNext = function(spec)
   {
     assertRunning();
-    var n = parseInt(evalWithVars(spec), 10);
+    var n = parseInt($$.evalWithVars(spec), 10);
     if (isNaN(n)) {
       if (spec.trim() === "") { n = 1; }
       else { notifyFatalHere(" Requires a numeric value"); }
@@ -644,7 +644,7 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doGotoIf = function(condExpr, label)
   {
     assertRunning();
-    if (evalWithVars(condExpr)) {
+    if ($$.evalWithVars(condExpr)) {
       this.doGoto(label);
     }
   };
@@ -689,7 +689,7 @@ function $X(xpath, contextNode, resultType) {
 
   function cascadeElseIf(ifState, condExpr) {
     assertCompilable("", condExpr, ";", "Invalid condition");
-    if (!evalWithVars(condExpr)) {
+    if (!$$.evalWithVars(condExpr)) {
       // jump to next elseIf or else or endif
       var ifDef = blkDefFor(ifState);
       if (ifState.elseIfItr.hasNext()) { setNextCommand(ifState.elseIfItr.next()); }
@@ -706,7 +706,7 @@ function $X(xpath, contextNode, resultType) {
 
   // throw the given Error
   Selenium.prototype.doThrow = function(err) {
-    err = evalWithVars(err);
+    err = $$.evalWithVars(err);
     if (!(err instanceof Error)) {
       err = new SelblocksError(idxHere(), err);
     }
@@ -879,7 +879,7 @@ function $X(xpath, contextNode, resultType) {
     if (!errDcl) {
       return true; // no error specified means catch all errors
     }
-    var errExpr = evalWithVars(errDcl);
+    var errExpr = $$.evalWithVars(errDcl);
     var errMsg = e.message;
     if (errExpr instanceof RegExp) {
       return (errMsg.match(errExpr));
@@ -1021,7 +1021,7 @@ function $X(xpath, contextNode, resultType) {
           return null;
       }
       ,function() { } // initialize
-      ,function() { return (evalWithVars(condExpr)); } // continue?
+      ,function() { return ($$.evalWithVars(condExpr)); } // continue?
       ,function() { } // iterate
     );
   };
@@ -1046,9 +1046,9 @@ function $X(xpath, contextNode, resultType) {
           validateNames(localVarNames, "variable");
           return localVarNames;
       }
-      ,function(loop) { evalWithVars(loop.initStmt); }          // initialize
-      ,function(loop) { return (evalWithVars(loop.condExpr)); } // continue?
-      ,function(loop) { evalWithVars(loop.iterStmt); }          // iterate
+      ,function(loop) { $$.evalWithVars(loop.initStmt); }          // initialize
+      ,function(loop) { return ($$.evalWithVars(loop.condExpr)); } // continue?
+      ,function(loop) { $$.evalWithVars(loop.iterStmt); }          // iterate
     );
   };
   Selenium.prototype.doEndFor = function() {
@@ -1076,7 +1076,7 @@ function $X(xpath, contextNode, resultType) {
           assert(varName, " 'foreach' requires a variable name.");
           assert(valueExpr, " 'foreach' requires comma-separated values.");
           assertCompilable("[ ", valueExpr, " ];", "Invalid value list");
-          loop.values = evalWithVars("[" + valueExpr + "]");
+          loop.values = $$.evalWithVars("[" + valueExpr + "]");
           if (loop.values.length === 1 && loop.values[0] instanceof Array) {
             loop.values = loop.values[0]; // if sole element is an array, than use it
           }
@@ -1127,19 +1127,19 @@ function $X(xpath, contextNode, resultType) {
         + ' (A specific ' + desc + ' can be selected by specifying: name="value".)');
     }
 
-    var result = evalWithVars(selector);
+    var result = $$.evalWithVars(selector);
     if (typeof result !== "boolean") {
       notifyFatalHere(", " + selector + " is not a boolean expression");
     }
 
     // read until specified set found
     var isEof = reader.EOF();
-    while (!isEof && evalWithVars(selector) !== true) {
+    while (!isEof && $$.evalWithVars(selector) !== true) {
       reader.next(); // read next varset and set values on storedVars
       isEof = reader.EOF();
     } 
 
-    if (!evalWithVars(selector)) {
+    if (!$$.evalWithVars(selector)) {
       notifyFatalHere(desc + " not found for selector expression: " + selector
         + "; in input file " + filepath);
     }
@@ -1269,7 +1269,7 @@ function $X(xpath, contextNode, resultType) {
     if (transitionBubbling(Stack.isLoopBlock)) {
       return;
     }
-    if (condExpr && !evalWithVars(condExpr)) {
+    if (condExpr && !$$.evalWithVars(condExpr)) {
       return;
     }
     var loopState = activeBlockStack().unwindTo(Stack.isLoopBlock);
@@ -1347,7 +1347,7 @@ function $X(xpath, contextNode, resultType) {
       // no active call, we're just skipping around a function block
     }
     else {
-      if (returnVal) { storedVars._result = evalWithVars(returnVal); }
+      if (returnVal) { storedVars._result = $$.evalWithVars(returnVal); }
       activeCallFrame.isReturning = true;
       // jump back to call command
       setNextCommand(activeCallFrame.returnIdx);
@@ -1374,7 +1374,7 @@ function $X(xpath, contextNode, resultType) {
     for (i = 0; i < parms.length; i++) {
       var keyValue = iexpr.splitList(parms[i], "=");
       validateName(keyValue[0], "parameter");
-      args[keyValue[0]] = evalWithVars(keyValue[1]);
+      args[keyValue[0]] = $$.evalWithVars(keyValue[1]);
     }
     return args;
   }
@@ -1462,7 +1462,7 @@ function $X(xpath, contextNode, resultType) {
 
   function assertCompilable(left, stmt, right, explanation) {
     try {
-      evalWithVars("function selblocksTemp() { " + left + stmt + right + " }");
+      $$.evalWithVars("function selblocksTemp() { " + left + stmt + right + " }");
     }
     catch (e) {
       throw new SyntaxError(fmtCmdRef(idxHere()) + " " + explanation + " '" + stmt +  "': " + e.message);
@@ -1478,7 +1478,7 @@ function $X(xpath, contextNode, resultType) {
 
   //================= utils ===============
 
-  function evalWithVars(expr) {
+  $$.evalWithVars = function(expr) {
     var result = null;
     try {
       // EXTENSION REVIEWERS: Use of eval is consistent with the Selenium extension itself.
