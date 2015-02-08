@@ -65,6 +65,7 @@ goto :eof
     "%2" ^
     "%~d2%~p2\_results_%BROWSER_SPEC%.html"
   @echo off
+  :: strip out randomly generated Selenium depecation warnings
   sed "/Please update to WebDriver ASAP/d" "%~d2%~p2\_results_%BROWSER_SPEC%.html" > "%~d2%~p2\_results_%BROWSER_SPEC%.tmp"
   del "%~d2%~p2\_results_%BROWSER_SPEC%.html"
   ren "%~d2%~p2\_results_%BROWSER_SPEC%.tmp" "_results_%BROWSER_SPEC%.html"
