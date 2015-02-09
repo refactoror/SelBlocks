@@ -3,7 +3,6 @@
 
   /* Function interception
   */
-  $$.fn = {};
 
   // execute the given function before each call of the specified function
   $$.fn.interceptBefore = function(targetObj, targetFnName, _fn) {

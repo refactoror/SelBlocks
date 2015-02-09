@@ -6,7 +6,7 @@
 
   // ==================== XmlReader ====================
 
-  $$.XmlReader = function()
+  $$.fn.XmlReader = function()
   {
     var varsets = null;
     var varNames = null;
@@ -97,7 +97,7 @@
 
   // ==================== JSONReader ====================
 
-  $$.JSONReader = function()
+  $$.fn.JSONReader = function()
   {
     var varsets = null;
     var varNames = null;

@@ -1099,13 +1099,13 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doLoadJsonVars = function(filepath, selector)
   {
     assert(filepath, " Requires a JSON file path or URL.");
-    var jsonReader = new $$.JSONReader(filepath);
+    var jsonReader = new $$.fn.JSONReader(filepath);
     loadVars(jsonReader, "JSON object", filepath, selector);
   };
   Selenium.prototype.doLoadXmlVars = function(filepath, selector)
   {
     assert(filepath, " Requires an XML file path or URL.");
-    var xmlReader = new $$.XmlReader(filepath);
+    var xmlReader = new $$.fn.XmlReader(filepath);
     loadVars(xmlReader, "XML element", filepath, selector);
   };
   Selenium.prototype.doLoadVars = function(filepath, selector)
@@ -1152,7 +1152,7 @@ function $X(xpath, contextNode, resultType) {
     enterLoop(
       function(loop) {  // validate
           assert(jsonpath, " Requires a JSON file path or URL.");
-          loop.jsonReader = new $$.JSONReader();
+          loop.jsonReader = new $$.fn.JSONReader();
           var localVarNames = loop.jsonReader.load(jsonpath);
           return localVarNames;
       }
@@ -1174,7 +1174,7 @@ function $X(xpath, contextNode, resultType) {
     enterLoop(
       function(loop) {  // validate
           assert(xmlpath, " 'forXml' requires an XML file path or URL.");
-          loop.xmlReader = new $$.XmlReader();
+          loop.xmlReader = new $$.fn.XmlReader();
           var localVarNames = loop.xmlReader.load(xmlpath);
           return localVarNames;
       }
