@@ -16,7 +16,7 @@
     // load XML file and return the list of var names found in the first <VARS> element
     this.load = function(filepath)
     {
-      var xmlHttpReq = doAjaxRequest(filepath);
+      var xmlHttpReq = doAjaxRequest(filepath, "text/xml");
       var fileObj = xmlHttpReq.responseXML; // XML DOM
       varsets = fileObj.getElementsByTagName("vars"); // HTMLCollection
       if (varsets === null || varsets.length === 0) {
@@ -109,7 +109,11 @@
     {
       var xmlHttpReq = doAjaxRequest(filepath);
       var fileObj = xmlHttpReq.responseText;
-      fileObj = fileObj.replace("/\uFFFD/g", "").replace(/\0/g, "");
+      fileObj = fileObj.replace(/\0/g, "");
+      if (fileObj.charCodeAt(0) == 65533 && fileObj.charCodeAt(1) == 65533) {
+        // strip UTF marker if present
+        fileObj = fileObj.substr(2);
+      }
       $$.LOG.info(fileObj);
       varsets = $$.evalWithVars(fileObj);
       if (varsets === null || varsets.length === 0) {
@@ -196,7 +200,7 @@
     }
   }
 
-  function doAjaxRequest(filepath)
+  function doAjaxRequest(filepath, mimeType)
   {
       var fileReader = new FileReader();
       var fileUrl;
@@ -207,7 +211,7 @@
       } else {
         fileUrl = filepath;
       }
-      var xmlHttpReq = fileReader.getDocumentSynchronous(fileUrl);
+      var xmlHttpReq = fileReader.getDocumentSynchronous(fileUrl, mimeType);
       $$.LOG.info("Reading from: " + fileUrl);
       return xmlHttpReq;
   }
@@ -251,11 +255,14 @@
     return absUrl;
   };
 
-  FileReader.prototype.getDocumentSynchronous = function(url) {
+  FileReader.prototype.getDocumentSynchronous = function(url, mimeType) {
     var absUrl = this.prepareUrl(url);
     var requester = this.newXMLHttpRequest();
     if (!requester) {
       throw new Error("XMLHttp requester object not initialized");
+    }
+    if (mimeType) {
+      requester.overrideMimeType(mimeType);
     }
     requester.open("GET", absUrl, false); // synchronous (we don't want selenium to go ahead)
     try {
