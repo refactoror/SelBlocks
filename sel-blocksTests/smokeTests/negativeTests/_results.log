@@ -1,5 +1,6 @@
 
 
+    [info] Playing test case README
     [info] Executing: |open | http://refactoror.net/_SelBlocks-testpage.html | |
     [info] Test case passed
     [info] Playing test case try01 - try without matching catch

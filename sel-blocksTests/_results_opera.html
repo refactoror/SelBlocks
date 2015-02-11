@@ -54,7 +54,7 @@ a {
 </tr>
 <tr>
 <td>totalTime:</td>
-<td>8</td>
+<td>12</td>
 </tr>
 <tr>
 <td>numTestTotal:</td>
@@ -91,7 +91,7 @@ a {
 <tr>
 <td>
 <table id="suiteTable" cellpadding="1" cellspacing="1" border="1" class="selenium"><tbody>
-<tr class="title status_passed"><td><b>SelBlocks - regression</b></td></tr>
+<tr class="title status_passed"><td><b>Test Suite</b></td></tr>
 <tr class=" status_passed"><td><a href="#testresult0">README</a></td></tr>
 <tr class=" status_passed"><td><a href="#testresult1">eval</a></td></tr>
 <tr class=" status_passed"><td><a href="#testresult2">label-issue2</a></td></tr>
@@ -154,12 +154,12 @@ a {
 <thead>
 <tr class="title status_passed"><td rowspan="1" colspan="3">README</td></tr>
 </thead><tbody>
+<!---- (the SelBench addon is required for this testsuite)-->
 <tr class=" status_done" style="cursor: pointer;">
 	<td>clearLog</td>
 	<td></td>
 	<td></td>
 </tr>
-<!---- SelBench is required for this testsuite -->
 <tr class=" status_done" style="cursor: pointer;">
 	<td>open</td>
 	<td>http://refactoror.net/_SelBlocks-testpage.html</td>
@@ -4679,6 +4679,7 @@ a {
 </tr></table><pre>
 info: Starting test /selenium-server/tests/README.html
 info: Executing: |clearLog |  |  |
+warn: [selbench] clearLog command ignored in non-IDE environment
 info: Executing: |open | http://refactoror.net/_SelBlocks-testpage.html |  |
 info: Starting test /selenium-server/tests/eval.html
 info: Executing: |resetEmitted |  |  |
