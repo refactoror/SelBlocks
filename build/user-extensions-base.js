@@ -15,6 +15,7 @@ htmlTestRunner:true
   $$.globalContext.serverPatchApplied = $$.globalContext.serverPatchApplied || false;
 
   if (!$$.globalContext.serverPatchApplied) {
+    $$.LOG.info("Applying testCase server patch for " + $$.name);
     $$.fn.interceptAfter(Selenium.prototype, "reset", initTestCase);
     $$.globalContext.serverPatchApplied = true;
   }

@@ -8,7 +8,7 @@ Provides Selenium commands for javascript-like conditionals, looping, callable f
 
 =Features=
 
-* Adds the following control structures to Selenese: <tt>if</tt>/<tt>elseIf</tt>/<tt>else</tt>, <tt>try</tt>/<tt>catch</tt>/<tt>finally</tt>/<tt>throw</tt>, <tt>for</tt>/<tt>foreach</tt>/<tt>while</tt>, <tt>continue</tt>/<tt>break</tt>, <tt>call</tt>/<tt>function</tt>/<tt>return</tt>, <tt>loadXmlVars</tt>/<tt>loadJsonVars</tt>, <tt>forXml</tt>/<tt>forJson</tt>, <tt>exitTest</tt>
+* Provides the following control structures: <tt>if</tt>/<tt>elseIf</tt>/<tt>else</tt>, <tt>try</tt>/<tt>catch</tt>/<tt>finally</tt>/<tt>throw</tt>, <tt>for</tt>/<tt>foreach</tt>/<tt>while</tt>, <tt>continue</tt>/<tt>break</tt>, <tt>call</tt>/<tt>function</tt>/<tt>return</tt>, <tt>loadXmlVars</tt>/<tt>loadJsonVars</tt>, <tt>forXml</tt>/<tt>forJson</tt>, <tt>exitTest</tt>
 * Function and loop parameters use regular Selenium variables that are local to the block, overriding variables of the same name, and that are restored when the block exits.
 * Command parameters are javascript expressions that are evaluated with Selenium variables in scope, which can therefore be referenced by their simple names, e.g.: <tt>i+1</tt>
 * Variables can be configured via external XML and/or JSON files.
@@ -186,14 +186,14 @@ SelBlocks is incompatible with flowControl (and derivatives), because they unila
 You cannot use Set Start Point in the IDE to begin execution in the middle of an if, for, try, or function.
 This is because each kind of block maintains context during its execution
 that is initialized when that block is entered from the top.
-Jumping into the middle of a block would have undefined behavior.
+Jumping into the middle of a block has undefined behavior.
 
 Local file access is not supported by Selenium Server.
 This might be problematic for commands like loadJsonVars, loadXmlVars, forJson and forXml.
-Although files can be accessed via http.
+However, files can be accessed via http.
 
 Never use the ...<tt>AndWait</tt> counterpart of a SelBlocks command, e.g., <tt>ifAndWait</tt>.
-''Selenium automatically registers with every defined command, even though it does not always make sense.''
+(''Selenium automatically registers one with every defined command, even though it does not always make sense.'')
 If you use one of these, (usually via inadvertent auto-completion),
 SelBlocks will throw an error when you try to start the script in the IDE.
 This is a bit more difficult to diagnose in Selenium Server,

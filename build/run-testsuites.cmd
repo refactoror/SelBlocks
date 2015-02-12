@@ -27,16 +27,11 @@ goto :eof
 
 :s_run_suites
 :: <browser-name>
-  type ..\%UE%.js > lib\user-extensions.js
-
-  CALL :s_run_suite "%~1" ..\sel-blocksTests\smokeTests\_SelBlocks-smoketests.html
-  CALL :s_run_suite "%~1" ..\sel-blocksTests\smokeTests\negativeTests\_SelBlocks-smoketests-negative.html
-
   :: combine the required extensions into lib\user-extensions.js
   del lib\user-extensions.js
   > js.heredoc (
-    @echo %SELBENCH_HOME%\%UE%.js
     @echo ..\%UE%.js
+    @echo %SELBENCH_HOME%\%UE%.js
   )
   FOR /F %%J IN (js.heredoc) do (
     type %%J >> lib\user-extensions.js
