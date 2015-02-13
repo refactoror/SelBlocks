@@ -1,0 +1,145 @@
+
+
+    [info] Playing test case smoketest
+    [info] Executing: |verifyEval | "dilbert".isOneOf("dilbert","dogbert","mordac") | true |
+    [info] script is: "dilbert".isOneOf("dilbert","dogbert","mordac")
+    [info] Executing: |verifyEval | "bob".isOneOf("dilbert","dogbert","mordac") | false |
+    [info] script is: "bob".isOneOf("dilbert","dogbert","mordac")
+    [info] Executing: |verifyEval | "red".mapTo("primary", ["red","green","blue"]) | primary |
+    [info] script is: "red".mapTo("primary", ["red","green","blue"])
+    [info] Executing: |verifyEval | "orange".mapTo("primary", ["red","green","blue"]) | o,r,a,n,g,e |
+    [info] script is: "orange".mapTo("primary", ["red","green","blue"])
+    [info] Executing: |verifyEval | "red".translate("e", "E") | rEd |
+    [info] script is: "red".translate("e", "E")
+    [info] Executing: |verifyEval | "red".translate(["red", "green", "blue"], ["blue", "red", "green"]) | blue |
+    [info] script is: "red".translate(["red", "green", "blue"], ["blue", "red", "green"])
+    [info] Executing: |skipNext | | |
+    [info] [selblocks] branch => @14: [goto|HERE]
+    [info] Executing: |goto | HERE | |
+    [info] [selblocks] branch => @16: [label|HERE]
+    [info] Executing: |label | HERE | |
+    [info] Executing: |gotoIf | true | THERE |
+    [info] [selblocks] branch => @19: [label|THERE]
+    [info] Executing: |label | THERE | |
+    [info] Executing: |if | false | |
+    [info] [selblocks] branch => @23: [elseIf|true]
+    [info] Executing: |elseIf | true | |
+    [info] Executing: |getEval | "this command executes because of elseIf true" | |
+    [info] script is: "this command executes because of elseIf true"
+    [info] Executing: |elseIf | true | |
+    [info] [selblocks] branch => @27: [endIf]
+    [info] Executing: |endIf | | |
+    [info] Executing: |try | | |
+    [info] Executing: |getEval | "trying" | |
+    [info] script is: "trying"
+    [info] Executing: |throw | "test error" | |
+    [info] [selblocks] @31, error has been caught :: /test error/
+    [info] [selblocks] branch => @33: [catch|/test error/]
+    [info] Executing: |catch | /test error/ | |
+    [info] Executing: |getEval | "CAUGHT '${_error.message}'" | |
+    [info] script is: "CAUGHT '${_error.message}'"
+    [info] Executing: |finally | | |
+    [info] Executing: |getEval | "this command executes no matter how above error processing turns out" | |
+    [info] script is: "this command executes no matter how above error processing turns out"
+    [info] Executing: |endTry | | |
+    [info] Executing: |store | 3 | w |
+    [info] Executing: |while | w > 0 | |
+    [info] Executing: |getEval | "iter=${w}" | |
+    [info] script is: "iter=3"
+    [info] Executing: |storeEval | ${w}-1 | w |
+    [info] script is: 3-1
+    [info] Executing: |endWhile | | |
+    [info] [selblocks] branch => @40: [while|w > 0]
+    [info] Executing: |while | w > 0 | |
+    [info] Executing: |getEval | "iter=${w}" | |
+    [info] script is: "iter=2"
+    [info] Executing: |storeEval | ${w}-1 | w |
+    [info] script is: 2-1
+    [info] Executing: |endWhile | | |
+    [info] [selblocks] branch => @40: [while|w > 0]
+    [info] Executing: |while | w > 0 | |
+    [info] Executing: |getEval | "iter=${w}" | |
+    [info] script is: "iter=1"
+    [info] Executing: |storeEval | ${w}-1 | w |
+    [info] script is: 1-1
+    [info] Executing: |endWhile | | |
+    [info] [selblocks] branch => @40: [while|w > 0]
+    [info] Executing: |while | w > 0 | |
+    [info] [selblocks] branch => @43: [endWhile]
+    [info] Executing: |endWhile | | |
+    [info] Executing: |for | f=3; f <= 9; f++ | |
+    [info] Executing: |continue | f == 6 | |
+    [info] Executing: |if | f > 6 | |
+    [info] [selblocks] branch => @53: [endIf]
+    [info] Executing: |endIf | | |
+    [info] Executing: |getEval | "iter=${f}" | |
+    [info] script is: "iter=3"
+    [info] Executing: |endFor | | |
+    [info] [selblocks] branch => @45: [for|f=3; f <= 9; f++]
+    [info] Executing: |for | f=3; f <= 9; f++ | |
+    [info] Executing: |continue | f == 6 | |
+    [info] Executing: |if | f > 6 | |
+    [info] [selblocks] branch => @53: [endIf]
+    [info] Executing: |endIf | | |
+    [info] Executing: |getEval | "iter=${f}" | |
+    [info] script is: "iter=4"
+    [info] Executing: |endFor | | |
+    [info] [selblocks] branch => @45: [for|f=3; f <= 9; f++]
+    [info] Executing: |for | f=3; f <= 9; f++ | |
+    [info] Executing: |continue | f == 6 | |
+    [info] Executing: |if | f > 6 | |
+    [info] [selblocks] branch => @53: [endIf]
+    [info] Executing: |endIf | | |
+    [info] Executing: |getEval | "iter=${f}" | |
+    [info] script is: "iter=5"
+    [info] Executing: |endFor | | |
+    [info] [selblocks] branch => @45: [for|f=3; f <= 9; f++]
+    [info] Executing: |for | f=3; f <= 9; f++ | |
+    [info] Executing: |continue | f == 6 | |
+    [info] [selblocks] branch => @45: [for|f=3; f <= 9; f++]
+    [info] Executing: |for | f=3; f <= 9; f++ | |
+    [info] Executing: |continue | f == 6 | |
+    [info] Executing: |if | f > 6 | |
+    [info] Executing: |if | f == 7 | |
+    [info] Executing: |continue | | |
+    [info] [selblocks] branch => @45: [for|f=3; f <= 9; f++]
+    [info] Executing: |for | f=3; f <= 9; f++ | |
+    [info] Executing: |continue | f == 6 | |
+    [info] Executing: |if | f > 6 | |
+    [info] Executing: |if | f == 7 | |
+    [info] [selblocks] branch => @50: [else]
+    [info] Executing: |else | | |
+    [info] Executing: |break | | |
+    [info] [selblocks] branch => @55: [endFor]
+    [info] Executing: |endFor | | |
+    [info] Executing: |function | doSomething | sname |
+    [info] [selblocks] branch => @59: [endFunction|doSomething]
+    [info] Executing: |endFunction | doSomething | |
+    [info] Executing: |foreach | sname | "asok", "alice" |
+    [info] Executing: |call | doSomething | sname = sname, srole = "super=user" |
+    [info] [selblocks] branch => @57: [function|doSomething|sname]
+    [info] Executing: |function | doSomething | sname |
+    [info] Executing: |getEval | "sname=${sname},srole=${srole}" | |
+    [info] script is: "sname=asok,srole=super=user"
+    [info] Executing: |endFunction | doSomething | |
+    [info] [selblocks] branch => @61: [call|doSomething|sname = sname, srole = "super=user"]
+    [info] Executing: |call | doSomething | sname = sname, srole = "super=user" |
+    [info] Executing: |endForeach | | |
+    [info] [selblocks] branch => @60: [foreach|sname|"asok", "alice"]
+    [info] Executing: |foreach | sname | "asok", "alice" |
+    [info] Executing: |call | doSomething | sname = sname, srole = "super=user" |
+    [info] [selblocks] branch => @57: [function|doSomething|sname]
+    [info] Executing: |function | doSomething | sname |
+    [info] Executing: |getEval | "sname=${sname},srole=${srole}" | |
+    [info] script is: "sname=alice,srole=super=user"
+    [info] Executing: |endFunction | doSomething | |
+    [info] [selblocks] branch => @61: [call|doSomething|sname = sname, srole = "super=user"]
+    [info] Executing: |call | doSomething | sname = sname, srole = "super=user" |
+    [info] Executing: |endForeach | | |
+    [info] [selblocks] branch => @60: [foreach|sname|"asok", "alice"]
+    [info] Executing: |foreach | sname | "asok", "alice" |
+    [info] [selblocks] branch => @62: [endForeach]
+    [info] Executing: |endForeach | | |
+    [info] Test case passed
+    [info] Test suite completed: 1 played, all passed! 
+
