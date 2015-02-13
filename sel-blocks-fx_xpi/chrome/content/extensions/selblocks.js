@@ -1,5 +1,5 @@
 /*
- * SelBlocks 2.0.2
+ * SelBlocks 2.1
  *
  * Provides commands for Javascript-like looping and callable functions,
  *   with scoped variables, and JSON/XML driven parameterization.
@@ -237,7 +237,7 @@ function $X(xpath, contextNode, resultType) {
   // preceding the destination would falsely get marked as successfully executed
   var branchIdx = null;
   // if testCase.nextCommand() ever changes, this will need to be revisited
-  // (current as of: selenium-ide-2.4.0)
+  // (current as of: selenium-ide-2.8.0)
   function nextCommand() {
     if (!this.started) {
       this.started = true;
@@ -253,16 +253,31 @@ function $X(xpath, contextNode, resultType) {
         this.debugIndex++;
       }
     }
-    // skip over comments
-    while (this.debugIndex < testCase.commands.length) {
+
+    // skip over comments, if any
+    while (this.debugIndex < testCase.commands.length)
+    {
+      if ($$.seleniumEnv == "server") {
+        // increment nextCommandRowIndex, which is the IDE equivalent of debugIndex
+        // (see pseudo properties in user-extensions-base.js)
+        // TBD: find a server equivalent of the IDE commands array
+        this._advanceToNextRow();
+        if (this.currentRow == null) {
+            return null; // no more commands
+        }
+      }
+
       var command = testCase.commands[this.debugIndex];
       if (command.type === "command") {
+        this.runTimeStamp = Date.now();
         return command;
       }
       this.debugIndex++;
     }
     return null;
   }
+
+  // Set index of the next command to execute via nextCommand().
   function setNextCommand(cmdIdx) {
     assert(cmdIdx >= 0 && cmdIdx < testCase.commands.length,
       " Cannot branch to non-existent command @" + (cmdIdx+1));
@@ -277,6 +292,10 @@ function $X(xpath, contextNode, resultType) {
   $$.fn.interceptAfter(Selenium.prototype, "reset", function()
   {
     $$.LOG.trace("In tail intercept :: Selenium.reset()");
+    $$.seleniumTestRunner = ($$.seleniumEnv == "server")
+      ? htmlTestRunner             // Selenium Server
+      : editor.selDebugger.runner; // Selenium IDE
+
     try {
       compileSelBlocks();
     }
@@ -313,7 +332,7 @@ function $X(xpath, contextNode, resultType) {
         var curCmd = testCase.commands[i].command;
         var aw = curCmd.indexOf("AndWait");
         if (aw !== -1) {
-          // just ignore the suffix for now, this may or may not be a SelBlocks commands
+          // just ignore the suffix for now, this may or may not be a SelBlocks command
           curCmd = curCmd.substring(0, aw);
         }
         var cmdTarget = testCase.commands[i].target;
@@ -598,7 +617,7 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doSkipNext = function(spec)
   {
     assertRunning();
-    var n = parseInt(evalWithVars(spec), 10);
+    var n = parseInt($$.evalWithVars(spec), 10);
     if (isNaN(n)) {
       if (spec.trim() === "") { n = 1; }
       else { notifyFatalHere(" Requires a numeric value"); }
@@ -625,7 +644,7 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doGotoIf = function(condExpr, label)
   {
     assertRunning();
-    if (evalWithVars(condExpr)) {
+    if ($$.evalWithVars(condExpr)) {
       this.doGoto(label);
     }
   };
@@ -670,7 +689,7 @@ function $X(xpath, contextNode, resultType) {
 
   function cascadeElseIf(ifState, condExpr) {
     assertCompilable("", condExpr, ";", "Invalid condition");
-    if (!evalWithVars(condExpr)) {
+    if (!$$.evalWithVars(condExpr)) {
       // jump to next elseIf or else or endif
       var ifDef = blkDefFor(ifState);
       if (ifState.elseIfItr.hasNext()) { setNextCommand(ifState.elseIfItr.next()); }
@@ -687,7 +706,7 @@ function $X(xpath, contextNode, resultType) {
 
   // throw the given Error
   Selenium.prototype.doThrow = function(err) {
-    err = evalWithVars(err);
+    err = $$.evalWithVars(err);
     if (!(err instanceof Error)) {
       err = new SelblocksError(idxHere(), err);
     }
@@ -720,8 +739,8 @@ function $X(xpath, contextNode, resultType) {
 
     if ($$.tcf.nestingLevel === 0) {
       // enable special command handling
-      $$.fn.interceptPush(editor.selDebugger.runner.currentTest, "resume",
-          $$.handleAsTryBlock, { manageError: handleCommandError });
+      $$.fn.interceptPush($$.seleniumTestRunner.currentTest, "resume",
+        $$.handleAsTryBlock, { manageError: handleCommandError });
     }
     $$.LOG.debug("++ try nesting: " + $$.tcf.nestingLevel);
     // continue into try-block
@@ -860,7 +879,7 @@ function $X(xpath, contextNode, resultType) {
     if (!errDcl) {
       return true; // no error specified means catch all errors
     }
-    var errExpr = evalWithVars(errDcl);
+    var errExpr = $$.evalWithVars(errDcl);
     var errMsg = e.message;
     if (errExpr instanceof RegExp) {
       return (errMsg.match(errExpr));
@@ -1002,7 +1021,7 @@ function $X(xpath, contextNode, resultType) {
           return null;
       }
       ,function() { } // initialize
-      ,function() { return (evalWithVars(condExpr)); } // continue?
+      ,function() { return ($$.evalWithVars(condExpr)); } // continue?
       ,function() { } // iterate
     );
   };
@@ -1027,9 +1046,9 @@ function $X(xpath, contextNode, resultType) {
           validateNames(localVarNames, "variable");
           return localVarNames;
       }
-      ,function(loop) { evalWithVars(loop.initStmt); }          // initialize
-      ,function(loop) { return (evalWithVars(loop.condExpr)); } // continue?
-      ,function(loop) { evalWithVars(loop.iterStmt); }          // iterate
+      ,function(loop) { $$.evalWithVars(loop.initStmt); }          // initialize
+      ,function(loop) { return ($$.evalWithVars(loop.condExpr)); } // continue?
+      ,function(loop) { $$.evalWithVars(loop.iterStmt); }          // iterate
     );
   };
   Selenium.prototype.doEndFor = function() {
@@ -1057,7 +1076,7 @@ function $X(xpath, contextNode, resultType) {
           assert(varName, " 'foreach' requires a variable name.");
           assert(valueExpr, " 'foreach' requires comma-separated values.");
           assertCompilable("[ ", valueExpr, " ];", "Invalid value list");
-          loop.values = evalWithVars("[" + valueExpr + "]");
+          loop.values = $$.evalWithVars("[" + valueExpr + "]");
           if (loop.values.length === 1 && loop.values[0] instanceof Array) {
             loop.values = loop.values[0]; // if sole element is an array, than use it
           }
@@ -1080,19 +1099,19 @@ function $X(xpath, contextNode, resultType) {
   Selenium.prototype.doLoadJsonVars = function(filepath, selector)
   {
     assert(filepath, " Requires a JSON file path or URL.");
-    var jsonReader = new JSONReader(filepath);
+    var jsonReader = new $$.fn.JSONReader(filepath);
     loadVars(jsonReader, "JSON object", filepath, selector);
   };
   Selenium.prototype.doLoadXmlVars = function(filepath, selector)
   {
     assert(filepath, " Requires an XML file path or URL.");
-    var xmlReader = new XmlReader(filepath);
+    var xmlReader = new $$.fn.XmlReader(filepath);
     loadVars(xmlReader, "XML element", filepath, selector);
   };
   Selenium.prototype.doLoadVars = function(filepath, selector)
   {
-    $$.LOG.warn("The loadVars command has been deprecated and will be removed in future releases."
-      + " Please use doLoadXmlVars instead.");
+    $$.LOG.warn("The loadVars command has been deprecated as of SelBlocks 2.0.2 and will be removed in future releases."
+      + " Please use loadXmlVars instead.");
     Selenium.prototype.doLoadXmlVars(filepath, selector);
   };
 
@@ -1108,19 +1127,19 @@ function $X(xpath, contextNode, resultType) {
         + ' (A specific ' + desc + ' can be selected by specifying: name="value".)');
     }
 
-    var result = evalWithVars(selector);
+    var result = $$.evalWithVars(selector);
     if (typeof result !== "boolean") {
       notifyFatalHere(", " + selector + " is not a boolean expression");
     }
 
     // read until specified set found
     var isEof = reader.EOF();
-    while (!isEof && evalWithVars(selector) !== true) {
+    while (!isEof && $$.evalWithVars(selector) !== true) {
       reader.next(); // read next varset and set values on storedVars
       isEof = reader.EOF();
     } 
 
-    if (!evalWithVars(selector)) {
+    if (!$$.evalWithVars(selector)) {
       notifyFatalHere(desc + " not found for selector expression: " + selector
         + "; in input file " + filepath);
     }
@@ -1133,7 +1152,7 @@ function $X(xpath, contextNode, resultType) {
     enterLoop(
       function(loop) {  // validate
           assert(jsonpath, " Requires a JSON file path or URL.");
-          loop.jsonReader = new JSONReader();
+          loop.jsonReader = new $$.fn.JSONReader();
           var localVarNames = loop.jsonReader.load(jsonpath);
           return localVarNames;
       }
@@ -1155,7 +1174,7 @@ function $X(xpath, contextNode, resultType) {
     enterLoop(
       function(loop) {  // validate
           assert(xmlpath, " 'forXml' requires an XML file path or URL.");
-          loop.xmlReader = new XmlReader();
+          loop.xmlReader = new $$.fn.XmlReader();
           var localVarNames = loop.xmlReader.load(xmlpath);
           return localVarNames;
       }
@@ -1250,7 +1269,7 @@ function $X(xpath, contextNode, resultType) {
     if (transitionBubbling(Stack.isLoopBlock)) {
       return;
     }
-    if (condExpr && !evalWithVars(condExpr)) {
+    if (condExpr && !$$.evalWithVars(condExpr)) {
       return;
     }
     var loopState = activeBlockStack().unwindTo(Stack.isLoopBlock);
@@ -1302,7 +1321,7 @@ function $X(xpath, contextNode, resultType) {
   };
   Selenium.prototype.doScript = function(scrName)
   {
-    $$.LOG.warn("The script command has been deprecated and will be removed in future releases."
+    $$.LOG.warn("The script command has been deprecated as of SelBlocks 2.0 and will be removed in future releases."
       + " Please use function instead.");
     Selenium.prototype.doFunction(scrName);
   };
@@ -1328,7 +1347,7 @@ function $X(xpath, contextNode, resultType) {
       // no active call, we're just skipping around a function block
     }
     else {
-      if (returnVal) { storedVars._result = evalWithVars(returnVal); }
+      if (returnVal) { storedVars._result = $$.evalWithVars(returnVal); }
       activeCallFrame.isReturning = true;
       // jump back to call command
       setNextCommand(activeCallFrame.returnIdx);
@@ -1342,24 +1361,11 @@ function $X(xpath, contextNode, resultType) {
       return;
     }
     // intercept command processing and simply stop test execution instead of executing the next command
-    $$.fn.interceptOnce(editor.selDebugger.runner.currentTest, "resume", $$.handleAsExitTest);
+    $$.fn.interceptOnce($$.seleniumTestRunner.currentTest, "resume", $$.handleAsExitTest);
   };
 
 
   // ========= storedVars management =========
-
-  function evalWithVars(expr) {
-    var result = null;
-    try {
-      // EXTENSION REVIEWERS: Use of eval is consistent with the Selenium extension itself.
-      // Scripted expressions run in the Selenium window, isolated from any web content.
-      result = eval("with (storedVars) {" + expr + "}");
-    }
-    catch (e) {
-      notifyFatalErr(" While evaluating Javascript expression: " + expr, e);
-    }
-    return result;
-  }
 
   function parseArgs(argSpec) { // comma-sep -> new prop-set
     var args = {};
@@ -1368,7 +1374,7 @@ function $X(xpath, contextNode, resultType) {
     for (i = 0; i < parms.length; i++) {
       var keyValue = iexpr.splitList(parms[i], "=");
       validateName(keyValue[0], "parameter");
-      args[keyValue[0]] = evalWithVars(keyValue[1]);
+      args[keyValue[0]] = $$.evalWithVars(keyValue[1]);
     }
     return args;
   }
@@ -1456,7 +1462,7 @@ function $X(xpath, contextNode, resultType) {
 
   function assertCompilable(left, stmt, right, explanation) {
     try {
-      evalWithVars("function selblocksTemp() { " + left + stmt + right + " }");
+      $$.evalWithVars("function selblocksTemp() { " + left + stmt + right + " }");
     }
     catch (e) {
       throw new SyntaxError(fmtCmdRef(idxHere()) + " " + explanation + " '" + stmt +  "': " + e.message);
@@ -1470,7 +1476,20 @@ function $X(xpath, contextNode, resultType) {
     return ("@" + (idx+1) + ": [" + $$.fmtCmd(testCase.commands[idx]) + "]");
   }
 
-  //================= Utils ===============
+  //================= utils ===============
+
+  $$.evalWithVars = function(expr) {
+    var result = null;
+    try {
+      // EXTENSION REVIEWERS: Use of eval is consistent with the Selenium extension itself.
+      // Scripted expressions run in the Selenium window, isolated from any web content.
+      result = eval("with (storedVars) {" + expr + "}");
+    }
+    catch (e) {
+      notifyFatalErr(" While evaluating Javascript expression: " + expr, e);
+    }
+    return result;
+  }
 
   // Elapsed time, optional duration provides expiration
   function IntervalTimer(msDuration) {
@@ -1487,266 +1506,6 @@ function $X(xpath, contextNode, resultType) {
       this.hasNext = function() { return (cur < ary.length); };
       this.next = function() { if (this.hasNext()) { return ary[cur++]; } };
     }(arrayObject);
-  };
-
-  // ==================== Data Files ====================
-  // Adapted from the datadriven plugin
-  // http://web.archive.org/web/20120928080130/http://wiki.openqa.org/display/SEL/datadriven
-
-  function XmlReader()
-  {
-    var varsets = null;
-    var varNames = null;
-    var curVars = null;
-    var varsetIdx = 0;
-
-    // load XML file and return the list of var names found in the first <VARS> element
-    this.load = function(filepath)
-    {
-      var fileReader = new FileReader();
-      var fileUrl = urlFor(filepath);
-      var xmlHttpReq = fileReader.getDocumentSynchronous(fileUrl);
-      $$.LOG.info("Reading from: " + fileUrl);
-
-      var fileObj = xmlHttpReq.responseXML; // XML DOM
-      varsets = fileObj.getElementsByTagName("vars"); // HTMLCollection
-      if (varsets === null || varsets.length === 0) {
-        throw new Error("A <vars> element could not be loaded, or <testdata> was empty.");
-      }
-
-      curVars = 0;
-      varNames = attrNamesFor(varsets[0]);
-      return varNames;
-    };
-
-    this.EOF = function() {
-      return (curVars === null || curVars >= varsets.length);
-    };
-
-    this.next = function()
-    {
-      if (this.EOF()) {
-        $$.LOG.error("No more <vars> elements to read after element #" + varsetIdx);
-        return;
-      }
-      varsetIdx++;
-      $$.LOG.debug(varsetIdx + ") " + serializeXml(varsets[curVars]));  // log each name & value
-
-      var expected = countAttrs(varsets[0]);
-      var found = countAttrs(varsets[curVars]);
-      if (found !== expected) {
-        throw new Error("Inconsistent <testdata> at <vars> element #" + varsetIdx
-          + "; expected " + expected + " attributes, but found " + found + "."
-          + " Each <vars> element must have the same set of attributes."
-        );
-      }
-      setupStoredVars(varsets[curVars]);
-      curVars++;
-    };
-
-    //- retrieve the names of each attribute on the given XML node
-    function attrNamesFor(node) {
-      var attrNames = [];
-      var varAttrs = node.attributes; // NamedNodeMap
-      var v;
-      for (v = 0; v < varAttrs.length; v++) {
-        attrNames.push(varAttrs[v].nodeName);
-      }
-      return attrNames;
-    }
-
-    //- determine how many attributes are present on the given node
-    function countAttrs(node) {
-      return node.attributes.length;
-    }
-
-    //- set selenium variables from given XML attributes
-    function setupStoredVars(node) {
-      var varAttrs = node.attributes; // NamedNodeMap
-      var v;
-      for (v = 0; v < varAttrs.length; v++) {
-        var attr = varAttrs[v];
-        if (null === varsets[0].getAttribute(attr.nodeName)) {
-          throw new Error("Inconsistent <testdata> at <vars> element #" + varsetIdx
-            + "; found attribute " + attr.nodeName + ", which does not appear in the first <vars> element."
-            + " Each <vars> element must have the same set of attributes."
-          );
-        }
-        storedVars[attr.nodeName] = attr.nodeValue;
-      }
-    }
-
-    //- format the given XML node for display
-    function serializeXml(node) {
-      if (XMLSerializer !== "undefined") {
-        return (new XMLSerializer()).serializeToString(node) ;
-      }
-      if (node.xml) { return node.xml; }
-      throw "XMLSerializer is not supported or can't serialize " + node;
-    }
-  }
-
-
-  function JSONReader()
-  {
-    var varsets = null;
-    var varNames = null;
-    var curVars = null;
-    var varsetIdx = 0;
-
-    // load JSON file and return the list of var names found in the first object
-    this.load = function(filepath)
-    {
-      var fileReader = new FileReader();
-      var fileUrl = urlFor(filepath);
-      var xmlHttpReq = fileReader.getDocumentSynchronous(fileUrl);
-      $$.LOG.info("Reading from: " + fileUrl);
-
-      var fileObj = xmlHttpReq.responseText;
-      varsets = eval(fileObj);
-      if (varsets === null || varsets.length === 0) {
-        throw new Error("A JSON object could not be loaded, or the file was empty.");
-      }
-
-      curVars = 0;
-      varNames = attrNamesFor(varsets[0]);
-      return varNames;
-    };
-
-    this.EOF = function() {
-      return (curVars === null || curVars >= varsets.length);
-    };
-
-    this.next = function()
-    {
-      if (this.EOF()) {
-        $$.LOG.error("No more JSON objects to read after object #" + varsetIdx);
-        return;
-      }
-      varsetIdx++;
-      $$.LOG.debug(varsetIdx + ") " + serializeJson(varsets[curVars]));  // log each name & value
-
-      var expected = countAttrs(varsets[0]);
-      var found = countAttrs(varsets[curVars]);
-      if (found !== expected) {
-        throw new Error("Inconsistent JSON object #" + varsetIdx
-          + "; expected " + expected + " attributes, but found " + found + "."
-          + " Each JSON object must have the same set of attributes."
-        );
-      }
-      setupStoredVars(varsets[curVars]);
-      curVars++;
-    };
-
-    //- retrieve the names of each attribute on the given object
-    function attrNamesFor(obj) {
-      var attrNames = [];
-      var attrName;
-      for (attrName in obj) {
-        attrNames.push(attrName);
-      }
-      return attrNames;
-    }
-
-    //- determine how many attributes are present on the given obj
-    function countAttrs(obj) {
-      var n = 0;
-      var attrName;
-      for (attrName in obj) {
-        n++;
-      }
-      return n;
-    }
-
-    //- set selenium variables from given JSON attributes
-    function setupStoredVars(obj) {
-      var attrName;
-      for (attrName in obj) {
-        if (null === varsets[0][attrName]) {
-          throw new Error("Inconsistent JSON at object #" + varsetIdx
-            + "; found attribute " + attrName + ", which does not appear in the first JSON object."
-            + " Each JSON object must have the same set of attributes."
-          );
-        }
-        storedVars[attrName] = obj[attrName];
-      }
-    }
-
-    //- format the given JSON object for display
-    function serializeJson(obj) {
-      var json = uneval(obj);
-      return json.substring(1, json.length-1);
-    }
-  }
-
-  function urlFor(filepath) {
-    var URL_PFX = "file://";
-    var url = filepath;
-    if (filepath.substring(0, URL_PFX.length).toLowerCase() !== URL_PFX) {
-      testCasePath = testCase.file.path.replace("\\", "/", "g");
-      var i = testCasePath.lastIndexOf("/");
-      url = URL_PFX + testCasePath.substr(0, i) + "/" + filepath;
-    }
-    return url;
-  }
-
-
-  // ==================== File Reader ====================
-  // Adapted from the include4ide plugin
-
-  function FileReader() {}
-
-  FileReader.prototype.prepareUrl = function(url) {
-    var absUrl;
-    // htmlSuite mode of SRC? TODO is there a better way to decide whether in SRC mode?
-    if (window.location.href.indexOf("selenium-server") >= 0) {
-      $$.LOG.debug("FileReader() is running in SRC mode");
-      absUrl = absolutify(url, htmlTestRunner.controlPanel.getTestSuiteName());
-    }
-    else {
-      absUrl = absolutify(url, selenium.browserbot.baseUrl);
-    }
-    $$.LOG.debug("FileReader() using URL to get file '" + absUrl + "'");
-    return absUrl;
-  };
-
-  FileReader.prototype.getDocumentSynchronous = function(url) {
-    var absUrl = this.prepareUrl(url);
-    var requester = this.newXMLHttpRequest();
-    if (!requester) {
-      throw new Error("XMLHttp requester object not initialized");
-    }
-    requester.open("GET", absUrl, false); // synchronous (we don't want selenium to go ahead)
-    try {
-      requester.send(null);
-    }
-    catch(e) {
-      throw new Error("Error while fetching URL '" + absUrl + "':: " + e);
-    }
-    if (requester.status !== 200 && requester.status !== 0) {
-      throw new Error("Error while fetching " + absUrl
-        + " server response has status = " + requester.status + ", " + requester.statusText );
-    }
-    return requester;
-  };
-
-  FileReader.prototype.newXMLHttpRequest = function() {
-    var requester = 0;
-    try {
-      // for IE/ActiveX
-      if (window.ActiveXObject) {
-        try {       requester = new ActiveXObject("Msxml2.XMLHTTP"); }
-        catch(ee) { requester = new ActiveXObject("Microsoft.XMLHTTP"); }
-      }
-      // Native XMLHttp
-      else if (window.XMLHttpRequest) {
-        requester = new XMLHttpRequest();
-      }
-    }
-    catch(e) {
-      throw new Error("Your browser has to support XMLHttpRequest in order to read data files\n" + e);
-    }
-    return requester;
   };
 
 }(selblocks));

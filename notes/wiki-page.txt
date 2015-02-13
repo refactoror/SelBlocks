@@ -1,4 +1,4 @@
-=SelBlocks 2.0=
+=SelBlocks 2.1=
 
 Installer: https://addons.mozilla.org/en-US/firefox/addon/selenium-ide-sel-blocks/versions/
 
@@ -8,7 +8,7 @@ Provides Selenium commands for javascript-like conditionals, looping, callable f
 
 =Features=
 
-* Adds the following control structures to Selenese: <tt>if</tt>/<tt>elseIf</tt>/<tt>else</tt>, <tt>try</tt>/<tt>catch</tt>/<tt>finally</tt>/<tt>throw</tt>, <tt>for</tt>/<tt>foreach</tt>/<tt>while</tt>, <tt>continue</tt>/<tt>break</tt>, <tt>call</tt>/<tt>function</tt>/<tt>return</tt>, <tt>loadXmlVars</tt>/<tt>loadJsonVars</tt>, <tt>forXml</tt>/<tt>forJson</tt>, <tt>exitTest</tt>
+* Provides the following control structures: <tt>if</tt>/<tt>elseIf</tt>/<tt>else</tt>, <tt>try</tt>/<tt>catch</tt>/<tt>finally</tt>/<tt>throw</tt>, <tt>for</tt>/<tt>foreach</tt>/<tt>while</tt>, <tt>continue</tt>/<tt>break</tt>, <tt>call</tt>/<tt>function</tt>/<tt>return</tt>, <tt>loadXmlVars</tt>/<tt>loadJsonVars</tt>, <tt>forXml</tt>/<tt>forJson</tt>, <tt>exitTest</tt>
 * Function and loop parameters use regular Selenium variables that are local to the block, overriding variables of the same name, and that are restored when the block exits.
 * Command parameters are javascript expressions that are evaluated with Selenium variables in scope, which can therefore be referenced by their simple names, e.g.: <tt>i+1</tt>
 * Variables can be configured via external XML and/or JSON files.
@@ -17,7 +17,7 @@ Provides Selenium commands for javascript-like conditionals, looping, callable f
 
 =Examples of Use=
 
-Note that Selenium performs variable substitution before each command executes. When Selenium variables are used in SelBlock parameters, which are JavaScript expressions, they are evaluated as literals. So for example, you would write: <tt>$(userid}</tt>. Or more simply: <tt>userid</tt>.
+Note that Selenium performs variable substitution before each command executes. When Selenium variables are used in SelBlocks parameters, which are JavaScript expressions, they are evaluated as literals. So for example, you would write: <tt>$(userid}</tt>. Or more simply: <tt>userid</tt>.
 
  foreach|userid|"dilbert","dogbert"
    getEval|LOG.info("${userid}");
@@ -128,10 +128,11 @@ These variables can of course be referenced by SelBlocks commands as <tt>_i</tt>
 
 =Javascript Extensions=
 
-These can be used in SelBlock expressions:
+These can be used in SelBlocks expressions:
 
  String.isOneOf : Example: if|employee.isOneOf("dilbert","wally","ratbert")
  String.mapTo : Example: if|employee.mapTo("peon", ["dilbert","wally"]) == "peon"
+ String.translate : Example: if|employee.translate("e", "3"]) == "p3on"
 
  $e(locator) : Example: $e("link=SelBlocks review")
  $x(xpath) : Example: $x("//input[@id=(//label[.='User ID']/@for)]")
@@ -142,19 +143,76 @@ NONE
 
 ''Note that the [https://addons.mozilla.org/en-US/firefox/addon/stored-variables-viewer-seleni/ Stored Variables Viewer] addon will display the values of SelBlocks parameters, because they are implemented as regular Selenium variables. The only thing special about SelBlocks parameters is that they are activated and deactivated as execution flows into and out of blocks, eg, <tt>for</tt>, <tt>endFor</tt>, <tt>function</tt>, <tt>endFunction</tt>, etc. So this can provide a convenient way to monitor the progress of an executing test script.''
 
+=Selenium Server=
+
+Selenese scripts that use SelBlocks commands can also be run in Selenium Server
+via the <tt>-user-extensions</tt> and <tt>-htmlSuite</tt> options.
+Get the current <tt>user-extensions.js</tt> here:
+https://github.com/refactoror/SelBlocks/user-extensions.js
+
+For more information on running Selenium Server,
+see: http://www.seleniumhq.org/docs/08_user_extensions.jsp#using-user-extensions-with-selenium-ide
+
+Note that prior to version 2.1 SelBlocks has been a Firefox extension only,
+whereas Selenium Server can target a wide range of browsers.
+SelBlocks currently passes its full regression test suite when run against:
+* <tt>firefox</tt> (31.4)
+* <tt>googlechrome</tt> (40.0)
+* <tt>opera</tt> (27.0)
+Community help is welcome and encouraged in expanding this list.
+There are currently known issues with:
+* <tt>iexplorer</tt> (11.0): <tt>Object.defineProperties</tt> fails - test-startup hangs
+* <tt>safari</tt> (5.1.7): <tt>htmlTestRunner</tt> is not defined - test-startup hangs
+
+Running scripts in Selenium Server introduces the possibilty of browser compatibility issues,
+especially when running IDE-produced scripts against non-Firefox browsers.
+Potential pain points include differences in
+JavaScript error messaging, (e.g., <tt>expectError</tt>),
+and XPath capabilities, (<tt>$x()</tt> and <tt>$X()</tt>).
+
+When reporting an issue, be sure to provide very specific browser/OS info,
+as well as the faling test case, test html, and error log.
+Better yet, if you can fix the problem, submit a github pull request
+-- which is how server support came about in the first place.
+A big thanks to Matthew Kastor for this contribution!
+
+For an overview of how the SelBlocks user extension works, see:
+https://github.com/refactoror/SelBlocks/blob/master/notes/SeleniumServer-notes.txt
+
 =Limitations=
 
-SelBlock is incompatible with flowControl (and derivatives), because they unilaterally modify <tt>selenium.reset()</tt>. Note however that SelBlocks provides equivalent commands, and is generally a plug-compatible replacement.
+SelBlocks is incompatible with flowControl (and derivatives), because they unilaterally modify <tt>selenium.reset()</tt>. Note however that SelBlocks provides equivalent commands, and is generally a plug-compatible replacement.
 
-You cannot use Set Start Point to begin execution in the middle of an if, for, try, or function. This is because each kind of block maintains context during its execution which is initialized when that block is entered from the top. Jumping into the middle of a block would have undefined behavior.
+You cannot use Set Start Point in the IDE to begin execution in the middle of an if, for, try, or function.
+This is because each kind of block maintains context during its execution
+that is initialized when that block is entered from the top.
+Jumping into the middle of a block has undefined behavior.
+
+Local file access is not supported by Selenium Server.
+This might be problematic for commands like loadJsonVars, loadXmlVars, forJson and forXml.
+However, files can be accessed via http.
+
+Never use the ...<tt>AndWait</tt> counterpart of a SelBlocks command, e.g., <tt>ifAndWait</tt>.
+(''Selenium automatically registers one with every defined command, even though it does not always make sense.'')
+If you use one of these, (usually via inadvertent auto-completion),
+SelBlocks will throw an error when you try to start the script in the IDE.
+This is a bit more difficult to diagnose in Selenium Server,
+which cannot currently detect the situation,
+and therefore simply hangs without an error when such a command executes.
 
 =Philosophical Note=
 
-I tend to agree, in principle, with Dan Fabulich's view on keeping HTML Selenese simple. But in practice I am able to maintain MUCH simpler scripts by using some if/else and looping. Note that there is no language translation for SelBlock commands, so they're commented-out in exported test scripts. Although hand-translation in the target language ought to be pretty straightforward. I would just say, use these constructs judiciously.
+I tend to agree, in principle, with Dan Fabulich's view on keeping HTML Selenese simple.
+But in practice you're able to maintain MUCH simpler scripts by using some if/else and looping.
+Note that there is no language translation for SelBlocks commands,
+so they're commented-out in exported test scripts.
+Although hand-translation in the target language ought to be pretty straightforward.
+I would just say, use these constructs judiciously.
 
 =Revision History=
 
-* 2014-12-18: v2.0.2
+* 2015-02-??: v2.1
+** Enhancement #10 Added support for Selenium Server. (A big thanks to Matthew Kastor for this contribution)
 ** Added ability to catch verify command faliures
 ** Fixed Issue #6 Try/catch not clearing error status
 ** Fixed Issue #11 Top-level try/finally leaves Selenium IDE in running mode

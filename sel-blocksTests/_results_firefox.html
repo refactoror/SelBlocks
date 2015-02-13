@@ -1,0 +1,5773 @@
+<html>
+<head><style type='text/css'>
+body, table {
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 12;
+}
+
+table {
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding-left: 0.3em;
+    padding-right: 0.3em;
+}
+
+a {
+    text-decoration: none;
+}
+
+.title {
+    font-style: italic;
+}
+
+.selected {
+    background-color: #ffffcc;
+}
+
+.status_done {
+    background-color: #eeffee;
+}
+
+.status_passed {
+    background-color: #ccffcc;
+}
+
+.status_failed {
+    background-color: #ffcccc;
+}
+
+.breakpoint {
+    background-color: #cccccc;
+    border: 1px solid black;
+}
+</style><title>Test suite results</title></head>
+<body>
+<h1>Test suite results </h1>
+
+<table>
+<tr>
+<td>result:</td>
+<td>passed</td>
+</tr>
+<tr>
+<td>totalTime:</td>
+<td>23</td>
+</tr>
+<tr>
+<td>numTestTotal:</td>
+<td>50</td>
+</tr>
+<tr>
+<td>numTestPasses:</td>
+<td>50</td>
+</tr>
+<tr>
+<td>numTestFailures:</td>
+<td>0</td>
+</tr>
+<tr>
+<td>numCommandPasses:</td>
+<td>54</td>
+</tr>
+<tr>
+<td>numCommandFailures:</td>
+<td>0</td>
+</tr>
+<tr>
+<td>numCommandErrors:</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Selenium Version:</td>
+<td>2.44</td>
+</tr>
+<tr>
+<td>Selenium Revision:</td>
+<td>.0</td>
+</tr>
+<tr>
+<td>
+<table id="suiteTable" class="selenium" border="1" cellpadding="1" cellspacing="1"><tbody>
+<tr class="title status_passed"><td><b>Test Suite</b></td></tr>
+<tr class="  status_passed"><td><a href="#testresult0">README</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult1">eval</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult2">label-issue2</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult3">branching01</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult4">branching02</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult5">if01</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult6">if02</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult7">if03</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult8">for</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult9">foreach</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult10">foreach-xpath</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult11">forjson</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult12">loadjsonvars</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult13">forxml</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult14">loadxmlvars</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult15">continue-break01</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult16">continue-break02</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult17">continue-break03</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult18">continue-break04</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult19">nested-loops</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult20">function01</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult21">function02</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult22">function03-recursive</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult23">function04-issue2</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult24">function05-scoping-issue5</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult25">exitTest01</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult26">exitTest02 - from within a loop</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult27">exitTest03 - from within a function</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult28">try01 - no-op try</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult29">try02 - try-finally, w-no error</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult30">try03 - try-catch, but no error</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult31">try04 - catch specific error</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult32">try05 - catch specific error, then finally</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult33">try06 - catch-throw, finally-throw</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult34">try07 - bubble up to catch ALL</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult35">try08 - bubble up to catch ALL via finally</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult36">try09 - bubble out of no-op try to catch specific error</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult37">try10 - bubble up to catch specific error</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult38">try11 - bubble up to catch specific error via finally</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult39">try12 - throw, catch, rethrow</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult40">try13 - bubble out of nested function calls</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult41">try14 - command bubbling, break wfinally</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult42">try15 - command bubbling, intra-try break</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult43">try16 - command bubbling, continue w-finally</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult44">try17 - command bubbling, intra-try continue</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult45">try18 - command bubbling, error replaced by return</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult46">try19 - command bubbling, error replaced by throw</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult47">try20 - command bubbling, return replaced by error</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult48">try21 - catch failed verify command</a></td></tr>
+<tr class="  status_passed"><td><a href="#testresult49">try22 - exitTest w-finally processing</a></td></tr>
+</tbody></table>
+
+
+</td>
+<td>&nbsp;</td>
+</tr>
+</table><table><tr>
+<td><a name="testresult0">README.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">README</td></tr>
+</thead><tbody>
+<!---- (the SelBench addon is required for this testsuite)-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>clearLog</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>open</td>
+	<td>http://refactoror.net/_SelBlocks-testpage.html</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult1">eval.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">eval</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<!----- isOneOf()-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"dilbert".isOneOf("dilbert","dogbert","mordac")</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"bob".isOneOf("dilbert","dogbert","mordac")</td>
+	<td></td>
+</tr>
+<!----- mapTo()-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"red".mapTo("primary", ["red","green","blue"])</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"orange".mapTo("primary", ["red","green","blue"])</td>
+	<td></td>
+</tr>
+<!----- translate()-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"red".translate("e", "E")</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"red".translate(["red", "green", "blue"], ["blue", "red", "green"])</td>
+	<td></td>
+</tr>
+<!----- check results-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"true~false~primary~orange~rEd~blue"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult2">label-issue2.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">label-issue2</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>label</td>
+	<td>top</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>gotoIf</td>
+	<td>"${status}" == "done"</td>
+	<td>bottom</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>'here'</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>storeEval</td>
+	<td>"done"</td>
+	<td>status</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>goto</td>
+	<td>top</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>label</td>
+	<td>bottom</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>deleteVars</td>
+	<td>status</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult3">branching01.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">branching01</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"BEFORE"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>goto</td>
+	<td>HERE</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"A"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>label</td>
+	<td>HERE</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>gotoIf</td>
+	<td>true</td>
+	<td>THERE</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"B"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>label</td>
+	<td>THERE</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>skipNext</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"C"</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"AFTER"</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"BEFORE~AFTER"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult4">branching02.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">branching02</td></tr>
+</thead><tbody>
+<!--=== Error validations-->
+<!---!- -->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>expectError</td>
+	<td>"Target label 'NOWHERE' is not found"</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>goto</td>
+	<td>NOWHERE</td>
+	<td></td>
+</tr>
+<!---!- -->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>expectError</td>
+	<td>"Target label 'NOWHERE' is not found"</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>gotoIf</td>
+	<td>true</td>
+	<td>NOWHERE</td>
+</tr>
+<!---!- -->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>expectError</td>
+	<td>"Requires a number &gt; 1"</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>skipNext</td>
+	<td>-1</td>
+	<td></td>
+</tr>
+<!---!- -->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>expectError</td>
+	<td>"random is not defined"</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>skipNext</td>
+	<td>random</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult5">if01.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">if02</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"BEFORE"</td>
+	<td></td>
+</tr>
+<!------>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>if</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"truthy"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<!------>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>if</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"falsey"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<!------>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>if</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"A"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>else</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"B"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<!------>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>if</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"X"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>else</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"Y"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<!------>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>if</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"false teeth"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>else</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>if</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"truthF"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>else</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"false false"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<!------>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>if</td>
+	<td>"dilbert".isOneOf("dogbert","dilbert","wally")</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"office mate"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>if</td>
+	<td>"dilbert".isOneOf("ratbert","alice","asok")</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"mate"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>else</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"coffee mate"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>if</td>
+	<td>"mordac".isOneOf("bob the dinosaur","garbage man","mordac")</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"cell mate"</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>else</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"don't wait"</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"AFTER"</td>
+	<td></td>
+</tr>
+<!----- check results-->
+<tr class="" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"BEFORE~truthy~A~Y~truthF~office mate~coffee mate~cell mate~AFTER"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult6">if02.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">if02</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--==-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>if</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"if-y"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>elseIf</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"elseIf-y"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<!------>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>if</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"if-y"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>elseIf</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"elseIf-y"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<!------>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>if</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"if-y"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>elseIf</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"elseIf-a1y"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>elseIf</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"else-a2y"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<!------>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>if</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"if-y"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>elseIf</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"elseIf-b1y"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>elseIf</td>
+	<td>true</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"elseIf-b2y"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<!------>
+<tr class="" style="cursor: pointer;">
+	<td>if</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"if-y"</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>elseIf</td>
+	<td>false</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"elseIf-y"</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>else</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"else-y"</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"if-y~elseIf-y~elseIf-a1y~elseIf-b2y~else-y"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult7">if03.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">if03</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<!------>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>foreach</td>
+	<td>i</td>
+	<td>2, 0, 1, 4, 3, 5</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>if</td>
+	<td>i == 0</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"if-${i}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>elseIf</td>
+	<td>i == 1</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"elseIf-${i}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>elseIf</td>
+	<td>i == 2</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"elseIf-${i}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>elseIf</td>
+	<td>i == 3</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"elseIf-${i}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>else</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"else-${i}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endForeach</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"elseIf-2~if-0~elseIf-1~else-4~elseIf-3~else-5"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult8">for.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">for</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>deleteVars</td>
+	<td>f</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"START ${f}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>for</td>
+	<td>s=0,f=3; f &lt;= 5; f++</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"iter=${f}.${s}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"END ${f}"</td>
+	<td></td>
+</tr>
+<!----- check results-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"START $" + "{f}~iter=3.0~iter=4.0~iter=5.0~END $" + "{f}"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult9">foreach.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">foreach</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>deleteVars</td>
+	<td>_i, fe</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"START ${_i}-${fe}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>foreach</td>
+	<td>fe</td>
+	<td>"dilbert", "dogbert", "wally"</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"${_i}) ${fe}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endForeach</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"END ${_i}-${fe}"</td>
+	<td></td>
+</tr>
+<!----- check results-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"START $" + "{_i}-$" + "{fe}~0) dilbert~1) dogbert~2) wally~END $" + "{_i}-$" + "{fe}"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult10">foreach-xpath.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">foreach-xpath</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>echo</td>
+	<td>$x("//input")</td>
+	<td>$x("//input")</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>echo</td>
+	<td>$X("//input")</td>
+	<td>$X("//input")</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>echo</td>
+	<td>begin</td>
+	<td>begin</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"START ${_i}) ${link}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>foreach</td>
+	<td>link</td>
+	<td>$X("//input")</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"${_i}) ${link}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>echo</td>
+	<td>${link}</td>
+	<td>[object HTMLInputElement]</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endForeach</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"END ${_i}) ${link}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"START ${" + "_i}) ${" + "link}~0) [object HTMLInputElement]~1) [object HTMLInputElement]~2) [object HTMLInputElement]~END ${" + "_i}) ${" + "link}"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult11">forjson.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">forjson</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>deleteVars</td>
+	<td>jname</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"START ${jname}"</td>
+	<td></td>
+</tr>
+<!----- forJson-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>forJson</td>
+	<td>http://refactoror.net/forjson.json</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>jname</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endForJson</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"INTERMISSION ${jname}"</td>
+	<td></td>
+</tr>
+<!----- load a varset-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>loadJsonVars</td>
+	<td>http://refactoror.net/forjson.json</td>
+	<td>jname == "dogbert"</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"END ${jname}"</td>
+	<td></td>
+</tr>
+<!----- check results-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"START $" + "{jname}~dilbert~dogbert~wally~INTERMISSION $" + "{jname}~END dogbert"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult12">loadjsonvars.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">loadjsonvars</td></tr>
+</thead><tbody>
+<!--=== Error validations-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>expectError</td>
+	<td>"Requires a JSON file path or URL"</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>loadJsonVars</td>
+	<td></td>
+	<td></td>
+</tr>
+<!---!- -->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>expectError</td>
+	<td>"Multiple JSON objects are not valid for this command"</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>loadJsonVars</td>
+	<td>http://refactoror.net/forjson.json</td>
+	<td></td>
+</tr>
+<!---!- -->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>expectError</td>
+	<td>'"flubber" is not a boolean expression'</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>loadJsonVars</td>
+	<td>http://refactoror.net/forjson.json</td>
+	<td>"flubber"</td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult13">forxml.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">forxml</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>deleteVars</td>
+	<td>xname</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"START ${xname}"</td>
+	<td></td>
+</tr>
+<!----- forXml-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>forXml</td>
+	<td>http://refactoror.net/forxml.xml</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>xname</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endForXml</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"INTERMISSION ${xname}"</td>
+	<td></td>
+</tr>
+<!----- load a varset-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>loadXmlVars</td>
+	<td>http://refactoror.net/forxml.xml</td>
+	<td>xname == "dogbert"</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"END ${xname}"</td>
+	<td></td>
+</tr>
+<!----- check results-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"START $" + "{xname}~dilbert~dogbert~wally~INTERMISSION $" + "{xname}~END dogbert"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult14">loadxmlvars.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">loadxmlvars</td></tr>
+</thead><tbody>
+<!--=== Error validations-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>expectError</td>
+	<td>"Requires an XML file path or URL"</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>loadXmlVars</td>
+	<td></td>
+	<td></td>
+</tr>
+<!---!- -->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>expectError</td>
+	<td>"Multiple XML elements are not valid for this command"</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>loadXmlVars</td>
+	<td>http://refactoror.net/forxml.xml</td>
+	<td></td>
+</tr>
+<!---!- -->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>expectError</td>
+	<td>'"flubber" is not a boolean expression'</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>loadXmlVars</td>
+	<td>http://refactoror.net/forxml.xml</td>
+	<td>"flubber"</td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult15">continue-break01.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">continue-break01</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>deleteVars</td>
+	<td>f</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>for</td>
+	<td>f=3; f &lt;= 9; f++</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>continue</td>
+	<td>f == 6</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>if</td>
+	<td>f &gt; 6</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>if</td>
+	<td>f == 7</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>continue</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>else</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>break</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"iter=${f}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+</tr>
+<!----- check results-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"iter=3~iter=4~iter=5"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult16">continue-break02.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">continue-break02</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>store</td>
+	<td>0</td>
+	<td>i</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>while</td>
+	<td>i++ &lt; 10</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>continue</td>
+	<td>i==3</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>break</td>
+	<td>i==5</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"iter=${i}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<!----- check results-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"iter=1~iter=2~iter=4"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult17">continue-break03.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">continue-break03</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>foreach</td>
+	<td>fe</td>
+	<td>"dilbert","dogbert","wally"</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>continue</td>
+	<td>fe=="dogbert"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>break</td>
+	<td>fe=="wally"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"iter=${fe}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endForeach</td>
+	<td></td>
+	<td></td>
+</tr>
+<!----- check results-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"iter=dilbert"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult18">continue-break04.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">continue-break04</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>forXml</td>
+	<td>http://refactoror.net/forxml.xml</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>continue</td>
+	<td>xname=="dogbert"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>break</td>
+	<td>xname=="wally"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"iter=${xname}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endForXml</td>
+	<td></td>
+	<td></td>
+</tr>
+<!----- check results-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"iter=dilbert"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult19">nested-loops.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">nested-loops</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>deleteVars</td>
+	<td>i, n, uname</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>startTimer</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>store</td>
+	<td>2</td>
+	<td>i</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"START ${i}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>while</td>
+	<td>i &gt; 0</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"while=${i}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>foreach</td>
+	<td>uname</td>
+	<td>"dilbert", "dogbert"</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"foreach=${uname}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>for</td>
+	<td>n = 2; n &lt;=3; n++</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"FOR=${n}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>for</td>
+	<td>n = 7; n &lt;= 8; n++</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"for=${n}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"endFor ${n}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endForeach</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>storeEval</td>
+	<td>${i}-1</td>
+	<td>i</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"END ${i}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>timerElapsed</td>
+	<td></td>
+	<td></td>
+</tr>
+<!----- check results-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"START 2~while=2~foreach=dilbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~foreach=dogbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~while=1~foreach=dilbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~foreach=dogbert~FOR=2~for=7~for=8~FOR=3~for=7~for=8~endFor ${n}~END 0"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult20">function01.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">function01</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>deleteVars</td>
+	<td>sname, srole</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"START ${sname} ${srole}"</td>
+	<td></td>
+</tr>
+<!----- first line-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>doSomething</td>
+	<td>sname = "dilbert,Q", srole = "goof"</td>
+</tr>
+<!--===-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>function</td>
+	<td>doSomething</td>
+	<td>sname</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"sname=${sname},srole=${srole}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endFunction</td>
+	<td>doSomething</td>
+	<td></td>
+</tr>
+<!--===-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>doSomething</td>
+	<td>sname = "dogbert", srole = "woof"</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>doSomething</td>
+	<td>sname = "ratbert", srole = "squeak"</td>
+</tr>
+<!------->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>foreach</td>
+	<td>sname</td>
+	<td>"asok", "alice"</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>doSomething</td>
+	<td>sname = sname, srole = "super=user"</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endForeach</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"DONE ${sname} ${srole}"</td>
+	<td></td>
+</tr>
+<!----- check results-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"START $" + "{sname} $" + "{srole}~sname=dilbert,Q,srole=goof~sname=dogbert,srole=woof~sname=ratbert,srole=squeak~sname=asok,srole=super=user~sname=alice,srole=super=user~DONE $" + "{sname} $" + "{srole}"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult21">function02.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">function02</td></tr>
+</thead><tbody>
+<!--=== Error validations-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>expectError</td>
+	<td>"Function does not exist: NONEXISTENT"</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>call</td>
+	<td>NONEXISTENT</td>
+	<td></td>
+</tr>
+<!--=== deprecated script commands-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>script</td>
+	<td>doDeprecated</td>
+	<td>sname</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"sname=${sname},srole=${srole}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endScript</td>
+	<td>doDeprecated</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>doDeprecated</td>
+	<td>sname = "wally", srole = "lazy"</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"sname=wally,srole=lazy"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult22">function03-recursive.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">function03-recursive</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>deleteVars</td>
+	<td>degree, n, _result, ud</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>store</td>
+	<td>7</td>
+	<td>degree</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>startTimer</td>
+	<td></td>
+	<td>factorial ${degree}</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>fac</td>
+	<td>n=degree</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>timerElapsed</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>degree + "!=" + _result</td>
+	<td></td>
+</tr>
+<!--===-->
+<!----- recursive factorial-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>function</td>
+	<td>fac</td>
+	<td>n</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>if</td>
+	<td>n &lt;= 1</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>return</td>
+	<td>1</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>else</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>fac</td>
+	<td>n = n-1</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>_result</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>return</td>
+	<td>n * _result</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--===-->
+<!----- mutual recursive-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>function</td>
+	<td>uno</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"UNO"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>storeEval</td>
+	<td>${ud}-1</td>
+	<td>ud</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>if</td>
+	<td>ud &gt; 0</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>due</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endFunction</td>
+	<td>uno</td>
+	<td></td>
+</tr>
+<!------->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>function</td>
+	<td>due</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"DUE"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>storeEval</td>
+	<td>${ud}-1</td>
+	<td>ud</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>if</td>
+	<td>ud &gt; 0</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>uno</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endFunction</td>
+	<td>due</td>
+	<td></td>
+</tr>
+<!------->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>store</td>
+	<td>5</td>
+	<td>ud</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>uno</td>
+	<td></td>
+</tr>
+<!--===-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"1~2~6~24~120~720~7!=5040~UNO~DUE~UNO~DUE~UNO"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult23">function04-issue2.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">function04-issue2</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>function</td>
+	<td>xyz</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>'here'</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>xyz</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult24">function05-scoping-issue5.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">function05-scoping-issue5</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>store</td>
+	<td>'void'</td>
+	<td>variable</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>outer</td>
+	<td>variable='Hello'</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>function</td>
+	<td>outer</td>
+	<td>variable</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>inner</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"after variable=" + variable</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<!------>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>function</td>
+	<td>inner</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"variable=" + variable</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>store</td>
+	<td>'bye bye'</td>
+	<td>variable</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"done variable=" + variable</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult25">exitTest01.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">exitTest01</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>exitTest</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>throw</td>
+	<td>"shouldn't happen"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult26">exitTest02 - from within a loop.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">exitTest02</td></tr>
+</thead><tbody>
+<!---- from within a loop-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>for</td>
+	<td>i=0; i &lt; 5; i++</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>if</td>
+	<td>i == 3</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>exitTest</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult27">exitTest03 - from within a function.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">exitTest03</td></tr>
+</thead><tbody>
+<!---- from within a function-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>doSubExit</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>throw</td>
+	<td>"shouldn't happen"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>function</td>
+	<td>doSubExit</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>exitTest</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>endFunction</td>
+	<td>doSubExit</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult28">try01 - no-op try.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">try01</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"-- no-op try --"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"([/"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>t-noop</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endTry</td>
+	<td>t-noop</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"/])"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"([/~trying~/])"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult29">try02 - try-finally, w-no error.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">try02</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"-- try/finally, w/no error --"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"([/"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>t-fin</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"finally"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"/])"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"([/~trying~finally~/])"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult30">try03 - try-catch, but no error.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">try03</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"-- try/catch, but no error --"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"([/"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>tc0</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>catch</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"should NEVER enter this catch block due to no error"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"/])"</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"([/~trying~/])"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult31">try04 - catch specific error.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">try04</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"-- catch specific error --"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"([/"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>tc1</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>throw</td>
+	<td>"blamo catch ALL"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"this command should not be reached, due to thrown"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>catch</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"caught '" + _error.message + "'"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"/])"</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"([/~caught 'blamo catch ALL'~/])"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult32">try05 - catch specific error, then finally.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">try05</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"-- catch specific error, then finally --"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"([/"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>t-spec-outer</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying outer"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"([/"</td>
+	<td></td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>t-spec-inner</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying inner"</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>throw</td>
+	<td>"blamo inner"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"this command should not be reached, due to throw"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>catch</td>
+	<td>/blamo inner/</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"caught '" + _error.message + "'"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"finally"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>endTry</td>
+	<td>t-spec-inner</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"/])"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>endTry</td>
+	<td>t-spec-outer</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"/])"</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"([/~trying outer~([/~trying inner~caught 'blamo inner'~finally~/])~/])"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult33">try06 - catch-throw, finally-throw.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">try06</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"-- catch/throw, finally/throw --"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"([/"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>tcf-trap</td>
+	<td></td>
+</tr>
+<!--v v v-->
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>tcf</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"throwing A"</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>throw</td>
+	<td>"blamoA"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"this command should not be reached, due to thrown"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>catch</td>
+	<td>/blamoA/</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"caught '" + _error.message + "'"</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"throwing B"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>throw</td>
+	<td>"blamoB"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"finally"</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"throwing C"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>throw</td>
+	<td>"blamoC"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>catch</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"caught '" + _error.message + "'"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"/])"</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"([/~trying~throwing A~caught 'blamoA'~throwing B~finally~throwing C~caught 'blamoC'~/])"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult34">try07 - bubble up to catch ALL.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">try07</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"-- bubble up to catch ALL --"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"([/"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>t-all-outer</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying-outer"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>t-all-inner</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying"</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>throw</td>
+	<td>"blamo try-catch-finally"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"this command should not be reached, due to throw"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>catch</td>
+	<td>/will NOT catch it/</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"caught '" + _error.message + "'"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endTry</td>
+	<td>t-all-inner</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>catch</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"caught-outer '" + _error.message + "'"</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>endTry</td>
+	<td>t-all-outer</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"/])"</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"([/~trying-outer~trying~caught-outer 'blamo try-catch-finally'~/])"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult35">try08 - bubble up to catch ALL via finally.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">try08</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"-- bubble up to catch ALL via finally --"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"([/"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>t-allfin-outer</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying-outer"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>t-allfin-inner</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying"</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>throw</td>
+	<td>"blamo try-catch-finally"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"this command should not be reached, due to throw"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>catch</td>
+	<td>/will NOT catch it/</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"caught '" + _error.message + "'"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"finally"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endTry</td>
+	<td>t-allfin-inner</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>catch</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"caught-outer '" + _error.message + "'"</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>endTry</td>
+	<td>t-allfin-outer</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"/])"</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"([/~trying-outer~trying~finally~caught-outer 'blamo try-catch-finally'~/])"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult36">try09 - bubble out of no-op try to catch specific error.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">try09</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"-- bubble out of no-op try to catch specific error --"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"([/"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>noop-outer</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying outer"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>op-inner</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying inner"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>1</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"throwing inner"</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>throw</td>
+	<td>"blamo"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"this command should not be reached, due to throw"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endTry</td>
+	<td>op-inner</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>catch</td>
+	<td>/blamo/</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"caught '" + _error.message + "'"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"finally"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>endTry</td>
+	<td>noop-outer</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"/])"</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"([/~trying outer~trying inner~throwing inner~caught 'blamo'~finally~/])"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult37">try10 - bubble up to catch specific error.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">try10</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"-- bubble up to catch specific error --"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"([/"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>bub-spec-outer</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying outer"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>bub-spec-inner</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying inner"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>1</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"throwing inner"</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>throw</td>
+	<td>"blamo"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"this command should not be reached, due to throw"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"finally"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endTry</td>
+	<td>bub-spec-inner</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>catch</td>
+	<td>/blamo/</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"caught '" + _error.message + "'"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>endTry</td>
+	<td>bub-spec-outer</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"/])"</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"([/~trying outer~trying inner~throwing inner~finally~caught 'blamo'~/])"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult38">try11 - bubble up to catch specific error via finally.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">try11</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"-- bubble up to catch specific error via finally --"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"([/"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>bub-spec-outer</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying outer"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>bub-spec-inner</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying inner"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>1</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"throwing inner"</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>throw</td>
+	<td>"blamo"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"this command should not be reached, due to throw"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"finally"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endTry</td>
+	<td>bub-spec-inner</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>catch</td>
+	<td>/blamo/</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"caught '" + _error.message + "'"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"finally"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>endTry</td>
+	<td>bub-spec-outer</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"/])"</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"([/~trying outer~trying inner~throwing inner~finally~caught 'blamo'~finally~/])"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult39">try12 - throw, catch, rethrow.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">try12</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"-- throw, catch, rethrow --"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"([/"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>outer</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying outer"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>inner</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying inner"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>1</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"throwing blamo1"</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>throw</td>
+	<td>"blamo1"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"this command should not be reached, due to throw"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>catch</td>
+	<td>/blamo1/</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"caught '" + _error.message + "'"</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"throwing blamo2"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>throw</td>
+	<td>"blamo2"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endTry</td>
+	<td>inner</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>catch</td>
+	<td>/blamo2/</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"caught '" + _error.message + "'"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>endTry</td>
+	<td>outer</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"/])"</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"([/~trying outer~trying inner~throwing blamo1~caught 'blamo1'~throwing blamo2~caught 'blamo2'~/])"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult40">try13 - bubble out of nested function calls.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">try13</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"-- bubble out of nested function calls --"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"([/"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>bub-invoke</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"calling"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>subBub</td>
+	<td>n = 0</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"this command should not be reached, due error thrown in function"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>catch</td>
+	<td>/blamo/</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"caught '" + _error.message + "'"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"finally"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endTry</td>
+	<td>bub-invoke</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>function</td>
+	<td>subBub</td>
+	<td></td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>tcf-inner</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"${n}) trying-inner"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>if</td>
+	<td>n &lt; 2</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"${n}) calling"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>subBub</td>
+	<td>n = n+1</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>else</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"${n}) throwing"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>throw</td>
+	<td>"blamo"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"${n}) finally"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endTry</td>
+	<td>tcf-inner</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"/])"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"([/~trying~calling~0) trying-inner~0) calling~1) trying-inner~1) calling~2) trying-inner~2) throwing~2) finally~1) finally~0) finally~caught 'blamo'~finally~/])"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult41">try14 - command bubbling, break wfinally.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">try14</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"-- command bubbling, break w/finally --"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"([/"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"while'g"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>for</td>
+	<td>w=3; w &gt; 0; w--</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>breaker</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"${w}) trying"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>if</td>
+	<td>w==2</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"${w}) BREAK"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>break</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"${w}) finallying"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endTry</td>
+	<td>breaker</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"${w}) iterating"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"/])"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"([/~while'g~3) trying~3) finallying~3) iterating~2) trying~2) BREAK~2) finallying~/])"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult42">try15 - command bubbling, intra-try break.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">try15</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"-- command bubbling, intra-try break --"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"([/"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>breaker</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"while'g"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>for</td>
+	<td>w=3; w &gt; 0; w--</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>if</td>
+	<td>w==2</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"${w}) BREAK"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>break</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"${w}) iterating"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"finallying"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endTry</td>
+	<td>breaker</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"/])"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"([/~trying~while'g~3) iterating~2) BREAK~finallying~/])"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult43">try16 - command bubbling, continue w-finally.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">try16</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"-- command bubbling, continue w/finally --"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"([/"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"while'g"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>for</td>
+	<td>w=3; w &gt; 0; w--</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>continuer</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"${w}) trying"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>if</td>
+	<td>w==2</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"${w}) CONTINUE"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>continue</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"${w}) finallying"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endTry</td>
+	<td>continuer</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"${w}) iterating"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"/])"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"([/~while'g~3) trying~3) finallying~3) iterating~2) trying~2) CONTINUE~2) finallying~1) trying~1) finallying~1) iterating~/])"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult44">try17 - command bubbling, intra-try continue.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">try17</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"-- command bubbling, intra-try continue --"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"([/"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>continuer</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"while'g"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>for</td>
+	<td>w=3; w &gt; 0; w--</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>if</td>
+	<td>w==2</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"${w}) CONTINUE"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>continue</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endIf</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"${w}) iterating"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endFor</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"finallying"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endTry</td>
+	<td>continuer</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"/])"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"([/~trying~while'g~3) iterating~2) CONTINUE~1) iterating~finallying~/])"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult45">try18 - command bubbling, error replaced by return.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">try18</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"-- command bubbling, error replaced by return --"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"([/"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"calling"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>cmdBubA</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"returned ${_result}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>function</td>
+	<td>cmdBubA</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"in cmdBubA"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>cmdBub-tcf</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"returning (1)"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>return</td>
+	<td>1</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"finallying"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"returning (2)"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>return</td>
+	<td>2</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"this command should not be reached, due to return/return above"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"/])"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"([/~calling~in cmdBubA~trying~returning (1)~finallying~returning (2)~returned 2~/])"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult46">try19 - command bubbling, error replaced by throw.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">try19</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"-- command bubbling, error replaced by return --"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"([/"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"calling"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>cmdBubB</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"returned ${_result}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>function</td>
+	<td>cmdBubB</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"in cmdBubB"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>cmdBub-tcf</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying"</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"throwing"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>throw</td>
+	<td>"short-lived error"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"finallying"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"returning (2)"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>return</td>
+	<td>2</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"this command should not be reached, due to throw/return above"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"/])"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"([/~calling~in cmdBubB~trying~throwing~finallying~returning (2)~returned 2~/])"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult47">try20 - command bubbling, return replaced by error.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">try20</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"-- command bubbling, return replaced by error --"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"([/"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"calling"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>call</td>
+	<td>cmdBubC</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"returned ${_result}"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>function</td>
+	<td>cmdBubC</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"in cmdBubC"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>try</td>
+	<td>cmdBub-tcf-guardrail</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>cmdBub-tcf</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"returning (1)"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>return</td>
+	<td>1</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"finallying"</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"throwing"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>throw</td>
+	<td>"this-error-replaces-return-1"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>catch</td>
+	<td>/this-error-replaces-return-1/</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"caught '" + _error.message + "'"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>0</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endFunction</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"/])"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"([/~calling~in cmdBubC~trying~returning (1)~finallying~throwing~caught 'this-error-replaces-return-1'~returned 2~/])"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult48">try21 - catch failed verify command.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">try21</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"-- catch failed verify command --"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"([/"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>tcv1</td>
+	<td></td>
+</tr>
+<tr class=" selected" style="cursor: pointer;">
+	<td>verifyEval</td>
+	<td>1</td>
+	<td>2</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"this command should not be reached, due to failed verify"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>catch</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"caught '" + _error.message + "'"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>endTry</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"/])"</td>
+	<td></td>
+</tr>
+<tr class="" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"([/~caught 'Actual value '1' did not match '2''~/])"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><a name="testresult49">try22 - exitTest w-finally processing.html</a><br/><div>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr class="title status_passed"><td rowspan="1" colspan="3">try22</td></tr>
+</thead><tbody>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>log</td>
+	<td>"-- exitTest w/finally processing --"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"([/"</td>
+	<td></td>
+</tr>
+<tr class="  status_passed" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>try</td>
+	<td>abort</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"trying"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"exitTest ..."</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>exitTest</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>finally</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>emit</td>
+	<td>"finallying"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEmitted</td>
+	<td>"([/~trying~exitTest ...~finallying"</td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr class="  status_done" style="cursor: pointer;">
+	<td>endTry</td>
+	<td>abort</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr class="  status_done" style="cursor: pointer;">
+	<td>assertEval</td>
+	<td>"this command should not be reached, due to exitTest above"</td>
+	<td></td>
+</tr>
+</tbody></table>
+
+
+</div></td>
+<td>&nbsp;</td>
+</tr></table><pre>
+info: [selblocks] Applying testCase server patch for selblocks
+info: Starting test /selenium-server/tests/README.html
+info: Executing: |clearLog |  |  |
+warn: [selbench] clearLog command ignored in non-IDE environment
+info: Executing: |open | http://refactoror.net/_SelBlocks-testpage.html |  |
+info: Starting test /selenium-server/tests/eval.html
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;dilbert&quot;.isOneOf(&quot;dilbert&quot;,&quot;dogbert&quot;,&quot;mordac&quot;) |  |
+info: Executing: |emit | &quot;bob&quot;.isOneOf(&quot;dilbert&quot;,&quot;dogbert&quot;,&quot;mordac&quot;) |  |
+info: Executing: |emit | &quot;red&quot;.mapTo(&quot;primary&quot;, [&quot;red&quot;,&quot;green&quot;,&quot;blue&quot;]) |  |
+info: Executing: |emit | &quot;orange&quot;.mapTo(&quot;primary&quot;, [&quot;red&quot;,&quot;green&quot;,&quot;blue&quot;]) |  |
+info: Executing: |emit | &quot;red&quot;.translate(&quot;e&quot;, &quot;E&quot;) |  |
+info: Executing: |emit | &quot;red&quot;.translate([&quot;red&quot;, &quot;green&quot;, &quot;blue&quot;], [&quot;blue&quot;, &quot;red&quot;, &quot;green&quot;]) |  |
+info: Executing: |assertEmitted | &quot;true~false~primary~orange~rEd~blue&quot; |  |
+info: Starting test /selenium-server/tests/label-issue2.html
+info: Executing: |label | top |  |
+info: Executing: |gotoIf | &quot;${status}&quot; == &quot;done&quot; | bottom |
+info: Executing: |log | &apos;here&apos; |  |
+info: [selbench] here
+info: Executing: |storeEval | &quot;done&quot; | status |
+info: script is: &quot;done&quot;
+info: Executing: |goto | top |  |
+info: [selblocks] branch =&gt; @1: [label|top]
+info: Executing: |label | top |  |
+info: Executing: |gotoIf | &quot;${status}&quot; == &quot;done&quot; | bottom |
+info: [selblocks] branch =&gt; @6: [label|bottom]
+info: Starting test /selenium-server/tests/branching01.html
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;BEFORE&quot; |  |
+info: Executing: |goto | HERE |  |
+info: [selblocks] branch =&gt; @5: [label|HERE]
+info: Executing: |label | HERE |  |
+info: Executing: |gotoIf | true | THERE |
+info: [selblocks] branch =&gt; @8: [label|THERE]
+info: Executing: |label | THERE |  |
+info: Executing: |skipNext |  |  |
+info: [selblocks] branch =&gt; @11: [emit|&quot;AFTER&quot;]
+info: Executing: |emit | &quot;AFTER&quot; |  |
+info: Executing: |assertEmitted | &quot;BEFORE~AFTER&quot; |  |
+info: Starting test /selenium-server/tests/branching02.html
+info: Executing: |expectError | &quot;Target label &apos;NOWHERE&apos; is not found&quot; |  |
+info: Executing: |goto | NOWHERE |  |
+error: [selblocks] Error @2: [goto|NOWHERE] Target label &apos;NOWHERE&apos; is not found.
+warn: [selblocks] __Stack Trace__
+info: [selbench] The expected error is confirmed : @2: [goto|NOWHERE] Target label &apos;NOWHERE&apos; is not found.
+info: Executing: |expectError | &quot;Target label &apos;NOWHERE&apos; is not found&quot; |  |
+info: Executing: |gotoIf | true | NOWHERE |
+error: [selblocks] Error @4: [gotoIf|true|NOWHERE] Target label &apos;NOWHERE&apos; is not found.
+warn: [selblocks] __Stack Trace__
+info: [selbench] The expected error is confirmed : @4: [gotoIf|true|NOWHERE] Target label &apos;NOWHERE&apos; is not found.
+info: Executing: |expectError | &quot;Requires a number &gt; 1&quot; |  |
+info: Executing: |skipNext | -1 |  |
+error: [selblocks] Error @6: [skipNext|-1] Requires a number &gt; 1
+warn: [selblocks] __Stack Trace__
+info: [selbench] The expected error is confirmed : @6: [skipNext|-1] Requires a number &gt; 1
+info: Executing: |expectError | &quot;random is not defined&quot; |  |
+info: Executing: |skipNext | random |  |
+error: [selblocks] Error  While evaluating Javascript expression: random
+warn: [selblocks] __Stack Trace__
+info: [selbench] The expected error is confirmed : random is not defined
+info: Starting test /selenium-server/tests/if01.html
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;BEFORE&quot; |  |
+info: Executing: |if | true |  |
+info: Executing: |emit | &quot;truthy&quot; |  |
+info: Executing: |endIf |  |  |
+info: Executing: |if | false |  |
+info: [selblocks] branch =&gt; @8: [endIf]
+info: Executing: |endIf |  |  |
+info: Executing: |if | true |  |
+info: Executing: |emit | &quot;A&quot; |  |
+info: Executing: |else |  |  |
+info: [selblocks] branch =&gt; @13: [endIf]
+info: Executing: |endIf |  |  |
+info: Executing: |if | false |  |
+info: [selblocks] branch =&gt; @16: [else]
+info: Executing: |else |  |  |
+info: Executing: |emit | &quot;Y&quot; |  |
+info: Executing: |endIf |  |  |
+info: Executing: |if | false |  |
+info: [selblocks] branch =&gt; @21: [else]
+info: Executing: |else |  |  |
+info: Executing: |if | true |  |
+info: Executing: |emit | &quot;truthF&quot; |  |
+info: Executing: |else |  |  |
+info: [selblocks] branch =&gt; @26: [endIf]
+info: Executing: |endIf |  |  |
+info: Executing: |endIf |  |  |
+info: Executing: |if | &quot;dilbert&quot;.isOneOf(&quot;dogbert&quot;,&quot;dilbert&quot;,&quot;wally&quot;) |  |
+info: Executing: |emit | &quot;office mate&quot; |  |
+info: Executing: |endIf |  |  |
+info: Executing: |if | &quot;dilbert&quot;.isOneOf(&quot;ratbert&quot;,&quot;alice&quot;,&quot;asok&quot;) |  |
+info: [selblocks] branch =&gt; @33: [else]
+info: Executing: |else |  |  |
+info: Executing: |emit | &quot;coffee mate&quot; |  |
+info: Executing: |endIf |  |  |
+info: Executing: |if | &quot;mordac&quot;.isOneOf(&quot;bob the dinosaur&quot;,&quot;garbage man&quot;,&quot;mordac&quot;) |  |
+info: Executing: |emit | &quot;cell mate&quot; |  |
+info: Executing: |else |  |  |
+info: [selblocks] branch =&gt; @40: [endIf]
+info: Executing: |endIf |  |  |
+info: Executing: |emit | &quot;AFTER&quot; |  |
+info: Executing: |assertEmitted | &quot;BEFORE~truthy~A~Y~truthF~office mate~coffee mate~cell mate~AFTER&quot; |  |
+info: Starting test /selenium-server/tests/if02.html
+info: Executing: |resetEmitted |  |  |
+info: Executing: |if | true |  |
+info: Executing: |emit | &quot;if-y&quot; |  |
+info: Executing: |elseIf | true |  |
+info: [selblocks] branch =&gt; @6: [endIf]
+info: Executing: |endIf |  |  |
+info: Executing: |if | false |  |
+info: [selblocks] branch =&gt; @9: [elseIf|true]
+info: Executing: |elseIf | true |  |
+info: Executing: |emit | &quot;elseIf-y&quot; |  |
+info: Executing: |endIf |  |  |
+info: Executing: |if | false |  |
+info: [selblocks] branch =&gt; @14: [elseIf|true]
+info: Executing: |elseIf | true |  |
+info: Executing: |emit | &quot;elseIf-a1y&quot; |  |
+info: Executing: |elseIf | true |  |
+info: [selblocks] branch =&gt; @18: [endIf]
+info: Executing: |endIf |  |  |
+info: Executing: |if | false |  |
+info: [selblocks] branch =&gt; @21: [elseIf|false]
+info: Executing: |elseIf | false |  |
+info: [selblocks] branch =&gt; @23: [elseIf|true]
+info: Executing: |elseIf | true |  |
+info: Executing: |emit | &quot;elseIf-b2y&quot; |  |
+info: Executing: |endIf |  |  |
+info: Executing: |if | false |  |
+info: [selblocks] branch =&gt; @28: [elseIf|false]
+info: Executing: |elseIf | false |  |
+info: [selblocks] branch =&gt; @30: [else]
+info: Executing: |else |  |  |
+info: Executing: |emit | &quot;else-y&quot; |  |
+info: Executing: |endIf |  |  |
+info: Executing: |assertEmitted | &quot;if-y~elseIf-y~elseIf-a1y~elseIf-b2y~else-y&quot; |  |
+info: Starting test /selenium-server/tests/if03.html
+info: Executing: |resetEmitted |  |  |
+info: Executing: |foreach | i | 2, 0, 1, 4, 3, 5 |
+info: Executing: |if | i == 0 |  |
+info: [selblocks] branch =&gt; @5: [elseIf|i == 1]
+info: Executing: |elseIf | i == 1 |  |
+info: [selblocks] branch =&gt; @7: [elseIf|i == 2]
+info: Executing: |elseIf | i == 2 |  |
+info: Executing: |emit | &quot;elseIf-${i}&quot; |  |
+info: Executing: |elseIf | i == 3 |  |
+info: [selblocks] branch =&gt; @13: [endIf]
+info: Executing: |endIf |  |  |
+info: Executing: |endForeach |  |  |
+info: [selblocks] branch =&gt; @2: [foreach|i|2, 0, 1, 4, 3, 5]
+info: Executing: |foreach | i | 2, 0, 1, 4, 3, 5 |
+info: Executing: |if | i == 0 |  |
+info: Executing: |emit | &quot;if-${i}&quot; |  |
+info: Executing: |elseIf | i == 1 |  |
+info: [selblocks] branch =&gt; @13: [endIf]
+info: Executing: |endIf |  |  |
+info: Executing: |endForeach |  |  |
+info: [selblocks] branch =&gt; @2: [foreach|i|2, 0, 1, 4, 3, 5]
+info: Starting test /selenium-server/tests/for.html
+info: Executing: |resetEmitted |  |  |
+info: Executing: |deleteVars | f |  |
+info: Executing: |emit | &quot;START ${f}&quot; |  |
+info: Executing: |for | s=0,f=3; f &lt;= 5; f++ |  |
+info: Executing: |emit | &quot;iter=${f}.${s}&quot; |  |
+info: Executing: |endFor |  |  |
+info: [selblocks] branch =&gt; @4: [for|s=0,f=3; f &lt;= 5; f++]
+info: Executing: |for | s=0,f=3; f &lt;= 5; f++ |  |
+info: Executing: |emit | &quot;iter=3.0&quot; |  |
+info: Starting test /selenium-server/tests/foreach.html
+info: Executing: |resetEmitted |  |  |
+info: Executing: |deleteVars | _i, fe |  |
+info: Executing: |emit | &quot;START ${_i}-${fe}&quot; |  |
+info: Executing: |foreach | fe | &quot;dilbert&quot;, &quot;dogbert&quot;, &quot;wally&quot; |
+info: Executing: |emit | &quot;${_i}) ${fe}&quot; |  |
+info: Executing: |endForeach |  |  |
+info: [selblocks] branch =&gt; @4: [foreach|fe|&quot;dilbert&quot;, &quot;dogbert&quot;, &quot;wally&quot;]
+info: Executing: |foreach | fe | &quot;dilbert&quot;, &quot;dogbert&quot;, &quot;wally&quot; |
+info: Executing: |emit | &quot;0) dilbert&quot; |  |
+info: Starting test /selenium-server/tests/foreach-xpath.html
+info: Executing: |resetEmitted |  |  |
+info: Executing: |echo | $x(&quot;//input&quot;) |  |
+info: Executing: |echo | $X(&quot;//input&quot;) |  |
+info: Executing: |echo | begin |  |
+info: Executing: |emit | &quot;START ${_i}) ${link}&quot; |  |
+info: Executing: |foreach | link | $X(&quot;//input&quot;) |
+info: Executing: |emit | &quot;${_i}) ${link}&quot; |  |
+info: Executing: |echo | ${link} |  |
+info: Executing: |endForeach |  |  |
+info: [selblocks] branch =&gt; @6: [foreach|link|$X(&quot;//input&quot;)]
+info: Executing: |foreach | link | $X(&quot;//input&quot;) |
+info: Executing: |emit | &quot;0) [object HTMLInputElement]&quot; |  |
+info: Starting test /selenium-server/tests/forjson.html
+info: Executing: |resetEmitted |  |  |
+info: Executing: |deleteVars | jname |  |
+info: Executing: |emit | &quot;START ${jname}&quot; |  |
+info: Executing: |forJson | http://refactoror.net/forjson.json |  |
+info: [selblocks] Reading from: http://refactoror.net/forjson.json
+info: [selblocks] [
+  { jname: &quot;dilbert&quot; }
+ ,{ jname: &quot;dogbert&quot; }
+ ,{ jname: &quot;wally&quot; }
+]
+
+info: Executing: |emit | jname |  |
+info: Executing: |endForJson |  |  |
+info: [selblocks] branch =&gt; @4: [forJson|http://refactoror.net/forjson.json]
+info: Executing: |forJson | http://refactoror.net/forjson.json |  |
+info: Executing: |emit | jname |  |
+info: Executing: |endForJson |  |  |
+info: [selblocks] branch =&gt; @4: [forJson|http://refactoror.net/forjson.json]
+info: Executing: |forJson | http://refactoror.net/forjson.json |  |
+info: Starting test /selenium-server/tests/loadjsonvars.html
+info: Executing: |expectError | &quot;Requires a JSON file path or URL&quot; |  |
+info: Executing: |loadJsonVars |  |  |
+error: [selblocks] Error @2: [loadJsonVars] Requires a JSON file path or URL.
+warn: [selblocks] __Stack Trace__
+info: [selbench] The expected error is confirmed : @2: [loadJsonVars] Requires a JSON file path or URL.
+info: Executing: |expectError | &quot;Multiple JSON objects are not valid for this command&quot; |  |
+info: Executing: |loadJsonVars | http://refactoror.net/forjson.json |  |
+info: [selblocks] Reading from: http://refactoror.net/forjson.json
+info: [selblocks] [
+  { jname: &quot;dilbert&quot; }
+ ,{ jname: &quot;dogbert&quot; }
+ ,{ jname: &quot;wally&quot; }
+]
+
+error: [selblocks] Error @4: [loadJsonVars|http://refactoror.net/forjson.json] Multiple JSON objects are not valid for this command. (A specific JSON object can be selected by specifying: name=&quot;value&quot;.)
+warn: [selblocks] __Stack Trace__
+info: [selbench] The expected error is confirmed : @4: [loadJsonVars|http://refactoror.net/forjson.json] Multiple JSON objects are not valid for this command. (A specific JSON object can be selected by specifying: name=&quot;value&quot;.)
+info: Executing: |expectError | &apos;&quot;flubber&quot; is not a boolean expression&apos; |  |
+info: Executing: |loadJsonVars | http://refactoror.net/forjson.json | &quot;flubber&quot; |
+info: [selblocks] Reading from: http://refactoror.net/forjson.json
+info: [selblocks] [
+  { jname: &quot;dilbert&quot; }
+ ,{ jname: &quot;dogbert&quot; }
+ ,{ jname: &quot;wally&quot; }
+]
+
+error: [selblocks] Error @6: [loadJsonVars|http://refactoror.net/forjson.json|&quot;flubber&quot;], &quot;flubber&quot; is not a boolean expression
+warn: [selblocks] __Stack Trace__
+info: [selbench] The expected error is confirmed : @6: [loadJsonVars|http://refactoror.net/forjson.json|&quot;flubber&quot;], &quot;flubber&quot; is not a boolean expression
+info: Starting test /selenium-server/tests/forxml.html
+info: Executing: |resetEmitted |  |  |
+info: Executing: |deleteVars | xname |  |
+info: Executing: |emit | &quot;START ${xname}&quot; |  |
+info: Executing: |forXml | http://refactoror.net/forxml.xml |  |
+info: [selblocks] Reading from: http://refactoror.net/forxml.xml
+info: Executing: |emit | xname |  |
+info: Executing: |endForXml |  |  |
+info: [selblocks] branch =&gt; @4: [forXml|http://refactoror.net/forxml.xml]
+info: Executing: |forXml | http://refactoror.net/forxml.xml |  |
+info: Executing: |emit | xname |  |
+info: Executing: |endForXml |  |  |
+info: [selblocks] branch =&gt; @4: [forXml|http://refactoror.net/forxml.xml]
+info: Executing: |forXml | http://refactoror.net/forxml.xml |  |
+info: Starting test /selenium-server/tests/loadxmlvars.html
+info: Executing: |expectError | &quot;Requires an XML file path or URL&quot; |  |
+info: Executing: |loadXmlVars |  |  |
+error: [selblocks] Error @2: [loadXmlVars] Requires an XML file path or URL.
+warn: [selblocks] __Stack Trace__
+info: [selbench] The expected error is confirmed : @2: [loadXmlVars] Requires an XML file path or URL.
+info: Executing: |expectError | &quot;Multiple XML elements are not valid for this command&quot; |  |
+info: Executing: |loadXmlVars | http://refactoror.net/forxml.xml |  |
+info: [selblocks] Reading from: http://refactoror.net/forxml.xml
+error: [selblocks] Error @4: [loadXmlVars|http://refactoror.net/forxml.xml] Multiple XML elements are not valid for this command. (A specific XML element can be selected by specifying: name=&quot;value&quot;.)
+warn: [selblocks] __Stack Trace__
+info: [selbench] The expected error is confirmed : @4: [loadXmlVars|http://refactoror.net/forxml.xml] Multiple XML elements are not valid for this command. (A specific XML element can be selected by specifying: name=&quot;value&quot;.)
+info: Executing: |expectError | &apos;&quot;flubber&quot; is not a boolean expression&apos; |  |
+info: Executing: |loadXmlVars | http://refactoror.net/forxml.xml | &quot;flubber&quot; |
+info: [selblocks] Reading from: http://refactoror.net/forxml.xml
+error: [selblocks] Error @6: [loadXmlVars|http://refactoror.net/forxml.xml|&quot;flubber&quot;], &quot;flubber&quot; is not a boolean expression
+warn: [selblocks] __Stack Trace__
+info: [selbench] The expected error is confirmed : @6: [loadXmlVars|http://refactoror.net/forxml.xml|&quot;flubber&quot;], &quot;flubber&quot; is not a boolean expression
+info: Starting test /selenium-server/tests/continue-break01.html
+info: Executing: |resetEmitted |  |  |
+info: Executing: |deleteVars | f |  |
+info: Executing: |for | f=3; f &lt;= 9; f++ |  |
+info: Executing: |continue | f == 6 |  |
+info: Executing: |if | f &gt; 6 |  |
+info: [selblocks] branch =&gt; @11: [endIf]
+info: Executing: |endIf |  |  |
+info: Executing: |emit | &quot;iter=${f}&quot; |  |
+info: Executing: |endFor |  |  |
+info: [selblocks] branch =&gt; @3: [for|f=3; f &lt;= 9; f++]
+info: Executing: |for | f=3; f &lt;= 9; f++ |  |
+info: Executing: |continue | f == 6 |  |
+info: Executing: |if | f &gt; 6 |  |
+info: [selblocks] branch =&gt; @11: [endIf]
+info: Executing: |endIf |  |  |
+info: Executing: |emit | &quot;iter=3&quot; |  |
+info: Executing: |endFor |  |  |
+info: [selblocks] branch =&gt; @3: [for|f=3; f &lt;= 9; f++]
+info: Starting test /selenium-server/tests/continue-break02.html
+info: Executing: |resetEmitted |  |  |
+info: Executing: |store | 0 | i |
+info: Executing: |while | i++ &lt; 10 |  |
+info: Executing: |continue | i==3 |  |
+info: Executing: |break | i==5 |  |
+info: Executing: |emit | &quot;iter=${i}&quot; |  |
+info: Executing: |endWhile |  |  |
+info: [selblocks] branch =&gt; @3: [while|i++ &lt; 10]
+info: Executing: |while | i++ &lt; 10 |  |
+info: Starting test /selenium-server/tests/continue-break03.html
+info: Executing: |resetEmitted |  |  |
+info: Executing: |foreach | fe | &quot;dilbert&quot;,&quot;dogbert&quot;,&quot;wally&quot; |
+info: Executing: |continue | fe==&quot;dogbert&quot; |  |
+info: Executing: |break | fe==&quot;wally&quot; |  |
+info: Executing: |emit | &quot;iter=${fe}&quot; |  |
+info: Executing: |endForeach |  |  |
+info: [selblocks] branch =&gt; @2: [foreach|fe|&quot;dilbert&quot;,&quot;dogbert&quot;,&quot;wally&quot;]
+info: Executing: |foreach | fe | &quot;dilbert&quot;,&quot;dogbert&quot;,&quot;wally&quot; |
+info: Starting test /selenium-server/tests/continue-break04.html
+info: Executing: |resetEmitted |  |  |
+info: Executing: |forXml | http://refactoror.net/forxml.xml |  |
+info: [selblocks] Reading from: http://refactoror.net/forxml.xml
+info: Executing: |continue | xname==&quot;dogbert&quot; |  |
+info: Executing: |break | xname==&quot;wally&quot; |  |
+info: Executing: |emit | &quot;iter=${xname}&quot; |  |
+info: Executing: |endForXml |  |  |
+info: [selblocks] branch =&gt; @2: [forXml|http://refactoror.net/forxml.xml]
+info: Executing: |forXml | http://refactoror.net/forxml.xml |  |
+info: Executing: |continue | xname==&quot;dogbert&quot; |  |
+info: [selblocks] branch =&gt; @2: [forXml|http://refactoror.net/forxml.xml]
+info: Starting test /selenium-server/tests/nested-loops.html
+info: Executing: |resetEmitted |  |  |
+info: Executing: |deleteVars | i, n, uname |  |
+info: Executing: |startTimer |  |  |
+info: Executing: |store | 2 | i |
+info: Executing: |emit | &quot;START ${i}&quot; |  |
+info: Executing: |while | i &gt; 0 |  |
+info: Executing: |emit | &quot;while=${i}&quot; |  |
+info: Executing: |foreach | uname | &quot;dilbert&quot;, &quot;dogbert&quot; |
+info: Executing: |emit | &quot;foreach=${uname}&quot; |  |
+info: Executing: |for | n = 2; n &lt;=3; n++ |  |
+info: Executing: |emit | &quot;FOR=${n}&quot; |  |
+info: Executing: |for | n = 7; n &lt;= 8; n++ |  |
+info: Executing: |emit | &quot;for=${n}&quot; |  |
+info: Executing: |endFor |  |  |
+info: [selblocks] branch =&gt; @12: [for|n = 7; n &lt;= 8; n++]
+info: Executing: |for | n = 7; n &lt;= 8; n++ |  |
+info: Executing: |emit | &quot;for=7&quot; |  |
+info: Executing: |endFor |  |  |
+info: [selblocks] branch =&gt; @12: [for|n = 7; n &lt;= 8; n++]
+info: Executing: |for | n = 7; n &lt;= 8; n++ |  |
+info: [selblocks] branch =&gt; @14: [endFor]
+info: Executing: |endFor |  |  |
+info: Executing: |endFor |  |  |
+info: [selblocks] branch =&gt; @10: [for|n = 2; n &lt;=3; n++]
+info: Executing: |for | n = 2; n &lt;=3; n++ |  |
+info: Executing: |emit | &quot;FOR=2&quot; |  |
+info: Starting test /selenium-server/tests/function01.html
+info: Executing: |resetEmitted |  |  |
+info: Executing: |deleteVars | sname, srole |  |
+info: Executing: |emit | &quot;START ${sname} ${srole}&quot; |  |
+info: Executing: |call | doSomething | sname = &quot;dilbert,Q&quot;, srole = &quot;goof&quot; |
+info: [selblocks] branch =&gt; @5: [function|doSomething|sname]
+info: Executing: |function | doSomething | sname |
+info: Executing: |emit | &quot;sname=${sname},srole=${srole}&quot; |  |
+info: Executing: |endFunction | doSomething |  |
+info: [selblocks] branch =&gt; @4: [call|doSomething|sname = &quot;dilbert,Q&quot;, srole = &quot;goof&quot;]
+info: Executing: |call | doSomething | sname = &quot;dilbert,Q&quot;, srole = &quot;goof&quot; |
+info: Executing: |function | doSomething | sname |
+info: [selblocks] branch =&gt; @7: [endFunction|doSomething]
+info: Executing: |endFunction | doSomething |  |
+info: Executing: |call | doSomething | sname = &quot;dogbert&quot;, srole = &quot;woof&quot; |
+info: [selblocks] branch =&gt; @5: [function|doSomething|sname]
+info: Executing: |function | doSomething | sname |
+info: Executing: |emit | &quot;sname=dilbert,Q,srole=goof&quot; |  |
+info: Executing: |endFunction | doSomething |  |
+info: [selblocks] branch =&gt; @8: [call|doSomething|sname = &quot;dogbert&quot;, srole = &quot;woof&quot;]
+info: Starting test /selenium-server/tests/function02.html
+info: Executing: |expectError | &quot;Function does not exist: NONEXISTENT&quot; |  |
+info: Executing: |call | NONEXISTENT |  |
+error: [selblocks] Error @2: [call|NONEXISTENT] Function does not exist: NONEXISTENT.
+warn: [selblocks] __Stack Trace__
+info: [selbench] The expected error is confirmed : @2: [call|NONEXISTENT] Function does not exist: NONEXISTENT.
+info: Executing: |resetEmitted |  |  |
+info: Executing: |script | doDeprecated | sname |
+warn: [selblocks] The script command has been deprecated as of SelBlocks 2.0 and will be removed in future releases. Please use function instead.
+info: [selblocks] branch =&gt; @6: [endScript|doDeprecated]
+info: Executing: |endScript | doDeprecated |  |
+info: Executing: |call | doDeprecated | sname = &quot;wally&quot;, srole = &quot;lazy&quot; |
+info: [selblocks] branch =&gt; @4: [script|doDeprecated|sname]
+info: Executing: |script | doDeprecated | sname |
+warn: [selblocks] The script command has been deprecated as of SelBlocks 2.0 and will be removed in future releases. Please use function instead.
+info: Executing: |emit | &quot;sname=${sname},srole=${srole}&quot; |  |
+info: Starting test /selenium-server/tests/function03-recursive.html
+info: Executing: |resetEmitted |  |  |
+info: Executing: |deleteVars | degree, n, _result, ud |  |
+info: Executing: |store | 7 | degree |
+info: Executing: |startTimer |  | factorial ${degree} |
+info: Executing: |call | fac | n=degree |
+info: [selblocks] branch =&gt; @8: [function|fac|n]
+info: Executing: |function | fac | n |
+info: Executing: |if | n &lt;= 1 |  |
+info: [selblocks] branch =&gt; @11: [else]
+info: Executing: |else |  |  |
+info: Executing: |call | fac | n = n-1 |
+info: [selblocks] branch =&gt; @8: [function|fac|n]
+info: Executing: |function | fac | n |
+info: Executing: |if | n &lt;= 1 |  |
+info: [selblocks] branch =&gt; @11: [else]
+info: Executing: |else |  |  |
+info: Executing: |call | fac | n = n-1 |
+info: [selblocks] branch =&gt; @8: [function|fac|n]
+info: Executing: |function | fac | n |
+info: Executing: |if | n &lt;= 1 |  |
+info: [selblocks] branch =&gt; @11: [else]
+info: Executing: |else |  |  |
+info: Executing: |call | fac | n = n-1 |
+info: [selblocks] branch =&gt; @8: [function|fac|n]
+info: Executing: |function | fac | n |
+info: Executing: |if | n &lt;= 1 |  |
+info: [selblocks] branch =&gt; @11: [else]
+info: Executing: |else |  |  |
+info: Executing: |call | fac | n = n-1 |
+info: [selblocks] branch =&gt; @8: [function|fac|n]
+info: Executing: |function | fac | n |
+info: Executing: |if | n &lt;= 1 |  |
+info: [selblocks] branch =&gt; @11: [else]
+info: Executing: |else |  |  |
+info: Executing: |call | fac | n = n-1 |
+info: [selblocks] branch =&gt; @8: [function|fac|n]
+info: Executing: |function | fac | n |
+info: Executing: |if | n &lt;= 1 |  |
+info: [selblocks] branch =&gt; @11: [else]
+info: Executing: |else |  |  |
+info: Executing: |call | fac | n = n-1 |
+info: [selblocks] branch =&gt; @8: [function|fac|n]
+info: Executing: |function | fac | n |
+info: Executing: |if | n &lt;= 1 |  |
+info: Executing: |return | 1 |  |
+info: [selblocks] branch =&gt; @12: [call|fac|n = n-1]
+info: Executing: |call | fac | n = n-1 |
+info: Starting test /selenium-server/tests/function04-issue2.html
+info: Executing: |function | xyz |  |
+info: [selblocks] branch =&gt; @3: [endFunction]
+info: Executing: |endFunction |  |  |
+info: Executing: |call | xyz |  |
+info: [selblocks] branch =&gt; @1: [function|xyz]
+info: Executing: |function | xyz |  |
+info: Starting test /selenium-server/tests/function05-scoping-issue5.html
+info: Executing: |store | &apos;void&apos; | variable |
+info: Executing: |call | outer | variable=&apos;Hello&apos; |
+info: [selblocks] branch =&gt; @3: [function|outer|variable]
+info: Executing: |function | outer | variable |
+info: Executing: |call | inner |  |
+info: [selblocks] branch =&gt; @7: [function|inner]
+info: Executing: |function | inner |  |
+info: Executing: |log | &quot;variable=&quot; + variable |  |
+info: [selbench] variable=Hello
+info: Executing: |store | &apos;bye bye&apos; | variable |
+info: Executing: |endFunction |  |  |
+info: [selblocks] branch =&gt; @4: [call|inner]
+info: Executing: |call | inner |  |
+info: Executing: |log | &quot;after variable=&quot; + variable |  |
+info: [selbench] after variable=&apos;bye bye&apos;
+info: Executing: |endFunction |  |  |
+info: [selblocks] branch =&gt; @2: [call|outer|variable=&apos;Hello&apos;]
+info: Starting test /selenium-server/tests/exitTest01.html
+info: Executing: |resetEmitted |  |  |
+info: Executing: |exitTest |  |  |
+info: [selblocks] TEST HALTED
+info: Starting test /selenium-server/tests/exitTest02%20-%20from%20within%20a%20loop.html
+info: Executing: |for | i=0; i &lt; 5; i++ |  |
+info: Executing: |if | i == 3 |  |
+info: [selblocks] branch =&gt; @4: [endIf]
+info: Executing: |endIf |  |  |
+info: Executing: |endFor |  |  |
+info: [selblocks] branch =&gt; @1: [for|i=0; i &lt; 5; i++]
+info: Executing: |for | i=0; i &lt; 5; i++ |  |
+info: Starting test /selenium-server/tests/exitTest03%20-%20from%20within%20a%20function.html
+info: Executing: |call | doSubExit |  |
+info: [selblocks] branch =&gt; @3: [function|doSubExit]
+info: Executing: |function | doSubExit |  |
+info: Executing: |exitTest |  |  |
+info: [selblocks] TEST HALTED
+info: Starting test /selenium-server/tests/try01%20-%20no-op%20try.html
+info: Executing: |log | &quot;-- no-op try --&quot; |  |
+info: [selbench] -- no-op try --
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;([/&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | t-noop |  |
+warn: [selblocks] @5: [try|t-noop] does not have a catch-block nor a finally-block, and therefore serves no purpose
+info: Executing: |emit | &quot;trying&quot; |  |
+info: Executing: |endTry | t-noop |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |emit | &quot;/])&quot; |  |
+info: Executing: |assertEmitted | &quot;([/~trying~/])&quot; |  |
+info: Starting test /selenium-server/tests/try02%20-%20try-finally,%20w-no%20error.html
+info: Executing: |log | &quot;-- try/finally, w/no error --&quot; |  |
+info: [selbench] -- try/finally, w/no error --
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;([/&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | t-fin |  |
+info: Executing: |emit | &quot;trying&quot; |  |
+info: Executing: |finally |  |  |
+info: Executing: |emit | &quot;finally&quot; |  |
+info: Executing: |endTry |  |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |emit | &quot;/])&quot; |  |
+info: Executing: |assertEmitted | &quot;([/~trying~finally~/])&quot; |  |
+info: Starting test /selenium-server/tests/try03%20-%20try-catch,%20but%20no%20error.html
+info: Executing: |log | &quot;-- try/catch, but no error --&quot; |  |
+info: [selbench] -- try/catch, but no error --
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;([/&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | tc0 |  |
+info: Executing: |emit | &quot;trying&quot; |  |
+info: Executing: |catch |  |  |
+info: [selblocks] branch =&gt; @9: [endTry]
+info: Executing: |endTry |  |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |emit | &quot;/])&quot; |  |
+info: Executing: |assertEmitted | &quot;([/~trying~/])&quot; |  |
+info: Starting test /selenium-server/tests/try04%20-%20catch%20specific%20error.html
+info: Executing: |log | &quot;-- catch specific error --&quot; |  |
+info: [selbench] -- catch specific error --
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;([/&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | tc1 |  |
+info: Executing: |throw | &quot;blamo catch ALL&quot; |  |
+info: [selblocks] @6, error has been caught :: 
+info: [selblocks] branch =&gt; @8: [catch]
+info: Executing: |catch |  |  |
+info: Executing: |emit | &quot;caught &apos;&quot; + _error.message + &quot;&apos;&quot; |  |
+info: Executing: |endTry |  |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |emit | &quot;/])&quot; |  |
+info: Executing: |assertEmitted | &quot;([/~caught &apos;blamo catch ALL&apos;~/])&quot; |  |
+info: Starting test /selenium-server/tests/try05%20-%20catch%20specific%20error,%20then%20finally.html
+info: Executing: |log | &quot;-- catch specific error, then finally --&quot; |  |
+info: [selbench] -- catch specific error, then finally --
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;([/&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | t-spec-outer |  |
+warn: [selblocks] @5: [try|t-spec-outer] does not have a catch-block nor a finally-block, and therefore serves no purpose
+info: Executing: |emit | &quot;trying outer&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |emit | &quot;([/&quot; |  |
+info: Executing: |try | t-spec-inner |  |
+info: Executing: |emit | &quot;trying inner&quot; |  |
+info: Executing: |throw | &quot;blamo inner&quot; |  |
+info: [selblocks] @11, error has been caught :: /blamo inner/
+info: [selblocks] branch =&gt; @13: [catch|/blamo inner/]
+info: Executing: |catch | /blamo inner/ |  |
+info: Executing: |emit | &quot;caught &apos;&quot; + _error.message + &quot;&apos;&quot; |  |
+info: Executing: |finally |  |  |
+info: Executing: |emit | &quot;finally&quot; |  |
+info: Executing: |endTry | t-spec-inner |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |emit | &quot;/])&quot; |  |
+info: Executing: |endTry | t-spec-outer |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |emit | &quot;/])&quot; |  |
+info: Executing: |assertEmitted | &quot;([/~trying outer~([/~trying inner~caught &apos;blamo inner&apos;~finally~/])~/])&quot; |  |
+info: Starting test /selenium-server/tests/try06%20-%20catch-throw,%20finally-throw.html
+info: Executing: |log | &quot;-- catch/throw, finally/throw --&quot; |  |
+info: [selbench] -- catch/throw, finally/throw --
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;([/&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | tcf-trap |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | 0 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | tcf |  |
+info: Executing: |emit | &quot;trying&quot; |  |
+info: Executing: |emit | &quot;throwing A&quot; |  |
+info: Executing: |throw | &quot;blamoA&quot; |  |
+info: [selblocks] @10, error has been caught :: /blamoA/
+info: [selblocks] branch =&gt; @12: [catch|/blamoA/]
+info: Executing: |catch | /blamoA/ |  |
+info: Executing: |emit | &quot;caught &apos;&quot; + _error.message + &quot;&apos;&quot; |  |
+info: Executing: |emit | &quot;throwing B&quot; |  |
+info: Executing: |throw | &quot;blamoB&quot; |  |
+info: [selblocks] Bubbling suspended while finally block runs
+info: [selblocks] branch =&gt; @16: [finally]
+info: Executing: |finally |  |  |
+info: Executing: |emit | &quot;finally&quot; |  |
+info: Executing: |emit | &quot;throwing C&quot; |  |
+info: Executing: |throw | &quot;blamoC&quot; |  |
+info: [selblocks] No further handling, error bubbling will continue outside of this try.
+info: [selblocks] branch =&gt; @20: [endTry]
+info: Executing: |endTry |  |  |
+info: [selblocks] @20, error has been caught :: @19 
+info: [selblocks] branch =&gt; @22: [catch]
+info: Executing: |catch |  |  |
+info: Executing: |emit | &quot;caught &apos;&quot; + _error.message + &quot;&apos;&quot; |  |
+info: Executing: |endTry |  |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |emit | &quot;/])&quot; |  |
+info: Executing: |assertEmitted | &quot;([/~trying~throwing A~caught &apos;blamoA&apos;~throwing B~finally~throwing C~caught &apos;blamoC&apos;~/])&quot; |  |
+info: Starting test /selenium-server/tests/try07%20-%20bubble%20up%20to%20catch%20ALL.html
+info: Executing: |log | &quot;-- bubble up to catch ALL --&quot; |  |
+info: [selbench] -- bubble up to catch ALL --
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;([/&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | t-all-outer |  |
+info: Executing: |emit | &quot;trying-outer&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | 0 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | t-all-inner |  |
+info: Executing: |emit | &quot;trying&quot; |  |
+info: Executing: |throw | &quot;blamo try-catch-finally&quot; |  |
+info: [selblocks] No further handling, error bubbling will continue outside of this try.
+info: [selblocks] branch =&gt; @14: [endTry|t-all-inner]
+info: Executing: |endTry | t-all-inner |  |
+info: [selblocks] @14, error has been caught :: @10 
+info: [selblocks] branch =&gt; @16: [catch]
+info: Executing: |catch |  |  |
+info: Executing: |emit | &quot;caught-outer &apos;&quot; + _error.message + &quot;&apos;&quot; |  |
+info: Executing: |endTry | t-all-outer |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |emit | &quot;/])&quot; |  |
+info: Executing: |assertEmitted | &quot;([/~trying-outer~trying~caught-outer &apos;blamo try-catch-finally&apos;~/])&quot; |  |
+info: Starting test /selenium-server/tests/try08%20-%20bubble%20up%20to%20catch%20ALL%20via%20finally.html
+info: Executing: |log | &quot;-- bubble up to catch ALL via finally --&quot; |  |
+info: [selbench] -- bubble up to catch ALL via finally --
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;([/&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | t-allfin-outer |  |
+info: Executing: |emit | &quot;trying-outer&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | 0 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | t-allfin-inner |  |
+info: Executing: |emit | &quot;trying&quot; |  |
+info: Executing: |throw | &quot;blamo try-catch-finally&quot; |  |
+info: [selblocks] Bubbling suspended while finally block runs
+info: [selblocks] branch =&gt; @14: [finally]
+info: Executing: |finally |  |  |
+info: Executing: |emit | &quot;finally&quot; |  |
+info: Executing: |endTry | t-allfin-inner |  |
+info: [selblocks] @16, error has been caught :: @10 
+info: [selblocks] branch =&gt; @18: [catch]
+info: Executing: |catch |  |  |
+info: Executing: |emit | &quot;caught-outer &apos;&quot; + _error.message + &quot;&apos;&quot; |  |
+info: Executing: |endTry | t-allfin-outer |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |emit | &quot;/])&quot; |  |
+info: Executing: |assertEmitted | &quot;([/~trying-outer~trying~finally~caught-outer &apos;blamo try-catch-finally&apos;~/])&quot; |  |
+info: Starting test /selenium-server/tests/try09%20-%20bubble%20out%20of%20no-op%20try%20to%20catch%20specific%20error.html
+info: Executing: |log | &quot;-- bubble out of no-op try to catch specific error --&quot; |  |
+info: [selbench] -- bubble out of no-op try to catch specific error --
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;([/&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | noop-outer |  |
+info: Executing: |emit | &quot;trying outer&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | 0 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | op-inner |  |
+warn: [selblocks] @8: [try|op-inner] does not have a catch-block nor a finally-block, and therefore serves no purpose
+info: Executing: |emit | &quot;trying inner&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | 1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |emit | &quot;throwing inner&quot; |  |
+info: Executing: |throw | &quot;blamo&quot; |  |
+info: [selblocks] No further handling, error bubbling will continue outside of this try.
+info: [selblocks] branch =&gt; @14: [endTry|op-inner]
+info: Executing: |endTry | op-inner |  |
+info: [selblocks] @14, error has been caught :: @12 /blamo/
+info: [selblocks] branch =&gt; @15: [catch|/blamo/]
+info: Executing: |catch | /blamo/ |  |
+info: Executing: |emit | &quot;caught &apos;&quot; + _error.message + &quot;&apos;&quot; |  |
+info: Executing: |finally |  |  |
+info: Executing: |emit | &quot;finally&quot; |  |
+info: Executing: |endTry | noop-outer |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |emit | &quot;/])&quot; |  |
+info: Executing: |assertEmitted | &quot;([/~trying outer~trying inner~throwing inner~caught &apos;blamo&apos;~finally~/])&quot; |  |
+info: Starting test /selenium-server/tests/try10%20-%20bubble%20up%20to%20catch%20specific%20error.html
+info: Executing: |log | &quot;-- bubble up to catch specific error --&quot; |  |
+info: [selbench] -- bubble up to catch specific error --
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;([/&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | bub-spec-outer |  |
+info: Executing: |emit | &quot;trying outer&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | 0 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | bub-spec-inner |  |
+info: Executing: |emit | &quot;trying inner&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | 1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |emit | &quot;throwing inner&quot; |  |
+info: Executing: |throw | &quot;blamo&quot; |  |
+info: [selblocks] Bubbling suspended while finally block runs
+info: [selblocks] branch =&gt; @14: [finally]
+info: Executing: |finally |  |  |
+info: Executing: |emit | &quot;finally&quot; |  |
+info: Executing: |endTry | bub-spec-inner |  |
+info: [selblocks] @16, error has been caught :: @12 /blamo/
+info: [selblocks] branch =&gt; @17: [catch|/blamo/]
+info: Executing: |catch | /blamo/ |  |
+info: Executing: |emit | &quot;caught &apos;&quot; + _error.message + &quot;&apos;&quot; |  |
+info: Executing: |endTry | bub-spec-outer |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |emit | &quot;/])&quot; |  |
+info: Executing: |assertEmitted | &quot;([/~trying outer~trying inner~throwing inner~finally~caught &apos;blamo&apos;~/])&quot; |  |
+info: Starting test /selenium-server/tests/try11%20-%20bubble%20up%20to%20catch%20specific%20error%20via%20finally.html
+info: Executing: |log | &quot;-- bubble up to catch specific error via finally --&quot; |  |
+info: [selbench] -- bubble up to catch specific error via finally --
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;([/&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | bub-spec-outer |  |
+info: Executing: |emit | &quot;trying outer&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | 0 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | bub-spec-inner |  |
+info: Executing: |emit | &quot;trying inner&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | 1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |emit | &quot;throwing inner&quot; |  |
+info: Executing: |throw | &quot;blamo&quot; |  |
+info: [selblocks] Bubbling suspended while finally block runs
+info: [selblocks] branch =&gt; @14: [finally]
+info: Executing: |finally |  |  |
+info: Executing: |emit | &quot;finally&quot; |  |
+info: Executing: |endTry | bub-spec-inner |  |
+info: [selblocks] @16, error has been caught :: @12 /blamo/
+info: [selblocks] branch =&gt; @17: [catch|/blamo/]
+info: Executing: |catch | /blamo/ |  |
+info: Executing: |emit | &quot;caught &apos;&quot; + _error.message + &quot;&apos;&quot; |  |
+info: Executing: |finally |  |  |
+info: Executing: |emit | &quot;finally&quot; |  |
+info: Executing: |endTry | bub-spec-outer |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |emit | &quot;/])&quot; |  |
+info: Executing: |assertEmitted | &quot;([/~trying outer~trying inner~throwing inner~finally~caught &apos;blamo&apos;~finally~/])&quot; |  |
+info: Starting test /selenium-server/tests/try12%20-%20throw,%20catch,%20rethrow.html
+info: Executing: |log | &quot;-- throw, catch, rethrow --&quot; |  |
+info: [selbench] -- throw, catch, rethrow --
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;([/&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | outer |  |
+info: Executing: |emit | &quot;trying outer&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | 0 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | inner |  |
+info: Executing: |emit | &quot;trying inner&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | 1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |emit | &quot;throwing blamo1&quot; |  |
+info: Executing: |throw | &quot;blamo1&quot; |  |
+info: [selblocks] @12, error has been caught :: /blamo1/
+info: [selblocks] branch =&gt; @14: [catch|/blamo1/]
+info: Executing: |catch | /blamo1/ |  |
+info: Executing: |emit | &quot;caught &apos;&quot; + _error.message + &quot;&apos;&quot; |  |
+info: Executing: |emit | &quot;throwing blamo2&quot; |  |
+info: Executing: |throw | &quot;blamo2&quot; |  |
+info: [selblocks] No further handling, error bubbling will continue outside of this try.
+info: [selblocks] branch =&gt; @18: [endTry|inner]
+info: Executing: |endTry | inner |  |
+info: [selblocks] @18, error has been caught :: @17 /blamo2/
+info: [selblocks] branch =&gt; @19: [catch|/blamo2/]
+info: Executing: |catch | /blamo2/ |  |
+info: Executing: |emit | &quot;caught &apos;&quot; + _error.message + &quot;&apos;&quot; |  |
+info: Executing: |endTry | outer |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |emit | &quot;/])&quot; |  |
+info: Executing: |assertEmitted | &quot;([/~trying outer~trying inner~throwing blamo1~caught &apos;blamo1&apos;~throwing blamo2~caught &apos;blamo2&apos;~/])&quot; |  |
+info: Starting test /selenium-server/tests/try13%20-%20bubble%20out%20of%20nested%20function%20calls.html
+info: Executing: |log | &quot;-- bubble out of nested function calls --&quot; |  |
+info: [selbench] -- bubble out of nested function calls --
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;([/&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | bub-invoke |  |
+info: Executing: |emit | &quot;trying&quot; |  |
+info: Executing: |emit | &quot;calling&quot; |  |
+info: Executing: |call | subBub | n = 0 |
+info: [selblocks] branch =&gt; @16: [function|subBub]
+info: Executing: |function | subBub |  |
+info: Executing: |try | tcf-inner |  |
+info: Executing: |emit | &quot;${n}) trying-inner&quot; |  |
+info: Executing: |if | n &lt; 2 |  |
+info: Executing: |emit | &quot;${n}) calling&quot; |  |
+info: Executing: |call | subBub | n = n+1 |
+info: [selblocks] branch =&gt; @16: [function|subBub]
+info: Executing: |function | subBub |  |
+info: Executing: |try | tcf-inner |  |
+info: Executing: |emit | &quot;0) trying-inner&quot; |  |
+info: Executing: |if | n &lt; 2 |  |
+info: Executing: |emit | &quot;0) calling&quot; |  |
+info: Executing: |call | subBub | n = n+1 |
+info: [selblocks] branch =&gt; @16: [function|subBub]
+info: Executing: |function | subBub |  |
+info: Executing: |try | tcf-inner |  |
+info: Executing: |emit | &quot;0) trying-inner&quot; |  |
+info: Executing: |if | n &lt; 2 |  |
+info: [selblocks] branch =&gt; @22: [else]
+info: Executing: |else |  |  |
+info: Executing: |emit | &quot;${n}) throwing&quot; |  |
+info: Executing: |throw | &quot;blamo&quot; |  |
+info: [selblocks] Bubbling suspended while finally block runs
+info: [selblocks] branch =&gt; @26: [finally]
+info: Executing: |finally |  |  |
+info: Executing: |emit | &quot;${n}) finally&quot; |  |
+info: Executing: |endTry | tcf-inner |  |
+info: [selblocks] function &apos;subBub&apos; aborting due to error
+info: [selblocks] Bubbling suspended while finally block runs
+info: [selblocks] branch =&gt; @26: [finally]
+info: Executing: |finally |  |  |
+info: Executing: |emit | &quot;2) finally&quot; |  |
+info: Starting test /selenium-server/tests/try14%20-%20command%20bubbling,%20break%20wfinally.html
+info: Executing: |log | &quot;-- command bubbling, break w/finally --&quot; |  |
+info: [selbench] -- command bubbling, break w/finally --
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;([/&quot; |  |
+info: Executing: |emit | &quot;while&apos;g&quot; |  |
+info: Executing: |for | w=3; w &gt; 0; w-- |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | breaker |  |
+info: Executing: |emit | &quot;${w}) trying&quot; |  |
+info: Executing: |if | w==2 |  |
+info: [selblocks] branch =&gt; @12: [endIf]
+info: Executing: |endIf |  |  |
+info: Executing: |finally |  |  |
+info: Executing: |emit | &quot;${w}) finallying&quot; |  |
+info: Executing: |endTry | breaker |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |emit | &quot;${w}) iterating&quot; |  |
+info: Executing: |endFor |  |  |
+info: [selblocks] branch =&gt; @5: [for|w=3; w &gt; 0; w--]
+info: Executing: |for | w=3; w &gt; 0; w-- |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | breaker |  |
+info: Executing: |emit | &quot;3) trying&quot; |  |
+info: Starting test /selenium-server/tests/try15%20-%20command%20bubbling,%20intra-try%20break.html
+info: Executing: |log | &quot;-- command bubbling, intra-try break --&quot; |  |
+info: [selbench] -- command bubbling, intra-try break --
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;([/&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | breaker |  |
+info: Executing: |emit | &quot;trying&quot; |  |
+info: Executing: |emit | &quot;while&apos;g&quot; |  |
+info: Executing: |for | w=3; w &gt; 0; w-- |  |
+info: Executing: |if | w==2 |  |
+info: [selblocks] branch =&gt; @12: [endIf]
+info: Executing: |endIf |  |  |
+info: Executing: |emit | &quot;${w}) iterating&quot; |  |
+info: Executing: |endFor |  |  |
+info: [selblocks] branch =&gt; @8: [for|w=3; w &gt; 0; w--]
+info: Executing: |for | w=3; w &gt; 0; w-- |  |
+info: Executing: |if | w==2 |  |
+info: Executing: |emit | &quot;${w}) BREAK&quot; |  |
+info: Executing: |break |  |  |
+info: [selblocks] branch =&gt; @14: [endFor]
+info: Executing: |endFor |  |  |
+info: Executing: |finally |  |  |
+info: Executing: |emit | &quot;finallying&quot; |  |
+info: Executing: |endTry | breaker |  |
+info: Starting test /selenium-server/tests/try16%20-%20command%20bubbling,%20continue%20w-finally.html
+info: Executing: |log | &quot;-- command bubbling, continue w/finally --&quot; |  |
+info: [selbench] -- command bubbling, continue w/finally --
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;([/&quot; |  |
+info: Executing: |emit | &quot;while&apos;g&quot; |  |
+info: Executing: |for | w=3; w &gt; 0; w-- |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | continuer |  |
+info: Executing: |emit | &quot;${w}) trying&quot; |  |
+info: Executing: |if | w==2 |  |
+info: [selblocks] branch =&gt; @12: [endIf]
+info: Executing: |endIf |  |  |
+info: Executing: |finally |  |  |
+info: Executing: |emit | &quot;${w}) finallying&quot; |  |
+info: Executing: |endTry | continuer |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |emit | &quot;${w}) iterating&quot; |  |
+info: Executing: |endFor |  |  |
+info: [selblocks] branch =&gt; @5: [for|w=3; w &gt; 0; w--]
+info: Executing: |for | w=3; w &gt; 0; w-- |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | continuer |  |
+info: Executing: |emit | &quot;3) trying&quot; |  |
+info: Starting test /selenium-server/tests/try17%20-%20command%20bubbling,%20intra-try%20continue.html
+info: Executing: |log | &quot;-- command bubbling, intra-try continue --&quot; |  |
+info: [selbench] -- command bubbling, intra-try continue --
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;([/&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | continuer |  |
+info: Executing: |emit | &quot;trying&quot; |  |
+info: Executing: |emit | &quot;while&apos;g&quot; |  |
+info: Executing: |for | w=3; w &gt; 0; w-- |  |
+info: Executing: |if | w==2 |  |
+info: [selblocks] branch =&gt; @12: [endIf]
+info: Executing: |endIf |  |  |
+info: Executing: |emit | &quot;${w}) iterating&quot; |  |
+info: Executing: |endFor |  |  |
+info: [selblocks] branch =&gt; @8: [for|w=3; w &gt; 0; w--]
+info: Executing: |for | w=3; w &gt; 0; w-- |  |
+info: Executing: |if | w==2 |  |
+info: Executing: |emit | &quot;${w}) CONTINUE&quot; |  |
+info: Executing: |continue |  |  |
+info: [selblocks] branch =&gt; @8: [for|w=3; w &gt; 0; w--]
+info: Executing: |for | w=3; w &gt; 0; w-- |  |
+info: Executing: |if | w==2 |  |
+info: [selblocks] branch =&gt; @12: [endIf]
+info: Executing: |endIf |  |  |
+info: Executing: |emit | &quot;3) iterating&quot; |  |
+info: Starting test /selenium-server/tests/try18%20-%20command%20bubbling,%20error%20replaced%20by%20return.html
+info: Executing: |log | &quot;-- command bubbling, error replaced by return --&quot; |  |
+info: [selbench] -- command bubbling, error replaced by return --
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;([/&quot; |  |
+info: Executing: |emit | &quot;calling&quot; |  |
+info: Executing: |call | cmdBubA |  |
+info: [selblocks] branch =&gt; @7: [function|cmdBubA]
+info: Executing: |function | cmdBubA |  |
+info: Executing: |emit | &quot;in cmdBubA&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | cmdBub-tcf |  |
+info: Executing: |emit | &quot;trying&quot; |  |
+info: Executing: |emit | &quot;returning (1)&quot; |  |
+info: Executing: |return | 1 |  |
+info: [selblocks] Command @13: [return|1], suspended while finally block runs
+info: [selblocks] branch =&gt; @14: [finally]
+info: Executing: |finally |  |  |
+info: Executing: |emit | &quot;finallying&quot; |  |
+info: Executing: |emit | &quot;returning (2)&quot; |  |
+info: Executing: |return | 2 |  |
+info: Executing: |endTry |  |  |
+info: [selblocks] command-bubbling complete - suspended command executing now @17: [return|2]
+info: [selblocks] branch =&gt; @17: [return|2]
+info: Executing: |return | 2 |  |
+info: [selblocks] branch =&gt; @5: [call|cmdBubA]
+info: Executing: |call | cmdBubA |  |
+info: Executing: |emit | &quot;returned ${_result}&quot; |  |
+info: Executing: |function | cmdBubA |  |
+info: [selblocks] branch =&gt; @20: [endFunction]
+info: Executing: |endFunction |  |  |
+info: Starting test /selenium-server/tests/try19%20-%20command%20bubbling,%20error%20replaced%20by%20throw.html
+info: Executing: |log | &quot;-- command bubbling, error replaced by return --&quot; |  |
+info: [selbench] -- command bubbling, error replaced by return --
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;([/&quot; |  |
+info: Executing: |emit | &quot;calling&quot; |  |
+info: Executing: |call | cmdBubB |  |
+info: [selblocks] branch =&gt; @7: [function|cmdBubB]
+info: Executing: |function | cmdBubB |  |
+info: Executing: |emit | &quot;in cmdBubB&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | cmdBub-tcf |  |
+info: Executing: |emit | &quot;trying&quot; |  |
+info: Executing: |emit | &quot;throwing&quot; |  |
+info: Executing: |throw | &quot;short-lived error&quot; |  |
+info: [selblocks] Bubbling suspended while finally block runs
+info: [selblocks] branch =&gt; @14: [finally]
+info: Executing: |finally |  |  |
+info: Executing: |emit | &quot;finallying&quot; |  |
+info: Executing: |emit | &quot;returning (2)&quot; |  |
+info: Executing: |return | 2 |  |
+info: Executing: |endTry |  |  |
+info: [selblocks] command-bubbling complete - suspended command executing now @17: [return|2]
+info: [selblocks] branch =&gt; @17: [return|2]
+info: Executing: |return | 2 |  |
+info: [selblocks] branch =&gt; @5: [call|cmdBubB]
+info: Executing: |call | cmdBubB |  |
+info: Executing: |emit | &quot;returned ${_result}&quot; |  |
+info: Executing: |function | cmdBubB |  |
+info: [selblocks] branch =&gt; @20: [endFunction]
+info: Executing: |endFunction |  |  |
+info: Starting test /selenium-server/tests/try20%20-%20command%20bubbling,%20return%20replaced%20by%20error.html
+info: Executing: |log | &quot;-- command bubbling, return replaced by error --&quot; |  |
+info: [selbench] -- command bubbling, return replaced by error --
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;([/&quot; |  |
+info: Executing: |emit | &quot;calling&quot; |  |
+info: Executing: |call | cmdBubC |  |
+info: [selblocks] branch =&gt; @7: [function|cmdBubC]
+info: Executing: |function | cmdBubC |  |
+info: Executing: |emit | &quot;in cmdBubC&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | cmdBub-tcf-guardrail |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | 0 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | cmdBub-tcf |  |
+info: Executing: |emit | &quot;trying&quot; |  |
+info: Executing: |emit | &quot;returning (1)&quot; |  |
+info: Executing: |return | 1 |  |
+info: [selblocks] Command @15: [return|1], suspended while finally block runs
+info: [selblocks] branch =&gt; @16: [finally]
+info: Executing: |finally |  |  |
+info: Executing: |emit | &quot;finallying&quot; |  |
+info: Executing: |emit | &quot;throwing&quot; |  |
+info: Executing: |throw | &quot;this-error-replaces-return-1&quot; |  |
+info: [selblocks] No further handling, error bubbling will continue outside of this try.
+info: [selblocks] branch =&gt; @20: [endTry]
+info: Executing: |endTry |  |  |
+info: [selblocks] @20, error has been caught :: @19 /this-error-replaces-return-1/
+info: [selblocks] branch =&gt; @21: [catch|/this-error-replaces-return-1/]
+info: Executing: |catch | /this-error-replaces-return-1/ |  |
+info: Executing: |emit | &quot;caught &apos;&quot; + _error.message + &quot;&apos;&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | 0 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |endTry |  |  |
+info: Executing: |endFunction |  |  |
+info: [selblocks] branch =&gt; @5: [call|cmdBubC]
+info: Executing: |call | cmdBubC |  |
+info: Executing: |emit | &quot;returned ${_result}&quot; |  |
+info: Executing: |function | cmdBubC |  |
+info: [selblocks] branch =&gt; @25: [endFunction]
+info: Starting test /selenium-server/tests/try21%20-%20catch%20failed%20verify%20command.html
+info: Executing: |log | &quot;-- catch failed verify command --&quot; |  |
+info: [selbench] -- catch failed verify command --
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;([/&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | tcv1 |  |
+info: Executing: |verifyEval | 1 | 2 |
+info: script is: 1
+info: [selblocks] @6, error has been caught :: 
+info: [selblocks] branch =&gt; @8: [catch]
+info: Executing: |catch |  |  |
+info: Executing: |emit | &quot;caught &apos;&quot; + _error.message + &quot;&apos;&quot; |  |
+info: Executing: |endTry |  |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |emit | &quot;/])&quot; |  |
+info: Executing: |assertEmitted | &quot;([/~caught &apos;Actual value &apos;1&apos; did not match &apos;2&apos;&apos;~/])&quot; |  |
+info: Starting test /selenium-server/tests/try22%20-%20exitTest%20w-finally%20processing.html
+info: Executing: |log | &quot;-- exitTest w/finally processing --&quot; |  |
+info: [selbench] -- exitTest w/finally processing --
+info: Executing: |resetEmitted |  |  |
+info: Executing: |emit | &quot;([/&quot; |  |
+info: Executing: |assertEval | selblocks.tcf.nestingLevel | -1 |
+info: script is: selblocks.tcf.nestingLevel
+info: Executing: |try | abort |  |
+info: Executing: |emit | &quot;trying&quot; |  |
+info: Executing: |emit | &quot;exitTest ...&quot; |  |
+info: Executing: |exitTest |  |  |
+info: [selblocks] Command @8: [exitTest], suspended while finally block runs
+info: [selblocks] branch =&gt; @9: [finally]
+info: Executing: |finally |  |  |
+info: Executing: |emit | &quot;finallying&quot; |  |
+info: Executing: |assertEmitted | &quot;([/~trying~exitTest ...~finallying&quot; |  |
+info: Executing: |resetEmitted |  |  |
+info: Executing: |endTry | abort |  |
+info: [selblocks] command-bubbling complete - suspended command executing now @8: [exitTest]
+info: [selblocks] branch =&gt; @8: [exitTest]
+info: Executing: |exitTest |  |  |
+</pre></body></html>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
+<title>try01</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">try01</td></tr>
+</thead><tbody>
+<tr>
+	<td>log</td>
+	<td>&quot;-- no-op try --&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>resetEmitted</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;([/&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<!--v v v-->
+<tr>
+	<td>try</td>
+	<td>t-noop</td>
+	<td></td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;trying&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endTry</td>
+	<td>t-noop</td>
+	<td></td>
+</tr>
+<!--^ ^ ^ ^-->
+<tr>
+	<td>assertEval</td>
+	<td>selblocks.tcf.nestingLevel</td>
+	<td>-1</td>
+</tr>
+<tr>
+	<td>emit</td>
+	<td>&quot;/])&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertEmitted</td>
+	<td>&quot;([/~trying~/])&quot;</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

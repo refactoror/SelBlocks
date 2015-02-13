@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://change-this-to-the-site-you-are-testing/" />
-<title>exitTest</title>
+<title>continue-break03</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">exitTest</td></tr>
+<tr><td rowspan="1" colspan="3">continue-break03</td></tr>
 </thead><tbody>
 <tr>
 	<td>resetEmitted</td>
@@ -17,65 +17,34 @@
 	<td></td>
 </tr>
 <tr>
-	<td>exitTest</td>
-	<td></td>
+	<td>foreach</td>
+	<td>fe</td>
+	<td>&quot;dilbert&quot;,&quot;dogbert&quot;,&quot;wally&quot;</td>
+</tr>
+<tr>
+	<td>continue</td>
+	<td>fe==&quot;dogbert&quot;</td>
 	<td></td>
 </tr>
 <tr>
-	<td>throw</td>
-	<td>&quot;shouldn't happen&quot;</td>
-	<td></td>
-</tr>
-<!---- from within a loop-->
-<tr>
-	<td>for</td>
-	<td>i=0; i &lt; 5; i++</td>
+	<td>break</td>
+	<td>fe==&quot;wally&quot;</td>
 	<td></td>
 </tr>
 <tr>
-	<td>if</td>
-	<td>i == 3</td>
+	<td>emit</td>
+	<td>&quot;iter=${fe}&quot;</td>
 	<td></td>
 </tr>
 <tr>
-	<td>exitTest</td>
+	<td>endForeach</td>
 	<td></td>
 	<td></td>
 </tr>
+<!----- check results-->
 <tr>
-	<td>endIf</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>endFor</td>
-	<td></td>
-	<td></td>
-</tr>
-<!---- from within a function-->
-<tr>
-	<td>call</td>
-	<td>doSubExit</td>
-	<td></td>
-</tr>
-<tr>
-	<td>throw</td>
-	<td>&quot;shouldn't happen&quot;</td>
-	<td></td>
-</tr>
-<tr>
-	<td>function</td>
-	<td>doSubExit</td>
-	<td></td>
-</tr>
-<tr>
-	<td>exitTest</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>endFunction</td>
-	<td>doSubExit</td>
+	<td>assertEmitted</td>
+	<td>&quot;iter=dilbert&quot;</td>
 	<td></td>
 </tr>
 </tbody></table>
