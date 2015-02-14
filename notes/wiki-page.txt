@@ -148,7 +148,7 @@ NONE
 Selenese scripts that use SelBlocks commands can also be run in Selenium Server
 via the <tt>-user-extensions</tt> and <tt>-htmlSuite</tt> options.
 Get the current <tt>user-extensions.js</tt> here:
-https://github.com/refactoror/SelBlocks/user-extensions.js
+https://raw.githubusercontent.com/refactoror/SelBlocks/master/user-extensions.js
 
 For more information on running Selenium Server,
 see: http://www.seleniumhq.org/docs/08_user_extensions.jsp#using-user-extensions-with-selenium-ide
@@ -211,7 +211,7 @@ I would just say, use these constructs judiciously.
 
 =Revision History=
 
-* 2015-02-??: v2.1
+* 2015-02-12: v2.1
 ** Enhancement #10 Added support for Selenium Server. (A big thanks to Matthew Kastor for this contribution)
 ** Added ability to catch verify command faliures
 ** Fixed Issue #6 Try/catch not clearing error status
